@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jock — a language for Nock</title>
+<meta name="description" content="Jock compiles a Swift- and Rust-flavored syntax down to Nock, the twelve-opcode combinator calculus underneath Urbit.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --desk:#dcd7cc;
+    --paper:#f2ecdd;
+    --ink:#1a1714;
+    --ink-body:#231f1a;
+    --ink-soft:#3a342c;
+    --muted:#6b6459;
+    --muted-2:#8c857a;
+    --red:#b32a1c;
+    --red-hover:#8c1f14;
+    --hair:rgba(0,0,0,.25);
+    --hair-soft:rgba(0,0,0,.12);
+    --serif:'Zilla Slab',Georgia,serif;
+    --mono:'Sometype Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{background:var(--desk)}
+  body{
+    background:var(--desk);
+    color:var(--ink-body);
+    font-family:var(--serif);
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    max-width:900px;
+    margin:0 auto;
+    background:var(--paper);
+    border-left:1px solid var(--hair);
+    border-right:1px solid var(--hair);
+    min-height:100vh;
+  }
+  header.bar, footer.bar{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    padding:18px 48px;
+    font:400 10px/1 var(--mono);
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--muted-2);
+  }
+  header.bar{border-bottom:1px solid var(--hair)}
+  footer.bar{border-top:1px solid var(--hair)}
+  header.bar a, footer.bar a{color:var(--muted-2);text-decoration:none}
+  header.bar a:hover, footer.bar a:hover{color:var(--red)}
+  header.bar nav{display:flex;gap:22px}
+
+  main{padding:0 48px}
+
+  a{color:var(--red);text-decoration:none}
+  a:hover{color:var(--red-hover)}
+
+  .grid{
+    display:grid;
+    grid-template-columns:1fr 186px;
+    gap:0 28px;
+  }
+  @media (max-width:760px){
+    .grid{grid-template-columns:1fr}
+  }
+
+  /* hero */
+  .hero{padding:44px 0 8px}
+  .kicker{
+    font:400 10px/1 var(--mono);
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:var(--red);
+    margin-bottom:16px;
+  }
+  h1{
+    font:600 52px/1.05 var(--serif);
+    color:var(--ink);
+    letter-spacing:-.01em;
+    margin-bottom:16px;
+  }
+  .lede{
+    font:400 16px/1.65 var(--serif);
+    color:var(--ink-soft);
+    max-width:60ch;
+    margin-bottom:8px;
+  }
+  .notes{
+    border-left:1px solid var(--hair-soft);
+    padding-left:18px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    padding-top:6px;
+  }
+  .note{font:400 11.5px/1.55 var(--serif);color:var(--muted)}
+  .note .n{color:var(--red);font-family:var(--mono);margin-right:2px}
+
+  /* section heads */
+  h2.head{
+    font:600 11px/1.2 var(--mono);
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--ink);
+    margin-bottom:4px;
+  }
+  .rule{height:1.5px;background:var(--ink);margin-bottom:18px}
+  section{padding:38px 0 6px}
+  section > p.intro{
+    font:400 14px/1.62 var(--serif);
+    max-width:64ch;
+    color:var(--ink-soft);
+    margin-bottom:22px;
+  }
+
+  /* code */
+  pre.code{
+    border-left:2px solid var(--red);
+    padding:2px 0 2px 16px;
+    font:400 13px/1.6 var(--mono);
+    color:var(--ink-body);
+    overflow-x:auto;
+    white-space:pre;
+    margin-bottom:10px;
+  }
+  pre.code .kw{color:var(--red)}
+  .example{margin-bottom:30px;break-inside:avoid}
+  .example .label{
+    font:500 10px/1 var(--mono);
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--muted-2);
+    margin-bottom:10px;
+  }
+  .example .label .file{color:var(--ink);text-transform:none;letter-spacing:0}
+  .example .cap{
+    font:400 12px/1.5 var(--serif);
+    color:var(--muted);
+    max-width:56ch;
+  }
+
+  /* framed plate */
+  .plate{
+    width:100%;
+    border:1.5px solid var(--ink);
+    padding:22px 24px 20px;
+    position:relative;
+    margin-bottom:14px;
+  }
+  .plate .corner{position:absolute;width:13px;height:13px;border:1.5px solid var(--red)}
+  .plate .c1{top:-1.5px;left:-1.5px;border-right:none;border-bottom:none}
+  .plate .c2{top:-1.5px;right:-1.5px;border-left:none;border-bottom:none}
+  .plate .c3{bottom:-1.5px;left:-1.5px;border-right:none;border-top:none}
+  .plate .c4{bottom:-1.5px;right:-1.5px;border-left:none;border-top:none}
+  .plate .plate-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    font:400 9.5px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+    margin-bottom:16px;
+  }
+  .plate .arrow{
+    text-align:center;
+    font:400 italic 13px var(--serif);
+    color:var(--muted);
+    margin:10px 0;
+  }
+  .plate .note{
+    border-top:1px solid var(--hair-soft);
+    margin-top:16px;padding-top:9px;
+    font:400 11.5px/1.5 var(--serif);color:var(--muted);
+  }
+
+  /* repo table */
+  table.repos{width:100%;border-collapse:collapse;margin-bottom:8px}
+  table.repos th{
+    text-align:left;padding:0 0 8px;
+    font:400 9.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);
+    border-bottom:1.25px solid var(--ink);
+  }
+  table.repos td{
+    padding:14px 12px 14px 0;
+    font:400 13px/1.5 var(--serif);
+    border-bottom:1px solid var(--hair-soft);
+    vertical-align:top;
+  }
+  table.repos td:first-child{white-space:nowrap;font-family:var(--mono);font-size:12px;color:var(--ink)}
+  table.repos td.repo{font-family:var(--mono);font-size:12.5px}
+  table.repos td.status{color:var(--muted);font-size:12px}
+
+  section:last-of-type{padding-bottom:44px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="bar">
+  <span>Jock</span>
+  <nav>
+    <a href="#examples">examples</a>
+    <a href="#repositories">repositories</a>
+    <a href="https://github.com/zorp-corp/jock-lang">github</a>
+  </nav>
+</header>
+
+<main>
+
+  <div class="hero grid">
+    <div>
+      <div class="kicker">A language for Nock</div>
+      <h1>Jock</h1>
+      <p class="lede">
+        Jock compiles a high-level syntax down to <a href="https://developers.urbit.org/reference/nock/definition">Nock</a>,
+        the twelve-opcode combinator calculus underneath Urbit. It models its syntax on Swift
+        and Rust, aiming to be more approachable than Hoon while still permitting direct
+        expression of Nock concepts — classes, generics, pattern matching and operator traits,
+        all the way down to a noun.
+      </p>
+    </div>
+    <div class="notes">
+      <div class="note"><span class="n">1.</span> The <a href="https://github.com/zorp-corp/jock-lang">public alpha</a> is
+        the original release, from zorp-corp.</div>
+      <div class="note"><span class="n">2.</span> Development continues in a
+        <a href="https://github.com/sigilante/jock">successor repository</a> (currently private),
+        expanding the language's features and capabilities.</div>
+    </div>
+  </div>
+
+  <section id="compiles">
+    <h2 class="head">01 — Compiles to Nock</h2>
+    <div class="rule"></div>
+    <p class="intro">
+      Every Jock program erases to a noun and a formula. Structs become right-nested tuples,
+      unions become tagged cells, and the whole language bottoms out in twelve instructions.
+    </p>
+    <div class="plate">
+      <div class="corner c1"></div><div class="corner c2"></div>
+      <div class="corner c3"></div><div class="corner c4"></div>
+      <div class="plate-head"><span>Jock</span><span>&rarr; Nock</span></div>
+<pre class="code" style="border:0;padding:0"><span class="kw">let</span> a: ? <span class="kw">=</span> true;
+a <span class="kw">=</span> false;
+a</pre>
+      <div class="arrow">compiles to</div>
+<pre class="code" style="border:0;padding:0">[8 [1 0] 7 [10 [2 1 1] 0 1] 0 2]</pre>
+      <div class="note">The reveal is deferred, not hidden: write real Jock programs first, meet
+        the noun underneath when it starts to matter.</div>
+    </div>
+  </section>
+
+  <section id="examples">
+    <h2 class="head">02 — Examples</h2>
+    <div class="rule"></div>
+    <p class="intro">
+      A few programs from the <a href="https://github.com/sigilante/jock/tree/main/examples">examples</a> folder —
+      each one a complete, executable program.
+    </p>
+
+    <div class="example">
+      <div class="label"><span class="file">point.jock</span> — operator traits on a sealed class</div>
+<pre class="code"><span class="kw">struct</span> PointState { x: Real, y: Real };
+<span class="kw">class</span> Point(PointState) <span class="kw">impl</span> Add, Sub {
+  add(self: Self, p: Self) -&gt; Self {
+    Point{ x: self.x <span class="kw">+</span> p.x, y: self.y <span class="kw">+</span> p.y }
+  };
+  sub(self: Self, p: Self) -&gt; Self {
+    Point{ x: self.x <span class="kw">-</span> p.x, y: self.y <span class="kw">-</span> p.y }
+  };
+};
+<span class="kw">let</span> p <span class="kw">=</span> Point{ x: 101.0, y: 105.0 };
+<span class="kw">let</span> q <span class="kw">=</span> Point{ x: 42.0, y: 7.0 };
+(p <span class="kw">+</span> q).x</pre>
+      <div class="cap">operator traits, classes, Real — <code>p + q</code> dispatches through class conformance</div>
+    </div>
+
+    <div class="example">
+      <div class="label"><span class="file">sort.jock</span> — generic insertion sort</div>
+<pre class="code"><span class="kw">func</span>(T: Lt) insert(x: T, xs: List(T)) -&gt; List(T) {
+  <span class="kw">match</span> xs {
+    (h, t) <span class="kw">=&gt;</span> <span class="kw">if</span> x <span class="kw">&lt;</span> h { (x, xs) } <span class="kw">else</span> { (h, insert(x, t)) };
+    _ <span class="kw">=&gt;</span> [x];
+  }
+};
+<span class="kw">func</span>(T: Lt) isort(xs: List(T)) -&gt; List(T) {
+  <span class="kw">match</span> xs {
+    (h, t) <span class="kw">=&gt;</span> insert(h, isort(t));
+    _ <span class="kw">=&gt;</span> ~;
+  }
+};
+isort([5, 3, 8, 1, 9, 2])</pre>
+      <div class="cap">bounded generics, <code>T: Lt</code>, operators as bounds — the same <code>&lt;</code> becomes a trait call</div>
+    </div>
+
+    <div class="example">
+      <div class="label"><span class="file">stoplight.jock</span> — a state-machine kernel</div>
+<pre class="code"><span class="kw">union</span> Color { red, green, yellow };
+<span class="kw">struct</span> LightState { c: Color };
+<span class="kw">func</span> advance(c: Color) -&gt; Color {
+  <span class="kw">match</span> c {
+    red <span class="kw">=&gt;</span> Color.green;
+    green <span class="kw">=&gt;</span> Color.yellow;
+    yellow <span class="kw">=&gt;</span> Color.red;
+  }
+};
+<span class="kw">class</span> Light(LightState) <span class="kw">impl</span> Kernel {
+  load(self: Light, old: *) -&gt; Light { old <span class="kw">as!</span> Light };
+  peek(self: Light, p: *) -&gt; * { self.c };
+  poke(self: Light, e: *) -&gt; (List(Effect), Light) {
+    <span class="kw">let</span> n <span class="kw">=</span> advance(self.c);
+    (~, Light{ c: n })
+  };
+};
+Light{ c: Color.red }</pre>
+      <div class="cap">a zero-ceremony NockApp kernel — the compiler synthesizes load/peek/poke from <code>impl Kernel</code></div>
+    </div>
+  </section>
+
+  <section id="repositories">
+    <h2 class="head">03 — Repositories</h2>
+    <div class="rule"></div>
+    <table class="repos">
+      <thead><tr><th>Track</th><th>Repository</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Alpha</td>
+          <td class="repo"><a href="https://github.com/zorp-corp/jock-lang">zorp-corp/jock-lang</a></td>
+          <td class="status">public — original release</td>
+        </tr>
+        <tr>
+          <td>Recommenced</td>
+          <td class="repo">sigilante/jock</td>
+          <td class="status">private — ongoing development</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="intro" style="margin-top:18px">
+      Jock is a solo-authored, direct-to-runtime rewrite in active development. The public alpha
+      remains the reference for the original language; new feature work happens in the
+      recommenced repository.
+    </p>
+  </section>
+
+</main>
+
+<footer class="bar">
+  <span>Jock — a language for Nock</span>
+  <span>jock.is</span>
+</footer>
+
+</div>
+</body>
+</html>
