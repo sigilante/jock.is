@@ -9,6 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="jock-highlight.css">
+<script src="jock-highlight.js" defer></script>
 <style>
   :root{
     --desk:#dcd7cc;
@@ -130,7 +132,8 @@
     white-space:pre;
     margin-bottom:10px;
   }
-  pre.code .kw{color:var(--red)}
+  /*  token colours live in jock-highlight.css; a listing opts in
+      with `class="code jock"` and is highlighted on load  */
   .example{margin-bottom:30px;break-inside:avoid}
   .example .label{
     font:500 10px/1 var(--mono);
@@ -243,8 +246,8 @@
       <div class="corner c1"></div><div class="corner c2"></div>
       <div class="corner c3"></div><div class="corner c4"></div>
       <div class="plate-head"><span>Jock</span><span>&rarr; Nock</span></div>
-<pre class="code" style="border:0;padding:0"><span class="kw">let</span> a: ? <span class="kw">=</span> true;
-a <span class="kw">=</span> false;
+<pre class="code jock" style="border:0;padding:0">var a: Bool = true;
+a = false;
 a</pre>
       <div class="arrow">compiles to</div>
 <pre class="code" style="border:0;padding:0">[8 [1 0] 7 [10 [2 1 1] 0 1] 0 2]</pre>
@@ -264,33 +267,33 @@ a</pre>
     <div class="example">
       <div class="label"><span class="file">point.jock</span> — operator traits on a sealed class</div>
       <div class="cap">operator traits, classes, Real — <code>p + q</code> dispatches through class conformance</div>
-<pre class="code"><span class="kw">struct</span> PointState { x: Real, y: Real };
-<span class="kw">class</span> Point(PointState) <span class="kw">impl</span> Add, Sub {
+<pre class="code jock">struct PointState { x: Real, y: Real };
+class Point(PointState) impl Add, Sub {
   add(self: Self, p: Self) -&gt; Self {
-    Point{ x: self.x <span class="kw">+</span> p.x, y: self.y <span class="kw">+</span> p.y }
+    Point{ x: self.x + p.x, y: self.y + p.y }
   };
   sub(self: Self, p: Self) -&gt; Self {
-    Point{ x: self.x <span class="kw">-</span> p.x, y: self.y <span class="kw">-</span> p.y }
+    Point{ x: self.x - p.x, y: self.y - p.y }
   };
 };
-<span class="kw">let</span> p <span class="kw">=</span> Point{ x: 101.0, y: 105.0 };
-<span class="kw">let</span> q <span class="kw">=</span> Point{ x: 42.0, y: 7.0 };
-(p <span class="kw">+</span> q).x</pre>
+let p = Point{ x: 101.0, y: 105.0 };
+let q = Point{ x: 42.0, y: 7.0 };
+(p + q).x</pre>
     </div>
 
     <div class="example">
       <div class="label"><span class="file">sort.jock</span> — generic insertion sort</div>
       <div class="cap">bounded generics, <code>T: Lt</code>, operators as bounds — the same <code>&lt;</code> becomes a trait call</div>
-<pre class="code"><span class="kw">func</span>(T: Lt) insert(x: T, xs: List(T)) -&gt; List(T) {
-  <span class="kw">match</span> xs {
-    (h, t) <span class="kw">=&gt;</span> <span class="kw">if</span> x <span class="kw">&lt;</span> h { (x, xs) } <span class="kw">else</span> { (h, insert(x, t)) };
-    _ <span class="kw">=&gt;</span> [x];
+<pre class="code jock">func(T: Lt) insert(x: T, xs: List(T)) -&gt; List(T) {
+  match xs {
+    (h, t) =&gt; if x &lt; h { (x, xs) } else { (h, insert(x, t)) };
+    _ =&gt; [x];
   }
 };
-<span class="kw">func</span>(T: Lt) isort(xs: List(T)) -&gt; List(T) {
-  <span class="kw">match</span> xs {
-    (h, t) <span class="kw">=&gt;</span> insert(h, isort(t));
-    _ <span class="kw">=&gt;</span> ~;
+func(T: Lt) isort(xs: List(T)) -&gt; List(T) {
+  match xs {
+    (h, t) =&gt; insert(h, isort(t));
+    _ =&gt; ~;
   }
 };
 isort([5, 3, 8, 1, 9, 2])</pre>
@@ -299,20 +302,20 @@ isort([5, 3, 8, 1, 9, 2])</pre>
     <div class="example">
       <div class="label"><span class="file">stoplight.jock</span> — a state-machine kernel</div>
       <div class="cap">a zero-ceremony NockApp kernel — the compiler synthesizes load/peek/poke from the <code>Kernel</code> protocol</div>
-<pre class="code"><span class="kw">union</span> Color { red, green, yellow };
-<span class="kw">struct</span> LightState { c: Color };
-<span class="kw">func</span> advance(c: Color) -&gt; Color {
-  <span class="kw">match</span> c {
-    red <span class="kw">=&gt;</span> Color.green;
-    green <span class="kw">=&gt;</span> Color.yellow;
-    yellow <span class="kw">=&gt;</span> Color.red;
+<pre class="code jock">union Color { red, green, yellow };
+struct LightState { c: Color };
+func advance(c: Color) -&gt; Color {
+  match c {
+    red =&gt; Color.green;
+    green =&gt; Color.yellow;
+    yellow =&gt; Color.red;
   }
 };
-<span class="kw">class</span> Light(LightState) <span class="kw">impl</span> Kernel {
-  load(self: Light, old: *) -&gt; Light { old <span class="kw">as!</span> Light };
+class Light(LightState) impl Kernel {
+  load(self: Light, old: *) -&gt; Light { old as! Light };
   peek(self: Light, p: *) -&gt; * { self.c };
   poke(self: Light, e: *) -&gt; (List(Effect), Light) {
-    <span class="kw">let</span> n <span class="kw">=</span> advance(self.c);
+    let n = advance(self.c);
     (~, Light{ c: n })
   };
 };
