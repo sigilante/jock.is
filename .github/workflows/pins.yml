@@ -1,0 +1,37 @@
+name: pins
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+#  The highlighter is vendored from sigilante/jock (editors/web), and
+#  a copy drifts.  This is the same check the compiler repo runs over
+#  vendor/SNAPSHOT.txt: read the pin file line by line, and verify
+#  every line that looks like a sha256 sum.  Prose lines are skipped,
+#  so the file can explain itself.
+#
+#  This proves the copies here are unmodified.  That they match the
+#  CURRENT upstream is the other repo's lane, which reads this
+#  checkout when it has one:
+#      JOCK_SITE=<this checkout> python3 tools/hilite.py
+
+jobs:
+  vendored:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: vendored files match VENDOR.txt
+        run: |
+          set -e
+          fail=0
+          seen=0
+          while read -r sum path; do
+            case "$sum" in ''|::*) continue;; esac
+            if printf '%s' "$sum" | grep -qE '^[0-9a-f]{64}$'; then
+              seen=$((seen + 1))
+              echo "$sum  $path" | sha256sum -c - || fail=1
+            fi
+          done < VENDOR.txt
+          test "$seen" -gt 0 || { echo "VENDOR.txt pinned nothing" >&2; exit 1; }
+          exit "$fail"
