@@ -212,27 +212,28 @@
 
   <div class="hero grid">
     <div>
-      <div class="kicker">A language for Nock</div>
+      <div class="kicker">A Nock combinator language</div>
       <h1>Jock</h1>
       <p class="lede">
-        Jock compiles a high-level syntax down to <a href="https://developers.urbit.org/reference/nock/definition">Nock</a>,
-        the twelve-opcode combinator calculus underneath Urbit. It models its syntax on Swift
+        Jock compiles a high-level syntax to <a href="https://nock.is/cool">Nock</a>,
+	the twelve-opcode combinator calculus underneath <a href="https://nockchain.org">Nockchain</a> and
+	<a href="https://urbit.org">Urbit</a>, among other platforms. Jock models its syntax on Swift
         and Rust, aiming to be more approachable than Hoon while still permitting direct
-        expression of Nock concepts — classes, generics, pattern matching and operator traits,
-        all the way down to a noun.
+        expression of Nock concepts:  classes, generics, pattern matching and operator traits,
+        all the way down to raw nouns.
       </p>
     </div>
     <div class="notes">
       <div class="note"><span class="n">1.</span> The <a href="https://github.com/zorp-corp/jock-lang">public alpha</a> is
         the original release, from zorp-corp.</div>
-      <div class="note"><span class="n">2.</span> Development continues in a
+      <div class="note"><span class="n">2.</span> Development of a release candidate continues in a
         <a href="https://github.com/sigilante/jock">successor repository</a> (currently private),
         expanding the language's features and capabilities.</div>
     </div>
   </div>
 
   <section id="compiles">
-    <h2 class="head">01 — Compiles to Nock</h2>
+    <h2 class="head">01 » Compiles to Nock</h2>
     <div class="rule"></div>
     <p class="intro">
       Every Jock program erases to a noun and a formula. Structs become right-nested tuples,
@@ -247,21 +248,22 @@ a <span class="kw">=</span> false;
 a</pre>
       <div class="arrow">compiles to</div>
 <pre class="code" style="border:0;padding:0">[8 [1 0] 7 [10 [2 1 1] 0 1] 0 2]</pre>
-      <div class="note">The reveal is deferred, not hidden: write real Jock programs first, meet
-        the noun underneath when it starts to matter.</div>
+      <div class="note">Write real Jock programs first, only meeting
+        the Nock ISA noun underneath when it starts to matter.</div>
     </div>
   </section>
 
   <section id="examples">
-    <h2 class="head">02 — Examples</h2>
+    <h2 class="head">02 » Examples</h2>
     <div class="rule"></div>
     <p class="intro">
-      A few programs from the <a href="https://github.com/sigilante/jock/tree/main/examples">examples</a> folder —
+      A few programs from the <a href="https://github.com/sigilante/jock/tree/master/examples">examples</a> folder —
       each one a complete, executable program.
     </p>
 
     <div class="example">
       <div class="label"><span class="file">point.jock</span> — operator traits on a sealed class</div>
+      <div class="cap">operator traits, classes, Real — <code>p + q</code> dispatches through class conformance</div>
 <pre class="code"><span class="kw">struct</span> PointState { x: Real, y: Real };
 <span class="kw">class</span> Point(PointState) <span class="kw">impl</span> Add, Sub {
   add(self: Self, p: Self) -&gt; Self {
@@ -274,11 +276,11 @@ a</pre>
 <span class="kw">let</span> p <span class="kw">=</span> Point{ x: 101.0, y: 105.0 };
 <span class="kw">let</span> q <span class="kw">=</span> Point{ x: 42.0, y: 7.0 };
 (p <span class="kw">+</span> q).x</pre>
-      <div class="cap">operator traits, classes, Real — <code>p + q</code> dispatches through class conformance</div>
     </div>
 
     <div class="example">
       <div class="label"><span class="file">sort.jock</span> — generic insertion sort</div>
+      <div class="cap">bounded generics, <code>T: Lt</code>, operators as bounds — the same <code>&lt;</code> becomes a trait call</div>
 <pre class="code"><span class="kw">func</span>(T: Lt) insert(x: T, xs: List(T)) -&gt; List(T) {
   <span class="kw">match</span> xs {
     (h, t) <span class="kw">=&gt;</span> <span class="kw">if</span> x <span class="kw">&lt;</span> h { (x, xs) } <span class="kw">else</span> { (h, insert(x, t)) };
@@ -292,11 +294,11 @@ a</pre>
   }
 };
 isort([5, 3, 8, 1, 9, 2])</pre>
-      <div class="cap">bounded generics, <code>T: Lt</code>, operators as bounds — the same <code>&lt;</code> becomes a trait call</div>
     </div>
 
     <div class="example">
       <div class="label"><span class="file">stoplight.jock</span> — a state-machine kernel</div>
+      <div class="cap">a zero-ceremony NockApp kernel — the compiler synthesizes load/peek/poke from the <code>Kernel</code> protocol</div>
 <pre class="code"><span class="kw">union</span> Color { red, green, yellow };
 <span class="kw">struct</span> LightState { c: Color };
 <span class="kw">func</span> advance(c: Color) -&gt; Color {
@@ -315,12 +317,11 @@ isort([5, 3, 8, 1, 9, 2])</pre>
   };
 };
 Light{ c: Color.red }</pre>
-      <div class="cap">a zero-ceremony NockApp kernel — the compiler synthesizes load/peek/poke from <code>impl Kernel</code></div>
     </div>
   </section>
 
   <section id="repositories">
-    <h2 class="head">03 — Repositories</h2>
+    <h2 class="head">03 » Repositories</h2>
     <div class="rule"></div>
     <table class="repos">
       <thead><tr><th>Track</th><th>Repository</th><th>Status</th></tr></thead>
@@ -332,22 +333,22 @@ Light{ c: Color.red }</pre>
         </tr>
         <tr>
           <td>Recommenced</td>
-          <td class="repo">sigilante/jock</td>
+	  <td class="repo"><a href="https://github.com/sigilante/jock">sigilante/jock</a></td>
           <td class="status">private — ongoing development</td>
         </tr>
       </tbody>
     </table>
     <p class="intro" style="margin-top:18px">
       Jock is a solo-authored, direct-to-runtime rewrite in active development. The public alpha
-      remains the reference for the original language; new feature work happens in the
-      recommenced repository.
+      remains the reference for the original language release by Zorp in June 2025; new feature
+      work is happening in the recommenced repository as of August 2026.
     </p>
   </section>
 
 </main>
 
 <footer class="bar">
-  <span>Jock — a language for Nock</span>
+  <span>a Nock combinator language</span>
   <span>jock.is</span>
 </footer>
 
