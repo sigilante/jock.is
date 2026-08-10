@@ -3,6 +3,31 @@
 Static landing page for the [Jock](https://github.com/zorp-corp/jock-lang) programming
 language — a single `index.html`, no build step.
 
+## Syntax highlighting
+
+`jock-highlight.js` and `jock-highlight.css` highlight the Jock listings on the
+page.  Nothing to build, nothing to configure: the two files are already linked
+from `index.html`, and a listing opts in with `class="code jock"`.  Opt-in by
+design — the plate on the landing page also holds the Nock noun a program
+compiles to, which must not be lexed as Jock.
+
+**Both files are VENDORED.**  Their source of truth is
+[`editors/web`](https://github.com/sigilante/jock/tree/master/editors/web) in
+the compiler repo, where the tokenizer is a port of the compiler's own lexer
+(`lib/lex.hoon`) and is held to the language's keyword and punctuator molds by
+`tools/hilite.py` on every push.  A page cannot `<script src>` across
+repositories, so the copies here must stay byte-identical:
+
+- edit `editors/web` in the compiler repo, never the copies here
+- re-copy both files, and update the sha256 lines in `VENDOR.txt`
+- `JOCK_SITE=<this checkout> python3 tools/hilite.py` over there verifies both
+  the copies and every listing on this page — a listing that goes stale against
+  the language is a failure, not a wrong colour
+
+Because that check reads the pages, the listings in `index.html` are held to the
+frozen surface syntax: they are tokenized, must round-trip exactly, and must
+produce no refusal.
+
 ## Serving locally
 
     python3 -m http.server 8000

@@ -1,0 +1,22 @@
+::  Vendored files.  Same discipline as the compiler repo's
+::  vendor/SNAPSHOT.txt:  a copy drifts, so its provenance and its
+::  hash are written down and CI checks them.
+::
+::  These files are NOT ours to change.  Edit them at their source,
+::  re-copy both, and update the sums below.  The compiler-side lane
+::  verifies the same thing from the other direction:
+::
+::      JOCK_SITE=<this checkout> python3 tools/hilite.py
+::
+::  which also tokenizes every listing in index.html, so a listing
+::  that goes stale against the frozen surface syntax is a failure
+::  rather than a wrong colour.
+
+jock: sigilante/jock @ 6dfb4b2 (editors/web; the syntax-highlighting
+PR, #15) --- the highlighter is a port of the compiler's own lexer
+(lib/lex.hoon) with the adjacency layer from +p-post:parse on top, and
+its keyword and punctuator inventories are pinned to $keyword and
+$jpunc in /sur/jock by tools/hilite.py on every push there.
+
+75c6d739308a2ca3b5cfc75e3343120cc07f78ab7d1dbef5494aca2c5dccf7f8  jock-highlight.js
+807d95b2b540b7593c4fab5b440880baee5f7cbc1b62574bed6d6d34c6d7fe85  jock-highlight.css

@@ -1,0 +1,58 @@
+/*  jock-highlight.css — token colours for jock-highlight.js
+ *
+ *  Three inks and a wash, which is what the page already is: barn red
+ *  for grammar (keywords, operators, lark), ink for names and types,
+ *  and two quiet literal hues so data reads as data.  Nothing here
+ *  styles the block itself — border, padding and font stay with
+ *  `pre.code` in the page — so a listing keeps its chrome whether or
+ *  not the highlighter ran.
+ *
+ *  Every colour falls back to a literal, so the file works dropped
+ *  into a page that does not define the site's :root palette.
+ */
+
+:root{
+  --j-lit-num:#2f5d62;   /* slate:  numbers, Bool, ~            */
+  --j-lit-str:#7a5a1e;   /* bronze: strings, chars, %terms, /paths */
+}
+
+/*  grammar: what the compiler acts on  */
+.j-kw{color:var(--red,#b32a1c)}
+.j-op{color:var(--red,#b32a1c)}
+.j-lark{color:var(--red,#b32a1c)}
+
+/*  the adjacency law, rendered.  A glued postfix `(` `[` or `{` is
+ *  what makes a call, an index, a type application or a struct
+ *  literal;  darkening it is the whole rule made visible, and its
+ *  un-glued twin below is the same rule failing.  */
+.j-glue{color:var(--ink,#1a1714);font-weight:600}
+
+/*  names and types  */
+.j-ty{color:var(--ink,#1a1714);font-weight:500}
+.j-tyb{color:#46545c;font-weight:500}
+.j-fn{color:var(--ink,#1a1714);font-weight:500}
+.j-bi{color:#46545c;font-weight:600}
+
+/*  literals  */
+.j-num{color:var(--j-lit-num)}
+.j-str{color:var(--j-lit-str)}
+
+/*  an interpolation fragment is code inside a literal; the wash says
+ *  so without a second set of colours  */
+.j-interp{background:rgba(179,42,28,.06);border-radius:2px}
+
+/*  comments.  A `// expect:` trailer is the value CI pins the program
+ *  to, so it is marked as the claim it is rather than passing prose. */
+.j-com{color:var(--muted,#6b6459)}
+.j-com.j-expect{border-bottom:1px dotted var(--hair-soft,rgba(0,0,0,.12))}
+
+/*  refusals.  Everything wearing this is a program the compiler
+ *  rejects, with the compiler's own tag and hint in the tooltip:
+ *  `f (x)`, `xs [0]`, `a-1`, `p.>=`, a tab, an unterminated string. */
+.j-err{
+  color:var(--red,#b32a1c);
+  background:rgba(179,42,28,.10);
+  text-decoration:underline wavy var(--red,#b32a1c);
+  text-underline-offset:2px;
+  cursor:help;
+}
