@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Supporters — Jock</title>
+<meta name="description" content="Everyone who has bought Jock a coffee.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --desk:#dcd7cc;
+    --paper:#f2ecdd;
+    --ink:#1a1714;
+    --ink-body:#231f1a;
+    --ink-soft:#3a342c;
+    --muted:#6b6459;
+    --muted-2:#8c857a;
+    --red:#b32a1c;
+    --red-hover:#8c1f14;
+    --hair:rgba(0,0,0,.25);
+    --hair-soft:rgba(0,0,0,.12);
+    --serif:'Zilla Slab',Georgia,serif;
+    --mono:'Sometype Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{background:var(--desk)}
+  body{
+    background:var(--desk);
+    color:var(--ink-body);
+    font-family:var(--serif);
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    max-width:900px;
+    margin:0 auto;
+    background:var(--paper);
+    border-left:1px solid var(--hair);
+    border-right:1px solid var(--hair);
+    min-height:100vh;
+  }
+  header.bar, footer.bar{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    padding:18px 48px;
+    font:400 10px/1 var(--mono);
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--muted-2);
+  }
+  header.bar{border-bottom:1px solid var(--hair)}
+  footer.bar{border-top:1px solid var(--hair)}
+  header.bar a, footer.bar a{color:var(--muted-2);text-decoration:none}
+  header.bar a:hover, footer.bar a:hover{color:var(--red)}
+  header.bar nav{display:flex;gap:22px}
+
+  main{padding:0 48px}
+
+  a{color:var(--red);text-decoration:none}
+  a:hover{color:var(--red-hover)}
+
+  /* hero */
+  .hero{padding:44px 0 8px}
+  .kicker{
+    font:400 10px/1 var(--mono);
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:var(--red);
+    margin-bottom:16px;
+  }
+  h1{
+    font:600 52px/1.05 var(--serif);
+    color:var(--ink);
+    letter-spacing:-.01em;
+    margin-bottom:16px;
+  }
+  .lede{
+    font:400 16px/1.65 var(--serif);
+    color:var(--ink-soft);
+    max-width:60ch;
+    margin-bottom:8px;
+  }
+
+  /* section heads */
+  h2.head{
+    font:600 11px/1.2 var(--mono);
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--ink);
+    margin-bottom:4px;
+  }
+  .rule{height:1.5px;background:var(--ink);margin-bottom:18px}
+  section{padding:38px 0 6px}
+  section > p.intro{
+    font:400 14px/1.62 var(--serif);
+    max-width:64ch;
+    color:var(--ink-soft);
+    margin-bottom:22px;
+  }
+
+  /* repo/supporters table */
+  table.repos{width:100%;border-collapse:collapse;margin-bottom:8px}
+  table.repos th{
+    text-align:left;padding:0 0 8px;
+    font:400 9.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);
+    border-bottom:1.25px solid var(--ink);
+  }
+  table.repos td{
+    padding:14px 12px 14px 0;
+    font:400 13px/1.5 var(--serif);
+    border-bottom:1px solid var(--hair-soft);
+    vertical-align:top;
+  }
+  table.repos td.empty{color:var(--muted);font-style:italic}
+
+  section:last-of-type{padding-bottom:44px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="bar">
+  <a href="index.html">Jock</a>
+  <nav>
+    <a href="https://buymeacoffee.com/sigilante">buy me a coffee</a>
+  </nav>
+</header>
+
+<main>
+
+  <div class="hero">
+    <div class="kicker">Thank you</div>
+    <h1>Supporters</h1>
+    <p class="lede">
+      Everyone who's bought Jock a coffee at <a href="https://buymeacoffee.com/sigilante">buymeacoffee.com/sigilante</a>.
+      This list is updated by hand, not synced automatically.
+    </p>
+  </div>
+
+  <section id="names">
+    <h2 class="head">Names</h2>
+    <div class="rule"></div>
+    <table class="repos">
+      <thead><tr><th>Name</th></tr></thead>
+      <tbody>
+        <tr><td class="empty">No supporters yet — be the first.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<footer class="bar">
+  <span>a Nock combinator language</span>
+  <span>Jock Recommenced © 2026 Sigilante</span>
+</footer>
+
+</div>
+</body>
+</html>

@@ -59,8 +59,15 @@
   header.bar a:hover, footer.bar a:hover{color:var(--red)}
   header.bar nav{display:flex;gap:22px}
 
-  .support{display:flex;justify-content:center;padding:28px 48px;border-top:1px solid var(--hair)}
+  .support{display:flex;flex-direction:column;align-items:center;gap:10px;padding:28px 48px;border-top:1px solid var(--hair)}
   #bmc-wbtn, #bmc-wbtn *{font-family:var(--serif) !important}
+  .supporters-link{
+    font:400 10px/1 var(--mono);
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--muted-2);
+  }
+  .supporters-link:hover{color:var(--red)}
 
   main{padding:0 48px}
 
@@ -353,6 +360,7 @@ Light{ c: Color.red }</pre>
 
   <div class="support">
     <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="sigilante" data-color="#b32a1c" data-emoji="🏉"  data-font="Bree" data-text="Buy me a coffee" data-outline-color="#ffffff" data-font-color="#ffffff" data-coffee-color="#FFDD00" ></script>
+    <a href="supporters.html" class="supporters-link">see supporters →</a>
   </div>
 
 </main>
