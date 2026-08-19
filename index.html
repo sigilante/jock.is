@@ -205,6 +205,7 @@
   table.repos td:first-child{white-space:nowrap;font-family:var(--mono);font-size:12px;color:var(--ink)}
   table.repos td.repo{font-family:var(--mono);font-size:12.5px}
   table.repos td.status{color:var(--muted);font-size:12px}
+  table.repos td.syntax{font-family:var(--mono);font-size:12px;color:var(--ink-body)}
 
   section:last-of-type{padding-bottom:44px}
 </style>
@@ -217,6 +218,7 @@
   <nav>
     <a href="#examples">examples</a>
     <a href="#repositories">repositories</a>
+    <a href="#keywords">keywords</a>
     <a href="https://github.com/zorp-corp/jock-lang">github</a>
   </nav>
 </header>
@@ -331,6 +333,30 @@ class Light(LightState) impl Kernel {
 };
 Light{ c: Color.red }</pre>
     </div>
+
+    <div class="example">
+      <div class="label"><span class="file">counter.jock</span> — the zero-ceremony counter kernel</div>
+      <div class="cap"><code>impl Kernel</code>, state threading — no driver, no import: this kernel builds and runs unchanged under jojo, the generic NockApp host</div>
+<pre class="code jock">struct KS { n: @ };
+class Counter(KS) impl Kernel {
+  load(self: Counter, old: *) -&gt; Counter { old as! Counter };
+  peek(self: Counter, p: *) -&gt; * { self.n };
+  poke(self: Counter, e: *) -&gt; (List(Effect), Counter) { (~, Counter{ n: self.n + 1 }) };
+};
+Counter{ n: 0 }</pre>
+    </div>
+
+    <div class="example">
+      <div class="label"><span class="file">counter-v2.jock</span> — the upgrade target for counter</div>
+      <div class="cap">load as migration — same host, a new state shape; <code>load</code>'s <code>as!</code> carries counter's exported state into <code>total</code></div>
+<pre class="code jock">struct KS2 { n: @, total: @ };
+class CounterV2(KS2) impl Kernel {
+  load(self: CounterV2, old: *) -&gt; CounterV2 { CounterV2{ n: old as! @, total: 100 } };
+  peek(self: CounterV2, p: *) -&gt; * { (self.n, self.total) };
+  poke(self: CounterV2, e: *) -&gt; (List(Effect), CounterV2) { (~, CounterV2{ n: self.n + 1, total: self.total + 1 }) };
+};
+CounterV2{ n: 0, total: 100 }</pre>
+    </div>
   </section>
 
   <section id="repositories">
@@ -356,6 +382,46 @@ Light{ c: Color.red }</pre>
       remains the reference for the original language release by Zorp in
       June 2025; new feature work is happening in the recommenced
       repository as of August 2026.
+    </p>
+  </section>
+
+  <section id="keywords">
+    <h2 class="head">04 » Keywords</h2>
+    <div class="rule"></div>
+    <p class="intro">
+      Every keyword in the frozen 1.0 grammar — kernel forms lower to one Nockasm
+      production apiece, sugar rewrites to an AST already covered here — each with
+      a minimal example.
+    </p>
+    <table class="repos">
+      <thead><tr><th>Keyword</th><th>Syntax</th></tr></thead>
+      <tbody>
+        <tr><td>let</td><td class="syntax">let x: @ = 5;</td></tr>
+        <tr><td>var</td><td class="syntax">var b: @ = 0; b = b + 1;</td></tr>
+        <tr><td>func</td><td class="syntax">func inc(n: @) -&gt; @ { n + 1 };</td></tr>
+        <tr><td>lambda</td><td class="syntax">let f = lambda(x: @) -&gt; @ { x + 1 };</td></tr>
+        <tr><td>if / else</td><td class="syntax">if a == 3 { 42 } else { 17 }</td></tr>
+        <tr><td>match</td><td class="syntax">match a { %1 =&gt; 0; _ =&gt; 84; }</td></tr>
+        <tr><td>switch</td><td class="syntax">switch a { 1 =&gt; 0; _ =&gt; 84; }</td></tr>
+        <tr><td>loop / recur</td><td class="syntax">loop { if a == b { b } else { b = b + 1; recur } }</td></tr>
+        <tr><td>eval</td><td class="syntax">eval(subj, form)</td></tr>
+        <tr><td>crash</td><td class="syntax">_ =&gt; crash;</td></tr>
+        <tr><td>import</td><td class="syntax">import urbit;</td></tr>
+        <tr><td>as / as? / as!</td><td class="syntax">(n as? Char) ?? 'x'</td></tr>
+        <tr><td>assert</td><td class="syntax">assert n &gt; 0;</td></tr>
+        <tr><td>print</td><td class="syntax">print("count = {n}");</td></tr>
+        <tr><td>and / or / xor / not</td><td class="syntax">if a and not b { 1 } else { 0 }</td></tr>
+        <tr><td>struct</td><td class="syntax">struct PointState { x: Real, y: Real };</td></tr>
+        <tr><td>class / impl</td><td class="syntax">class Point(PointState) impl Arithmetic { &hellip; };</td></tr>
+        <tr><td>trait</td><td class="syntax">trait Arithmetic { add(self: Self, other: Self) -&gt; Self; };</td></tr>
+        <tr><td>alias</td><td class="syntax">alias Number Real;</td></tr>
+        <tr><td>union</td><td class="syntax">union Shape { point, circle(Real) };</td></tr>
+        <tr><td>in</td><td class="syntax">x in s</td></tr>
+      </tbody>
+    </table>
+    <p class="intro" style="margin-top:18px">
+      <code>defer</code> is reserved (<code>%defer</code>) but its runtime semantics aren't pinned
+      yet, so it's left off the table above rather than shown with an invented example.
     </p>
   </section>
 
