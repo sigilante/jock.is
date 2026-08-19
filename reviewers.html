@@ -349,6 +349,10 @@ error: %parse-unglued at col 3</pre>
       modules beyond the pinned <code>hoon</code> interface; error
       reports are single-error by design; and each entry recompiles
       the session so far, so very long sessions slow down gradually.
+      (This latter is a <strong>jojo</strong> feature not a Jock
+      one: the compiler itself is a NockApp, and the host is a Nock
+      interpreter, so the session is a single Nock formula that grows
+      with each statement.)
     </p>
     <p>
       Send whole transcripts back through the channel that delivered
