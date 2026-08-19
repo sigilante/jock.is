@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jock — for reviewing developers</title>
+<meta name="description" content="A one-page orientation for developers reviewing the Jock beta: what is in the bundle, how the REPL behaves, and what feedback is worth the most.">
+<!--  unlisted by design: reachable only by the direct URL handed
+      to reviewers.  No page links here, and crawlers are asked to
+      stay out.  -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="jock-highlight.css">
+<script src="jock-highlight.js" defer></script>
+<style>
+  :root{
+    --desk:#dcd7cc;
+    --paper:#f2ecdd;
+    --ink:#1a1714;
+    --ink-body:#231f1a;
+    --ink-soft:#3a342c;
+    --muted:#6b6459;
+    --muted-2:#8c857a;
+    --red:#b32a1c;
+    --red-hover:#8c1f14;
+    --hair:rgba(0,0,0,.25);
+    --hair-soft:rgba(0,0,0,.12);
+    --serif:'Zilla Slab',Georgia,serif;
+    --mono:'Sometype Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{background:var(--desk)}
+  body{
+    background:var(--desk);
+    color:var(--ink-body);
+    font-family:var(--serif);
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    max-width:900px;
+    margin:0 auto;
+    background:var(--paper);
+    border-left:1px solid var(--hair);
+    border-right:1px solid var(--hair);
+    min-height:100vh;
+  }
+  header.bar, footer.bar{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    padding:18px 48px;
+    font:400 10px/1 var(--mono);
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--muted-2);
+  }
+  header.bar{border-bottom:1px solid var(--hair)}
+  footer.bar{border-top:1px solid var(--hair)}
+  header.bar a, footer.bar a{color:var(--muted-2);text-decoration:none}
+  header.bar a:hover, footer.bar a:hover{color:var(--red)}
+  header.bar nav{display:flex;gap:22px}
+
+  main{padding:0 48px}
+
+  a{color:var(--red);text-decoration:none}
+  a:hover{color:var(--red-hover)}
+
+  .grid{
+    display:grid;
+    grid-template-columns:1fr 186px;
+    gap:0 28px;
+  }
+  @media (max-width:760px){
+    .grid{grid-template-columns:1fr}
+  }
+
+  .hero{padding:44px 0 8px}
+  .kicker{
+    font:400 10px/1 var(--mono);
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:var(--red);
+    margin-bottom:16px;
+  }
+  h1{
+    font:600 42px/1.05 var(--serif);
+    color:var(--ink);
+    letter-spacing:-.01em;
+    margin-bottom:16px;
+  }
+  .lede{
+    font:400 16px/1.65 var(--serif);
+    color:var(--ink-soft);
+    max-width:60ch;
+    margin-bottom:8px;
+  }
+  .notes{
+    border-left:1px solid var(--hair-soft);
+    padding-left:18px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    padding-top:6px;
+  }
+  .note{font:400 11.5px/1.55 var(--serif);color:var(--muted)}
+  .note .n{color:var(--red);font-family:var(--mono);margin-right:2px}
+
+  h2.head{
+    font:600 11px/1.2 var(--mono);
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--ink);
+    margin-bottom:4px;
+  }
+  .rule{height:1.5px;background:var(--ink);margin-bottom:18px}
+  section{padding:38px 0 6px}
+  section p{
+    font:400 14px/1.62 var(--serif);
+    max-width:64ch;
+    color:var(--ink-soft);
+    margin-bottom:16px;
+  }
+  section p code, .note code{
+    font:400 12px var(--mono);
+    color:var(--ink);
+  }
+
+  pre.code{
+    border-left:2px solid var(--red);
+    padding:2px 0 2px 16px;
+    font:400 13px/1.6 var(--mono);
+    color:var(--ink-body);
+    overflow-x:auto;
+    white-space:pre;
+    margin-bottom:10px;
+  }
+  .example{margin-bottom:26px;break-inside:avoid}
+  .example .label{
+    font:500 10px/1 var(--mono);
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--muted-2);
+    margin-bottom:10px;
+  }
+  .example .cap{
+    font:400 12px/1.5 var(--serif);
+    color:var(--muted);
+    max-width:56ch;
+  }
+  section:last-of-type{padding-bottom:44px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="bar">
+  <span>Jock</span>
+  <nav>
+    <a href="https://jock.is">jock.is</a>
+    <a href="https://jock.is/#examples">examples</a>
+  </nav>
+</header>
+
+<main>
+
+  <div class="hero grid">
+    <div>
+      <div class="kicker">The beta channel</div>
+      <h1>For reviewing developers</h1>
+      <p class="lede">
+        You have been handed a working Jock toolchain: a small terminal
+        host called <strong>jojo</strong> and a kernel image,
+        <code>jojo.jam</code>, which is the entire Jock compiler —
+        compiled to <a href="https://nock.is/cool">Nock</a> and running
+        as an ordinary NockApp — in about 1.3&nbsp;MB. Jock is a
+        statically-typed language with a Swift- and Rust-flavored
+        surface: structs, tagged unions, pattern matching, traits,
+        classes, and generics, all of which erase to nouns and twelve
+        instructions. This page is your orientation; everything on it
+        was run against the exact image you received.
+      </p>
+    </div>
+    <div class="notes">
+      <div class="note"><span class="n">1.</span> The bundle: the jojo
+        repository (Rust, builds with <code>cargo</code>) with
+        <code>jojo.jam</code> checked in. Nothing else is required.</div>
+      <div class="note"><span class="n">2.</span> The image carries no
+        source text — the compiler rides as compiled Nock. What it does
+        carry is the whole language, ready to type at.</div>
+      <div class="note"><span class="n">3.</span> Worked programs, with
+        their expected values, live at
+        <a href="https://jock.is/#examples">jock.is</a>. The language
+        and type specifications travel separately with this bundle.</div>
+    </div>
+  </div>
+
+  <section id="running">
+    <h2 class="head">01 » Running it</h2>
+    <div class="rule"></div>
+    <p>
+      Build and start the host from the jojo directory. It boots the
+      committed image by default, or any kernel jam you hand it as an
+      argument:
+    </p>
+<pre class="code">cargo run                    #  boots jojo.jam
+cargo run -- /path/to.jam    #  boots any trap jam
+exit                         #  or :q, or Ctrl-D</pre>
+    <p>
+      The prompt reads one entry at a time. While your brackets are
+      still open the prompt continues as <code>&nbsp;...&nbsp;</code>
+      and lines accumulate; the entry submits when they balance. A
+      blank line at the continuation prompt cancels the pending entry.
+      Boot takes a few seconds; each entry takes a few more — every
+      answer is a full compile running inside Nock itself.
+    </p>
+  </section>
+
+  <section id="session">
+    <h2 class="head">02 » A first session</h2>
+    <div class="rule"></div>
+    <p>
+      The REPL follows one rule: an entry ending in <code>;</code> is a
+      <em>statement</em> — it is compiled, kept, and answered with
+      <code>ok</code> — and anything else is an <em>expression</em>,
+      evaluated against everything you have kept so far.
+    </p>
+
+    <div class="example">
+<pre class="code">jojo&gt; let price = 42;
+ok
+jojo&gt; price + 1
+43</pre>
+    </div>
+
+    <p>
+      Definitions work the same way, across lines. Note the adjacency:
+      the argument list is glued to the function name, and recursion is
+      just the name.
+    </p>
+
+    <div class="example">
+<pre class="code">jojo&gt; func fact(n: @) -&gt; @ {
+  ...   if n == 0 { 1 }
+  ...   else { n * fact(n - 1) }
+  ... };
+ok
+jojo&gt; fact(10)
+3.628.800</pre>
+      <div class="cap">Numbers print dot-grouped, German-style, the way
+        Hoon writes them.</div>
+    </div>
+
+    <p>
+      Declare a shape of your own and match on it — and meet the floor
+      of the language at the same time:
+    </p>
+
+    <div class="example">
+<pre class="code">jojo&gt; union Color { red, green, yellow };
+ok
+jojo&gt; func advance(c: Color) -&gt; Color { match c { red =&gt; Color.green; green =&gt; Color.yellow; yellow =&gt; Color.red; } };
+ok
+jojo&gt; advance(Color.red)
+474.147.549.799</pre>
+      <div class="cap">That number <em>is</em> the answer:
+        <code>Color.green</code> erases to the atom whose bytes spell
+        <code>green</code>, and the REPL shows you values as the nouns
+        they are. Every Jock value is an atom or a pair, all the way
+        down.</div>
+    </div>
+
+    <p>
+      When you want to see the floor directly, <code>:nock</code>
+      reveals the compiled formula of any expression:
+    </p>
+
+    <div class="example">
+<pre class="code">jojo&gt; :nock 1 + 41
+[8 [[9 [4 [0 68.719.476.734]]] [9 [2 [10 [[6 [[1 1] [1 41]]] [0 2]]]]]]]</pre>
+      <div class="cap">Even <code>+</code> is honest: a gate fetched
+        from the environment and kicked with the two operands.</div>
+    </div>
+
+    <p>
+      The standard arithmetic and comparison operators are ambient.
+      <code>import hoon;</code> additionally exposes the pinned Hoon
+      interface (<code>hoon.add</code>, <code>hoon.cat</code>,
+      <code>hoon.rsh</code>, and friends) for qualified calls at the
+      FFI boundary.
+    </p>
+  </section>
+
+  <section id="refusals">
+    <h2 class="head">03 » When it refuses</h2>
+    <div class="rule"></div>
+    <p>
+      Jock fails loudly and exactly once. There is no error recovery
+      and no cascade: the compiler stops at the first problem and names
+      it with a tag and a position. This is deliberate — a single true
+      error beats five speculative ones — and the tags are load-bearing:
+      every refusal in the compiler's own test corpus asserts its exact
+      tag, so what you see is a tested surface, not a formatting
+      accident.
+    </p>
+
+    <div class="example">
+<pre class="code">jojo&gt; nope
+error: %mint-limb at col 1
+jojo&gt; func f(n: @) -&gt; @ { n };
+ok
+jojo&gt; f (2)
+error: %parse-unglued at col 3</pre>
+      <div class="cap">The second refusal is the adjacency law:
+        <code>f(2)</code> is a call, <code>f (2)</code> is two
+        expressions standing next to each other, and the language
+        refuses to guess.</div>
+    </div>
+
+    <p>
+      A failed statement changes nothing — your kept history is intact,
+      and you simply try again. If an error message ever sends you the
+      <em>wrong way</em>, that transcript is the single most valuable
+      thing you can send back: the diagnostic hints grow from exactly
+      such sessions.
+    </p>
+  </section>
+
+  <section id="review">
+    <h2 class="head">04 » What to poke at</h2>
+    <div class="rule"></div>
+    <p>
+      Anything, honestly — but the places where your judgment matters
+      most are the edges. Push on the type system: declare structs and
+      generic unions, write trait bounds, cast foreign nouns back into
+      types with <code>as?</code> and <code>as!</code>, and see whether
+      the rules land where your Swift or Rust instincts expect them.
+      Push on the grammar: precedence, the adjacency law,
+      non-associative comparisons. Push on the error reports: are the
+      tags nameable, the positions right, the hints honest? The worked
+      programs at <a href="https://jock.is/#examples">jock.is</a> make
+      good starting points to retype, vary, and break.
+    </p>
+    <p>
+      Three edges are known and deliberate, so you do not spend your
+      time rediscovering them: the shared image carries no importable
+      modules beyond the pinned <code>hoon</code> interface; error
+      reports are single-error by design; and each entry recompiles
+      the session so far, so very long sessions slow down gradually.
+    </p>
+    <p>
+      Send whole transcripts back through the channel that delivered
+      this bundle — what you typed, what it answered, and a sentence
+      about what you expected instead. Surprise is signal. Thank you
+      for reading this far, and enjoy the machine: it is small, it is
+      honest, and it runs on twelve instructions.
+    </p>
+  </section>
+
+</main>
+
+<footer class="bar">
+  <span>a Nock combinator language</span>
+  <span>Jock Recommenced © 2026 Sigilante</span>
+</footer>
+
+</div>
+</body>
+</html>
