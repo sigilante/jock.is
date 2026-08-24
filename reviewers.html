@@ -319,6 +319,26 @@ error: %parse-unglued at col 3</pre>
         refuses to guess.</div>
     </div>
 
+    <div class="example">
+<pre class="code">jojo&gt; func f(n: @) -&gt; @ { n + 1 };
+error: %mint-func-dup (in history at col 37)
+jojo&gt; let z = 0;
+ok
+jojo&gt; func f(n: @) -&gt; @ { n + 1 };
+ok
+jojo&gt; f(2)
+3</pre>
+      <div class="cap">Redefining <code>f</code> straight after
+        <code>f</code> refuses because adjacent <code>func</code>s form
+        one mutually-recursive group, and a group may not repeat a name
+        — exactly as in a file. Any statement in between starts a new
+        group, and the new <code>f</code> shadows the old one like a
+        <code>let</code>. (A bare call such as <code>f(2)</code> is an
+        expression, not a statement, so it does not count.) The REPL
+        session is a program you are writing one statement at a time;
+        it invents no rules of its own.</div>
+    </div>
+
     <p>
       A failed statement changes nothing — your kept history is intact,
       and you simply try again. If an error message ever sends you the
