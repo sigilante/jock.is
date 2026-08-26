@@ -40,7 +40,15 @@ juxtaposition anywhere in the grammar.
 - **Binary `-` is spaced on both sides.** `a - 1` is subtraction; `a- 1`
   and `a -1` refuse `%parse-minus-glue`; fully glued `a-1` is the NAME
   `a-1` (see casing rule above), refusing `%mint-limb` only if unbound.
-  There is no negative literal in 1.0: write `0 - n`.
+- **Signed integers are `Sint`** (ZigZag-encoded atoms), written as a
+  sign GLUED to a decimal literal: `+42`, `-42`. `a +42` is still
+  addition (position disambiguates). Arithmetic and comparisons work
+  (`-7 / +2` is `-3`: division truncates toward zero); mixed `@`/Sint
+  arithmetic refuses. `42 as Sint` REFUSES (`%mint-cast-sint`) — casts
+  reinterpret bits; convert with `hoon.sint(n)` and `hoon.uint(s)`
+  (`uint` crashes `%uint-neg` on a negative; `hoon.sabs` is the
+  magnitude). There is no unary minus: negate with `0 - n` (naturals),
+  `0.0 - x` (Real), or a Sint literal.
 - **Commas everywhere.** Tuples `(a, b)`, lists `[1, 2, 3]`, sets `{1, 2}`,
   maps `{1 -> 100, 2 -> 200}`, call arguments, type arguments. Trailing
   comma permitted. No space-separated collections.
@@ -70,6 +78,7 @@ juxtaposition anywhere in the grammar.
     (Real, Real)   tuple / product          Set(@) {1, 2}
     T?             option (postfix)         A | B  erasure-disjoint union
     %foo           term constant            /a/b/c Path
+    Sint           +42, -42 (signed)
 
 Type expressions: `TypeName`, application `List(@)`, products `(A, B)`,
 function `A -> B`. `T?` is option sugar; `A | B` members must be
