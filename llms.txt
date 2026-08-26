@@ -147,6 +147,12 @@ witness). `switch` is value-equality sugar over `match`. `self` is an
 ordinary parameter name, not a keyword. Operator binding in traits is
 per-method: `trait Add { add(+); }`.
 
+String's prelude methods (the `Str` trait): `.len()` (bytes),
+`.cat(t)` (concatenation), `.trip()` (to `List(Char)`),
+`.starts-with(pre)` (byte-prefix test; the empty prefix is a prefix
+of everything). These are byte-semantics on LSB-first cords, not
+character-aware.
+
 Adjacent declarations register simultaneously (mutual recursion). Behavior
 attaches by trait impls; a union is a nominal head so impls attach to it too.
 Heterogeneous collections are closed unions (`List(Shape)`) — there are no
@@ -201,7 +207,8 @@ such.
 ## Machine interface (for agent tooling)
 
 `tools/check.sh [-e EXPR | file | -]` (batch, ~5 s) and
-`jojo <kernel.jam> --check file.jock` (warm kernel, <1 s) both emit ONE JSON
+`jojo <kernel.jam> --check file.jock` (warm kernel: ~0.7 s module-free;
+a `--data-dir`-bearing kernel resolves imports per check, ~2 s) both emit ONE JSON
 object — written by the compiler itself, schema pinned by corpus vectors:
 
     {"status":"ok","type":"@","typ":<type as nested ints>}
