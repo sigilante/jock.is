@@ -212,7 +212,7 @@ such.
 a `--data-dir`-bearing kernel resolves imports per check, ~2 s) both emit ONE JSON
 object — written by the compiler itself, schema pinned by corpus vectors:
 
-    {"status":"ok","type":"@","typ":<type as nested ints>}
+    {"status":"ok","type":"@"}
     {"status":"refused"|"crashed","tag":"mint-limb"|null,
      "line":1|null,"col":1|null,"report":["refused: ...","  1 | ...",...]}
 
