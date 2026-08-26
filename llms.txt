@@ -186,7 +186,10 @@ Every refusal is a tagged crash with a 1-based line:col position:
 Tag families: `%lex-*` lexer (bad char, quote/newline, interpolation);
 `%parse-*` grammar (`%parse-unglued` un-glued postfix, `%parse-minus-glue`
 glued minus, `%parse-lark-cmp` lark/comparison garble, `%parse-place` bad
-assignment target, `%parse-nonassoc` chained comparison, `%parse-empty-brace`);
+assignment target, `%parse-nonassoc` chained comparison, `%parse-empty-brace`,
+and did-you-mean hints for foreign habits: `%parse-connective` for `&&`/`||`,
+`%parse-not` for `!a`, `%parse-ternary` for `?:`, `%parse-let-mut` for
+Rust's `let mut`);
 `%sugar-*` desugar (withdrawn spellings, connective arity); `%mint-*` /
 `%mill-*` type checking and emission (`%mint-limb` unbound name,
 `%mill-nest` type mismatch, `%mint-func-dup` duplicate func in a group,
