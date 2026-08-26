@@ -273,6 +273,28 @@ jojo&gt; advance(Color.red)
     </div>
 
     <p>
+      Signed integers are <code>Sint</code>, written with an explicit
+      glued sign &mdash; and the sign is how they print back, so a
+      signed value never masquerades as a natural:
+    </p>
+
+    <div class="example">
+<pre class="code">jojo&gt; let d = -7 / +2;
+ok
+jojo&gt; d
+-3
+jojo&gt; 42 as Sint
+error: %mint-cast-sint at col 4</pre>
+      <div class="cap">Division truncates toward zero. The refusal is
+        deliberate: a cast reinterprets bits, and <code>Sint</code> is
+        ZigZag-encoded underneath, so <code>42 as Sint</code> would
+        change the value &mdash; convert with
+        <code>hoon.sint(n)</code> instead. Position does the
+        disambiguating work elsewhere: <code>a +42</code> is still
+        addition; only a sign in operand position makes a literal.</div>
+    </div>
+
+    <p>
       When you want to see the floor directly, <code>:nock</code>
       reveals the compiled formula of any expression:
     </p>
