@@ -151,7 +151,8 @@ String's prelude methods (the `Str` trait): `.len()` (bytes),
 `.cat(t)` (concatenation), `.trip()` (to `List(Char)`),
 `.starts-with(pre)` (byte-prefix test; the empty prefix is a prefix
 of everything). These are byte-semantics on LSB-first cords, not
-character-aware.
+character-aware — and a cord cannot represent a TRAILING NUL
+byte (`"ab\0"` is the same atom as `"ab"`, so `.len()` says 2).
 
 Adjacent declarations register simultaneously (mutual recursion). Behavior
 attaches by trait impls; a union is a nominal head so impls attach to it too.
@@ -193,7 +194,7 @@ Tag families: `%lex-*` lexer (bad char, quote/newline, interpolation);
 `%parse-*` grammar (`%parse-unglued` un-glued postfix, `%parse-minus-glue`
 glued minus, `%parse-lark-cmp` lark/comparison garble, `%parse-place` bad
 assignment target, `%parse-nonassoc` chained comparison, `%parse-empty-brace`,
-and did-you-mean hints for foreign habits: `%parse-connective` for `&&`/`||`,
+and did-you-mean hints for foreign habits: `%lex-connective` for `&&`/`||`,
 `%parse-not` for `!a`, `%parse-ternary` for `?:`, `%parse-let-mut` for
 Rust's `let mut`);
 `%sugar-*` desugar (withdrawn spellings, connective arity); `%mint-*` /
