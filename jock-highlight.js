@@ -244,6 +244,17 @@
       if (isLow(c) || isCap(c)) {
         var w2 = i;
         while (w2 < n && isAln(src[w2])) w2++;
+        //  hyphenated Term-style names (ruled 2026-08-25, lex.hoon
+        //  +gnam): a glued '-' followed by an alphanumeric extends
+        //  a LOWER-CASE name — a-1, foo-bar, starts-with are one
+        //  name; a trailing or doubled hyphen stops it, and type
+        //  names take no hyphens.
+        if (isLow(c)) {
+          while (w2 + 1 < n && src[w2] === '-' && isAln(src[w2 + 1])) {
+            w2++;
+            while (w2 < n && isAln(src[w2])) w2++;
+          }
+        }
         var name = src.slice(i, w2);
         var kind;
         if (isCap(c)) kind = TY[name] ? 'type-builtin' : 'type';
@@ -417,11 +428,11 @@
         continue;
       }
 
-      //  binary `-` is SPACED on both sides.  Glued hyphen-adjacency
-      //  is reserved on the left for hyphenated Term-style names and
-      //  on the right for the operand-position Sint literal, so
-      //  neither future can land as a reinterpretation of a legal
-      //  program — which is why the glued spellings refuse today.
+      //  binary `-` is SPACED on both sides.  Left-glued hyphen
+      //  adjacency became hyphenated names (folded above, 2026-08-25)
+      //  and right-glued the operand-position Sint literal — both
+      //  reservations redeemed — so a bare glued `-` surviving the
+      //  name fold (a- 1, a -1, f(x)-1) is exactly the refusal set.
       if (tok.k === 'op' && tok.t === '-' && prev && ENDERS[prev.k]) {
         if (tok.glued || (next && next.glued)) {
           tok.k = 'error';
