@@ -230,12 +230,27 @@ jojo&gt; let v = eval(83, (0, 1)); (v as? Sint) ?? +7
       signatures promise — a literal's singleton type never survives a
       call boundary, so inference cannot leak implementation detail
       into an interface. And the language is closed-world where
-      open-world buys only ambiguity: no exceptions, no null, no
-      inheritance, no trait objects. A heterogeneous collection is a
-      declared union; open polymorphism is a generic bound, resolved
-      statically. Functions are values; the core machinery beneath
-      them is calling convention, not concept.
+      open-world buys only ambiguity: no exceptions, no inheritance,
+      no trait objects — and no null, in the precise sense: there is
+      no absent value that inhabits every type. Absence is a type you
+      opt into, <code>T?</code>, and <code>??</code> is its total
+      eliminator:
     </p>
+    <div class="example">
+<pre class="code">jojo&gt; let s: String = ~;
+error: %mill-nest at col 17
+jojo&gt; let x: String? = ~; x ?? "d"
+"d"</pre>
+      <div class="cap">A plain <code>String</code> can never be
+        <code>~</code> — nothing checks for null because nothing can
+        be null unannounced — while a <code>String?</code> admits
+        absence and <code>??</code> eliminates it. (And <code>~</code>
+        itself is just the atom zero: <code>let x: @ = ~</code> is the
+        number 0, not an absence.) A heterogeneous collection is a
+        declared union; open polymorphism is a generic bound, resolved
+        statically. Functions are values; the core machinery beneath
+        them is calling convention, not concept.</div>
+    </div>
   </section>
 
   <section id="floor">
