@@ -223,7 +223,15 @@ object — written by the compiler itself, schema pinned by corpus vectors:
 
     {"status":"ok","type":"@"}
     {"status":"refused"|"crashed","tag":"mint-limb"|null,
-     "line":1|null,"col":1|null,"report":["refused: ...","  1 | ...",...]}
+     "line":1|null,"col":1|null,"module":"m"|null,
+     "report":["refused: ...","  1 | ...",...]}
+
+`module` names the `--data-dir` module a crash belongs to — its
+line/col index THAT module's source, and `report` excerpts it
+(null = the main program). Every configured module compiles at
+build time (its top-level statements run then), so a broken
+module in a `--data-dir` fails every build that configures it —
+the diagnostic names the culprit.
 
 Exit 0 = typechecks, 1 = refusal, 2 = tool error. `check` compiles WITHOUT
 running: a program that typechecks but would crash at runtime still checks
