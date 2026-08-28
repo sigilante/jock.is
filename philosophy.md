@@ -150,8 +150,24 @@ Two quieter knots are also absent:
 singleton type never survives a call boundary, so inference cannot
 leak implementation detail into an interface.
 2. The language is closed-world where open-world buys only ambiguity:
-no exceptions, no null, no inheritance, no trait objects.  A
-heterogeneous collection is a declared union; open polymorphism is
+no exceptions, no inheritance, no trait objects — and no null, in
+the precise sense that no absent value inhabits every type.
+Absence is a type you opt into, `T?`, and `??` is its total
+eliminator:
+
+```
+jojo> let s: String = ~;
+error: %mill-nest at col 17
+jojo> let x: String? = ~; x ?? "d"
+"d"
+```
+
+  A plain `String` can never be `~` — nothing checks for null
+  because nothing can be null unannounced — while a `String?`
+  admits absence and `??` eliminates it.  (And `~` itself is just
+  the atom zero: `let x: @ = ~` is the number 0, not an absence.)
+
+A heterogeneous collection is a declared union; open polymorphism is
 a generic bound, resolved statically.  Functions are values; the
 Hoon-style core machinery beneath them is merely the calling convention.
 
