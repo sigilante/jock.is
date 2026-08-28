@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jock — the noun wins</title>
+<meta name="description" content="Jock's design philosophy: a Swift- and Rust-flavored surface over Nock semantics, built so that nothing is ever weird, surprising, or silently reinterpreted.">
+<!--  DRAFT: unlinked until published.  -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="jock-highlight.css">
+<script src="jock-highlight.js" defer></script>
+<style>
+  :root{
+    --desk:#dcd7cc; --paper:#f2ecdd; --ink:#1a1714; --ink-body:#231f1a;
+    --ink-soft:#3a342c; --muted:#6b6459; --muted-2:#8c857a;
+    --red:#b32a1c; --red-hover:#8c1f14;
+    --hair:rgba(0,0,0,.25); --hair-soft:rgba(0,0,0,.12);
+    --serif:'Zilla Slab',Georgia,serif; --mono:'Sometype Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{background:var(--desk)}
+  body{background:var(--desk);color:var(--ink-body);font-family:var(--serif);-webkit-font-smoothing:antialiased}
+  .page{max-width:900px;margin:0 auto;background:var(--paper);border-left:1px solid var(--hair);border-right:1px solid var(--hair);min-height:100vh}
+  header.bar, footer.bar{display:flex;align-items:baseline;justify-content:space-between;padding:18px 48px;font:400 10px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted-2)}
+  header.bar{border-bottom:1px solid var(--hair)}
+  footer.bar{border-top:1px solid var(--hair)}
+  header.bar a, footer.bar a{color:var(--muted-2);text-decoration:none}
+  header.bar a:hover, footer.bar a:hover{color:var(--red)}
+  header.bar nav{display:flex;gap:22px}
+  main{padding:0 48px}
+  a{color:var(--red);text-decoration:none}
+  a:hover{color:var(--red-hover)}
+  .grid{display:grid;grid-template-columns:1fr 186px;gap:0 28px}
+  @media (max-width:760px){.grid{grid-template-columns:1fr}}
+  .hero{padding:44px 0 8px}
+  .kicker{font:400 10px/1 var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--red);margin-bottom:16px}
+  h1{font:600 42px/1.05 var(--serif);color:var(--ink);letter-spacing:-.01em;margin-bottom:16px}
+  .lede{font:400 16px/1.65 var(--serif);color:var(--ink-soft);max-width:60ch;margin-bottom:8px}
+  .notes{border-left:1px solid var(--hair-soft);padding-left:18px;display:flex;flex-direction:column;gap:18px;padding-top:6px}
+  .note{font:400 11.5px/1.55 var(--serif);color:var(--muted)}
+  .note .n{color:var(--red);font-family:var(--mono);margin-right:2px}
+  h2.head{font:600 11px/1.2 var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--ink);margin-bottom:4px}
+  .rule{height:1.5px;background:var(--ink);margin-bottom:18px}
+  section{padding:38px 0 6px}
+  section p{font:400 14px/1.62 var(--serif);max-width:64ch;color:var(--ink-soft);margin-bottom:16px}
+  section p code, .note code, .cap code{font:400 12px var(--mono);color:var(--ink)}
+  pre.code{border-left:2px solid var(--red);padding:2px 0 2px 16px;font:400 13px/1.6 var(--mono);color:var(--ink-body);overflow-x:auto;white-space:pre;margin-bottom:10px}
+  .example{margin-bottom:26px;break-inside:avoid}
+  .example .cap{font:400 12px/1.5 var(--serif);color:var(--muted);max-width:56ch}
+  section:last-of-type{padding-bottom:44px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="bar">
+  <span>Jock</span>
+  <nav>
+    <a href="https://jock.is">jock.is</a>
+    <a href="https://jock.is/#examples">examples</a>
+  </nav>
+</header>
+
+<main>
+
+  <div class="hero grid">
+    <div>
+      <div class="kicker">Design notes</div>
+      <h1>The noun wins</h1>
+      <p class="lede">
+        Jock is a statically-typed language that compiles to
+        <a href="https://nock.is/cool">Nock</a>. Its surface is
+        Swift-inspired first and Rust-inspired second, and its design
+        brief fits in one sentence: <em>do nothing weird.</em> I have
+        strained to keep every spelling unsurprising, every refusal
+        legible, and every layer visible — and where Swift or Rust
+        idiom conflicts with noun semantics, the noun wins. This post
+        is the reasoning behind that brief, with the receipts. Every
+        transcript here was run against the current compiler.
+      </p>
+    </div>
+    <div class="notes">
+      <div class="note"><span class="n">1.</span> The influence stack:
+        Swift's surface manners, Rust's discipline about mutation and
+        matching, Hoon's substrate honesty — and none of their
+        complexity budgets.</div>
+      <div class="note"><span class="n">2.</span> Everything below is
+        pinned by a corpus of 738 vectors that assert values, emitted
+        code, and refusal tags byte-for-byte. When I say a rule holds,
+        a test holds it.</div>
+      <div class="note"><span class="n">3.</span> The whole compiler,
+        compiled to Nock, is a 1.3&nbsp;MB kernel image that runs as an
+        ordinary NockApp. The language you are reading about ships as
+        a noun.</div>
+    </div>
+  </div>
+
+  <section id="one-meaning">
+    <h2 class="head">01 · One meaning per spelling</h2>
+    <div class="rule"></div>
+    <p>
+      The principle of least surprise is usually a vibe. Jock makes it
+      a grammar rule: no syntactic form may mean different things in
+      different contexts. The load-bearing case is the
+      <strong>adjacency law</strong> — a call <code>(</code>, an index
+      <code>[</code>, or a struct-literal <code>{</code> attaches to
+      the expression before it only when no whitespace separates them.
+    </p>
+    <div class="example">
+<pre class="code">jojo&gt; func f(n: @) -&gt; @ { n };
+ok
+jojo&gt; f(2)
+2
+jojo&gt; f (2)
+error: %parse-unglued at col 3</pre>
+      <div class="cap">A whitespace-blind grammar would have to guess
+        what <code>f (2)</code> means. Jock refuses to guess — the
+        hint says: <em>f (x) does not call f; write f(x) to call, or ;
+        to sequence.</em> The same law forecloses JavaScript's
+        newline-swallow hazard and Rust's struct-literal ambiguity
+        without a single special case.</div>
+    </div>
+    <p>
+      The other habitual ambiguities are simply not present.
+      Sequencing is always <code>;</code> — adjacent expressions never
+      compose silently. Comparisons are non-associative, so
+      <code>a &lt; b &lt; c</code> is a parse error rather than a
+      boolean surprise. Collections are comma-separated everywhere.
+      There is no juxtaposition anywhere in the grammar, which means
+      there is nothing for a reader to mis-parse in their head.
+    </p>
+  </section>
+
+  <section id="loud-failure">
+    <h2 class="head">02 · Loud failure, in prose</h2>
+    <div class="rule"></div>
+    <p>
+      Where a plausible mis-spelling would otherwise change meaning or
+      die illegibly, the grammar is arranged so it fails to parse —
+      and the failure names the habit you brought with you.
+    </p>
+    <div class="example">
+<pre class="code">jojo&gt; a &amp;&amp; b
+error: %lex-connective at col 3
+jojo&gt; let mut x = 5;
+error: %parse-let-mut at col 9</pre>
+      <div class="cap">The batch compiler adds the prose: the first
+        hint reads <em>&amp;&amp; is not Jock; the connectives are
+        words: a and b, a or b, not a</em>, and the second <em>mut is
+        not a Jock keyword; let x binds immutably, var x = e is the
+        mutable binding</em>. Every refusal is a tagged crash with a
+        position, every tag is asserted in the test corpus, and the
+        same facts ship as a machine-readable JSON record — a tool
+        parses what a person reads.</div>
+    </div>
+    <p>
+      This is also why the error surface can be trusted by things that
+      are not people. Coding agents drive the compiler through a
+      one-writer JSON schema; the language documents itself to models
+      in a single flat reference. A language whose errors teach is a
+      language that can be learned by anything that reads.
+    </p>
+  </section>
+
+  <section id="reservation">
+    <h2 class="head">03 · Reservation and redemption</h2>
+    <div class="rule"></div>
+    <p>
+      Least surprise has a version axis too. Jock's rule for growing
+      the language: <strong>a future feature may only land in a
+      spelling that refuses today.</strong> Reserve the spelling
+      loudly now; redeem it later; and no legal program ever changes
+      meaning under an upgrade.
+    </p>
+    <div class="example">
+<pre class="code">jojo&gt; let a-1 = 5; a-1
+5
+jojo&gt; -7 / +2
+-3
+jojo&gt; let a = 5; a +42
+47</pre>
+      <div class="cap">Both redemptions in one transcript: glued
+        hyphens were reserved refusals until they became Term-style
+        names (<code>a-1</code> is one name), and glued signs were
+        reserved until they became signed-integer literals
+        (<code>+42</code>, <code>-42</code>, ZigZag-encoded, division
+        truncating toward zero). <code>a +42</code> is still addition
+        — the sign is a literal only in operand position, so position
+        does the disambiguating and nothing was reinterpreted.</div>
+    </div>
+    <p>
+      The ledger of spellings still held in reserve: <code>&amp;</code>
+      (no bitwise operators — bitwise is explicit through the runtime
+      library), <code>**</code>, and unary minus. Each refuses with
+      prose today, which is exactly what makes it available tomorrow.
+    </p>
+  </section>
+
+  <section id="types">
+    <h2 class="head">04 · A type system without knots</h2>
+    <div class="rule"></div>
+    <p>
+      The type system is bidirectional checking over structs, tagged
+      unions, traits, classes, and declaration-site generics — and it
+      earns "straightforward" by what it declines to do. There are no
+      implicit coercions of any kind: mixed-aura arithmetic refuses,
+      sequencing is explicit, and a cast is always a
+      bit-reinterpretation, never a conversion. The type system knows
+      the difference, and refuses the one that would lie:
+    </p>
+    <div class="example">
+<pre class="code">jojo&gt; 42 as Sint
+error: %mint-cast-sint at col 4
+jojo&gt; let v = eval(83, (0, 1)); (v as? Sint) ?? +7
+-42</pre>
+      <div class="cap">The same five characters — <code>as? Sint</code>
+        — refuse on a known natural (whose bits would be silently
+        misread) and validate on an untyped noun (whose bits are
+        signed by provenance). That is the whole coercion philosophy
+        in one refusal — the hint spells it out: <em>a cast reinterprets
+        bits; sint(n) converts @ to Sint</em>. Conversion is a
+        function you call, validation is a mold you check, and
+        neither ever happens behind your back.</div>
+    </div>
+    <p>
+      Two quieter knots are also absent. Types never say more than
+      signatures promise — a literal's singleton type never survives a
+      call boundary, so inference cannot leak implementation detail
+      into an interface. And the language is closed-world where
+      open-world buys only ambiguity: no exceptions, no null, no
+      inheritance, no trait objects. A heterogeneous collection is a
+      declared union; open polymorphism is a generic bound, resolved
+      statically. Functions are values; the core machinery beneath
+      them is calling convention, not concept.
+    </p>
+  </section>
+
+  <section id="floor">
+    <h2 class="head">05 · The floor is visible</h2>
+    <div class="rule"></div>
+    <p>
+      Jock compiles through <strong>Nockasm</strong>, a semantic IR
+      whose lowering to Nock's twelve instructions is specified,
+      vendored, and conformance-tested against a reference
+      implementation. Above it, the erasure story is deliberately
+      honest: a tagged union erases to <code>[tag payload]</code>
+      verbatim — which is not a compromise but the ABI, since that
+      noun is exactly what runtime drivers pattern-match. The REPL
+      shows you values as the nouns they are, and shows you the floor
+      itself on request:
+    </p>
+    <div class="example">
+<pre class="code">jojo&gt; :nock 1 + 41
+[8 [[9 [4 [0 68.719.476.734]]] [9 [2 [10 [[6 [[1 1] [1 41]]]
+[0 2]]]]]]]</pre>
+      <div class="cap">Any expression's compiled formula, one command
+        away. Nothing between the type system and the metal is
+        hidden, because on this substrate the metal is twelve
+        instructions and a noun.</div>
+    </div>
+    <p>
+      The same honesty is why one language serves three runtimes.
+      A Jock program is a NockApp kernel on Nockchain infrastructure,
+      a terminal REPL, or — through the same namespace protocols — an
+      Urbit-side citizen, without a porting layer, because all three
+      speak the noun the program already is.
+    </p>
+  </section>
+
+  <section id="determinism">
+    <h2 class="head">06 · Determinism, proof, and cost</h2>
+    <div class="rule"></div>
+    <p>
+      Jock is zkVM-native in the only way that phrase can be honest:
+      the language is deterministic all the way down, and everything
+      nondeterministic is an <em>effect the runtime supplies</em>. A
+      kernel receives entropy in its event — cryptographically safe
+      randomness is the host's obligation and arrives as data — and
+      the language has no way to manufacture time, randomness, or I/O
+      on its own. Builds are pin-reproducible; sealed release
+      artifacts are byte-checked against their own rebuild.
+    </p>
+    <p>
+      Cost is treated as tested behavior rather than folklore. The
+      test corpus carries a cost lane whose budgets are calibrated so
+      that a super-linear regression in the compiler goes red at the
+      smallest depth first; the same discipline is the intended road
+      to <em>provable</em> compile-time and proving-cost tuning as the
+      zkVM story is cross-checked. Jets — native accelerations of
+      known formulas — currently ride the substrate's own registered
+      arithmetic; the stateless jet dashboard (<code>%wild</code>) is
+      deliberately deferred to v1.1, because shipping 1.0 on the
+      proven mechanism beats shipping the experiment.
+    </p>
+  </section>
+
+  <section id="constitution">
+    <h2 class="head">07 · The constitution</h2>
+    <div class="rule"></div>
+    <p>
+      The philosophy is enforced by how the language is built, not by
+      resolve. Every construct is either a <em>kernel form</em> — one
+      typed lowering rule, one code-generation production — or
+      <em>sugar</em>, one AST rewrite. A keyword enters the language
+      only with its grammar entry, its classification, its rule, and a
+      positive and negative test vector. The corpus pins values,
+      emitted code noun-for-noun, refusal tags, and the runtime ABI
+      (by hash); if it is not pinned, it is not ruled.
+    </p>
+    <p>
+      The foreign-function boundary follows the same temperament: the
+      Hoon runtime library is a hand-curated signature list — each arm
+      mirrors the Hoon type it wraps, callers adapt — because an open
+      FFI at a polymorphic signature is unsoundness with good
+      ergonomics. And every AST node, type, and emitted instruction
+      carries its source position by invariant, which is why
+      positioned, machine-readable diagnostics are cheap here rather
+      than heroic.
+    </p>
+  </section>
+
+  <section id="road">
+    <h2 class="head">08 · The road</h2>
+    <div class="rule"></div>
+    <p>
+      Some of the brief is still ahead, and it is scheduled rather
+      than aspirational. Tooling grows along the agent axis first —
+      the JSON check lanes exist today; LSP-shaped queries and
+      editor/MCP surfaces ride the same compiler arms. A second,
+      independent compiler in Rust begins against the frozen spec and
+      the vector corpus, which doubles as a conformance suite for
+      free. Self-hosting — Jock compiling Jock — waits on the jet
+      dashboard, around v1.2. And 1.0 ships with a suite of Nockchain
+      and Urbit modules, because a language earns its philosophy in
+      libraries, not manifestos.
+    </p>
+    <p>
+      One capability is already quietly present: limited internal
+      DSLs. Modules export traits, operators bind per-method, and an
+      imported operator dispatches on its receiver — so a parser
+      combinator library gives its users
+      <code>parser.just('a') ⊛ parser.just('b')</code> with
+      sequencing binding tighter than alternation, and the glyph means
+      nothing anywhere else. The language lends its surface without
+      lending its semantics — which is, in the end, the whole idea.
+    </p>
+  </section>
+
+</main>
+
+<footer class="bar">
+  <span>jock.is</span>
+  <span>compiled to nock · runs as a noun</span>
+</footer>
+
+</div>
+</body>
+</html>
