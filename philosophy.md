@@ -125,7 +125,7 @@ However, because you can always check a value's type, you can
 always convert it safely.  The `as?` operator is a type-safe cast
 that returns `null` on failure, and the `??` operator is a
 null-coalescing operator that returns the right-hand side if the
-left is `null`.
+left is `null`.  (Think of this as `Option`).
 
 ```
 jojo> let v = eval(83, (0, 1)); (v as? Sint) ?? +7
@@ -138,6 +138,16 @@ A type coercion may be explicit, as with `as!`:
 jojo> let v = eval(83, (0, 1)); (v as! Sint) + +7
 -35
 ```
+
+More examples of nesting and type coercion:
+
+- `let s: String = ~;` → refuses `%mill-nest` — a plain `String` can
+  never be absent, so nothing ever checks for null.
+- `let x: String? = ~; x ?? "d"` → `"d"`; absence where declared,
+  eliminated totally.
+- `"abc" ?? "d"` → refuses (`??` doesn't exist on non-options).
+- `let x: @ = ~` is legal and equals `0` because `~` is just the
+  atom zero and `@` is a number type.
 
 Conversion is a function you call, validation is a type you check,
 and neither ever happens behind your back.
@@ -173,83 +183,78 @@ Hoon-style core machinery beneath them is merely the calling convention.
 
 ## The floor is visible
 
-Jock compiles through **Nockasm**, a semantic IR whose lowering to
-Nock's twelve instructions is specified, vendored, and
-conformance-tested against a reference implementation. Above it, the
-erasure story is deliberately honest: a tagged union erases to
-`[tag payload]` verbatim — which is not a compromise but the ABI,
-since that noun is exactly what runtime drivers pattern-match. The
-REPL shows you values as the nouns they are, and shows you the floor
-itself on request:
+Jock compiles through [Nockasm](https://github.com/sigilante/nockasm),
+a semantic IR whose lowering to Nock's twelve instructions is
+specified, vendored, and conformance-tested against a reference
+implementation.  Above it, the erasure story is honest:  a tagged
+union erases to `[tag payload]` verbatim, which is the ABI since that
+noun is exactly what runtime drivers pattern-match. The REPL shows you
+values as the nouns they are, and shows you the floor itself on request:
 
 ```
 jojo> :nock 1 + 41
-[8 [[9 [4 [0 8.796.093.022.206]]] [9 [2 [10 [[6 [[1 1] [1 41]]]
+[8 [[9 [4 [0 4.398.046.511.102]]] [9 [2 [10 [[6 [[1 1] [1 41]]]
 [0 2]]]]]]]
 ```
 
-  Any expression's compiled formula, one command away. Nothing
-  between the type system and the metal is hidden, because on this
-  substrate the metal is twelve instructions and a noun.
+Any expression's compiled formula lies one command away.  Nothing
+between the type system and the metal is hidden.
 
-The same honesty is why one language serves three runtimes. A Jock
-program is a NockApp kernel on Nockchain infrastructure, a terminal
-REPL, or — through the same namespace protocols — an Urbit-side
-citizen, without a porting layer, because all three speak the noun
-the program already is.
+A Jock program is a NockApp kernel on Nockchain infrastructure,
+a terminal REPL, or—via the same namespace protocols—an Urbit-side
+citizen, without a porting layer, because all three speak the noun the
+program already is.
 
 ## Determinism, proof, and cost
 
-Jock is zkVM-native in the only way that phrase can be honest: the
-language is deterministic all the way down, and everything
-nondeterministic is an *effect the runtime supplies*. A kernel
-receives entropy in its event — cryptographically safe randomness is
-the host's obligation and arrives as data — and the language has no
-way to manufacture time, randomness, or I/O on its own. Builds are
-pin-reproducible; sealed release artifacts are byte-checked against
-their own rebuild.
+*Aspirational; see [PR #38](https://github.com/sigilante/jock/pull/38)
+for the current state of the story.*
 
-Cost is treated as tested behavior rather than folklore. The test
-corpus carries a cost lane whose budgets are calibrated so that a
-super-linear regression in the compiler goes red at the smallest
-depth first; the same discipline is the intended road to *provable*
-compile-time and proving-cost tuning as the zkVM story is
-cross-checked. Jets — native accelerations of known formulas —
-currently ride the substrate's own registered arithmetic; the
-stateless jet dashboard (`%wild`) is deliberately deferred to v1.1,
-because shipping 1.0 on the proven mechanism beats shipping the
-experiment.
+Jock is zkVM-native:  it supports a `Based` Goldilocks-field `Atom`
+restriction, a `Belt` type in the standard library, and other affordances
+like access to cryptographically safe randomness and transaction
+builders as well as circuit cost accounting.
 
 ## The constitution
 
-The philosophy is enforced by how the language is built, not by
-resolve. Every construct is either a *kernel form* — one typed
-lowering rule, one code-generation production — or *sugar*, one AST
-rewrite. A keyword enters the language only with its grammar entry,
-its classification, its rule, and a positive and negative test
-vector. The corpus pins values, emitted code noun-for-noun, refusal
-tags, and the runtime ABI (by hash); if it is not pinned, it is not
-ruled.
+The philosophy is enforced by how the language is built. Every
+construct is either a *kernel form*—one typed lowering rule, one
+code-generation production—or *sugar*, one AST rewrite. A keyword
+enters the language only with its grammar entry, its classification,
+its rule, and a positive and negative test vector. The corpus pins
+values, emitted code noun-for-noun, refusal tags, and the runtime
+ABI (by hash).
 
-The foreign-function boundary follows the same temperament: the Hoon
-runtime library is a hand-curated signature list — each arm mirrors
-the Hoon type it wraps, callers adapt — because an open FFI at a
-polymorphic signature is unsoundness with good ergonomics. And every
+The foreign-function boundary follows the same temperament:  the Hoon
+runtime library is a hand-curated signature list—each arm mirrors
+the Hoon type it wraps, callers adapt—because an open FFI at a
+polymorphic signature is unsoundness with good ergonomics.  Every
 AST node, type, and emitted instruction carries its source position
 by invariant, which is why positioned, machine-readable diagnostics
-are cheap here rather than heroic.
+remain cheap here.
+
+## Nockchain and Urbit are first-class
+
+While Urbit and Nockchain/NockApp have different requirements, Jock is
+designed to serve both.  The language is a kernel image that runs
+on either platform, and the compiler is a library that can be linked
+into either platform's runtime.  The language is a noun, and the compiler
+is a noun, thus both are first-class citizens of the same substrate.
+
+Jock protocols exist in the standard library to support either target,
+and the compiler is designed to be agnostic to the target platform.
+(This will be a point of maintenance friction as Urbit continues to
+advance its Hoon kelvin version from Nockchain's index at 138k.)
 
 ## The road
 
-Some of the brief is still ahead, and it is scheduled rather than
-aspirational. Tooling grows along the agent axis first — the JSON
-check lanes exist today; LSP-shaped queries and editor/MCP surfaces
-ride the same compiler arms. A second, independent compiler in Rust
-begins against the frozen spec and the vector corpus, which doubles
-as a conformance suite for free. Self-hosting — Jock compiling Jock —
-waits on the jet dashboard, around v1.2. And 1.0 ships with a suite
-of Nockchain and Urbit modules, because a language earns its
-philosophy in libraries, not manifestos.
+Some of the brief is still ahead. Tooling grows along the agent axis
+first:  JSON check lanes exist today; LSP-shaped queries and
+editor/MCP surfaces ride the same compiler arms.  A second,
+independent compiler in Rust begins against the frozen spec and the
+vector corpus, which doubles as a conformance suite for free.
+Self-hosting (Jock compiling Jock) awaits the jet dashboard,
+around v1.2.
 
 One capability is already quietly present: limited internal DSLs.
 Modules export traits, operators bind per-method, and an imported
@@ -258,7 +263,3 @@ gives its users `parser.just('a') ⊛ parser.just('b')` with sequencing
 binding tighter than alternation, and the glyph means nothing
 anywhere else. The language lends its surface without lending its
 semantics — which is, in the end, the whole idea.
-
----
-
-*jock.is · compiled to nock · runs as a noun*
