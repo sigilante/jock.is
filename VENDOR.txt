@@ -18,5 +18,5 @@ PR, #15) --- the highlighter is a port of the compiler's own lexer
 its keyword and punctuator inventories are pinned to $keyword and
 $jpunc in /sur/jock by tools/hilite.py on every push there.
 
-75c6d739308a2ca3b5cfc75e3343120cc07f78ab7d1dbef5494aca2c5dccf7f8  jock-highlight.js
+4e8565aaa258908b6f28c1b238cf3350dfe9c183af0197a89e7d3e3bf26314a6  jock-highlight.js
 807d95b2b540b7593c4fab5b440880baee5f7cbc1b62574bed6d6d34c6d7fe85  jock-highlight.css
