@@ -219,6 +219,7 @@
     <a href="#examples">examples</a>
     <a href="#repositories">repositories</a>
     <a href="#keywords">keywords</a>
+    <a href="#punctuators">punctuators</a>
     <a href="https://github.com/zorp-corp/jock-lang">github</a>
   </nav>
 </header>
@@ -417,6 +418,73 @@ CounterV2{ n: 0, total: 100 }</pre>
     <p class="intro" style="margin-top:18px">
       <code>defer</code> is reserved (<code>%defer</code>) but its runtime semantics aren't pinned
       yet, so it's left off the table above rather than shown with an invented example.
+    </p>
+  </section>
+
+  <section id="punctuators">
+    <h2 class="head">05 » Punctuators</h2>
+    <div class="rule"></div>
+    <p class="intro">
+      Everything the language spells with punctuation rather than a word. Each glyph has one
+      meaning; where two readings were possible the grammar picks one and refuses the other
+      loudly, so nothing here is context-sensitive.
+    </p>
+    <table class="repos">
+      <thead><tr><th>Glyph</th><th>Meaning</th><th>Syntax</th></tr></thead>
+      <tbody>
+        <tr><td>;</td><td>statement terminator</td><td class="syntax">let x = 5; x</td></tr>
+        <tr><td>,</td><td>separator &mdash; tuples, lists, sets, arguments, type arguments, struct fields</td><td class="syntax">f(a, b)  &nbsp; (1, 2, 3)</td></tr>
+        <tr><td>:</td><td>type annotation</td><td class="syntax">let x: @ = 5;</td></tr>
+        <tr><td>.</td><td>field access; also the lark and axis forms below</td><td class="syntax">p.x</td></tr>
+        <tr><td>.&lt; &nbsp; .&gt;</td><td>lark: head and tail, composing outermost-first</td><td class="syntax">p.&lt;  &nbsp; p.&gt;  &nbsp; p.&lt;&gt;</td></tr>
+        <tr><td>.+n</td><td>axis, named directly &mdash; always a literal</td><td class="syntax">p.+6</td></tr>
+        <tr><td>-&gt;</td><td>return type; also keys map-literal pairs</td><td class="syntax">func f(n: @) -&gt; @ { n }  &nbsp; {1 -&gt; 7}</td></tr>
+        <tr><td>=&gt;</td><td>separates a case pattern from its body</td><td class="syntax">match v { 1 =&gt; 0; _ =&gt; 84; }</td></tr>
+        <tr><td>?</td><td>optionality, and only optionality</td><td class="syntax">let o: @? = ~;</td></tr>
+        <tr><td>??</td><td>coalesce &mdash; unwrap or fall back</td><td class="syntax">o ?? 9</td></tr>
+        <tr><td>~</td><td>the null / empty literal</td><td class="syntax">let o: @? = ~;</td></tr>
+        <tr><td>_</td><td>wildcard pattern</td><td class="syntax">_ =&gt; 84;</td></tr>
+        <tr><td>%</td><td>term literal; also modulus</td><td class="syntax">%foo  &nbsp; a % b</td></tr>
+        <tr><td>@</td><td>the any-aura atom type</td><td class="syntax">let x: @ = 5;</td></tr>
+        <tr><td>|</td><td>joins types into an untagged union</td><td class="syntax">alias Maybe @ | (@, @);</td></tr>
+        <tr><td>( )</td><td>grouping, tuples, calls, type application</td><td class="syntax">(a, b)  &nbsp; f(x)  &nbsp; Map(@, @)</td></tr>
+        <tr><td>[ ]</td><td>list literal; glued, an index or a put</td><td class="syntax">[1, 2, 3]  &nbsp; xs[0]  &nbsp; xs[0] = 9;</td></tr>
+        <tr><td>{ }</td><td>block; glued to a name, a struct literal; also set and map literals</td><td class="syntax">{ n + 1 }  &nbsp; Point{ x: 1 }  &nbsp; {1, 2}</td></tr>
+        <tr><td>=</td><td>binding and assignment</td><td class="syntax">var b = 0; b = b + 1;</td></tr>
+        <tr><td>== &nbsp; !=</td><td>equality through the <code>Eq</code> trait</td><td class="syntax">if a == 3 { 1 } else { 0 }</td></tr>
+        <tr><td>=== &nbsp; !==</td><td>structural identity &mdash; never overloadable</td><td class="syntax">a === b</td></tr>
+        <tr><td>&lt; &nbsp; &gt; &nbsp; &lt;= &nbsp; &gt;=</td><td>ordered comparison &mdash; non-associative, parenthesize</td><td class="syntax">a &lt; b</td></tr>
+        <tr><td>+ &nbsp; - &nbsp; * &nbsp; / &nbsp; %</td><td>arithmetic; binary <code>-</code> must be spaced on both sides</td><td class="syntax">a + b  &nbsp; a - 1</td></tr>
+        <tr><td>\NN</td><td>inside a string, one byte as two hex digits; <code>\\</code> is a backslash</td><td class="syntax">"line\0aline"</td></tr>
+      </tbody>
+    </table>
+
+    <p class="intro" style="margin-top:18px">
+      <strong>The adjacency law.</strong> A postfix <code>(</code>, <code>[</code> or <code>{</code>
+      attaches to what precedes it <em>iff no whitespace separates them</em>. So
+      <code class="syntax">fib(n)</code> is a call and <code class="syntax">fib (n)</code> is not;
+      <code class="syntax">Point{ x: 1 }</code> is a struct literal while a free-standing
+      <code class="syntax">{ &hellip; }</code> is a block. An un-glued one is always a parse error
+      with a hint, never a different meaning.
+    </p>
+
+    <p class="intro">
+      <strong>Unicode aliases.</strong> <code>×</code> <code>÷</code> <code>±</code>
+      <code>⊕</code> <code>⊗</code> <code>⊖</code> <code>∘</code> <code>·</code>
+      <code>∩</code> <code>∪</code> <code>∈</code> <code>⊂</code> <code>⊃</code>
+      <code>⊛</code> lex as ordinary punctuators &mdash;
+      <code class="syntax">3 × 4</code> and <code class="syntax">2 ∈ s</code> are the arithmetic
+      and membership you would expect. ASCII spellings are always available.
+    </p>
+
+    <p class="intro">
+      <strong>Reserved, and loud about it.</strong> <code>&amp;</code> is reserved through 1.0 and
+      every occurrence refuses with prose &mdash; <code>&amp;&amp;</code> is not Jock, the
+      connectives are the words <code>and</code>, <code>or</code>, <code>not</code>. A glued
+      <code>||</code> refuses the same way; single <code>|</code> stays the type-union punctuator.
+      <code>$(&hellip;)</code> is reserved for recursion re-entry with edits but has no parser path
+      yet, so recursion today is by name for a <code>func</code> and bare <code>recur</code> for a
+      <code>loop</code>. Unary <code>-</code> and <code>**</code> are reserved through 1.0.
     </p>
   </section>
 

@@ -227,6 +227,11 @@
         if (isLow(nx)) {
           var t = i + 1;
           while (t < n && isAln(src[t])) t++;
+          //  terms take HYPHENS, by the same +gnam rule as names:
+          //  lex.hoon's %-branch gathers with +gnam and then refuses
+          //  anything that is not lower-case, a digit or '-'.  So
+          //  %list-notes and %master-signing-key are single terms,
+          //  which is what the wallet wire's @tas causes need.
           while (t + 1 < n && src[t] === '-' && isAln(src[t + 1])) {
             t++;
             while (t < n && isAln(src[t])) t++;
