@@ -227,8 +227,11 @@
         if (isLow(nx)) {
           var t = i + 1;
           while (t < n && isAln(src[t])) t++;
-          //  term spellings are [a-z][a-z0-9]*; a capital inside is
-          //  the lexer's %lex-term refusal
+          while (t + 1 < n && src[t] === '-' && isAln(src[t + 1])) {
+            t++;
+            while (t < n && isAln(src[t])) t++;
+          }
+          //  a capital anywhere inside is the %lex-term refusal
           var word = src.slice(i + 1, t);
           if (/[A-Z]/.test(word)) emit('error', t - i, { why: 'lex-term' });
           else emit('term', t - i);
