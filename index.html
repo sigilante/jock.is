@@ -219,6 +219,7 @@
     <a href="#examples">examples</a>
     <a href="#repositories">repositories</a>
     <a href="#keywords">keywords</a>
+    <a href="#punctuation">punctuation</a>
     <a href="#punctuators">punctuators</a>
     <a href="https://github.com/zorp-corp/jock-lang">github</a>
   </nav>
@@ -418,6 +419,64 @@ CounterV2{ n: 0, total: 100 }</pre>
     <p class="intro" style="margin-top:18px">
       <code>defer</code> is reserved (<code>%defer</code>) but its runtime semantics aren't pinned
       yet, so it's left off the table above rather than shown with an invented example.
+    </p>
+  </section>
+
+  <section id="punctuation">
+    <h2 class="head">05 &raquo; Punctuation &amp; operators</h2>
+    <div class="rule"></div>
+    <p class="intro">
+      Every built-in operator has an ASCII-first spelling. The punctuator inventory is
+      <code>$jpunc</code> in <code>/sur/jock</code>; the precedence table was frozen 2026-08-06
+      and changes to it are version boundaries, not amendments.
+    </p>
+    <table class="repos">
+      <thead><tr><th>Punctuation</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td class="syntax">;</td><td>statement terminator. Required <em>between</em> items; optional on the last one before <code>}</code>, so a dropped separator is a loud parse error rather than a silent mis-parse</td></tr>
+        <tr><td class="syntax">,</td><td>the separator everywhere &mdash; tuples, lists, sets, arguments, type arguments. A trailing comma is permitted before every closing delimiter</td></tr>
+        <tr><td class="syntax">:</td><td>type annotation &mdash; <code>let x: @ = 5;</code></td></tr>
+        <tr><td class="syntax">-&gt;</td><td>return type, and the key/value arrow in map literals &mdash; <code>{1 -&gt; 7}</code></td></tr>
+        <tr><td class="syntax">=&gt;</td><td>case arm in <code>match</code> / <code>switch</code></td></tr>
+        <tr><td class="syntax">~</td><td>the null / empty literal. Its own type (<code>%sing %n 0</code>): a numeric zero is <em>not</em> null</td></tr>
+        <tr><td class="syntax">_</td><td>wildcard pattern</td></tr>
+        <tr><td class="syntax">%foo</td><td>term literal. Hyphens are part of the name &mdash; <code>%list-notes</code> is one token</td></tr>
+        <tr><td class="syntax">@</td><td>the any-aura atom type</td></tr>
+        <tr><td class="syntax">|</td><td>type-position union only (<code>A | B</code>). Retired from the operator inventory entirely</td></tr>
+        <tr><td class="syntax">&amp;</td><td>reserved through 1.0. Every occurrence refuses with prose (<code>%lex-connective</code>) &mdash; use <code>and</code>, or <code>hoon.dis</code> for bitwise</td></tr>
+        <tr><td class="syntax">\0a</td><td>string escape: one byte as two hex digits (<code>\09</code> tab, <code>\\</code> backslash). Per-byte, so UTF-8 spells itself &mdash; <code>"caf\c3\a9"</code> is caf&eacute;. Anything else after a backslash refuses</td></tr>
+        <tr><td class="syntax">{{ }}</td><td>literal braces inside an interpolated string</td></tr>
+        <tr><td class="syntax">//</td><td>comment to end of line</td></tr>
+      </tbody>
+    </table>
+
+    <p class="intro" style="margin-top:18px">
+      <strong>The adjacency law.</strong> Postfix forms bind only when glued. <code>f(x)</code> is a call
+      and <code>f (x)</code> is not; <code>xs[0]</code> is an index and <code>xs [0]</code> is not;
+      <code>Point{ x: 1 }</code> is a struct literal while a free-standing <code>{ &hellip; }</code> is a block.
+      An un-glued <code>(</code> after a complete expression is always a parse error with a hint &mdash;
+      never a different meaning.
+    </p>
+
+    <table class="repos" style="margin-top:18px">
+      <thead><tr><th>Operators, tightest first</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td class="syntax">a.b &nbsp; a.&lt; &nbsp; a.&gt; &nbsp; a.+5</td><td>field, then lark head/tail, then a literal axis. <code>p.&lt;&gt;</code> is the tail of the head</td></tr>
+        <tr><td class="syntax">as &nbsp; as? &nbsp; as!</td><td>static cast / soft cast to a unit / forced cast</td></tr>
+        <tr><td class="syntax">* &nbsp; / &nbsp; %</td><td><code>&times;</code> and <code>&divide;</code> are aliases</td></tr>
+        <tr><td class="syntax">+ &nbsp; -</td><td>binary <code>-</code> is spaced on <em>both</em> sides: <code>a- 1</code> and <code>a -1</code> refuse. Fully glued <code>a-1</code> is one hyphenated name; <code>-42</code> in operand position is a Sint literal</td></tr>
+        <tr><td class="syntax">??</td><td>coalesce, unwrap-or-default. Binds <em>tighter</em> than the comparisons, so <code>m[k] ?? 0 == 100</code> groups the way it reads</td></tr>
+        <tr><td class="syntax">&lt; &nbsp; &gt; &nbsp; &lt;= &nbsp; &gt;= &nbsp; in</td><td>non-associative: <code>a &lt; b &lt; c</code> is a parse error, not a boolean surprise. <code>&isin;</code> aliases <code>in</code></td></tr>
+        <tr><td class="syntax">== &nbsp; != &nbsp; === &nbsp; !==</td><td>non-associative</td></tr>
+        <tr><td class="syntax">not &nbsp; and &nbsp; xor &nbsp; or</td><td>word connectives, loosest &mdash; <code>not a == b</code> reads <code>not (a == b)</code></td></tr>
+      </tbody>
+    </table>
+    <p class="intro" style="margin-top:18px">
+      <code>**</code> and unary <code>-</code> are reserved through 1.0: they lex and parse at frozen
+      precedence but refuse at desugar, so their placement cannot be renegotiated when they land.
+      Ten Unicode glyphs (<code>&#8859; &cap; &otimes; &compfn; &sdot; &cup; &oplus; &ominus; &plusmn; &sub;</code>)
+      are <em>trait-only</em>: the language lexes and parses them and assigns no meaning, so a library
+      supplies one through the ops registry.
     </p>
   </section>
 
