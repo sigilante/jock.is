@@ -36,7 +36,8 @@
   //  $keyword (/sur/jock).  Grouped only for scope naming; the
   //  lexer treats the union as flat, exactly as the mold does.
   var KEYWORDS_DECL = ['let', 'var', 'func', 'lambda', 'struct', 'class',
-                       'impl', 'trait', 'union', 'alias', 'import'];
+                       'impl', 'trait', 'enum', 'for', 'is', 'alias',
+                       'import'];
   var KEYWORDS_CTRL = ['if', 'else', 'crash', 'assert', 'loop', 'defer',
                        'recur', 'match', 'switch', 'eval', 'print'];
   var KEYWORDS_OP   = ['as', 'in', 'and', 'or', 'xor', 'not'];
@@ -47,8 +48,9 @@
   //  self-type; `self` is deliberately absent — language.md §6 is
   //  emphatic that it is an ordinary parameter name, not a keyword,
   //  so it highlights as the ordinary name it is.
-  var TYPES_AURA = ['Atom', 'Bool', 'Hex', 'Sint', 'Real', 'Real16',
-                    'Real32', 'Real128', 'Date', 'Span', 'Char',
+  var TYPES_AURA = ['Atom', 'Noun', 'Nat', 'Bool', 'Hex', 'Int',
+                    'Float64', 'Float16', 'Float32', 'Float128',
+                    'Date', 'Span', 'Byte', 'UniChar',
                     'String', 'Path', 'Base'];
   var TYPES_PRELUDE = ['List', 'Map', 'Set', 'Octs', 'Effect', 'Self',
                        'Str', 'Kernel', 'Roof', 'Meas', 'Has', 'Idx',

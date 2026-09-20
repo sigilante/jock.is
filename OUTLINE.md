@@ -6,35 +6,67 @@
 - **Ordering**: language-first. Jock from chapter 1; the noun view and the Nock ISA are revealed where erasure makes them necessary, then treated fully.
 - **Interactivity**: static listings only, each carrying its CI-verified `// expect:` value. No in-browser REPL for now.
 
+> **Currency.** Revised 2026-09-19 against the syntax arc
+> (`docs/syntax-arc.md`): angle-bracket generics, named constructor
+> calls, `enum`, `impl … for …`, the re-cut container literals,
+> qualified case patterns, `alias … is …`, and the `Nat`/`Int`/
+> `Float64`/`Byte`/`UniChar` names. Chapter text below uses current
+> syntax throughout. Where a chapter names something that does not
+> exist yet, it says so.
+
 ## Structure
 
 Six parts plus a reference section. Jock from page one; the noun/Nock layer surfaces mid-book, exactly where erasure and kernels force it — so the reveal ("your structs were binary trees all along, and the whole machine is twelve instructions") lands as a payoff, not a prerequisite. Each chapter builds or extends a real program whose final listing carries its `// expect:` value.
+
+Language beginners will work through the first two parts of the book first, then
+pivot to either Parts IV and VI (Nockchain and NockApp) or Part V (Urbit) depending on
+their interests.  Part III, on the compiler, is essential for those who want to
+understand how Jock programs are translated into Nock, but it can be read independently
+of the other parts.
 
 ### Part I — Writing Jock
 1. **First program.** Statements and the final expression; `let`;
    `func`; calling. The adjacency law introduced the honest way: make
    the `fib (n)` mistake, read the loud hint, learn the rule. Running
    programs with `tools/jockc.sh run`.
-2. **Values.** Atoms; auras as units-of-measure on numbers; `true`/
-   `false`, `%terms`, chars and strings; `Real` literals; cells.
+2. **Values.** Atoms; auras as units-of-measure on numbers; `Nat`
+   as the aura a decimal literal carries and `Atom` above it;
+   `true`/`false`, `%terms`, bytes and strings; `Int` (ZigZag) and
+   `Float64` literals; cells.
    (Margin note, planted early, cashed later: "an atom is just an
    unsigned integer; a cell is just a pair — hold that thought.")
-3. **Flow.** `if`/`else`; `loop`/`recur`; `var` and assignment;
-   `$()` recursion points; word connectives and short-circuit;
-   the counter as the running example.
+3. **Flow.** `if`/`else`; `loop`/`recur` and labelled loops
+   (`loop outer { … recur outer }`, and why a bare `recur` re-enters
+   the innermost); `var` and assignment; word connectives and
+   short-circuit; the counter as the running example. (`$(…)`
+   re-entry is reserved and **unimplemented** — it refuses
+   `%parse-todo`; mention it only as a margin note, if at all.)
 4. **Functions in full.** Multi-parameter funcs, lambdas, functions
    as values; adjacency groups as mutual recursion; the twelve-level
    precedence table by example; non-associative comparisons.
-5. **Collections.** `List(T)` and list literals; `Map`/`Set` literals;
-   index sugar `e[i]`, `e[i] = v`; `len`; strings as data, `Char` as
-   a guarded byte; interpolation. Worked example: `matmul.jock`.
-6. **Shapes of your own.** Structs and struct literals; field access;
-   `alias`; unions with payloads; `match`, exhaustiveness with witness
-   patterns, unreachable-case errors. Worked example: `poker.jock`
-   (built across the chapter).
+5. **Collections.** `List<T>` and list literals; the bracket carries
+   list *and* map, told apart by the arrow the type also writes
+   (`Map<K->V>`, `[1 -> 100]`, empties `[]` and `[->]`); a set is
+   *constructed*, `Set<T>([…])`, because braces are blocks; index
+   sugar `e[i]`, `e[i] = v`; `len`; strings as data — `Byte` as a
+   guarded byte, `UniChar` as a Unicode scalar, and the honest note
+   that a String **is a cord of UTF-8 bytes**, so the two are not
+   interchangeable and encoding between them is explicit;
+   interpolation. Worked example: `matmul.jock`.
+6. **Shapes of your own.** Structs and **named constructor calls**
+   (`Point( x: 1, y: 2 )` — the glued paren constructs); field
+   access; `alias New is Old`; `enum` with payloads; `match`,
+   exhaustiveness with witness patterns, unreachable-case errors.
+   **Case patterns are qualified** (`.circle(r)` or
+   `Shape.circle(r)`) and a bare name is a *binding* — worth a full
+   aside, because it is "one meaning per spelling" earning its keep:
+   the two used to be told apart by whether the name happened to be
+   a case, so adding a case to an enum could silently turn a binding
+   into a match and kill every arm below it. Worked example:
+   `poker.jock` (built across the chapter).
 7. **Maybe, either, and casts.** `T?` and `??`; untagged unions
    `A | B`; `as` / `as?` / `as!`; validating foreign data (the
-   `molds.jock` story: `300 as? Char` fails because the type means
+   `molds.jock` story: `300 as? Byte` fails because the type means
    byte). Discriminability introduced informally: "the compiler must
    be able to tell the members apart by looking — here's what looking
    means."
@@ -42,18 +74,25 @@ Six parts plus a reference section. Jock from page one; the noun/Nock layer surf
    paragraph; classes as sealed state + methods; operator traits
    (`add(+)`), `Show` powering interpolation; `==` via `Eq` vs `===`
    identity. Worked example: `point.jock`.
-9. **Generics.** Type parameters on funcs, structs, unions, traits,
-   impls; bounds as dictionaries (one formula per generic function —
-   stated, demystified later); parameterized traits closing the loop
-   on `e[i]`. Higher-order functions, currying, etc. Worked example:
-   `sort.jock`.
+9. **Generics.** Type parameters in angle brackets on funcs,
+   structs, enums, traits, impls (`func<T>`, `List<@>`); bounds as
+   dictionaries (one formula per generic function — stated,
+   demystified later); parameterized traits closing the loop on
+   `e[i]`. Higher-order functions: `lib/hof` is the exhibit —
+   currying needs no encoding, since `A -> B -> C` is
+   right-associative and a multi-argument func has a tuple domain.
+   State the ceiling honestly: rank-1 means a generic function is
+   **not first-class**, so passing one to a higher-order function
+   wraps it at a pinned type. Worked examples: `sort.jock`,
+   `lib/hof`.
 10. **Modules.** `import hoon` and the ambient prelude; writing and
     importing a Jock module; `--data-dir`; qualified names and types;
-    the 1.0 fences stated honestly. Worked example: `parser.jock`.
+    the 1.0 fences stated honestly. Worked examples: `parser.jock`
+    and `rational.jock` (a sealed class crossing an import boundary).
 
 ### Part II — The reveal: nouns and Nock
 11. **Everything is a noun.** Erasure, from above: what your values
-    *are* — structs as right-nested tuples, unions as `[tag payload]`,
+    *are* — structs as right-nested tuples, enums as `[tag payload]`,
     `T?` as unit, lists null-terminated, `Bool` as 0/1. Axes and the
     tree numbering; lark (`p.<`, `p.+5`) now makes sense. The compact
     noun and cell-tree figures do the heavy lifting.
@@ -109,12 +148,34 @@ Six parts plus a reference section. Jock from page one; the noun/Nock layer surf
     as the "run it yourself locally" chapter for motivated readers.)
 
 ### Part V — Urbit Kernels
+23. **Jock on Urbit.** What changes and what does not: the same
+    language and the same erasure, a different host. The desk layout
+    (`urbit/desk/`), building and installing, and the honest framing
+    that this track is younger than Part IV's.
+24. **The agent protocol.** `trait GallAgent` — `onInit`, `onPoke`,
+    `onWatch`, `onLeave`, `onAgent`, `onArvo`, `onFail`, `onPeek`,
+    each answering `(List<*>, Self)`: effects out, new state back,
+    the same pure-state-machine shape Part IV established, widened to
+    Gall's eight entry points. `counter.jock` and `timer.jock` as the
+    two smallest complete agents.
+25. **Talking to vanes.** The vane libraries in `urbit/desk/lib/` —
+    `behn` (timers), `clay` (files), `dill` (terminal), `eyre` (HTTP
+    in), `iris` (HTTP out), `jael` (keys), `gall` itself — as ordinary
+    Jock modules over arvo-shaped nouns. `timer.jock` for behn,
+    `irisdemo.jock` for iris, `claydemo.jock` for clay.
+26. **Subscriptions.** `pub.jock` and `sub.jock` as a pair: the
+    publish/subscribe round trip, what `onWatch` and `onAgent` are
+    for, and why the wire format is just the erasure again.
+27. **A real application.** `signup.jock` end to end — HTTP in through
+    eyre, a hand-rolled parser over the request path, state across
+    requests, rendered output. The chapter where the Urbit track
+    stops being demos.
 
 ### Part VI — The chain *(in development on this branch; write last)*
-23. **Reading the chain.** ZMap/ZSet vs Map/Set (TIP5 vs mug ordering
+28. **Reading the chain.** ZMap/ZSet vs Map/Set (TIP5 vs mug ordering
     — treap shape as consensus data); the watcher kernel; the package
     mechanism and its stated trust model.
-24. **Building transactions.** Phase-2 material — hold until the
+29. **Building transactions.** Phase-2 material — hold until the
     branch lands; fixture-identity is the story.
 
 ### Reference (the back of the book)
@@ -138,9 +199,16 @@ normative source, a runnable exhibit, and a test lane already standing
 behind it.
 
 **Normative sources (all frozen or near-frozen):**
-- `docs/spec/language.md` — surface syntax, NORMATIVE since 2026-08-06
-  (precedence frozen, all 22 OPENs resolved). The four design
-  principles — one meaning per spelling; kernel and sugar; loud
+- `docs/spec/language.md` — surface syntax, NORMATIVE. Frozen
+  2026-08-06 and **re-cut 2026-09-17** by the syntax arc
+  (`docs/syntax-arc.md`), which changed generics to angle brackets,
+  moved construction to the glued paren, retired `union` and
+  `switch`, re-cut the container literals and renamed the numeric and
+  character types. Precedence is frozen; the OPEN table is resolved,
+  with OPEN-12 *dissolved* rather than resolved and OPEN-15 landed.
+  Treat the tables as current rather than as a 1.0 contract — the
+  release may ship zero-versioned so the syntax can settle further.
+  The four design principles — one meaning per spelling; kernel and sugar; loud
   failure; provenance — are a ready-made thesis statement.
 - `docs/spec/types.md` — the judgment inventory (elab, nest, join,
   dish, seek, bunt, erase, embed, mint/mill) as ⇒/⇐ rules, the closed
@@ -154,7 +222,7 @@ behind it.
   `docs/POSSIBLES.md`, `docs/ROADMAP.md` — the interop story, module
   system, a worked hand-emission walkthrough, and the design ledger.
 
-**Runnable exhibits:** 16 examples in `examples/`, each executable
+**Runnable exhibits:** 28 examples in `examples/`, each executable
 documentation with a pinned `// expect:` value, forming a natural
 difficulty gradient: `counter` (7 lines, a whole kernel) → `sort`
 (bounded generics) → `poker` (the big pure-functional program) →
@@ -217,6 +285,7 @@ covers, in roughly the order a reader can absorb them):
 
 ---
 
+## 2. *(section removed; numbering kept so the gap is visible rather than looking like a typo)*
 
 ---
 
@@ -227,10 +296,16 @@ covers, in roughly the order a reader can absorb them):
   visual vocabulary required. The 186px margin rail carries asides,
   honesty notes ("planned, not current"), and the planted-early /
   cashed-later cross-references the language-first ordering depends on.
-- **Listings**: every listing carries its `// expect:` value and,
-  where feasible, is extracted from or round-tripped against the CI
-  lanes, so the book inherits the repo's no-drift discipline: *a
-  listing without a pinned value is not a listing.*
+- **Listings**: every listing carries its `// expect:` value and is
+  **extracted from** the CI lanes, not transcribed into the prose.
+  Not "where feasible" — unconditionally. The evidence for the
+  stronger rule is recent and local: the normative specs' own worked
+  examples silently stopped compiling during the syntax arc, and
+  nothing caught it until someone compiled them by hand. A book has
+  the same exposure and a worse blast radius, since its readers are
+  by definition the people who cannot tell. *A listing without a
+  pinned value is not a listing; a listing that is not extracted is
+  a transcription, and transcriptions drift.*
 - **Tutorial mechanics**: each Part I–IV chapter builds or extends a
   real program (mostly drawn from `examples/`), ending with exercises
   that reference R10.

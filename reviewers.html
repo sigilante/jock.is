@@ -177,7 +177,7 @@
         compiled to <a href="https://nock.is/cool">Nock</a> and running
         as an ordinary NockApp — in about 1.3&nbsp;MB. Jock is a
         statically-typed language with a Swift- and Rust-flavored
-        surface: structs, tagged unions, pattern matching, traits,
+        surface: structs, tagged enums, pattern matching, traits,
         classes, and generics, all of which erase to nouns and twelve
         instructions. This page is your orientation; everything on it
         was run against the exact image you received.
@@ -259,7 +259,7 @@ jojo&gt; fact(10)
     </p>
 
     <div class="example">
-<pre class="code">jojo&gt; union Color { red, green, yellow };
+<pre class="code">jojo&gt; enum Color { red, green, yellow };
 ok
 jojo&gt; func advance(c: Color) -&gt; Color { match c { red =&gt; Color.green; green =&gt; Color.yellow; yellow =&gt; Color.red; } };
 ok
@@ -273,7 +273,7 @@ jojo&gt; advance(Color.red)
     </div>
 
     <p>
-      Signed integers are <code>Sint</code>, written with an explicit
+      Signed integers are <code>Int</code>, written with an explicit
       glued sign &mdash; and the sign is how they print back, so a
       signed value never masquerades as a natural:
     </p>
@@ -283,11 +283,11 @@ jojo&gt; advance(Color.red)
 ok
 jojo&gt; d
 -3
-jojo&gt; 42 as Sint
+jojo&gt; 42 as Int
 error: %mint-cast-sint at col 4</pre>
       <div class="cap">Division truncates toward zero. The refusal is
-        deliberate: a cast reinterprets bits, and <code>Sint</code> is
-        ZigZag-encoded underneath, so <code>42 as Sint</code> would
+        deliberate: a cast reinterprets bits, and <code>Int</code> is
+        ZigZag-encoded underneath, so <code>42 as Int</code> would
         change the value &mdash; convert with
         <code>hoon.sint(n)</code> instead. Position does the
         disambiguating work elsewhere: <code>a +42</code> is still
@@ -376,7 +376,7 @@ jojo&gt; f(2)
     <p>
       Anything, honestly — but the places where your judgment matters
       most are the edges. Push on the type system: declare structs and
-      generic unions, write trait bounds, cast foreign nouns back into
+      generic enums, write trait bounds, cast foreign nouns back into
       types with <code>as?</code> and <code>as!</code>, and see whether
       the rules land where your Swift or Rust instincts expect them.
       Push on the grammar: precedence, the adjacency law,

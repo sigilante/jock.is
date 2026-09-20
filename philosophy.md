@@ -108,16 +108,16 @@ teach is a language that will be learned quickly by anything that reads.
 ## A type system without knots
 
 The type system is bidirectional checking over structs, tagged
-unions, traits, classes, and declaration-site generics, earning
+enums, traits, classes, and declaration-site generics, earning
 its straightforwardness by what it declines to do.  There are no
 implicit coercions of any kind:  mixed-aura arithmetic refuses,
 sequencing is explicit, and a cast is always a C-like
 bit-reinterpretation, not a conversion.
 
 ```
-jojo> 42 as Sint
+jojo> 42 as Int
 error: %mint-cast-sint at col 4
-jojo> let v = eval(83, (0, 1)); (v as? Sint) ?? +7
+jojo> let v = eval(83, (0, 1)); (v as? Int) ?? +7
 -42
 ```
 
@@ -128,14 +128,14 @@ null-coalescing operator that returns the right-hand side if the
 left is `null`.  (Think of this as `Option`).
 
 ```
-jojo> let v = eval(83, (0, 1)); (v as? Sint) ?? +7
+jojo> let v = eval(83, (0, 1)); (v as? Int) ?? +7
 -42
 ```
 
 A type coercion may be explicit, as with `as!`:
 
 ```
-jojo> let v = eval(83, (0, 1)); (v as! Sint) + +7
+jojo> let v = eval(83, (0, 1)); (v as! Int) + +7
 -35
 ```
 

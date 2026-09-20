@@ -254,7 +254,7 @@
     <div class="rule"></div>
     <p class="intro">
       Every Jock program erases to a noun and a formula. Structs become right-nested tuples,
-      unions become tagged cells, and the whole language bottoms out in twelve instructions.
+      enums become tagged cells, and the whole language bottoms out in twelve instructions.
     </p>
     <div class="plate">
       <div class="corner c1"></div><div class="corner c2"></div>
@@ -280,34 +280,34 @@ a</pre>
 
     <div class="example">
       <div class="label"><span class="file">point.jock</span> — operator traits on a sealed class</div>
-      <div class="cap">operator traits, classes, Real — <code>p + q</code> dispatches through class conformance</div>
-<pre class="code jock">struct PointState { x: Real, y: Real };
+      <div class="cap">operator traits, classes, Float64 — <code>p + q</code> dispatches through class conformance</div>
+<pre class="code jock">struct PointState { x: Float64, y: Float64 };
 class Point(PointState) impl Add, Sub {
   add(self: Self, p: Self) -&gt; Self {
-    Point{ x: self.x + p.x, y: self.y + p.y }
+    Point( x: self.x + p.x, y: self.y + p.y )
   };
   sub(self: Self, p: Self) -&gt; Self {
-    Point{ x: self.x - p.x, y: self.y - p.y }
+    Point( x: self.x - p.x, y: self.y - p.y )
   };
 };
-let p = Point{ x: 101.0, y: 105.0 };
-let q = Point{ x: 42.0, y: 7.0 };
+let p = Point( x: 101.0, y: 105.0 );
+let q = Point( x: 42.0, y: 7.0 );
 (p + q).x</pre>
     </div>
 
     <div class="example">
       <div class="label"><span class="file">sort.jock</span> — generic insertion sort</div>
       <div class="cap">bounded generics, <code>T: Lt</code>, operators as bounds — the same <code>&lt;</code> becomes a trait call</div>
-<pre class="code jock">func(T: Lt) insert(x: T, xs: List(T)) -&gt; List(T) {
+<pre class="code jock">func&lt;T: Lt&gt; insert(x: T, xs: List&lt;T&gt;) -&gt; List&lt;T&gt; {
   match xs {
-    (h, t) =&gt; if x &lt; h { (x, xs) } else { (h, insert(x, t)) };
-    _ =&gt; [x];
+    (h, t) =&gt; if x &lt; h { (x, xs) } else { (h, insert(x, t)) },
+    _ =&gt; [x],
   }
 };
-func(T: Lt) isort(xs: List(T)) -&gt; List(T) {
+func&lt;T: Lt&gt; isort(xs: List&lt;T&gt;) -&gt; List&lt;T&gt; {
   match xs {
-    (h, t) =&gt; insert(h, isort(t));
-    _ =&gt; ~;
+    (h, t) =&gt; insert(h, isort(t)),
+    _ =&gt; ~,
   }
 };
 isort([5, 3, 8, 1, 9, 2])</pre>
@@ -316,24 +316,24 @@ isort([5, 3, 8, 1, 9, 2])</pre>
     <div class="example">
       <div class="label"><span class="file">stoplight.jock</span> — a state-machine kernel</div>
       <div class="cap">a zero-ceremony NockApp kernel — the compiler synthesizes load/peek/poke from the <code>Kernel</code> protocol</div>
-<pre class="code jock">union Color { red, green, yellow };
+<pre class="code jock">enum Color { red, green, yellow };
 struct LightState { c: Color };
 func advance(c: Color) -&gt; Color {
   match c {
-    red =&gt; Color.green;
-    green =&gt; Color.yellow;
-    yellow =&gt; Color.red;
+    .red =&gt; Color.green,
+    .green =&gt; Color.yellow,
+    .yellow =&gt; Color.red,
   }
 };
-class Light(LightState) impl Kernel {
-  load(self: Light, old: *) -&gt; Light { old as! Light };
-  peek(self: Light, p: *) -&gt; * { self.c };
-  poke(self: Light, e: *) -&gt; (List(Effect), Light) {
-    let n = advance(self.c);
-    (~, Light{ c: n })
+impl Show for Color {
+  show(self: Color) -&gt; String {
+    match self {
+      .red =&gt; "red",
+      .green =&gt; "green",
+      .yellow =&gt; "yellow",
+    }
   };
-};
-Light{ c: Color.red }</pre>
+};</pre>
     </div>
 
     <div class="example">
@@ -343,9 +343,9 @@ Light{ c: Color.red }</pre>
 class Counter(KS) impl Kernel {
   load(self: Counter, old: *) -&gt; Counter { old as! Counter };
   peek(self: Counter, p: *) -&gt; * { self.n };
-  poke(self: Counter, e: *) -&gt; (List(Effect), Counter) { (~, Counter{ n: self.n + 1 }) };
+  poke(self: Counter, e: *) -&gt; (List&lt;Effect&gt;, Counter) { (~, Counter( n: self.n + 1 )) };
 };
-Counter{ n: 0 }</pre>
+Counter( n: 0 )</pre>
     </div>
 
     <div class="example">
@@ -353,11 +353,11 @@ Counter{ n: 0 }</pre>
       <div class="cap">load as migration — same host, a new state shape; <code>load</code>'s <code>as!</code> carries counter's exported state into <code>total</code></div>
 <pre class="code jock">struct KS2 { n: @, total: @ };
 class CounterV2(KS2) impl Kernel {
-  load(self: CounterV2, old: *) -&gt; CounterV2 { CounterV2{ n: old as! @, total: 100 } };
+  load(self: CounterV2, old: *) -&gt; CounterV2 { CounterV2( n: old as! @, total: 100 ) };
   peek(self: CounterV2, p: *) -&gt; * { (self.n, self.total) };
-  poke(self: CounterV2, e: *) -&gt; (List(Effect), CounterV2) { (~, CounterV2{ n: self.n + 1, total: self.total + 1 }) };
+  poke(self: CounterV2, e: *) -&gt; (List&lt;Effect&gt;, CounterV2) { (~, CounterV2( n: self.n + 1, total: self.total + 1 )) };
 };
-CounterV2{ n: 0, total: 100 }</pre>
+CounterV2( n: 0, total: 100 )</pre>
     </div>
   </section>
 
@@ -395,24 +395,24 @@ CounterV2{ n: 0, total: 100 }</pre>
       <tbody>
         <tr><td>let</td><td class="syntax">let x: @ = 5;</td></tr>
         <tr><td>var</td><td class="syntax">var b: @ = 0; b = b + 1;</td></tr>
-        <tr><td>func</td><td class="syntax">func inc(n: @) -&gt; @ { n + 1 };</td></tr>
+        <tr><td>func</td><td class="syntax">func inc(n: @) -&gt; @ { n + 1 }</td></tr>
         <tr><td>lambda</td><td class="syntax">let f = lambda(x: @) -&gt; @ { x + 1 };</td></tr>
         <tr><td>if / else</td><td class="syntax">if a == 3 { 42 } else { 17 }</td></tr>
-        <tr><td>match</td><td class="syntax">match a { %1 =&gt; 0; _ =&gt; 84; }</td></tr>
-        <tr><td>switch</td><td class="syntax">switch a { 1 =&gt; 0; _ =&gt; 84; }</td></tr>
+        <tr><td>match</td><td class="syntax">match a { %1 =&gt; 0, _ =&gt; 84, }</td></tr>
         <tr><td>loop / recur</td><td class="syntax">loop { if a == b { b } else { b = b + 1; recur } }</td></tr>
         <tr><td>eval</td><td class="syntax">eval(subj, form)</td></tr>
         <tr><td>crash</td><td class="syntax">_ =&gt; crash;</td></tr>
         <tr><td>import</td><td class="syntax">import urbit;</td></tr>
-        <tr><td>as / as? / as!</td><td class="syntax">(n as? Char) ?? 'x'</td></tr>
+        <tr><td>as / as? / as!</td><td class="syntax">(n as? Byte) ?? 'x'</td></tr>
         <tr><td>assert</td><td class="syntax">assert n &gt; 0;</td></tr>
         <tr><td>print</td><td class="syntax">print("count = {n}");</td></tr>
         <tr><td>and / or / xor / not</td><td class="syntax">if a and not b { 1 } else { 0 }</td></tr>
-        <tr><td>struct</td><td class="syntax">struct PointState { x: Real, y: Real };</td></tr>
-        <tr><td>class / impl</td><td class="syntax">class Point(PointState) impl Arithmetic { &hellip; };</td></tr>
-        <tr><td>trait</td><td class="syntax">trait Arithmetic { add(self: Self, other: Self) -&gt; Self; };</td></tr>
-        <tr><td>alias</td><td class="syntax">alias Number Real;</td></tr>
-        <tr><td>union</td><td class="syntax">union Shape { point, circle(Real) };</td></tr>
+        <tr><td>struct</td><td class="syntax">struct PointState { x: Float64, y: Float64 }</td></tr>
+        <tr><td>class / impl</td><td class="syntax">class Point(PointState) impl Arithmetic { &hellip; }</td></tr>
+        <tr><td>impl &hellip; for</td><td class="syntax">impl Arithmetic for Float64 { &hellip; }</td></tr>
+        <tr><td>trait</td><td class="syntax">trait Arithmetic { add(self: Self, other: Self) -&gt; Self; }</td></tr>
+        <tr><td>alias &hellip; is</td><td class="syntax">alias Number is Float64;</td></tr>
+        <tr><td>enum</td><td class="syntax">enum Shape { point, circle(Float64) }</td></tr>
         <tr><td>in</td><td class="syntax">x in s</td></tr>
       </tbody>
     </table>
@@ -437,7 +437,7 @@ CounterV2{ n: 0, total: 100 }</pre>
         <tr><td class="syntax">,</td><td>the separator everywhere &mdash; tuples, lists, sets, arguments, type arguments. A trailing comma is permitted before every closing delimiter</td></tr>
         <tr><td class="syntax">:</td><td>type annotation &mdash; <code>let x: @ = 5;</code></td></tr>
         <tr><td class="syntax">-&gt;</td><td>return type, and the key/value arrow in map literals &mdash; <code>{1 -&gt; 7}</code></td></tr>
-        <tr><td class="syntax">=&gt;</td><td>case arm in <code>match</code> / <code>switch</code></td></tr>
+        <tr><td class="syntax">=&gt;</td><td>case arm in <code>match</code></td></tr>
         <tr><td class="syntax">~</td><td>the null / empty literal. Its own type (<code>%sing %n 0</code>): a numeric zero is <em>not</em> null</td></tr>
         <tr><td class="syntax">_</td><td>wildcard pattern</td></tr>
         <tr><td class="syntax">%foo</td><td>term literal. Hyphens are part of the name &mdash; <code>%list-notes</code> is one token</td></tr>
@@ -453,7 +453,7 @@ CounterV2{ n: 0, total: 100 }</pre>
     <p class="intro" style="margin-top:18px">
       <strong>The adjacency law.</strong> Postfix forms bind only when glued. <code>f(x)</code> is a call
       and <code>f (x)</code> is not; <code>xs[0]</code> is an index and <code>xs [0]</code> is not;
-      <code>Point{ x: 1 }</code> is a struct literal while a free-standing <code>{ &hellip; }</code> is a block.
+      <code>Point( x: 1 )</code> is construction while a free-standing <code>{ &hellip; }</code> is a block.
       An un-glued <code>(</code> after a complete expression is always a parse error with a hint &mdash;
       never a different meaning.
     </p>
@@ -464,7 +464,7 @@ CounterV2{ n: 0, total: 100 }</pre>
         <tr><td class="syntax">a.b &nbsp; a.&lt; &nbsp; a.&gt; &nbsp; a.+5</td><td>field, then lark head/tail, then a literal axis. <code>p.&lt;&gt;</code> is the tail of the head</td></tr>
         <tr><td class="syntax">as &nbsp; as? &nbsp; as!</td><td>static cast / soft cast to a unit / forced cast</td></tr>
         <tr><td class="syntax">* &nbsp; / &nbsp; %</td><td><code>&times;</code> and <code>&divide;</code> are aliases</td></tr>
-        <tr><td class="syntax">+ &nbsp; -</td><td>binary <code>-</code> is spaced on <em>both</em> sides: <code>a- 1</code> and <code>a -1</code> refuse. Fully glued <code>a-1</code> is one hyphenated name; <code>-42</code> in operand position is a Sint literal</td></tr>
+        <tr><td class="syntax">+ &nbsp; -</td><td>binary <code>-</code> is spaced on <em>both</em> sides: <code>a- 1</code> and <code>a -1</code> refuse. Fully glued <code>a-1</code> is one hyphenated name; <code>-42</code> in operand position is an Int literal</td></tr>
         <tr><td class="syntax">??</td><td>coalesce, unwrap-or-default. Binds <em>tighter</em> than the comparisons, so <code>m[k] ?? 0 == 100</code> groups the way it reads</td></tr>
         <tr><td class="syntax">&lt; &nbsp; &gt; &nbsp; &lt;= &nbsp; &gt;= &nbsp; in</td><td>non-associative: <code>a &lt; b &lt; c</code> is a parse error, not a boolean surprise. <code>&isin;</code> aliases <code>in</code></td></tr>
         <tr><td class="syntax">== &nbsp; != &nbsp; === &nbsp; !==</td><td>non-associative</td></tr>
@@ -502,19 +502,21 @@ CounterV2{ n: 0, total: 100 }</pre>
         <tr><td>?</td><td>optionality, and only optionality</td><td class="syntax">let o: @? = ~;</td></tr>
         <tr><td>??</td><td>coalesce &mdash; unwrap or fall back</td><td class="syntax">o ?? 9</td></tr>
         <tr><td>~</td><td>the null / empty literal</td><td class="syntax">let o: @? = ~;</td></tr>
-        <tr><td>_</td><td>wildcard pattern</td><td class="syntax">_ =&gt; 84;</td></tr>
+        <tr><td>_</td><td>wildcard pattern</td><td class="syntax">_ =&gt; 84,</td></tr>
+        <tr><td>.name</td><td>a case pattern; a bare name is a <em>binding</em></td><td class="syntax">.circle(r) =&gt; r,</td></tr>
         <tr><td>%</td><td>term literal; also modulus</td><td class="syntax">%foo  &nbsp; a % b</td></tr>
         <tr><td>@</td><td>the any-aura atom type</td><td class="syntax">let x: @ = 5;</td></tr>
-        <tr><td>|</td><td>joins types into an untagged union</td><td class="syntax">alias Maybe @ | (@, @);</td></tr>
-        <tr><td>( )</td><td>grouping, tuples, calls, type application</td><td class="syntax">(a, b)  &nbsp; f(x)  &nbsp; Map(@, @)</td></tr>
-        <tr><td>[ ]</td><td>list literal; glued, an index or a put</td><td class="syntax">[1, 2, 3]  &nbsp; xs[0]  &nbsp; xs[0] = 9;</td></tr>
-        <tr><td>{ }</td><td>block; glued to a name, a struct literal; also set and map literals</td><td class="syntax">{ n + 1 }  &nbsp; Point{ x: 1 }  &nbsp; {1, 2}</td></tr>
+        <tr><td>|</td><td>joins types into an untagged union</td><td class="syntax">alias Maybe is @ | (@, @);</td></tr>
+        <tr><td>( )</td><td>grouping, tuples, calls; glued to a type name, construction</td><td class="syntax">(a, b)  &nbsp; f(x)  &nbsp; Point( x: 1 )</td></tr>
+        <tr><td>&lt; &gt;</td><td>glued to a type name, type application</td><td class="syntax">List&lt;@&gt;  &nbsp; Map&lt;@-&gt;@&gt;  &nbsp; func&lt;T&gt;</td></tr>
+        <tr><td>[ ]</td><td>list <em>and</em> map literals, told apart by the arrow; glued, an index or a put</td><td class="syntax">[1, 2, 3]  &nbsp; [1 -&gt; 100]  &nbsp; []  &nbsp; [-&gt;]  &nbsp; xs[0]</td></tr>
+        <tr><td>{ }</td><td>a block, and a declaration body &mdash; nothing else</td><td class="syntax">{ n + 1 }</td></tr>
         <tr><td>=</td><td>binding and assignment</td><td class="syntax">var b = 0; b = b + 1;</td></tr>
         <tr><td>== &nbsp; !=</td><td>equality through the <code>Eq</code> trait</td><td class="syntax">if a == 3 { 1 } else { 0 }</td></tr>
         <tr><td>=== &nbsp; !==</td><td>structural identity &mdash; never overloadable</td><td class="syntax">a === b</td></tr>
         <tr><td>&lt; &nbsp; &gt; &nbsp; &lt;= &nbsp; &gt;=</td><td>ordered comparison &mdash; non-associative, parenthesize</td><td class="syntax">a &lt; b</td></tr>
         <tr><td>+ &nbsp; - &nbsp; * &nbsp; / &nbsp; %</td><td>arithmetic; binary <code>-</code> must be spaced on both sides</td><td class="syntax">a + b  &nbsp; a - 1</td></tr>
-        <tr><td>\NN</td><td>inside a string, one byte as two hex digits; <code>\\</code> is a backslash</td><td class="syntax">"line\0aline"</td></tr>
+        <tr><td>\NN</td><td>inside a string, one byte as two hex digits; <code>\n</code> <code>\t</code> <code>\"</code> <code>\'</code> <code>\\</code> are sugar over it</td><td class="syntax">"line\0aline"  &nbsp; "line\nline"</td></tr>
       </tbody>
     </table>
 
@@ -522,7 +524,7 @@ CounterV2{ n: 0, total: 100 }</pre>
       <strong>The adjacency law.</strong> A postfix <code>(</code>, <code>[</code> or <code>{</code>
       attaches to what precedes it <em>iff no whitespace separates them</em>. So
       <code class="syntax">fib(n)</code> is a call and <code class="syntax">fib (n)</code> is not;
-      <code class="syntax">Point{ x: 1 }</code> is a struct literal while a free-standing
+      <code class="syntax">Point( x: 1 )</code> is construction while a free-standing
       <code class="syntax">{ &hellip; }</code> is a block. An un-glued one is always a parse error
       with a hint, never a different meaning.
     </p>

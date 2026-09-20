@@ -208,16 +208,16 @@ error: %parse-let-mut at col 9</pre>
     <div class="rule"></div>
     <p>
       The type system is bidirectional checking over structs, tagged
-      unions, traits, classes, and declaration-site generics, earning
+      enums, traits, classes, and declaration-site generics, earning
       its straightforwardness by what it declines to do. There are no
       implicit coercions of any kind: mixed-aura arithmetic refuses,
       sequencing is explicit, and a cast is always a C-like
       bit-reinterpretation, not a conversion.
     </p>
     <div class="example">
-<pre class="code">jojo&gt; 42 as Sint
+<pre class="code">jojo&gt; 42 as Int
 error: %mint-cast-sint at col 4
-jojo&gt; let v = eval(83, (0, 1)); (v as? Sint) ?? +7
+jojo&gt; let v = eval(83, (0, 1)); (v as? Int) ?? +7
 -42</pre>
     </div>
     <p>
@@ -229,14 +229,14 @@ jojo&gt; let v = eval(83, (0, 1)); (v as? Sint) ?? +7
       (Think of this as <code>Option</code>).
     </p>
     <div class="example">
-<pre class="code">jojo&gt; let v = eval(83, (0, 1)); (v as? Sint) ?? +7
+<pre class="code">jojo&gt; let v = eval(83, (0, 1)); (v as? Int) ?? +7
 -42</pre>
     </div>
     <p>
       A type coercion may be explicit, as with <code>as!</code>:
     </p>
     <div class="example">
-<pre class="code">jojo&gt; let v = eval(83, (0, 1)); (v as! Sint) + +7
+<pre class="code">jojo&gt; let v = eval(83, (0, 1)); (v as! Int) + +7
 -35</pre>
     </div>
     <p>More examples of nesting and type coercion:</p>

@@ -30,7 +30,7 @@ juxtaposition anywhere in the grammar.
 
 - **The adjacency law.** Postfix forms bind only when GLUED: `f(x)` is a
   call, `f (x)` is a parse error with a hint (`%parse-unglued`); `xs[0]` is
-  an index, `xs [0]` is not; `Point{ x: 1 }` is a struct literal, a
+  an index, `xs [0]` is not; `Point( x: 1 )` is a struct literal, a
   free-standing `{ ... }` is a block. No exceptions.
 - **Casing is grammar.** Lowercase-initial identifiers are values/functions/
   fields; Uppercase-initial are types. Union case tags are lowercase (they
@@ -40,18 +40,24 @@ juxtaposition anywhere in the grammar.
 - **Binary `-` is spaced on both sides.** `a - 1` is subtraction; `a- 1`
   and `a -1` refuse `%parse-minus-glue`; fully glued `a-1` is the NAME
   `a-1` (see casing rule above), refusing `%mint-limb` only if unbound.
-- **Signed integers are `Sint`** (ZigZag-encoded atoms), written as a
+- **Signed integers are `Int`** (ZigZag-encoded atoms), written as a
   sign GLUED to a decimal literal: `+42`, `-42`. `a +42` is still
   addition (position disambiguates). Arithmetic and comparisons work
-  (`-7 / +2` is `-3`: division truncates toward zero); mixed `@`/Sint
-  arithmetic refuses. `42 as Sint` REFUSES (`%mint-cast-sint`) — casts
+  (`-7 / +2` is `-3`: division truncates toward zero); mixed `@`/Int
+  arithmetic refuses. `42 as Int` REFUSES (`%mint-cast-sint`) — casts
   reinterpret bits; convert with `hoon.sint(n)` and `hoon.uint(s)`
   (`uint` crashes `%uint-neg` on a negative; `hoon.sabs` is the
   magnitude). There is no unary minus: negate with `0 - n` (naturals),
-  `0.0 - x` (Real), or a Sint literal.
-- **Commas everywhere.** Tuples `(a, b)`, lists `[1, 2, 3]`, sets `{1, 2}`,
-  maps `{1 -> 100, 2 -> 200}`, call arguments, type arguments. Trailing
-  comma permitted. No space-separated collections.
+  `0.0 - x` (Float64), or a Int literal.
+- **Commas everywhere.** Tuples `(a, b)`, lists `[1, 2, 3]`, maps
+  `[1 -> 100, 2 -> 200]`, sets `Set<@>([1, 2])`, match arms, call
+  arguments, type arguments. Trailing comma permitted. No
+  space-separated collections.
+- **Brackets carry list AND map**, told apart by the arrow the type
+  also writes (`Map<K->V>`). `[]` is the empty list, `[->]` the empty
+  map. A set is CONSTRUCTED, `Set<T>([...])` / `Set<T>()`, because
+  braces are blocks and `{1, 2}` could not say whether it meant a set
+  or a block with a stray comma.
 - **Word connectives.** `and`, `or`, `xor`, `not` — there is no `&&`, `||`,
   or `!`. `==`/`!=` dispatch through the Eq trait; `===`/`!==` are raw noun
   equality (Nock 5), never overloadable.
@@ -61,9 +67,9 @@ juxtaposition anywhere in the grammar.
   Show trait; `{{` and `}}` are literal braces. No string literals and no
   newlines inside a fragment (`%lex-interp-str`).
 - **Bare `{}` refuses** (`%parse-empty-brace`): a block must produce a
-  value; empty collections are `Set()`, `Map()`, or annotated.
+  value. Empty collections are `[]`, `[->]` and `Set<T>()`.
 - **Tabs and CR are lexical errors.** Source is UTF-8, LF lines.
-- **Statement vs expression bodies.** `if`/`match`/`switch`/`loop` are
+- **Statement vs expression bodies.** `if`/`match`/`loop` are
   expressions; as the final expression they take no trailing `;`.
 - **Assignment edits an existing `var`.** `let` is immutable; assigning a
   `let`-bound or unbound name is an error. Assignment is not a declaration.
@@ -71,16 +77,16 @@ juxtaposition anywhere in the grammar.
 ## Types (surface)
 
     @  Atom        any-aura atom            Bool   true / false
-    *              any noun                 Char   'a'
+    *              any noun                 Byte   'a'
     Hex            0x2a                     String "hello"
-    Real           3.14 (digit-dot-digit)   Base   atom < 2^64 - 2^32 + 1
-    List(@)        [1, 2, 3]                Map(@, Bool)  {1 -> true}
-    (Real, Real)   tuple / product          Set(@) {1, 2}
+    Float64           3.14 (digit-dot-digit)   Base   atom < 2^64 - 2^32 + 1
+    List<@>        [1, 2, 3]                Map<@->Bool>  [1 -> true]
+    (Float64, Float64)  tuple / product       Set<@>  Set<@>([1, 2])
     T?             option (postfix)         A | B  erasure-disjoint union
     %foo           term constant            /a/b/c Path
-    Sint           +42, -42 (signed)
+    Int           +42, -42 (signed)
 
-Type expressions: `TypeName`, application `List(@)`, products `(A, B)`,
+Type expressions: `TypeName`, application `List<@>`, products `(A, B)`,
 function `A -> B`. `T?` is option sugar; `A | B` members must be
 distinguishable at bounded depth (atom vs cell, or distinct head tags).
 
@@ -99,7 +105,7 @@ distinguishable at bounded depth (atom vs cell, or distinct head tags).
     11 and, xor                                            left
     12 or                                                  left
 
-Casts: `p as (Real, Real)` static (must nest, compile-time); `x as? Atom`
+Casts: `p as (Float64, Float64)` static (must nest, compile-time); `x as? Atom`
 soft (produces option); `x as! Atom` forced (crash on failure);
 `(x as? Atom) ?? 99` coalesce. `eval(subj, form)` is Nock 2, call-shaped.
 
@@ -127,8 +133,8 @@ a `func` after a split SHADOWS an earlier binding of the same name, like
 `let` shadowing. Calling forward across a split is an error.
 
 Generics: binder parens on the declaring keyword for values —
-`func(T) id(x: T) -> T { x };`, bounds `func(T: Arithmetic)` — and on the
-declared name for types — `struct Pair(T) { a: T, b: T };`. Instantiation is
+`func<T> id(x: T) -> T { x };`, bounds `func<T: Arithmetic>` — and on the
+declared name for types — `struct Pair<T> { a: T, b: T };`. Instantiation is
 inferred; there is no call-site instantiation syntax.
 
     loop {
@@ -138,26 +144,30 @@ inferred; there is no call-site instantiation syntax.
 
 ## Declarations
 
-    struct Circle { radius: Real };            // fields comma-separated
-    union Shape { point, circle(Circle) };     // first case is the bunt;
+    struct Circle { radius: Float64 };            // fields comma-separated
+    enum Shape { point, circle(Circle) };     // first case is the bunt;
                                                // tags lowercase, positional
-                                               // payloads, once per union
-    trait Area { area(self: Self) -> Real; };  // methods ;-terminated
-    impl Area(Circle) {
-      area(self: Circle) -> Real { 3.14 * self.radius * self.radius };
+                                               // payloads, once per enum
+    trait Area { area(self: Self) -> Float64; };  // methods ;-terminated
+    impl Area for Circle {
+      area(self: Circle) -> Float64 { 3.14 * self.radius * self.radius };
     };
     class Point(PointState) impl Arithmetic { ... };
 
 Construction is qualified and applied: `Shape.point`, `Shape.circle(c)`.
-Patterns are bare and positional: `match s { point => 0.0; circle(c) =>
-c.area(); }` — arms `;`-separated (`=>` not `->`), terminator optional on
-the last arm, exhaustiveness checked (non-exhaustive match errors with a
-witness). `switch` is value-equality sugar over `match`. `self` is an
+Case patterns are QUALIFIED and positional: `match s { .point => 0.0,
+.circle(c) => c.area(), }` — a leading `.` (or `Shape.point`) marks a
+case; a BARE name is a binding and refuses `%mint-patt-bare` if it
+names a case. Arms are comma-separated (`=>` not `->`), terminator
+optional on the last arm, exhaustiveness checked (non-exhaustive match errors with a
+witness). `switch` is RETIRED (reserved; refuses %parse-switch-gone) —
+`match` takes literal values as patterns, so it always covered value
+dispatch. `self` is an
 ordinary parameter name, not a keyword. Operator binding in traits is
 per-method: `trait Add { add(+); }`.
 
 String's prelude methods (the `Str` trait): `.len()` (bytes),
-`.cat(t)` (concatenation), `.trip()` (to `List(Char)`),
+`.cat(t)` (concatenation), `.trip()` (to `List<Byte>`),
 `.starts-with(pre)` (byte-prefix test; the empty prefix is a prefix
 of everything). These are byte-semantics on LSB-first cords, not
 character-aware — and a cord cannot represent a TRAILING NUL
@@ -165,7 +175,7 @@ byte (`"ab\0"` is the same atom as `"ab"`, so `.len()` says 2).
 
 Adjacent declarations register simultaneously (mutual recursion). Behavior
 attaches by trait impls; a union is a nominal head so impls attach to it too.
-Heterogeneous collections are closed unions (`List(Shape)`) — there are no
+Heterogeneous collections are closed unions (`List<Shape>`) — there are no
 trait objects.
 
 `import hoon;` brings the Hoon FFI library into scope: `hoon.add(a, b)`,
