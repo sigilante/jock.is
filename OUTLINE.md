@@ -87,8 +87,11 @@ of the other parts.
    `lib/hof`.
 10. **Modules.** `import hoon` and the ambient prelude; writing and
     importing a Jock module; `--data-dir`; qualified names and types;
-    the 1.0 fences stated honestly. Worked examples: `parser.jock`
-    and `rational.jock` (a sealed class crossing an import boundary).
+    the 1.0 fences stated honestly. Worked examples: `parser.jock`,
+    `rational.jock` (a sealed class crossing an import boundary), and
+    `twoc.jock` (width-parameterized two's-complement arithmetic —
+    the width lives in sealed state, so `t.add(a, b)` *is* 8-bit or
+    64-bit arithmetic rather than a pile of width arguments).
 
 ### Part II — The reveal: nouns and Nock
 11. **Everything is a noun.** Erasure, from above: what your values
