@@ -1,0 +1,163 @@
+/**
+ * x402 Payment-Gated Proxy - Wrangler Configuration
+ *
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "jock-is-x402-proxy",
+	"main": "src/index.ts",
+	"compatibility_date": "2025-10-08",
+	"observability": {
+		"enabled": true,
+	},
+	// "assets" (the template's own demo landing page) is deliberately OFF.
+	// We proxy to the real jock.is origin (see ORIGIN_URL below), and per the
+	// template's own README, assets + an origin both configured means assets
+	// wins and the real site never shows through.
+	//
+	// "assets": {
+	// 	"directory": "public",
+	// },
+	// =========================================================================
+	// ROUTES - Where x402-proxy intercepts requests
+	// =========================================================================
+	// Left commented until jock.is's DNS is migrated to Cloudflare (see
+	// worker/README.md). Until then, deploy and test against the worker's
+	// own *.workers.dev URL with NETWORK set to base-sepolia — jock.is
+	// keeps serving straight from GitHub Pages, untouched.
+	//
+	// "routes": [
+	// 	{
+	// 		"pattern": "jock.is/*",
+	// 		"zone_name": "jock.is",
+	// 	},
+	// ],
+	// =========================================================================
+	// SERVICE BINDING - If your origin is another Cloudflare Worker
+	// =========================================================================
+	// Use this instead of ORIGIN_URL when your backend is another Worker
+	// in your account. Service Bindings are faster (no network hop) and
+	// don't require the origin Worker to have a public route.
+	//
+	// "services": [
+	// 	{
+	// 		"binding": "ORIGIN_SERVICE",
+	// 		"service": "my-origin-worker",
+	// 	},
+	// ],
+	"vars": {
+		// =====================================================================
+		// PAY_TO - Your wallet address to receive payments (REQUIRED)
+		// =====================================================================
+		// This is where payments will be sent when users pay for access.
+		// Any Ethereum-compatible wallet works (MetaMask, Coinbase Wallet, etc.).
+		//
+		// The default "dead address" below is useful for testing - payments
+		// sent there are unrecoverable but allow testing the flow.
+		//
+		// TODO(neal): replace with the real receiving address before going
+		// live. Until then this is the "dead address" — testable, but any
+		// real payment sent to it is unrecoverable.
+		"PAY_TO": "0x000000000000000000000000000000000000dEaD",
+		// =====================================================================
+		// NETWORK - Blockchain network for payments (REQUIRED)
+		// =====================================================================
+		// Chosen: "base" (mainnet), per the decision to use real USDC on Base.
+		// Switch to "base-sepolia" (free testnet tokens, faucet below) while
+		// PAY_TO is still the dead address / while dry-running the flow.
+		//
+		// Get testnet tokens: https://docs.cdp.coinbase.com/faucets/
+		// Supported networks: https://x402.org
+		//
+		"NETWORK": "base",
+		// =====================================================================
+		// PROTECTED_PATTERNS - Routes requiring payment (REQUIRED)
+		// =====================================================================
+		// Define which routes require payment and how much they cost.
+		// Each entry has:
+		//   - pattern: Route to protect (supports /* wildcards)
+		//   - price: Cost in USD (e.g., "$0.01")
+		//   - description: Shown to users explaining what they're paying for
+		//
+		// After payment, users get a JWT cookie valid for 1 hour.
+		//
+		// ─────────────────────────────────────────────────────────────────────
+		// BOT MANAGEMENT FILTERING (Optional)
+		// Requires Bot Management for Enterprise to enable bot filtering.
+		// ─────────────────────────────────────────────────────────────────────
+		// With Bot Management enabled, you can add:
+		//   - bot_score_threshold: Score at or below which payment is required
+		//   - except_detection_ids: Detection IDs of bots that access FREE
+		//
+		// This enables "default closed" - humans pass free, bots must pay.
+		//
+		"PROTECTED_PATTERNS": [
+			// index.html, philosophy.html, reviewers.html, supporters.html etc.
+			// are NOT listed here on purpose — today's site stays free for
+			// humans and crawlers alike. Only the agent-facing docs/reference
+			// corpus (not yet built) is gated, under these two prefixes.
+			{
+				"pattern": "/docs/*",
+				"price": "$0.01",
+				"description": "Jock language docs access, 1 hour",
+			},
+			{
+				"pattern": "/reference/*",
+				"price": "$0.01",
+				"description": "Jock language reference access, 1 hour",
+			},
+			// ─────────────────────────────────────────────────────────────────
+			// Bot Management Filtering (optional, Enterprise-only) would let
+			// browsers pass free while bots pay — see worker/README.md. Not
+			// enabled here since it requires a paid Cloudflare plan.
+			// ─────────────────────────────────────────────────────────────────
+		],
+		// =====================================================================
+		// ORIGIN_URL - External origin URL (OPTIONAL)
+		// =====================================================================
+		// Controls how requests are proxied to your backend after authentication.
+		//
+		// NOT SET (default): DNS-based proxy mode. Requests are forwarded to the
+		// origin server defined in your Cloudflare DNS records. Use this when your
+		// backend is a traditional server (VM, container, etc.).
+		//
+		// SET TO A URL: External Origin mode. Requests are rewritten to this URL.
+		// Use this to proxy to another Cloudflare Worker (on a Custom Domain) or
+		// any external service.
+		//
+		// Note: If ORIGIN_SERVICE binding is configured above, it takes priority
+		// over both ORIGIN_URL and DNS-based routing.
+		//
+		// Deliberately NOT set, even though jock.is is served by GitHub Pages.
+		// GitHub Pages routes purely on the Host header, but Workers' fetch()
+		// always sends the Host header matching the target URL's own hostname
+		// — it does NOT honor a Host header copied from the original request,
+		// confirmed against a local sigilante.github.io test (see
+		// worker/README.md). So ORIGIN_URL: "https://sigilante.github.io"
+		// would proxy every request to Host: sigilante.github.io and get
+		// GitHub's generic 404, not the jock.is site.
+		//
+		// DNS-based mode (this, the default) has no such problem: the client
+		// still requests https://jock.is/..., so Host stays "jock.is" the
+		// entire way — only Cloudflare's routing to GitHub's IPs (via the
+		// proxied CNAME set up in Phase 2, see worker/README.md) differs from
+		// public DNS. This only works once that DNS migration is done.
+		// "ORIGIN_URL": "https://my-backend.example.com",
+		// =====================================================================
+		// FACILITATOR_URL - Payment verification service (OPTIONAL)
+		// =====================================================================
+		// The facilitator verifies and settles payments on behalf of your server.
+		// Defaults to CDP facilitator if not set.
+		//
+		// Example facilitators:
+		//   - CDP (default): https://x402.org/facilitator (Base, Base Sepolia)
+		//   - PayAI: https://facilitator.payai.network (multi-chain)
+		//
+		// See: https://x402.gitbook.io/x402/core-concepts/facilitator
+		//
+		"FACILITATOR_URL": "https://x402.org/facilitator",
+	},
+	"upload_source_maps": true,
+}

@@ -28,6 +28,16 @@ Because that check reads the pages, the listings in `index.html` are held to the
 frozen surface syntax: they are tokenized, must round-trip exactly, and must
 produce no refusal.
 
+## Agent access / x402 micropayments
+
+`worker/` holds a Cloudflare Worker (vendored from Cloudflare's
+`x402-proxy-template`) that will sit in front of this site to charge agents
+per-request for the docs/reference corpus once it exists, via the
+[x402](https://x402.org) protocol. It does **not** gate anything here today —
+`index.html` and friends stay free for humans and crawlers — and it isn't
+deployed or wired into jock.is's DNS yet. See `worker/README.md` for the
+config and the rollout plan.
+
 ## Serving locally
 
     python3 -m http.server 8000
