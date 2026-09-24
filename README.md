@@ -28,6 +28,14 @@ Because that check reads the pages, the listings in `index.html` are held to the
 frozen surface syntax: they are tokenized, must round-trip exactly, and must
 produce no refusal.
 
+Updating the sha256 lines by hand is the step that's been missed twice (CI
+catches it after the fact via `.github/workflows/pins.yml`). A pre-commit
+hook in `.githooks/pre-commit` now re-pins `VENDOR.txt` automatically
+whenever a commit touches a vendored file, so it's fixed before the commit
+lands rather than after CI fails. It's opt-in per clone — run once:
+
+    git config core.hooksPath .githooks
+
 ## Agent access / x402 micropayments
 
 `worker/` holds a Cloudflare Worker (vendored from Cloudflare's
