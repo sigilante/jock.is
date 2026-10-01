@@ -37,7 +37,7 @@
   //  lexer treats the union as flat, exactly as the mold does.
   var KEYWORDS_DECL = ['let', 'var', 'func', 'lambda', 'struct', 'class',
                        'impl', 'trait', 'enum', 'for', 'is', 'alias',
-                       'import'];
+                       'import', 'private'];
   var KEYWORDS_CTRL = ['if', 'else', 'crash', 'assert', 'loop', 'defer',
                        'recur', 'match', 'switch', 'eval', 'print'];
   var KEYWORDS_OP   = ['as', 'in', 'and', 'or', 'xor', 'not'];
@@ -277,10 +277,14 @@
       }
 
       //  two-byte punctuators, maximal munch before their prefixes.
-      //  Both are single tokens, which is why neither `->` nor `=>`
-      //  ever arrives at the parser as a bare `=` or `-`.
+      //  All three are single tokens, which is why neither `->` nor
+      //  `=>` ever arrives at the parser as a bare `=` or `-`, and
+      //  why the range `..` never arrives as two field-access dots.
+      //  A real literal is digit-dot-DIGIT and is consumed on the
+      //  number path above, so `1..2` reaches here as `1`, `..`, `2`.
       if (c === '-' && src[i + 1] === '>') { emit('op', 2); continue; }
       if (c === '=' && src[i + 1] === '>') { emit('op', 2); continue; }
+      if (c === '.' && src[i + 1] === '.') { emit('op', 2); continue; }
 
       //  the multi-byte glyph operators
       if (UNI.indexOf(c) >= 0) { emit('op', 1); continue; }
