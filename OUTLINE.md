@@ -19,6 +19,11 @@
 >
 > **This revision also re-ordered the parts.** The compiler moved
 > from Part III to Part VI; see "Reading paths" below for why.
+>
+> **Publication settled 2026-10-12** (§4): USTJ, serialized
+> back-to-front against syntax risk, with the collected print edition
+> gated on the 1.0 syntax freeze and the reference sections staying
+> online.
 
 ## Structure
 
@@ -456,7 +461,87 @@ covers, in roughly the order a reader can absorb them):
   specs-first, a vector per rule, a lane per claim — is **not** cut and
   **not** an epilogue: it is chapter 30, which is the end of the book.
 
-## 4. Remaining open questions
+## 4. Publication
+
+**The publisher question is closed: USTJ (2026-10-12).** Neal runs the
+*Urbit Systems Technical Journal*, so there is no pitch, no gatekeeper,
+no revenue split and no external timeline — and the audience is already
+the right one. There is also already a thread: the co-design paper
+(*Jet-Accelerated Code and the Co-Design Problem*, USTJ vol. 3,
+mechanized in `lean-nock`) is a published precursor to chapter 29.
+
+### Serialize first, collect second
+
+A journal admits a path the trade-book framing does not: **publish
+parts as USTJ articles as they are written, and collect them into the
+book afterwards.** Three reasons this is the right shape and not just a
+convenience.
+
+1. It spreads 400–600 pages across issues instead of one monolithic
+   push, which is the dominant risk for a solo author with nothing
+   drafted.
+2. Each part is read, cited and criticised while the structure can
+   still change, rather than after it is printed.
+3. **The chapters least exposed to syntax churn are the ones most
+   publishable now.** Part VI (pipeline, Nockasm, provenance and jets,
+   trust) and Part II (nouns, the machine, erasure) barely touch
+   surface syntax; Part I is where the churn lives. So the serial order
+   runs *back-to-front against the risk*: write the stable material
+   first and let the syntax settle under the chapters that depend on
+   it.
+
+**Serial order:** chapter 30 and Part VI → Part II → Parts III–V →
+Part I last. Chapter 30 is a standalone article already — §3 calls that
+methodology the most broadly interesting content in the repo — and it
+needs no syntax decision that is still in flight.
+
+### Print is gated on the 1.0 syntax freeze
+
+The collected print edition waits for frozen syntax, and should then
+*mark* 1.0 rather than gamble on it. The reason is specific, not
+cautious: the syntax arc re-cut generics to angle brackets, moved
+construction to the glued paren, retired `union` and `switch`, re-cut
+the container literals and renamed the numeric types — **three weeks
+before the RC**. The web edition absorbs a change like that in an
+afternoon; print absorbs it in a second edition.
+
+Owning the press removes the one thing that would have enforced the
+wait, so it is written down here as a rule instead.
+
+Two consequences:
+
+- **R1–R11 do not go in print**, or go in heavily abridged with a
+  pointer. They are the part a reader looks up rather than reads, and
+  the part that costs the most pages. Generated and online, always
+  current (`GENERATOR.md`). This is the same split as the human/agent
+  one, which is a good sign: print gets the narrative, the generator
+  gets the tables.
+- **The extraction rule becomes a precondition for printing**, not
+  merely for chapter 1. A stale listing on the web is a fix; in print
+  it is a run of permanently wrong copies.
+
+### What self-publishing does not supply
+
+Recorded because these are the publisher's real services, and they are
+now unstaffed rather than solved:
+
+- **An editor.** The valuable thing a publisher gives a solo author is
+  not distribution — it is someone who says the book is too long, the
+  ordering is wrong, chapter 14 does not work. Author and publisher
+  being the same person leaves that role vacant. `reviewers.html` is
+  beta-tester orientation: it tests the *language*, not the *book*.
+  **Recruit one critical reader who is not the author.**
+- **Scope discipline.** A publisher pushes back on thirty chapters plus
+  eleven appendices. Nothing does now, which makes a per-chapter status
+  and a word budget more necessary rather than less.
+- **External legitimacy.** The print edition's main return is making
+  the language look permanent, and a book published by the journal its
+  author edits carries less third-party signal than one somebody else
+  accepted. Not a reason against it — a reason the legitimacy has to
+  come from the content and from named reviewers rather than from the
+  imprint.
+
+## 5. Remaining open questions
 
 Two of the three questions this section used to hold are now answered,
 and are recorded as closed rather than deleted so the reasoning
@@ -472,15 +557,16 @@ survives:
   chapter 30, "Why you can trust it", which the re-ordering put at the
   end of the book. An epilogue would have been the same content with
   less standing.
-- **Title and URL** for the site (and whether it lives beside nock.is
-  as a sibling — e.g. a jock.* domain — with shared cross-linking).
-  Note that `jock.is` already exists and serves the landing page, so
-  the practical question is whether the book lives at `jock.is/book`,
-  at its own host, or replaces the landing page as the site's front
-  door.
+- **Title and URL** for the *web* edition. The publisher half of this
+  question closed with §4; what remains is hosting. `jock.is` already
+  serves the landing page, so the practical choice is whether the book
+  lives at `jock.is/book`, at its own host, or replaces the landing
+  page as the site's front door. Related: whether it sits beside
+  nock.is as a sibling, with shared cross-linking.
 - **The extraction mechanism does not exist yet**, and the listings
   rule in §3 is unconditional, so this is the one open item that
-  blocks chapter 1 rather than merely preceding it. `tools/hilite.py`
+  blocks chapter 1 rather than merely preceding it — and, per §4, the
+  one that gates printing. `tools/hilite.py`
   is the seed: with `JOCK_SITE=` it already reads the pages, tokenizes
   every listing, requires an exact round-trip, and asserts that
   refusal vectors produce an error token. What it does **not** do is

@@ -41,10 +41,13 @@ compiling during the syntax arc, and nothing caught it until someone
 compiled them by hand. `llms.txt` is hand-maintained today and carries
 exactly that exposure.
 
-**3. It discharges `OUTLINE.md` §4's blocking item.** The listings rule
+**3. It discharges `OUTLINE.md` §5's blocking item.** The listings rule
 ("a listing that is not extracted is a transcription, and
 transcriptions drift") has no mechanism. This is the mechanism, for the
-part of the book where listings are densest.
+part of the book where listings are densest. The print edition is gated
+on it too (`OUTLINE.md` §4 — a stale listing on the web is a fix, in
+print it is a run of permanently wrong copies), which makes three
+independent arguments for building this first.
 
 ## Sources — everything it reads is already CI-checked
 
