@@ -7,11 +7,13 @@ upstream template and reapplying that diff.
 
 ## What's configured here
 
-- **Free today, gated later**: `index.html`, `philosophy.html`, `reviewers.html`,
-  `supporters.html` are **not** protected — humans and crawlers keep hitting
-  GitHub Pages exactly as now. Only `/docs/*` and `/reference/*` (the agent-facing
-  corpus mentioned as "eventually docs and reference" — not built yet) require
-  payment. See `PROTECTED_PATTERNS` in `wrangler.jsonc`.
+- **Nothing load-bearing is gated** (revised 2026-10-10): the site's pages
+  are **not** protected, and neither is the agent corpus — `llms.txt` and the
+  generated reference index stay free permanently, because they are the
+  adoption funnel. Only `/demo/*` requires payment, which exists so there is a
+  working x402 endpoint to point at. See `PROTECTED_PATTERNS` in
+  `wrangler.jsonc`, and the revised rollout plan below for why the docs are no
+  longer the object being metered.
 - **Origin**: DNS-based mode (`ORIGIN_URL` left unset). External Origin Mode
   was tried first and doesn't work here — GitHub Pages routes purely on the
   Host header, but Workers' `fetch()` always sends the target URL's own
@@ -20,21 +22,75 @@ upstream template and reapplying that diff.
   see the `ORIGIN_URL` comment in `wrangler.jsonc`). DNS-based mode has no
   such issue, because the client's URL stays `https://jock.is/...` the whole
   way; only *where Cloudflare routes it* changes, once Phase 2 below is done.
-- **Network**: `base` (mainnet USDC), per the decision to use real payments.
-  `PAY_TO` is still the x402 template's placeholder "dead address" — **replace
-  it before going live**, or switch `NETWORK` to `base-sepolia` to dry-run
-  against testnet first.
-- **Price**: `$0.01` per hour of access on both patterns — arbitrary starting
-  point, trivially adjustable in `wrangler.jsonc`.
-- **Bot Management filtering** (humans free, only bots pay) is documented
-  below but **not enabled** — it needs a paid/Enterprise Cloudflare plan.
+- **Network**: `base-sepolia` (testnet). It used to be `base` (mainnet) while
+  `PAY_TO` was the burn address `0x…dEaD` — routes were commented out so
+  nothing was live, but that pairing committed to the repo is the worst one
+  available, since if it were ever routed real USDC would go somewhere
+  irrecoverable. On testnet the dead address is correct and harmless.
+  **Mainnet is now a deliberate one-line edit at go-live, together with a real
+  `PAY_TO`.**
+- **Price**: `$0.01` per hour of access — an arbitrary starting point, and fine
+  for a demo. Per-*hour* pricing is the wrong shape for a service an agent
+  calls in a loop; see the check-loop note in the plan below.
+- **Bot Management filtering** (humans free, only bots pay) is documented below
+  but **not enabled** — it needs a paid/Enterprise Cloudflare plan. This is not
+  a nice-to-have: without it the template charges *all* traffic on a protected
+  route, so "humans free" is unimplementable here, which is the first reason
+  the rollout plan was revised.
 
-## Rollout plan (two phases — nothing here touches live jock.is DNS yet)
+## Rollout plan (revised 2026-10-10)
 
-**Phase 1 — prove the payment flow, zero risk to the live site.** Deploy this
-Worker under its own `*.workers.dev` URL (no `routes` in `wrangler.jsonc`,
-none are set yet) and test against `NETWORK: "base-sepolia"` with the
-dead-address `PAY_TO`. jock.is itself is untouched — nothing to roll back.
+The original plan gated `/docs/*` and `/reference/*` and went live on
+jock.is in two phases. That has been revised, for three reasons found
+on review rather than in principle.
+
+### Why it changed
+
+**1. The policy we want is not implementable on this plan.** The
+intent is *humans free, only agents pay*. That needs Cloudflare **Bot
+Management**, which is paid/Enterprise. Without it the template's own
+behaviour applies — "all traffic to protected routes requires
+payment" — so a human following a link to `/reference/` gets a 402.
+That is the opposite of the intent, and no `PROTECTED_PATTERNS` tuning
+fixes it: the patterns here carry no `bot_score_threshold` or
+`except_detection_ids`, so the policy is not configured even
+aspirationally.
+
+**2. Metering the corpus works against adoption, and earns ~nothing.**
+A prospective human user tries Jock *with an agent* in the first ten
+minutes, so the agent's competence at Jock is upstream of human
+adoption. Almost no agent harness can settle an x402 invoice today, so
+the practical effect of a 402 on `/docs/*` is that agents get nothing
+and fall back to confabulating Jock from Rust and Hoon priors — which
+is exactly the failure `llms.txt` exists to prevent. Expected revenue
+is ~0; expected adoption cost is not. It would not even bite where it
+matters: `llms.txt` is served from the site root, free, and is the file
+agents actually read.
+
+**3. Docs are the wrong object to meter.** Reading docs is a one-time
+act with no marginal cost to us, and the buyer can substitute by
+reading the spec on GitHub. *Checking* is a loop — an agent writing
+Jock validates every iteration — it has real marginal cost (compute),
+and a model genuinely cannot substitute for it, because it cannot
+self-verify a language it does not know. x402 is a per-request payment
+protocol; a per-request service is its natural fit, and a static
+document is not. See "If we ever meter the check loop" below — and note
+that it would want **per-call** pricing, not the per-hour window used
+here: an hour of access either lets one payment burn unbounded compute
+or charges an agent for idle time, and neither is intended.
+
+What survives unchanged: the worker itself, DNS-based mode, and the
+finding that External Origin Mode cannot work here (GitHub Pages routes
+on the `Host` header, and Workers' `fetch()` sends the target URL's
+host, not the original request's).
+
+### The plan
+
+**Step 1 — Phase 1, unchanged and worth doing.** Deploy under
+`*.workers.dev` with `NETWORK: "base-sepolia"` and the dead-address
+`PAY_TO`. No `routes`, so live jock.is is untouched and there is
+nothing to roll back. This proves the 402/payment machinery in
+isolation.
 
 ```bash
 cd worker
@@ -43,42 +99,171 @@ cp .dev.vars.example .dev.vars
 node -e "console.log('JWT_SECRET=' + require('crypto').randomBytes(32).toString('hex'))" >> .dev.vars
 npm run dev                                    # local: http://localhost:8787
 curl http://localhost:8787/__x402/health       # -> 200, public
-curl http://localhost:8787/docs/anything       # -> 402, payment required
+curl http://localhost:8787/demo/anything       # -> 402, payment required
 npx wrangler secret put JWT_SECRET             # then, for a real deploy:
 npm run deploy
-curl https://<worker>.<account>.workers.dev/__x402/health
 ```
 
-Note what Phase 1 *can't* verify: passthrough of the free site (`/index.html`
-etc.) to the real origin. DNS-based mode only works once jock.is's DNS
-actually routes through this Worker's zone, which is Phase 2. Phase 1 proves
-the 402/payment machinery works in isolation; Phase 2 is what proves the free
-site keeps working unchanged.
+**Step 2 — gate `/demo/*`, not the docs.** `PROTECTED_PATTERNS` now
+protects `/demo/*` only. The positioning value of x402 is real and
+specific to this project — a language that compiles to Nock, in a
+Nockchain context, metering agent access over x402 is thematically
+coherent and worth being able to point at. That value is a *working
+endpoint*, not a paywalled manual, so nothing load-bearing goes behind
+it.
 
-**Phase 2 — go live on jock.is.** This is the part that touches the
-production domain and needs your registrar/Cloudflare account access
-directly, so it's not something I can do from here:
+**Step 3 — the agent corpus stays free, permanently.** `llms.txt` and
+the generated reference index (see `../GENERATOR.md`) are the adoption
+funnel and a build target, not a product. They are not candidates for
+metering at any point.
 
-1. Add `jock.is` as a zone in your Cloudflare account (free plan is enough).
-2. In Cloudflare DNS, recreate the apex record as a CNAME-flattened record to
-   `sigilante.github.io`, proxied (orange cloud) — this replaces the four A
-   records and four AAAA records currently listed in the top-level
-   `README.md`'s DNS table, which were pointing straight at GitHub Pages.
-3. At your registrar, change jock.is's nameservers to the two Cloudflare
-   assigns you when you add the zone. This is the actual cutover moment —
-   until this step, nothing changes for live traffic.
+**Step 4 — `NETWORK` defaults to testnet in the committed config.**
+It was `"base"` (mainnet) *and* `PAY_TO` was the burn address
+`0x…dEaD`, simultaneously. Routes were commented out so nothing was
+live, but that pairing committed to the repository is the worst one
+available: if it were ever routed, real USDC would go somewhere
+irrecoverable. The committed default is now `base-sepolia`, where the
+dead address is correct and harmless. **Switching to mainnet is a
+deliberate one-line edit at go-live, together with a real `PAY_TO`.**
+
+**Step 5 — hold Phase 2.** Going live on jock.is moves the domain's
+**nameservers** to Cloudflare. That is a cutover, not a record edit:
+rollback is real but propagates on TTL, so a botched one is up to 48
+hours of a wrong-or-absent landing page. For a one-page public face,
+taken on for ~$0 of expected revenue, that trade is not available yet.
+The Phase 2 steps are preserved verbatim below for when there is a
+reason — and the reason should be a demand signal, not a milestone:
+bulk crawling that actually costs something, or an operator asking for
+an SLA.
+
+### If we ever meter the check loop
+
+Not now, and recorded so the design is not re-derived later.
+
+The thing worth charging for is `check`: an endpoint that takes Jock
+source and returns the `+chkj` JSON. **No compiler change is
+required** — `+chkj` is already the single writer for that schema,
+pinned by `t-chkj-*` and `t-kchk-ok`, and `--diag`, `tools/check.sh`
+and the REPL's `%check` poke all serialize through it. An HTTP caller
+is a fourth consumer of a frozen schema.
+
+Both halves already exist and are proven:
+
+- **HTTP in and out of a Jock kernel**: `examples/webserver.jock` plus
+  `drivers/webserve/jock_serve.rs` — the stock `http_driver()`, zero
+  custom protocol Rust, curl-verified end to end, built by
+  `tools/serve.sh`.
+- **The check itself**: the REPL kernel's poke scanner already handles
+  `[%check @]` and answers `[%json cord]` (`lib/jock.hoon`), at ~0.7 s
+  warm for a module-free kernel.
+
+What does not exist is one kernel that does both — a `checkserver.jock`
+whose route pokes the compiler path where `webserver.jock` pokes a hit
+counter. That is example-level assembly over prelude vocabulary, not a
+language or compiler feature.
+
+**The real cost is operational, not code.** jock.is is static GitHub
+Pages; a Worker cannot host a NockVM binary. Serving `/check` means
+running a process somewhere, which converts this project from "a static
+site" into "a service with uptime." Two specifics to design for before
+that is worth it:
+
+- **Compile time is not bounded by input size.** The repo's own history
+  has an exponential `+mop` found by a hang and a 25-minute unmemoized
+  noun walk. A public checker needs a step budget per request; the
+  `--slam` lane's "step budget exhausted" is the existing precedent.
+- **The abuse surface is narrower than it looks, and worth stating.**
+  `check` compiles *without running* — no expansion, no execution — so
+  a caller cannot execute arbitrary code, only make the type checker
+  work. That is a real safety property, not a mitigation.
+
+### Multiple chains, and a better rate on Nockchain
+
+Asked 2026-10-10. The idea is good and the mechanism is further away
+than it looks, so both halves are recorded.
+
+**What x402 can do.** A 402 response carries `accepts`, a *list* of
+payment requirements, so advertising several networks at several prices
+is within the protocol. The vendored `x402@1.0.1` supports 17 networks
+— `abstract`, `avalanche`, `base`, `educhain`, `iotex`, `peaq`,
+`polygon`, `sei`, `skale-base-sepolia`, `solana`, `story` and testnets
+— with exactly one scheme, `exact`. Solana being on that list matters:
+x402 is not EVM-only, so a non-EVM chain is not excluded in principle.
+
+**What it cannot do today.** **Nockchain is not an x402 network**, and
+adding it is three layers deep, none of them configuration:
+
+1. a **scheme** for Nockchain — how a payment authorization is
+   represented and verified (`exact` is signature-authorization
+   shaped, with per-chain bindings);
+2. a **facilitator** that verifies and settles Nockchain payments;
+3. **client** support, in whatever wallet the paying agent drives.
+
+That is protocol and ecosystem work with a dependency on people who are
+not us.
+
+**And this template is single-network by construction.** One `NETWORK`
+var and one `PAY_TO`, global — not per pattern. Emitting multiple
+`accepts` entries means editing `src/`, which breaks the vendoring
+discipline stated at the top of this file ("byte-for-byte diffs live in
+`wrangler.jsonc` only") and puts us on the hook for re-applying a
+source diff every time the upstream template moves. That cost is the
+reason to look for another seam.
+
+**The cheaper seam, which gets what the question actually wants.** The
+gate here is **a JWT cookie, not x402**. `src/auth.ts` checks for a
+valid cookie first and applies the payment middleware *only when cookie
+auth fails*. So x402 is one **issuer** of the cookie, not the
+gatekeeper. A second issuer is additive:
+
+    POST /pay/nock  →  verify a Nockchain payment  →  mint the same JWT
+
+with a longer TTL, or a lower implied price, than the x402 path grants.
+The discount is then expressed as *what a cookie costs you* rather than
+as an x402 price, the x402 middleware is untouched, and the vendored
+template stays byte-identical. This is where a Nockchain rate should
+live.
+
+**What that still costs.** Verifying a Nockchain payment from a Worker
+needs a node or indexer reachable over HTTP, which the project does not
+have. That lands in the same place as the check-service question above:
+going from a static site to operating something. Both decisions want
+the same prerequisite, so they should be taken together.
+
+**Timing.** Premature while the only protected path is `/demo/*`.
+Recorded because it is the strategically distinctive piece: Jock
+compiles to Nock, so pricing the toolchain's own services in Nock
+closes a loop, and a discount is an adoption lever for Nockchain rather
+than only for Jock.
+
+**The testable intermediate**, if the idea is worth exercising before
+Nockchain can carry a payment: differential pricing across networks
+x402 *already* supports — Base against Polygon against Solana. It still
+needs the template fork for multiple `accepts`, but no new scheme, no
+new facilitator, and no node to run. That would prove the pricing shape
+without the ecosystem dependency.
+
+### Phase 2, preserved for later
+
+These steps need registrar/Cloudflare account access directly.
+
+1. Add `jock.is` as a zone in Cloudflare (free plan is enough).
+2. In Cloudflare DNS, recreate the apex as a CNAME-flattened record to
+   `sigilante.github.io`, proxied (orange cloud) — replacing the four A
+   and four AAAA records in the top-level `README.md`'s DNS table.
+3. At the registrar, change jock.is's nameservers to the two Cloudflare
+   assigns. **This is the cutover**; until this step nothing changes for
+   live traffic.
 4. Uncomment the `routes` block in `wrangler.jsonc` (`jock.is/*`, zone
-   `jock.is`) and redeploy (`npm run deploy`).
-5. Replace the placeholder `PAY_TO` with your real Base mainnet receiving
-   address, and switch `NETWORK` back to `"base"` if you'd left it on
-   `base-sepolia` for testing.
-6. Verify: `curl https://jock.is/` still returns the ordinary free site,
-   and a request under `/docs/*` (once that content exists) returns 402 with
-   payment requirements.
+   `jock.is`) and redeploy.
+5. Replace the placeholder `PAY_TO` with a real Base mainnet receiving
+   address and switch `NETWORK` to `"base"`.
+6. Verify `https://jock.is/` still returns the ordinary free site, and
+   that a request under the protected pattern returns 402.
 
-Rolling back phase 2 is just reverting the nameservers at the registrar back
-to GitHub Pages' — jock.is's own DNS records (the A/AAAA table) don't need to
-be touched or deleted for this, only the nameserver delegation.
+Rolling back is reverting the nameservers at the registrar; jock.is's
+own A/AAAA records do not need to be touched or deleted, only the
+nameserver delegation.
 
 <!-- dash-content-start -->
 

@@ -71,7 +71,7 @@
 		// Get testnet tokens: https://docs.cdp.coinbase.com/faucets/
 		// Supported networks: https://x402.org
 		//
-		"NETWORK": "base",
+		"NETWORK": "base-sepolia",
 		// =====================================================================
 		// PROTECTED_PATTERNS - Routes requiring payment (REQUIRED)
 		// =====================================================================
@@ -94,25 +94,24 @@
 		// This enables "default closed" - humans pass free, bots must pay.
 		//
 		"PROTECTED_PATTERNS": [
-			// index.html, philosophy.html, reviewers.html, supporters.html etc.
-			// are NOT listed here on purpose — today's site stays free for
-			// humans and crawlers alike. Only the agent-facing docs/reference
-			// corpus (not yet built) is gated, under these two prefixes.
+			// REVISED 2026-10-10.  This used to gate /docs/* and /reference/*,
+			// the agent-facing corpus.  It no longer does, for three reasons in
+			// README.md's rollout plan:  "humans free" needs Bot Management
+			// (Enterprise) so the intent was unimplementable;  gating the corpus
+			// costs adoption and earns ~nothing while almost no agent can settle
+			// an x402 invoice;  and docs are the wrong object anyway -- the
+			// meterable thing is the CHECK loop, which has marginal cost and
+			// which a model cannot substitute for.
+			//
+			// llms.txt and the generated reference index stay free PERMANENTLY:
+			// they are the adoption funnel, not a product.  /demo/* exists so
+			// there is a working x402 endpoint to point at, with nothing
+			// load-bearing behind it.
 			{
-				"pattern": "/docs/*",
+				"pattern": "/demo/*",
 				"price": "$0.01",
-				"description": "Jock language docs access, 1 hour",
+				"description": "x402 demo endpoint, 1 hour",
 			},
-			{
-				"pattern": "/reference/*",
-				"price": "$0.01",
-				"description": "Jock language reference access, 1 hour",
-			},
-			// ─────────────────────────────────────────────────────────────────
-			// Bot Management Filtering (optional, Enterprise-only) would let
-			// browsers pass free while bots pay — see worker/README.md. Not
-			// enabled here since it requires a paid Cloudflare plan.
-			// ─────────────────────────────────────────────────────────────────
 		],
 		// =====================================================================
 		// ORIGIN_URL - External origin URL (OPTIONAL)

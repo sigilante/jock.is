@@ -44,12 +44,19 @@ lands rather than after CI fails. It's opt-in per clone — run once:
 ## Agent access / x402 micropayments
 
 `worker/` holds a Cloudflare Worker (vendored from Cloudflare's
-`x402-proxy-template`) that will sit in front of this site to charge agents
-per-request for the docs/reference corpus once it exists, via the
+`x402-proxy-template`) that can payment-gate paths via the
 [x402](https://x402.org) protocol. It does **not** gate anything here today —
 `index.html` and friends stay free for humans and crawlers — and it isn't
-deployed or wired into jock.is's DNS yet. See `worker/README.md` for the
-config and the rollout plan.
+deployed or wired into jock.is's DNS yet.
+
+**The plan changed on 2026-10-10**: it no longer gates the docs/reference
+corpus. `llms.txt` and the generated reference index stay free permanently,
+because an agent that cannot read them writes wrong Jock, and a human
+evaluating Jock does it through an agent. Only `/demo/*` is protected, so that
+there is a working x402 endpoint to point at with nothing load-bearing behind
+it. The meterable product, if there ever is one, is the *check loop* rather
+than the documents. See `worker/README.md` for the reasoning, the Nockchain
+multi-chain question, and the rollout plan.
 
 ## Serving locally
 
