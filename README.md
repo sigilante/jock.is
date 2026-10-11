@@ -49,14 +49,15 @@ lands rather than after CI fails. It's opt-in per clone — run once:
 `index.html` and friends stay free for humans and crawlers — and it isn't
 deployed or wired into jock.is's DNS yet.
 
-**The plan changed on 2026-10-10**: it no longer gates the docs/reference
-corpus. `llms.txt` and the generated reference index stay free permanently,
-because an agent that cannot read them writes wrong Jock, and a human
-evaluating Jock does it through an agent. Only `/demo/*` is protected, so that
-there is a working x402 endpoint to point at with nothing load-bearing behind
-it. The meterable product, if there ever is one, is the *check loop* rather
-than the documents. See `worker/README.md` for the reasoning, the Nockchain
-multi-chain question, and the rollout plan.
+**Metering is closed, not deferred** (2026-10-10): the compiler will be
+released as open source, so checking locally will be a clone and a build away
+and a hosted service has no willingness to pay. **Nothing on jock.is will be
+metered.** `llms.txt` and the generated reference index are free permanently —
+they are the adoption funnel, since an agent that cannot read them writes wrong
+Jock and a human evaluating Jock does it through an agent. What remains of x402
+is `/demo/*`, kept for positioning, with nothing load-bearing behind it. See
+`worker/README.md` for the full reasoning, the Nockchain multi-chain note, and
+the rollout plan.
 
 ## Serving locally
 

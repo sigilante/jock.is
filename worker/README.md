@@ -40,9 +40,24 @@ upstream template and reapplying that diff.
 
 ## Rollout plan (revised 2026-10-10)
 
+> **METERING IS CLOSED, not deferred (ruled 2026-10-10, Neal).** The
+> compiler will be released as **open source**. Once it is, checking
+> locally is a clone and a build away — or a 1.3MB jam and one host
+> binary — so a hosted checker has no willingness to pay, and anything
+> else here was never a candidate. Nothing on jock.is will be metered.
+> What remains of x402 is the `/demo/*` endpoint, kept for positioning.
+>
+> This settles the question the three reasons below were circling, and
+> it settles it on the merits rather than on timing: the test for
+> whether charging is legitimate is "can a competent person get the
+> same answer for free with reasonable effort", and open source makes
+> the answer yes permanently. The sections after the plan are kept as
+> the record of *why*, because the reasoning is what stops this being
+> re-derived in six months.
+
 The original plan gated `/docs/*` and `/reference/*` and went live on
-jock.is in two phases. That has been revised, for three reasons found
-on review rather than in principle.
+jock.is in two phases. That was revised for three reasons found on
+review, and then closed by the open-source decision above.
 
 ### Why it changed
 
@@ -136,9 +151,27 @@ reason — and the reason should be a demand signal, not a milestone:
 bulk crawling that actually costs something, or an operator asking for
 an SLA.
 
-### If we ever meter the check loop
+### The check service — free, if it is built at all
 
-Not now, and recorded so the design is not re-derived later.
+**Not a product. CLOSED as a paid thing** by the open-source decision
+above; kept here because the *free* version may still be worth
+building, and because the design facts are worth not re-deriving.
+
+A free, zero-install `check` endpoint is the highest-leverage adoption
+artifact available: it is what makes an agent competent at Jock, and
+agent competence is upstream of human adoption — a prospective user
+tries Jock *with* an agent. That is a marketing cost, not a revenue
+line, and it should be budgeted as one.
+
+Two numbers to fix before serving it to anyone. The honest latency is
+**~2s**, not the ~0.7s module-free figure, because a `--data-dir`-
+bearing kernel re-resolves imports **per check** — caching resolved
+modules in the kernel is pure win and the difference between a box
+serving ~0.5 and ~1.4 requests per second. And **throughput, not
+latency, is the wall**: a NockApp kernel is a serial state machine, so
+concurrency is processes, and cost scales linearly with volume with
+nothing amortising. It is also **not LSP-grade** — editor diagnostics
+want <100ms — so it should not be positioned as that.
 
 The thing worth charging for is `check`: an endpoint that takes Jock
 source and returns the `+chkj` JSON. **No compiler change is
@@ -230,11 +263,16 @@ have. That lands in the same place as the check-service question above:
 going from a static site to operating something. Both decisions want
 the same prerequisite, so they should be taken together.
 
-**Timing.** Premature while the only protected path is `/demo/*`.
-Recorded because it is the strategically distinctive piece: Jock
-compiles to Nock, so pricing the toolchain's own services in Nock
-closes a loop, and a discount is an adoption lever for Nockchain rather
-than only for Jock.
+**Timing. Moot for revenue** — there is nothing to meter, per the
+ruling at the top. Kept for two reasons. The mechanism note stands if
+`/demo/*` ever wants differential pricing as part of the demo, which
+would be cheap. And the strategic observation survives independently of
+this worker: Jock compiles to Nock, so pricing anything in the
+toolchain in Nock closes a loop, and a discount is an adoption lever
+for Nockchain rather than only for Jock. If that is ever worth having,
+it is a thing to ask the Nockchain side for — a scheme, a facilitator
+and client support are three layers none of which are ours — not a
+thing to build here.
 
 **The testable intermediate**, if the idea is worth exercising before
 Nockchain can carry a payment: differential pricing across networks

@@ -199,8 +199,9 @@ compiler.**
   `jock/tools/`, output committed to both, with the `JOCK_SITE=`
   convention `hilite.py` already uses.
 - **One file or a tree?** The emerging convention is a small `llms.txt`
-  index plus a large `llms-full.txt`. That split also happens to be the
-  natural free/metered boundary — see the x402 question.
+  index plus a large `llms-full.txt`. Purely a retrieval question now:
+  metering is closed (the compiler is going open source), so both are
+  free and the split is about context budget, not tiers.
 - **Does the tag index ship before its 62 unpinned tags are vectored?**
   Emitting them unexplained is honest but weak; waiting means the
   generator blocks on test work. Probably: ship with them listed as
