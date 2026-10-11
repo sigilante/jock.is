@@ -1,7 +1,12 @@
 # jock.is
 
-Static landing page for the [Jock](https://github.com/zorp-corp/jock-lang) programming
+Static landing page for the [Jock](https://github.com/sigilante/jock) programming
 language — a single `index.html`, no build step.
+
+That link is the *recommenced* compiler (private, ongoing development). The
+original public alpha is [zorp-corp/jock-lang](https://github.com/zorp-corp/jock-lang);
+`index.html` distinguishes the two in its repositories table and should stay the
+authority on that distinction.
 
 ## Syntax highlighting
 
