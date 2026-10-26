@@ -86,6 +86,21 @@ index is the thing it actually consumes. The minimal programs are not
 written: they are the `%err`/`%neg` corpus vectors, which already pin
 the tag.
 
+*Corrected 2026-10-27, on building it (`tools/refgen.py`): that last
+sentence is true of the judgments that take **source** and false of
+the ones that take a hand-built AST or environment. `%mint` alone has
+48 `%err` rows and not one of them is a program. Of the 183 pinned
+tags, **123 have a runnable minimal program and 60 do not** — so A1
+marks which, rather than quietly omitting a tag or illustrating it
+with something invented.*
+
+*That distinction turned out to be causal rather than clerical. Of
+the seven wrong tag names this join found in the specs, **five named
+an AST-only tag** — tags nobody had ever watched come out of a
+program, which is how a plausible-looking name survives review. The
+60 are therefore both A1's gap and the priority list for
+source-level vectors, ahead of the 23 that have no vector at all.*
+
 **A2. The negative-transfer table.** `%lex-connective` for `&&`/`||`,
 `%parse-not` for `!a`, `%parse-ternary` for `?:`, `%parse-let-mut` for
 Rust's `let mut`, `%mint-cast-sint` for `42 as Int`. A model's failure
