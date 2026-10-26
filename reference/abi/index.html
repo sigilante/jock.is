@@ -21,7 +21,7 @@
 <!--
   HAND-MAINTAINED.  This is the only file in the reference that a
   person edits:  tools/refgen.py in the compiler repo fills
-  The pinned ABI, the runtime surface, What a Jock program can call: the arms the runtime pins, the traits the prelude declares, and who already implements them. Companion to <a href="../literals/">literals and names</a>, which lists these names without saying what they are. and <div class="note"><strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>683a6cd</code> (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27</div>
+  The pinned ABI, the runtime surface, What a Jock program can call: the arms the runtime pins, the traits the prelude declares, and who already implements them. Companion to <a href="../literals/">literals and names</a>, which lists these names without saying what they are. and <div class="meta"><strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>ed1cd2d</code> (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27</div>
 <p><code>docs/spec/runtime.md</code> is the authority for everything here. R-9 freezes the ABI through 1.0 with <strong>append</strong> as the one sanctioned change shape — a new arm enters at the END so every prior arm keeps its index, and a modification in place is not available because it would move an index that emitted code already depends on. R-10: the freeze rests on two pins, and only one is a mug.</p>
 <h2>The pinned arms</h2>
 <p>37 rows, projected from <code>runtime.md</code> §4.1. Each names its signature and the corpus vectors that exercise it through Jock source — R-11 pins the pairing <strong>behaviourally</strong>, so a reorder in either table breaks a vector rather than passing quietly.</p>
@@ -52,14 +52,13 @@
 <body>
 <div class="page">
 <header class="bar">
-  <a href="/">jock</a>
-  <span>reference</span>
-  <span class="right">the runtime surface</span>
+  <nav><a href="/">jock</a> <span>reference</span></nav>
+  <span>the runtime surface</span>
 </header>
-<main>
+<main class="prose">
 <h1 class="ruled">The pinned ABI</h1>
 <p class="sub">What a Jock program can call: the arms the runtime pins, the traits the prelude declares, and who already implements them. Companion to <a href="../literals/">literals and names</a>, which lists these names without saying what they are.</p>
-<div class="note"><strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>683a6cd</code> (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27</div>
+<div class="meta"><strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>ed1cd2d</code> (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27</div>
 <p><code>docs/spec/runtime.md</code> is the authority for everything here. R-9 freezes the ABI through 1.0 with <strong>append</strong> as the one sanctioned change shape — a new arm enters at the END so every prior arm keeps its index, and a modification in place is not available because it would move an index that emitted code already depends on. R-10: the freeze rests on two pins, and only one is a mug.</p>
 <h2>The pinned arms</h2>
 <p>37 rows, projected from <code>runtime.md</code> §4.1. Each names its signature and the corpus vectors that exercise it through Jock source — R-11 pins the pairing <strong>behaviourally</strong>, so a reorder in either table breaks a vector rather than passing quietly.</p>

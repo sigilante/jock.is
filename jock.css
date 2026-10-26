@@ -72,16 +72,33 @@ body{
 main{padding:34px 40px 60px}
 
 header.bar,footer.bar{
-  display:flex;align-items:baseline;gap:14px;
-  padding:14px 40px;
-  font:500 11px/1 var(--mono);letter-spacing:.18em;
-  text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:baseline;justify-content:space-between;
+  padding:18px 48px;
+  font:400 10px/1 var(--mono);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted-2);
 }
 header.bar{border-bottom:1px solid var(--hair)}
 footer.bar{border-top:1px solid var(--hair)}
-header.bar a,footer.bar a{color:var(--red);text-decoration:none}
-header.bar a:hover,footer.bar a:hover{color:var(--red-hover)}
+header.bar a,footer.bar a{color:var(--muted-2);text-decoration:none}
+header.bar a:hover,footer.bar a:hover{color:var(--red)}
+header.bar nav{display:flex;gap:22px}
 .bar .right{margin-left:auto}
+
+/*  Two page shapes.  A SECTIONED page (index, philosophy, reviewers,
+ *  supporters) carries its own vertical rhythm in its sections, so
+ *  main is horizontal padding only.  A PROSE page --- the generated
+ *  reference --- has no sections and needs the rhythm here.  */
+main{padding:0 48px}
+main.prose{padding:34px 48px 60px}
+
+/*  §3 again:  the text column beside the 186px margin column,
+ *  28px gutter, hairline on the margin.  */
+.grid{display:grid;grid-template-columns:1fr var(--margin-col);gap:0 var(--gutter)}
+.notes{
+  border-left:1px solid var(--hair-soft);padding-left:18px;
+  display:flex;flex-direction:column;gap:18px;padding-top:6px;
+}
+.hero{padding:44px 0 8px}
 
 /*  2 --- Type  ------------------------------------------------
  *  Page title · Zilla 600 · 42/1.05 · -.01em tracking
@@ -98,8 +115,27 @@ h1{
   letter-spacing:-.01em;color:var(--ink);
   margin-bottom:16px;
 }
-/*  §3:  1.5px black under every TITLE, hairline elsewhere  */
+/*  §3:  1.5px black under every TITLE, hairline elsewhere.  The site
+ *  spells this as a <div class="rule"> after the title;  h1.ruled is
+ *  the same rule as a border, for a page with no such div.  */
+.rule{height:1.5px;background:var(--ink);margin-bottom:18px}
 h1.ruled{padding-bottom:10px;border-bottom:1.5px solid var(--ink)}
+
+/*  kicker, lede and section head --- the site's own vocabulary for
+ *  the guide's §2 roles  */
+.kicker{
+  font:400 10px/1 var(--mono);letter-spacing:.24em;
+  text-transform:uppercase;color:var(--red);margin-bottom:16px;
+}
+.lede,.sub{
+  font:400 16px/1.65 var(--serif);color:var(--ink-soft);
+  max-width:60ch;margin-bottom:8px;
+}
+.sub{margin-bottom:24px}
+h2.head{
+  font:600 11px/1.2 var(--mono);letter-spacing:.22em;
+  text-transform:uppercase;color:var(--ink);margin-bottom:4px;
+}
 
 h2{
   font:600 11px/1.2 var(--mono);
@@ -123,13 +159,18 @@ a:hover{color:var(--red-hover);text-decoration:underline}
 .sub{font:400 15px/1.65 var(--serif);color:var(--muted);
      max-width:var(--measure);margin-bottom:24px}
 
-/*  margin note --- red numeral, notes grey, set small  */
-.note{
+/*  §2 margin note --- Zilla 400 11/1.5, notes grey, red numeral.
+ *  This is the SITE's meaning of .note and it is a margin note, not
+ *  a callout;  the generated reference's bordered provenance block
+ *  is .meta below, which used to be called .note and collided.  */
+.note{font:400 11.5px/1.55 var(--serif);color:var(--muted)}
+.note .n{color:var(--red);font-family:var(--mono);margin-right:2px}
+
+.meta{
   border-left:2px solid var(--hair);padding:8px 0 8px 14px;
-  font:400 11px/1.5 var(--serif);color:var(--muted);
+  font:400 13px/1.55 var(--serif);color:var(--muted);
   margin-bottom:18px;max-width:70ch;
 }
-.note .n{color:var(--red);font-family:var(--mono)}
 
 /*  label --- Sometype, small caps, label grey  */
 .label,p.label{
@@ -183,9 +224,12 @@ pre.code[data-refuses]::after{
   text-transform:uppercase;color:var(--muted-2);
 }
 
-@media(max-width:700px){
+@media (max-width:760px){
+  .grid{grid-template-columns:1fr}
+}
+@media (max-width:700px){
   :root{--measure:100%}
   header.bar,footer.bar{padding:12px 18px}
-  main{padding:24px 18px 40px}
+  main,main.prose{padding:24px 18px 40px}
   h1{font-size:32px}
 }
