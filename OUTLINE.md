@@ -316,7 +316,7 @@ behind it.
 **Normative sources (all frozen or near-frozen):**
 - `docs/spec/language.md` — surface syntax, NORMATIVE. Frozen
   2026-08-06 and **re-cut 2026-09-17** by the syntax arc
-  (`docs/syntax-arc.md`), which changed generics to angle brackets,
+  (`docs/record/syntax-arc.md`), which changed generics to angle brackets,
   moved construction to the glued paren, retired `union` and
   `switch`, re-cut the container literals and renamed the numeric and
   character types. Precedence is frozen; the OPEN table is resolved,
