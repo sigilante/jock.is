@@ -21,183 +21,13 @@
 <!--
   HAND-MAINTAINED.  This is the only file in the reference that a
   person edits:  tools/refgen.py in the compiler repo fills
-  Keywords, 31 keywords, All 31 keywords Jock reserves, what each one does, and a working program that uses it. The counterpart to <a href="../tags/">refusal tags</a>, which is the same corpus read for what it rejects. and <p>The keyword set is read from the <code>$keyword</code> mold in <code>sur/jock.hoon</code> — the lexer’s own authority, which <code>tools/hilite.py</code> holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.</p>
-<table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>keywords in the mold</td><td>31</td></tr><tr><td>usable, with a demonstrating program</td><td>26</td></tr><tr><td>usable, demonstrated by nothing</td><td>3</td></tr><tr><td>deliberately not usable</td><td>2</td></tr><tr><td>defined by at least one <code>language.md</code> rule</td><td>31</td></tr></tbody></table>
-<h2>Syntactic slots</h2>
-<p>Which slot each keyword occupies, from the tmLanguage grammar’s three keyword groups — the only machine-readable statement of this in the tree. <code>tools/hilite.py</code> checks that the three <strong>partition</strong> the <code>$keyword</code> mold: disjoint, and summing to it.</p>
-<ul><li><strong>declaration</strong> (14): <code>alias</code> <code>class</code> <code>enum</code> <code>for</code> <code>func</code> <code>impl</code> <code>import</code> <code>is</code> <code>lambda</code> <code>let</code> <code>private</code> <code>struct</code> <code>trait</code> <code>var</code></li><li><strong>control</strong> (11): <code>assert</code> <code>crash</code> <code>defer</code> <code>else</code> <code>eval</code> <code>if</code> <code>loop</code> <code>match</code> <code>print</code> <code>recur</code> <code>switch</code></li><li><strong>operator</strong> (6): <code>and</code> <code>as</code> <code>in</code> <code>not</code> <code>or</code> <code>xor</code></li></ul>
-<p>There is deliberately <strong>no BNF here.</strong> Jock’s parser is recursive descent (<code>parse.hoon</code>); no grammar artifact exists to project from, so a written-out grammar would be a second author of the syntax rather than a rendering of it — which is exactly how this reference’s predecessor acquired seven wrong tag names. A formal grammar is worth having and is expressible (the adjacency law needs glued and spaced <code>(</code> as <em>distinct terminals</em>, which the lexer’s <code>glu</code> flag already supplies), but it should arrive with the corpus as its acceptance suite — every source-bearing <code>%pos</code> vector parsing, every <code>%parse</code> and <code>%lex</code> refusal failing to — so that it is a lane and not a claim.</p>
-<h2>Precedence</h2>
-<p>Twelve levels, tightest first — <code>language.md</code> L-107, which says the table <em>is</em> the rule. Projected from it verbatim.</p>
-<table><thead><tr><th>Level</th><th>Operators</th><th>Associativity</th></tr></thead><tbody><tr><td>1</td><td>postfix: glued call <code>(</code>, glued index <code>[</code>, field <code>.</code>, lark <code>.&lt;</code> <code>.&gt;</code>, axis <code>.+n</code> (L-46 to L-51, L-98 to L-105)</td><td>left</td></tr><tr><td>2</td><td><code>as</code>, <code>as?</code>, <code>as!</code></td><td>left</td></tr><tr><td>3</td><td><code>**</code> <em>(reserved — L-112)</em></td><td>right</td></tr><tr><td>4</td><td>unary <code>-</code> <em>(reserved — L-112)</em></td><td>—</td></tr><tr><td>5</td><td><code>*</code> <code>/</code> <code>%</code> <code>×</code> <code>÷</code> <code>⊛</code> <code>∩</code> <code>⊗</code> <code>∘</code> <code>·</code></td><td>left</td></tr><tr><td>6</td><td><code>+</code> <code>-</code> (binary <code>-</code> is spaced — L-109) <code>∪</code> <code>⊕</code> <code>⊖</code> <code>±</code></td><td>left</td></tr><tr><td>7</td><td><code>??</code></td><td>right</td></tr><tr><td>8</td><td><code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code> <code>in</code> <code>∈</code> <code>⊂</code> <code>⊃</code></td><td>none</td></tr><tr><td>9</td><td><code>==</code> <code>!=</code> <code>===</code> <code>!==</code></td><td>none</td></tr><tr><td>10</td><td><code>not</code></td><td>—</td></tr><tr><td>11</td><td><code>and</code>, <code>xor</code></td><td>left</td></tr><tr><td>12</td><td><code>or</code></td><td>left</td></tr></tbody></table>
-<p>The comparisons at 8 and 9 are <strong>non-associative</strong> and must be parenthesized: <code>a &lt; b &lt; c</code> refuses <code>%parse-nonassoc</code> rather than returning a boolean surprise (L-108).</p>
-<h2>Usable, and demonstrated by nothing</h2>
-<p>These work — verified by hand with <code>tools/jockc.sh</code> on 2026-10-27; this generator classifies, it does not probe — and no <code>%pos</code> vector exercises them. A test gap, and a documentation gap of the worst kind, because the compiler <em>recommends</em> them: <code>%lex-connective</code> refuses <code>&amp;&amp;</code> and <code>||</code> and points the user at <code>and</code> and <code>or</code>, so the did-you-mean names a spelling the corpus never runs. The refusal is pinned twice; what it advises is pinned zero times.</p>
-<ul><li><code>and</code> — language.md L-61, language.md L-107, language.md L-173, language.md L-178</li><li><code>or</code> — language.md L-61, language.md L-107, language.md L-173, language.md L-178</li><li><code>xor</code> — language.md L-61, language.md L-107, language.md L-173, language.md L-178</li></ul>
-<h2>Keywords</h2>
-<h3 id="alias"><code>alias</code></h3>
-<p><strong>declaration keyword.</strong></p>
-<pre class="code jock">alias Foo is @; let x: Foo = 1; x</pre>
-<p>pinned by <code>t-arc-alias-is</code> · 6 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-22, <code>language.md</code> L-45, <code>language.md</code> L-61, <code>language.md</code> L-66, <code>language.md</code> L-81</p>
-<h3 id="and"><code>and</code></h3>
-<p><strong>operator keyword.</strong> Precedence level 11 of 12 (left-associative), sharing it with <code>xor</code>.</p>
-<p><strong>Usable, but no vector demonstrates it.</strong> See above.</p>
-<p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-107, <code>language.md</code> L-173, <code>language.md</code> L-178</p>
-<h3 id="as"><code>as</code></h3>
-<p><strong>operator keyword.</strong> Precedence level 2 of 12 (left-associative), sharing it with <code>as?</code>, <code>as!</code>.</p>
-<pre class="code jock">+42 as @</pre>
-<p>pinned by <code>t-sint-lit</code> · 47 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-24, <code>language.md</code> L-61, <code>language.md</code> L-107, <code>language.md</code> L-120</p>
-<h3 id="assert"><code>assert</code></h3>
-<p><strong>control keyword.</strong></p>
-<p class="label">module</p>
-<pre class="code jock">func dbl(n: @) -&gt; @ { n + n }; assert 1 == 1; func inc(n: @) -&gt; @ { n + 1 };</pre>
-<p class="label">program</p>
-<pre class="code jock">import m; m.inc(41)</pre>
-<p>pinned by <code>t-jimp-assert</code> · 1 vector use this keyword</p>
-<p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-185</p>
-<h3 id="class"><code>class</code></h3>
-<p><strong>declaration keyword.</strong></p>
-<pre class="code jock">struct BS&lt;T&gt; { v: T }; class Box&lt;T&gt;(BS&lt;T&gt;) { get(self: Self) -&gt; T { self.v } }; Box( v: 5 ).get()</pre>
-<p>pinned by <code>t-text-class-gen</code> · 25 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-22, <code>language.md</code> L-45, <code>language.md</code> L-61, <code>language.md</code> L-146</p>
-<h3 id="crash"><code>crash</code></h3>
-<p><strong>control keyword.</strong></p>
-<pre class="code jock">enum Nope {}; func f(x: @) -&gt; Nope { crash }; 1</pre>
-<p>pinned by <code>t-text-never</code> · 3 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-182</p>
-<h3 id="defer"><code>defer</code></h3>
-<p><strong>control keyword.</strong></p>
-<p><strong>RESERVED.</strong> Reserved in the lexer’s mold so that the parser recognises it and refuses with a diagnosis rather than an unbound name. Refuses <code>%parse-todo %defer</code> — parsed and refused;  not implemented for 1.0.</p>
-<p>defined by: <code>language.md</code> L-61</p>
-<h3 id="else"><code>else</code></h3>
-<p><strong>control keyword.</strong></p>
-<pre class="code jock">if 3 != 4 { 7 } else { 9 }</pre>
-<p>pinned by <code>t-eq-ne</code> · 30 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-61</p>
-<h3 id="enum"><code>enum</code></h3>
-<p><strong>declaration keyword.</strong></p>
-<pre class="code jock">enum Rec { leaf, cell(Rec, Rec) }; 0</pre>
-<p>pinned by <code>t-decl-fond-reorder</code> · 15 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-22, <code>language.md</code> L-45, <code>language.md</code> L-61, <code>language.md</code> L-69, <code>language.md</code> L-149, <code>language.md</code> L-170</p>
-<h3 id="eval"><code>eval</code></h3>
-<p><strong>control keyword.</strong></p>
-<pre class="code jock">(eval(42, (0, 1)) as? @) ?? 99</pre>
-<p>pinned by <code>t-text-qq</code> · 3 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-13, <code>language.md</code> L-61, <code>language.md</code> L-129, <code>language.md</code> L-183</p>
-<h3 id="for"><code>for</code></h3>
-<p><strong>declaration keyword.</strong></p>
-<pre class="code jock">struct P { v: @ }; impl Show for P { show(self: P) -&gt; String { "P!" }; }; let p = P( v: 1 ); "{p}"</pre>
-<p>pinned by <code>t-text-interp-user</code> · 20 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-61</p>
-<h3 id="func"><code>func</code></h3>
-<p><strong>declaration keyword.</strong></p>
-<pre class="code jock">func&lt;T&gt; id(x: T) -&gt; T { x }; id(42)</pre>
-<p>pinned by <code>t-text-gen</code> · 70 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-17, <code>language.md</code> L-20, <code>language.md</code> L-61, <code>language.md</code> L-87, <code>language.md</code> L-135, <code>language.md</code> L-136, <code>language.md</code> L-137, <code>language.md</code> L-139, <code>language.md</code> L-140, <code>language.md</code> L-143, <code>language.md</code> L-185</p>
-<h3 id="if"><code>if</code></h3>
-<p><strong>control keyword.</strong></p>
-<pre class="code jock">if 3 != 4 { 7 } else { 9 }</pre>
-<p>pinned by <code>t-eq-ne</code> · 31 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-185</p>
-<h3 id="impl"><code>impl</code></h3>
-<p><strong>declaration keyword.</strong></p>
-<pre class="code jock">struct P { v: @ }; impl Show for P { show(self: P) -&gt; String { "P!" }; }; let p = P( v: 1 ); "{p}"</pre>
-<p>pinned by <code>t-text-interp-user</code> · 35 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-20, <code>language.md</code> L-45, <code>language.md</code> L-61</p>
-<h3 id="import"><code>import</code></h3>
-<p><strong>declaration keyword.</strong></p>
-<pre class="code jock">import hoon; 20 + 22</pre>
-<p>pinned by <code>t-text-arith</code> · 60 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-185</p>
-<h3 id="in"><code>in</code></h3>
-<p><strong>operator keyword.</strong> Precedence level 8 of 12 (none-associative), sharing it with <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code>  <code>∈</code> <code>⊂</code> <code>⊃</code>.</p>
-<pre class="code jock">let s = "in"; "[{s}]"</pre>
-<p>pinned by <code>t-text-interp-str</code> · 6 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-73, <code>language.md</code> L-107, <code>language.md</code> L-108, <code>language.md</code> L-115, <code>language.md</code> L-173, <code>language.md</code> L-183</p>
-<h3 id="is"><code>is</code></h3>
-<p><strong>declaration keyword.</strong></p>
-<pre class="code jock">alias Foo is @; let x: Foo = 1; x</pre>
-<p>pinned by <code>t-arc-alias-is</code> · 6 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-69</p>
-<h3 id="lambda"><code>lambda</code></h3>
-<p><strong>declaration keyword.</strong></p>
-<pre class="code jock">let f = lambda (x: @) -&gt; @ { x * 10 }; hoon.lturn([1, 2, 3], f)</pre>
-<p>pinned by <code>t-list-turn-lambda</code> · 11 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-61</p>
-<h3 id="let"><code>let</code></h3>
-<p><strong>declaration keyword.</strong></p>
-<pre class="code jock">let x = 1; x;</pre>
-<p>pinned by <code>t-arc-term-semi</code> · 174 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-20, <code>language.md</code> L-61, <code>language.md</code> L-129, <code>language.md</code> L-130, <code>language.md</code> L-131, <code>language.md</code> L-134, <code>language.md</code> L-185</p>
-<h3 id="loop"><code>loop</code></h3>
-<p><strong>control keyword.</strong></p>
-<pre class="code jock">import hoon; var b = 0; loop { if b == 5 { b } else { b = b + 1; recur } }</pre>
-<p>pinned by <code>t-text-loop</code> · 3 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-87, <code>language.md</code> L-140, <code>language.md</code> L-185</p>
-<h3 id="match"><code>match</code></h3>
-<p><strong>control keyword.</strong></p>
-<pre class="code jock">let a: @ = 3; match a { 1 =&gt; 0, _ =&gt; 84, }</pre>
-<p>pinned by <code>t-arc-arm-comma</code> · 20 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-84, <code>language.md</code> L-101, <code>language.md</code> L-126, <code>language.md</code> L-148, <code>language.md</code> L-150, <code>language.md</code> L-151, <code>language.md</code> L-173, <code>language.md</code> L-185</p>
-<h3 id="not"><code>not</code></h3>
-<p><strong>operator keyword.</strong> Precedence level 10 of 12 (—-associative), sharing it with nothing.</p>
-<pre class="code jock">not a == b</pre>
-<p>pinned by <code>t-parse-not</code> · 1 vector use this keyword</p>
-<p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-107, <code>language.md</code> L-173, <code>language.md</code> L-178</p>
-<h3 id="or"><code>or</code></h3>
-<p><strong>operator keyword.</strong> Precedence level 12 of 12 (left-associative), sharing it with nothing.</p>
-<p><strong>Usable, but no vector demonstrates it.</strong> See above.</p>
-<p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-107, <code>language.md</code> L-173, <code>language.md</code> L-178</p>
-<h3 id="print"><code>print</code></h3>
-<p><strong>control keyword.</strong></p>
-<pre class="code jock">print("hi"); 42</pre>
-<p>pinned by <code>t-text-print</code> · 10 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-35, <code>language.md</code> L-61, <code>language.md</code> L-76</p>
-<h3 id="private"><code>private</code></h3>
-<p><strong>declaration keyword.</strong></p>
-<pre class="code jock">private func dbl(n: @) -&gt; @ { n + n }; dbl(21)</pre>
-<p>pinned by <code>t-text-private-func</code> · 5 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-17, <code>language.md</code> L-25, <code>language.md</code> L-37, <code>language.md</code> L-61</p>
-<h3 id="recur"><code>recur</code></h3>
-<p><strong>control keyword.</strong></p>
-<pre class="code jock">import hoon; var b = 0; loop { if b == 5 { b } else { b = b + 1; recur } }</pre>
-<p>pinned by <code>t-text-loop</code> · 3 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-140, <code>language.md</code> L-152</p>
-<h3 id="struct"><code>struct</code></h3>
-<p><strong>declaration keyword.</strong></p>
-<pre class="code jock">struct Q { w: @ }; Q( w: 9 ).w</pre>
-<p>pinned by <code>t-text-dot-slit</code> · 65 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-45, <code>language.md</code> L-61</p>
-<h3 id="switch"><code>switch</code></h3>
-<p><strong>control keyword.</strong></p>
-<p><strong>RETIRED.</strong> Reserved in the lexer’s mold so that the parser recognises it and refuses with a diagnosis rather than an unbound name. Refuses <code>%parse-switch-gone</code> — use <code>match</code>, which replaced it.</p>
-<p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-151, <code>language.md</code> L-183</p>
-<h3 id="trait"><code>trait</code></h3>
-<p><strong>declaration keyword.</strong></p>
-<pre class="code jock">trait Tw { tw(self: Self) -&gt; @; } struct B { v: @ } impl Tw for B { tw(self: B) -&gt; @ { self.v } } let b = B(v: 7); b.tw()</pre>
-<p>pinned by <code>t-arc-impl-for</code> · 15 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-22, <code>language.md</code> L-45, <code>language.md</code> L-61</p>
-<h3 id="var"><code>var</code></h3>
-<p><strong>declaration keyword.</strong></p>
-<pre class="code jock">var b = 1; b = 3; b</pre>
-<p>pinned by <code>t-var-widen</code> · 11 vectors use this keyword</p>
-<p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-129, <code>language.md</code> L-130, <code>language.md</code> L-131, <code>language.md</code> L-132, <code>language.md</code> L-134</p>
-<h3 id="xor"><code>xor</code></h3>
-<p><strong>operator keyword.</strong> Precedence level 11 of 12 (left-associative), sharing it with <code>and</code>.</p>
-<p><strong>Usable, but no vector demonstrates it.</strong> See above.</p>
-<p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-107, <code>language.md</code> L-173, <code>language.md</code> L-178</p>
-<h2>Punctuators</h2>
-<p>From the <code>$jpunc</code> mold, the same authority as the keywords.</p>
-<ul><li><strong>single byte</strong> (29): <code>!</code> <code>#</code> <code>$</code> <code>%</code> <code>&amp;</code> <code>(</code> <code>)</code> <code>*</code> <code>+</code> <code>,</code> <code>-</code> <code>.</code> <code>/</code> <code>:</code> <code>;</code> <code>&lt;</code> <code>=</code> <code>&gt;</code> <code>?</code> <code>@</code> <code>[</code> <code>\</code> <code>]</code> <code>^</code> <code>_</code> <code>{</code> <code>|</code> <code>}</code> <code>~</code></li><li><strong>two byte</strong> (3): <code>-&gt;</code> <code>..</code> <code>=&gt;</code></li></ul>
-<h2>Glyphs</h2>
-<p>The 14 multi-byte punctuators, decoded from the LSB-first UTF-8 byte sequences in <code>+unis:lex</code> — which is how the lexer stores them, because a multibyte cord literal in compiler source is a compiler-dependent constant.</p>
-<table><thead><tr><th>Glyph</th><th>Punctuator</th><th>Codepoint</th><th>ASCII</th><th>Status</th></tr></thead><tbody><tr><td><code>×</code></td><td><code>%uni-mul</code></td><td>U+00D7</td><td><code>*</code></td><td>sugar for <code>*</code></td></tr><tr><td><code>÷</code></td><td><code>%uni-div</code></td><td>U+00F7</td><td><code>/</code></td><td>sugar for <code>/</code></td></tr><tr><td><code>±</code></td><td><code>%uni-pm</code></td><td>U+00B1</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>⊕</code></td><td><code>%uni-oplus</code></td><td>U+2295</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>⊗</code></td><td><code>%uni-otimes</code></td><td>U+2297</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>⊖</code></td><td><code>%uni-ominus</code></td><td>U+2296</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>∘</code></td><td><code>%uni-ring</code></td><td>U+2218</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>·</code></td><td><code>%uni-dot</code></td><td>U+00B7</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>∩</code></td><td><code>%uni-cap</code></td><td>U+2229</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>∪</code></td><td><code>%uni-cup</code></td><td>U+222A</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>∈</code></td><td><code>%uni-in</code></td><td>U+2208</td><td><code>in</code></td><td>sugar for <code>in</code></td></tr><tr><td><code>⊂</code></td><td><code>%uni-sub</code></td><td>U+2282</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>⊃</code></td><td><code>%uni-sup</code></td><td>U+2283</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>⊛</code></td><td><code>%uni-ast</code></td><td>U+229B</td><td>—</td><td>its own operator — no ASCII spelling</td></tr></tbody></table>
-<p><strong>Only 3 of the 14 are sugar.</strong> <code>+desugar</code> normalizes <code>×</code> to <code>*</code> and <code>÷</code> to <code>/</code>, and the parser reads <code>∈</code> as the <code>in</code> keyword. The other 11 are, in <code>sugar.hoon</code>’s own words, <em>deliberately</em> not normalized — "not being a second spelling of anything but its own operator with no pinned arm, so it survives to mint and dispatches through the ops registry alone. A library binds it or it refuses." Probed: <code>6 × 7</code> is <code>42</code> and <code>42 ÷ 6</code> is <code>7</code>, while <code>a ∩ b</code> and <code>6 ⊕ 7</code> both refuse <code>%mint-op</code>.</p>
-<p>So a glyph with no ASCII column is not a typographic alternative to anything. It is an operator name that happens to be spelled with one non-ASCII character, and reaching for it commits you to an <code>impl</code> that binds it.</p>
-<p><code>language.md</code> L-115 (the three aliases), L-116 (the eleven trait-only operators) and L-107a (their precedence: multiplicative glyphs parse at station 5, additive at 6, relational at 8 — fixed at parse, so a library may give a glyph meaning but cannot move it).</p> and writes the
-  pages beside it.  Design lives here, content is generated, and
+  the four placeholders below and writes the pages beside it.
+  (Naming them here in their own spelling would be a bug:  the
+  substitution is a plain string replace, so a comment mentioning a
+  placeholder gets the substitution too --- which silently injected
+  the whole document into this comment, doubling every page, until
+  2026-10-27.  One `-->` in generated content and it would have
+  broken out of the comment entirely.)  Design lives here, content is generated, and
   neither needs the other to change.
 
   Styling is /jock.css, authored from design/style-guide.html ---
@@ -219,11 +49,12 @@
 <main class="prose">
 <h1 class="ruled">Keywords</h1>
 <p class="sub">All 31 keywords Jock reserves, what each one does, and a working program that uses it. The counterpart to <a href="../tags/">refusal tags</a>, which is the same corpus read for what it rejects.</p>
-<!--  §3:  text column beside the 186px margin rail.  The rail is
-      often empty, which §7 says is correct --- "leave the margin
-      column empty when there is nothing to say".  -->
-<div class="grid">
-  <div><p>The keyword set is read from the <code>$keyword</code> mold in <code>sur/jock.hoon</code> — the lexer’s own authority, which <code>tools/hilite.py</code> holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.</p>
+<!--  §3:  text column beside the 186px margin rail.  A marginal
+      floats into the rail where it was written, so it sits beside
+      its referent;  the rail is empty wherever nothing was said,
+      which §7 calls correct.  -->
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>645928b</code> (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27</aside>
+<p>The keyword set is read from the <code>$keyword</code> mold in <code>sur/jock.hoon</code> — the lexer’s own authority, which <code>tools/hilite.py</code> holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.</p>
 <table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>keywords in the mold</td><td>31</td></tr><tr><td>usable, with a demonstrating program</td><td>26</td></tr><tr><td>usable, demonstrated by nothing</td><td>3</td></tr><tr><td>deliberately not usable</td><td>2</td></tr><tr><td>defined by at least one <code>language.md</code> rule</td><td>31</td></tr></tbody></table>
 <h2>Syntactic slots</h2>
 <p>Which slot each keyword occupies, from the tmLanguage grammar’s three keyword groups — the only machine-readable statement of this in the tree. <code>tools/hilite.py</code> checks that the three <strong>partition</strong> the <code>$keyword</code> mold: disjoint, and summing to it.</p>
@@ -396,11 +227,9 @@
 <h2>Glyphs</h2>
 <p>The 14 multi-byte punctuators, decoded from the LSB-first UTF-8 byte sequences in <code>+unis:lex</code> — which is how the lexer stores them, because a multibyte cord literal in compiler source is a compiler-dependent constant.</p>
 <table><thead><tr><th>Glyph</th><th>Punctuator</th><th>Codepoint</th><th>ASCII</th><th>Status</th></tr></thead><tbody><tr><td><code>×</code></td><td><code>%uni-mul</code></td><td>U+00D7</td><td><code>*</code></td><td>sugar for <code>*</code></td></tr><tr><td><code>÷</code></td><td><code>%uni-div</code></td><td>U+00F7</td><td><code>/</code></td><td>sugar for <code>/</code></td></tr><tr><td><code>±</code></td><td><code>%uni-pm</code></td><td>U+00B1</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>⊕</code></td><td><code>%uni-oplus</code></td><td>U+2295</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>⊗</code></td><td><code>%uni-otimes</code></td><td>U+2297</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>⊖</code></td><td><code>%uni-ominus</code></td><td>U+2296</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>∘</code></td><td><code>%uni-ring</code></td><td>U+2218</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>·</code></td><td><code>%uni-dot</code></td><td>U+00B7</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>∩</code></td><td><code>%uni-cap</code></td><td>U+2229</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>∪</code></td><td><code>%uni-cup</code></td><td>U+222A</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>∈</code></td><td><code>%uni-in</code></td><td>U+2208</td><td><code>in</code></td><td>sugar for <code>in</code></td></tr><tr><td><code>⊂</code></td><td><code>%uni-sub</code></td><td>U+2282</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>⊃</code></td><td><code>%uni-sup</code></td><td>U+2283</td><td>—</td><td>its own operator — no ASCII spelling</td></tr><tr><td><code>⊛</code></td><td><code>%uni-ast</code></td><td>U+229B</td><td>—</td><td>its own operator — no ASCII spelling</td></tr></tbody></table>
-<p><strong>Only 3 of the 14 are sugar.</strong> <code>+desugar</code> normalizes <code>×</code> to <code>*</code> and <code>÷</code> to <code>/</code>, and the parser reads <code>∈</code> as the <code>in</code> keyword. The other 11 are, in <code>sugar.hoon</code>’s own words, <em>deliberately</em> not normalized — "not being a second spelling of anything but its own operator with no pinned arm, so it survives to mint and dispatches through the ops registry alone. A library binds it or it refuses." Probed: <code>6 × 7</code> is <code>42</code> and <code>42 ÷ 6</code> is <code>7</code>, while <code>a ∩ b</code> and <code>6 ⊕ 7</code> both refuse <code>%mint-op</code>.</p>
+<aside class="marginal"><span class="n">2.</span> <strong>Only 3 of the 14 are sugar.</strong> <code>+desugar</code> normalizes <code>×</code> to <code>*</code> and <code>÷</code> to <code>/</code>, and the parser reads <code>∈</code> as the <code>in</code> keyword. The other 11 are <em>deliberately</em> not normalized — each is its own operator with no pinned arm, so a library binds it or the program refuses <code>%mint-op</code>. Probed: <code>6 × 7</code> is <code>42</code>; <code>a ∩ b</code> refuses.</aside>
 <p>So a glyph with no ASCII column is not a typographic alternative to anything. It is an operator name that happens to be spelled with one non-ASCII character, and reaching for it commits you to an <code>impl</code> that binds it.</p>
-<p><code>language.md</code> L-115 (the three aliases), L-116 (the eleven trait-only operators) and L-107a (their precedence: multiplicative glyphs parse at station 5, additive at 6, relational at 8 — fixed at parse, so a library may give a glyph meaning but cannot move it).</p></div>
-  <div class="notes"><div class="note"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>0087b20</code> (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27</div></div>
-</div>
+<p><code>language.md</code> L-115 (the three aliases), L-116 (the eleven trait-only operators) and L-107a (their precedence: multiplicative glyphs parse at station 5, additive at 6, relational at 8 — fixed at parse, so a library may give a glyph meaning but cannot move it).</p>
 </main>
 </div>
 </body>

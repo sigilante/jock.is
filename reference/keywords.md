@@ -5,7 +5,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `0087b20` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
+> channel `%rc` · commit `645928b` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
 
 The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexer’s own authority, which `tools/hilite.py` holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.
 
@@ -446,7 +446,8 @@ The 14 multi-byte punctuators, decoded from the LSB-first UTF-8 byte sequences i
 | `⊃` | `%uni-sup` | U+2283 | — | its own operator — no ASCII spelling |
 | `⊛` | `%uni-ast` | U+229B | — | its own operator — no ASCII spelling |
 
-**Only 3 of the 14 are sugar.** `+desugar` normalizes `×` to `*` and `÷` to `/`, and the parser reads `∈` as the `in` keyword. The other 11 are, in `sugar.hoon`’s own words, *deliberately* not normalized — "not being a second spelling of anything but its own operator with no pinned arm, so it survives to mint and dispatches through the ops registry alone. A library binds it or it refuses." Probed: `6 × 7` is `42` and `42 ÷ 6` is `7`, while `a ∩ b` and `6 ⊕ 7` both refuse `%mint-op`.
+> [!NOTE]
+> **Only 3 of the 14 are sugar.** `+desugar` normalizes `×` to `*` and `÷` to `/`, and the parser reads `∈` as the `in` keyword. The other 11 are *deliberately* not normalized — each is its own operator with no pinned arm, so a library binds it or the program refuses `%mint-op`. Probed: `6 × 7` is `42`; `a ∩ b` refuses.
 
 So a glyph with no ASCII column is not a typographic alternative to anything. It is an operator name that happens to be spelled with one non-ASCII character, and reaching for it commits you to an `impl` that binds it.
 

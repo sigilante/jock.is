@@ -21,8 +21,13 @@
 <!--
   HAND-MAINTAINED.  This is the only file in the reference that a
   person edits:  tools/refgen.py in the compiler repo fills
-  {{title}}, {{subtitle}}, {{blurb}} and {{body}} and writes the
-  pages beside it.  Design lives here, content is generated, and
+  the four placeholders below and writes the pages beside it.
+  (Naming them here in their own spelling would be a bug:  the
+  substitution is a plain string replace, so a comment mentioning a
+  placeholder gets the substitution too --- which silently injected
+  the whole document into this comment, doubling every page, until
+  2026-10-27.  One `-->` in generated content and it would have
+  broken out of the comment entirely.)  Design lives here, content is generated, and
   neither needs the other to change.
 
   Styling is /jock.css, authored from design/style-guide.html ---
@@ -44,13 +49,11 @@
 <main class="prose">
 <h1 class="ruled">{{title}}</h1>
 <p class="sub">{{blurb}}</p>
-<!--  §3:  text column beside the 186px margin rail.  The rail is
-      often empty, which §7 says is correct --- "leave the margin
-      column empty when there is nothing to say".  -->
-<div class="grid">
-  <div>{{body}}</div>
-  <div class="notes">{{notes}}</div>
-</div>
+<!--  §3:  text column beside the 186px margin rail.  A marginal
+      floats into the rail where it was written, so it sits beside
+      its referent;  the rail is empty wherever nothing was said,
+      which §7 calls correct.  -->
+{{body}}
 </main>
 </div>
 </body>

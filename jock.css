@@ -178,11 +178,28 @@ a:hover{color:var(--red-hover);text-decoration:underline}
 .note{font:400 11.5px/1.55 var(--serif);color:var(--muted)}
 .note .n{color:var(--red);font-family:var(--mono);margin-right:2px}
 
-.meta{
-  border-left:2px solid var(--hair);padding:8px 0 8px 14px;
-  font:400 13px/1.55 var(--serif);color:var(--muted);
-  margin-bottom:18px;max-width:70ch;
+/*  A MARGINAL --- a note that sits beside the text it belongs to,
+ *  not at the top of a column.  Floated rather than placed in a
+ *  grid cell for exactly that reason:  a grid puts every note in
+ *  one stack, so the second one lands a screenful away from its
+ *  referent.  Floating anchors each where it was written.
+ *
+ *  margin-right of -(rail + gutter) pulls the box out into the
+ *  padding, and since the resulting margin box is 28px NARROWER
+ *  than nothing, the text column does not wrap around it --- which
+ *  is what keeps the measure honest.  */
+main.prose{
+  padding-right:calc(48px + var(--margin-col) + var(--gutter));
 }
+.marginal{
+  float:right;clear:right;
+  width:var(--margin-col);
+  margin-right:calc(-1 * (var(--margin-col) + var(--gutter)));
+  margin-bottom:18px;
+  font:400 11.5px/1.55 var(--serif);color:var(--muted);
+}
+.marginal .n{color:var(--red);font-family:var(--mono);margin-right:2px}
+.marginal code{font-size:.9em}
 
 /*  label --- Sometype, small caps, label grey  */
 .label,p.label{
