@@ -1,14 +1,12 @@
 # Refusal tags
 
-Every refusal the Jock compiler can raise, the minimal program
-that raises it, and the vector that pins it.
+Every refusal the Jock compiler can raise, the minimal program that raises it, and the vector that pins it.
 
-> **GENERATED — do not edit.** `tools/refgen.py` in the compiler
-> repo writes this file; edits here are overwritten.
+> **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `666a8e0` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
+> channel `%rc` · commit `026a52b` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
 
-| | count | |
+|  | count |  |
 |---|---:|---|
 | tags the compiler can raise | 206 | 200 `~|` heads + 6 `$diag` members |
 | pinned by a vector | 183 | the tag itself is asserted |
@@ -16,16 +14,11 @@ that raises it, and the vector that pins it.
 | …vector is AST-level only | 59 | no program exists to show |
 | pinned by nothing | 23 | listed at the end, unexplained |
 
-A `%neg` vector refuses *without* naming a tag, so it pins that a
-program is rejected and never in what words. 36 rows are `%neg`;
-none of them pins a tag here.
+A `%neg` vector refuses *without* naming a tag, so it pins that a program is rejected and never in what words. 36 rows are `%neg`; none of them pins a tag here.
 
 ## Tags with a minimal program
 
-Each program is the vector's own input, verbatim — extracted,
-never transcribed (`site/LISTINGS.md` X-1), and pinned by its
-tag rather than a value (X-8). Running it reproduces the
-refusal.
+Each program is the vector’s own input, verbatim — extracted, never transcribed (`LISTINGS.md` X-1), and pinned by its tag rather than a value (X-8). Running it reproduces the refusal.
 
 ### `%decl-dup-field`
 
@@ -1094,13 +1087,7 @@ pinned by `t-sint-uint-neg` · spec: docs/spec/language.md L-14, docs/spec/runti
 
 ## Tags with no runnable program
 
-These are pinned by vectors that build an AST or an environment
-directly, so the corpus proves the refusal without ever
-expressing it as source. A1 cannot show a program for them, and
-this is where the specs' tag names drifted: of the seven wrong
-names this join found, five were tags in this list — tags nobody
-had watched come out of a program. **This is the priority list
-for source-level vectors.**
+These are pinned by vectors that build an AST or an environment directly, so the corpus proves the refusal without ever expressing it as source. No program can be shown, and this is where the specs’ tag names drifted: of the seven wrong names this join found, five were tags in this list — tags nobody had watched come out of a program. **This is the priority list for source-level vectors.**
 
 | tag | pinned by | spec |
 |---|---|---|
@@ -1166,9 +1153,7 @@ for source-level vectors.**
 
 ## Tags pinned by nothing
 
-Reachable, and no vector asserts them. Simultaneously a
-documentation gap (no verified explanation to emit) and a test
-gap. Listed rather than dropped, so the gap is visible.
+Reachable, and no vector asserts them. Simultaneously a documentation gap (no verified explanation to emit) and a test gap. Listed rather than dropped, so the gap is visible.
 
 - `%desugar-snap`
 - `%duplicate-schema-name`  — docs/spec/nockasm-target.md N-39, docs/spec/nockasm-target.md N-40, docs/spec/nockasm.md N-13
@@ -1196,9 +1181,7 @@ gap. Listed rather than dropped, so the gap is visible.
 
 ## Families
 
-Five tags discriminate on a *second* element, so the thing to
-search for is the pair. Every one is an "unsupported thing"
-family, which is exactly where the compiler must say which.
+Five tags discriminate on a *second* element, so the thing to search for is the pair. Every one is an "unsupported thing" family, which is exactly where the compiler must say which.
 
 - `%mint-mold` · `%deep` `%gate` `%var` `%void` — plus 4 computed leaf site(s), not enumerable from source
 - `%mint-todo` · `%bound-ptrait` `%class-bound` `%export-class-ptrait` `%func-gen` `%impl-bound` `%impl-head` `%list-annot` `%trait-bound` — plus 1 computed leaf site(s), not enumerable from source

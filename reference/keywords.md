@@ -1,21 +1,14 @@
 # Keywords
 
-All 31 keywords Jock reserves, what each one does, and a working
-program that uses it. The counterpart to [`tags.md`](tags.md), which
-is the same corpus read for its refusals.
+All 31 keywords Jock reserves, what each one does, and a working program that uses it. The counterpart to [refusal tags](../tags/), which is the same corpus read for what it rejects.
 
-> **GENERATED — do not edit.** `tools/refgen.py` in the compiler
-> repo writes this file; edits here are overwritten.
+> **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `9bb8fa4` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
+> channel `%rc` · commit `026a52b` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
 
-The keyword set is read from the `$keyword` mold in
-`sur/jock.hoon` — the lexer's own authority, which
-`tools/hilite.py` holds the web highlighter to. A keyword cannot
-appear here without being in the language, or be in the language
-without appearing here.
+The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexer’s own authority, which `tools/hilite.py` holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.
 
-| | count |
+|  | count |
 |---|---:|
 | keywords in the mold | 31 |
 | usable, with a demonstrating program | 26 |
@@ -25,32 +18,17 @@ without appearing here.
 
 ## Syntactic slots
 
-Which slot each keyword occupies, from the tmLanguage grammar's
-three keyword groups — the only machine-readable statement of
-this in the tree. `tools/hilite.py` checks that the three
-**partition** the `$keyword` mold: disjoint, and summing to it.
+Which slot each keyword occupies, from the tmLanguage grammar’s three keyword groups — the only machine-readable statement of this in the tree. `tools/hilite.py` checks that the three **partition** the `$keyword` mold: disjoint, and summing to it.
 
 - **declaration** (14): `alias` `class` `enum` `for` `func` `impl` `import` `is` `lambda` `let` `private` `struct` `trait` `var`
 - **control** (11): `assert` `crash` `defer` `else` `eval` `if` `loop` `match` `print` `recur` `switch`
 - **operator** (6): `and` `as` `in` `not` `or` `xor`
 
-There is deliberately **no BNF here.** Jock's parser is
-recursive descent (`parse.hoon`); no grammar artifact exists to
-project from, so a written-out grammar would be a second
-author of the syntax rather than a rendering of it — which is
-exactly how this reference's predecessor acquired seven wrong
-tag names. A formal grammar is worth having and is expressible
-(the adjacency law needs glued and spaced `(` as *distinct
-terminals*, which the lexer's `glu` flag already supplies), but
-it should arrive with the corpus as its acceptance suite —
-every source-bearing `%pos` vector parsing, every `%parse` and
-`%lex` refusal failing to — so that it is a lane and not a
-claim.
+There is deliberately **no BNF here.** Jock’s parser is recursive descent (`parse.hoon`); no grammar artifact exists to project from, so a written-out grammar would be a second author of the syntax rather than a rendering of it — which is exactly how this reference’s predecessor acquired seven wrong tag names. A formal grammar is worth having and is expressible (the adjacency law needs glued and spaced `(` as *distinct terminals*, which the lexer’s `glu` flag already supplies), but it should arrive with the corpus as its acceptance suite — every source-bearing `%pos` vector parsing, every `%parse` and `%lex` refusal failing to — so that it is a lane and not a claim.
 
 ## Precedence
 
-Twelve levels, tightest first — `language.md` L-107, which
-says the table *is* the rule. Projected from it verbatim.
+Twelve levels, tightest first — `language.md` L-107, which says the table *is* the rule. Projected from it verbatim.
 
 | Level | Operators | Associativity |
 |---|---|---|
@@ -67,21 +45,11 @@ says the table *is* the rule. Projected from it verbatim.
 | 11 | `and`, `xor` | left |
 | 12 | `or` | left |
 
-The comparisons at 8 and 9 are **non-associative** and must
-be parenthesized: `a < b < c` refuses `%parse-nonassoc`
-rather than returning a boolean surprise (L-108).
+The comparisons at 8 and 9 are **non-associative** and must be parenthesized: `a < b < c` refuses `%parse-nonassoc` rather than returning a boolean surprise (L-108).
 
 ## Usable, and demonstrated by nothing
 
-These work — verified by hand with `tools/jockc.sh` on
-2026-10-27; this generator classifies, it does not probe —
-and no `%pos` vector exercises them. A test gap, and a
-documentation gap
-of the worst kind, because the compiler *recommends* them:
-`%lex-connective` refuses `&&` and `||` and points the user
-at `and` and `or`, so the did-you-mean names a spelling the
-corpus never runs. The refusal is pinned twice; what it
-advises is pinned zero times.
+These work — verified by hand with `tools/jockc.sh` on 2026-10-27; this generator classifies, it does not probe — and no `%pos` vector exercises them. A test gap, and a documentation gap of the worst kind, because the compiler *recommends* them: `%lex-connective` refuses `&&` and `||` and points the user at `and` and `or`, so the did-you-mean names a spelling the corpus never runs. The refusal is pinned twice; what it advises is pinned zero times.
 
 - `and` — language.md L-61, language.md L-107, language.md L-173, language.md L-178
 - `or` — language.md L-61, language.md L-107, language.md L-173, language.md L-178
@@ -169,9 +137,7 @@ defined by: `language.md` L-61, `language.md` L-182
 
 **control keyword.**
 
-**RESERVED.** Reserved in the lexer's mold so that the parser
-recognises it and refuses with a diagnosis rather than an
-unbound name. Refuses `%parse-todo %defer` — parsed and refused;  not implemented for 1.0.
+**RESERVED.** Reserved in the lexer’s mold so that the parser recognises it and refuses with a diagnosis rather than an unbound name. Refuses `%parse-todo %defer` — parsed and refused;  not implemented for 1.0.
 
 defined by: `language.md` L-61
 
@@ -415,9 +381,7 @@ defined by: `language.md` L-45, `language.md` L-61
 
 **control keyword.**
 
-**RETIRED.** Reserved in the lexer's mold so that the parser
-recognises it and refuses with a diagnosis rather than an
-unbound name. Refuses `%parse-switch-gone` — use `match`, which replaced it.
+**RETIRED.** Reserved in the lexer’s mold so that the parser recognises it and refuses with a diagnosis rather than an unbound name. Refuses `%parse-switch-gone` — use `match`, which replaced it.
 
 defined by: `language.md` L-61, `language.md` L-151, `language.md` L-183
 
@@ -461,6 +425,4 @@ From the `$jpunc` mold, the same authority as the keywords.
 - **two byte** (3): `->` `..` `=>`
 - **glyphs** (14): `uni-ast` `uni-cap` `uni-cup` `uni-div` `uni-dot` `uni-in` `uni-mul` `uni-ominus` `uni-oplus` `uni-otimes` `uni-pm` `uni-ring` `uni-sub` `uni-sup`
 
-The glyphs are ASCII sugar — each has an ASCII spelling that is
-the normal way to write it. Emitting that mapping needs the byte
-tables in `lex.hoon`, and is not done yet.
+The glyphs are ASCII sugar — each has an ASCII spelling that is the normal way to write it. Emitting that mapping needs the byte tables in `lex.hoon`, and is not done yet.
