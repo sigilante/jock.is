@@ -5,7 +5,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `645928b` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
+> channel `%rc` · commit `040e9a1` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
 
 The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexer’s own authority, which `tools/hilite.py` holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.
 
@@ -74,7 +74,7 @@ defined by: `language.md` L-22, `language.md` L-45, `language.md` L-61, `languag
 
 **operator keyword.** Precedence level 11 of 12 (left-associative), sharing it with `xor`.
 
-**Usable, but no vector demonstrates it.** See above.
+**Usable, and no `%pos` vector exercises it.** It works — verified by hand with `tools/jockc.sh` on 2026-10-27 — and nothing in the corpus runs it. `%lex-connective` refuses `&&` and `||` and points the user at `and` and `or`, so the compiler recommends a spelling its own tests never execute.
 
 defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `language.md` L-178
 
@@ -326,7 +326,7 @@ defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `langu
 
 **operator keyword.** Precedence level 12 of 12 (left-associative), sharing it with nothing.
 
-**Usable, but no vector demonstrates it.** See above.
+**Usable, and no `%pos` vector exercises it.** It works — verified by hand with `tools/jockc.sh` on 2026-10-27 — and nothing in the corpus runs it. `%lex-connective` refuses `&&` and `||` and points the user at `and` and `or`, so the compiler recommends a spelling its own tests never execute.
 
 defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `language.md` L-178
 
@@ -414,7 +414,7 @@ defined by: `language.md` L-61, `language.md` L-129, `language.md` L-130, `langu
 
 **operator keyword.** Precedence level 11 of 12 (left-associative), sharing it with `and`.
 
-**Usable, but no vector demonstrates it.** See above.
+**Usable, and no `%pos` vector exercises it.** It works — verified by hand with `tools/jockc.sh` on 2026-10-27 — and nothing in the corpus runs it. `%lex-connective` refuses `&&` and `||` and points the user at `and` and `or`, so the compiler recommends a spelling its own tests never execute.
 
 defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `language.md` L-178
 

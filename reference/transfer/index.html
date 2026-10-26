@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Negative transfer — Jock reference</title>
+<meta name="description" content="The 25 refusals that exist to catch a habit from another language, each with the compiler’s own correction. A model writing Jock does not usually fail from ignorance; it fails by writing confident Rust, Swift or Hoon. These are the places the compiler says so.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!--  ABSOLUTE, not relative.  These were `../jock-highlight.css`,
+      which from /reference/tags/ resolves to
+      /reference/jock-highlight.css --- a 404 on every generated
+      page, so the highlighter never loaded and the listings were
+      marked `class="code jock"` for a script that was not there.
+      The site is served at an apex root, so an absolute path is
+      correct and is immune to however deep a page is nested.  -->
+<link rel="stylesheet" href="/jock-highlight.css">
+<script src="/jock-highlight.js" defer></script>
+<!--
+  HAND-MAINTAINED.  This is the only file in the reference that a
+  person edits:  tools/refgen.py in the compiler repo fills
+  the four placeholders below and writes the pages beside it.
+  Naming them here in their own spelling would be a bug:  the
+  substitution is a plain string replace, so a comment mentioning a
+  placeholder gets the substitution too --- which silently injected
+  the whole document into this comment, doubling every page, until
+  2026-10-27.  Nor may this comment contain a close-comment
+  sequence;  the sentence that said so, spelling it out, closed the
+  comment early and spilled the rest of this text onto the page.  Design lives here, content is generated, and
+  neither needs the other to change.
+
+  Styling is /jock.css, authored from design/style-guide.html ---
+  the design system's own document, which is a visual specimen of
+  inline styles rather than a stylesheet.  This page carries NO copy
+  of it:  that was the whole point of extracting it.
+
+  Jekyll ignores a file whose name starts with `_`, so this template
+  is never served.
+-->
+<link rel="stylesheet" href="/jock.css">
+</head>
+<body>
+<div class="page">
+<header class="bar">
+  <nav><a href="/">jock</a> <span>reference</span></nav>
+  <span>25 corrections</span>
+</header>
+<main class="prose">
+<h1 class="ruled">Negative transfer</h1>
+<p class="sub">The 25 refusals that exist to catch a habit from another language, each with the compiler’s own correction. A model writing Jock does not usually fail from ignorance; it fails by writing confident Rust, Swift or Hoon. These are the places the compiler says so.</p>
+<!--  §3:  text column beside the 186px margin rail.  A marginal
+      floats into the rail where it was written, so it sits beside
+      its referent;  the rail is empty wherever nothing was said,
+      which §7 calls correct.  -->
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>040e9a1</code> (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27</aside>
+<p>A refusal is counted here when its <code>~|</code> clue carries a <strong>prose sentence</strong>. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.</p>
+<p>Every message on this page is quoted from the compiler, not written here, so the words a reader sees are the words the terminal will use.</p>
+<table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>refusals that correct you</td><td>25</td></tr><tr><td>…shown with the program that triggers one</td><td>22</td></tr><tr><td>…pinned only by an AST-level vector</td><td>2</td></tr><tr><td>…pinned by no vector at all</td><td>1</td></tr></tbody></table>
+<h2>The corrections</h2>
+<h3 id="decl-fond"><code>%decl-fond</code></h3>
+<pre class="code jock" data-refuses="decl-fond">enum Rec { mk(Rec) }; 0</pre>
+<blockquote>this type contains itself with no base case, so it has no smallest value</blockquote>
+<p>pinned by <code>t-decl-fond-only</code> · spec: docs/spec/language.md L-164</p>
+<h3 id="decl-fond-deep"><code>%decl-fond-deep</code></h3>
+<pre class="code jock" data-refuses="decl-fond-deep">struct S0 { x: @ }; struct S1 { x: S0 }; struct S2 { x: S1 }; struct S3 { x: S2 }; struct S4 { x: S3 }; struct S5 { x: S4 }; struct S6 { x: S5 }; struct S7 { x: S6 }; struct S8 { x: S7 }; struct S9 { x: S8 }; struct S10 { x: S9 }; struct S11 { x: S10 }; struct S12 { x: S11 }; struct S13 { x: S12 }; struct S14 { x: S13 }; struct S15 { x: S14 }; struct S16 { x: S15 }; struct S17 { x: S16 }; struct S18 { x: S17 }; struct S19 { x: S18 }; struct S20 { x: S19 }; struct S21 { x: S20 }; struct S22 { x: S21 }; struct S23 { x: S22 }; struct S24 { x: S23 }; struct S25 { x: S24 }; struct S26 { x: S25 }; struct S27 { x: S26 }; struct S28 { x: S27 }; struct S29 { x: S28 }; struct S30 { x: S29 }; struct S31 { x: S30 }; struct S32 { x: S31 }; struct S33 { x: S32 }; struct S34 { x: S33 }; struct S35 { x: S34 }; struct S36 { x: S35 }; struct S37 { x: S36 }; struct S38 { x: S37 }; struct S39 { x: S38 }; struct S40 { x: S39 }; struct S41 { x: S40 }; struct S42 { x: S41 }; struct S43 { x: S42 }; struct S44 { x: S43 }; struct S45 { x: S44 }; struct S46 { x: S45 }; struct S47 { x: S46 }; struct S48 { x: S47 }; struct S49 { x: S48 }; struct S50 { x: S49 }; struct S51 { x: S50 }; struct S52 { x: S51 }; struct S53 { x: S52 }; struct S54 { x: S53 }; struct S55 { x: S54 }; struct S56 { x: S55 }; struct S57 { x: S56 }; struct S58 { x: S57 }; struct S59 { x: S58 }; struct S60 { x: S59 }; struct S61 { x: S60 }; struct S62 { x: S61 }; struct S63 { x: S62 }; struct S64 { x: S63 }; struct S65 { x: S64 }; struct S66 { x: S65 }; struct S67 { x: S66 }; struct S68 { x: S67 }; struct S69 { x: S68 }; struct S70 { x: S69 }; 1</pre>
+<blockquote>this type nests deeper than the checker unrolls (64); it may be well-founded</blockquote>
+<p>pinned by <code>t-decl-fond-deep</code> · spec: docs/spec/language.md L-164</p>
+<h3 id="decl-fond-order"><code>%decl-fond-order</code></h3>
+<pre class="code jock" data-refuses="decl-fond-order">enum Rec { cell(Rec, Rec), leaf }; 0</pre>
+<blockquote>the FIRST case of this union contains it, so the bunt diverges;  a non-recursive case must come first --- reorder the cases</blockquote>
+<p>pinned by <code>t-decl-fond-cycl</code> · spec: docs/spec/language.md L-164</p>
+<h3 id="decl-indiscriminable"><code>%decl-indiscriminable</code></h3>
+<pre class="code jock" data-refuses="decl-indiscriminable">struct P { a: @, b: @ }; struct Q { c: @, d: @ }; alias C is P | Q; 0</pre>
+<blockquote>this declaration holds a union whose members are not told apart by their nouns</blockquote>
+<p>pinned by <code>t-err-decl-indiscrim</code></p>
+<h3 id="elab-too-large"><code>%elab-too-large</code></h3>
+<pre class="code jock" data-refuses="elab-too-large">alias A0 is @; alias A1 is (A0,A0); alias A2 is (A1,A1); alias A3 is (A2,A2); alias A4 is (A3,A3); alias A5 is (A4,A4); alias A6 is (A5,A5); alias A7 is (A6,A6); alias A8 is (A7,A7); alias A9 is (A8,A8); alias A10 is (A9,A9); alias A11 is (A10,A10); alias A12 is (A11,A11); alias A13 is (A12,A12); alias A14 is (A13,A13); alias A15 is (A14,A14); alias A16 is (A15,A15); alias A17 is (A16,A16); alias A18 is (A17,A17); alias A19 is (A18,A18); alias A20 is (A19,A19); alias A21 is (A20,A20); alias A22 is (A21,A21); alias A23 is (A22,A22); alias A24 is (A23,A23); let x: A24 = 1; 1</pre>
+<blockquote>this alias elaborates to more nodes than a type may hold; aliases expand inline at every use</blockquote>
+<p>pinned by <code>t-elab-too-large</code></p>
+<h3 id="kernel-trait"><code>%kernel-trait</code></h3>
+<blockquote>the class must impl Kernel&lt;E&gt; or FullKernel&lt;E&gt;, naming its effect type</blockquote>
+<p><strong>no vector pins this one</strong> — it is reachable and the corpus does not assert it · spec: docs/spec/runtime.md R-70</p>
+<h3 id="lex-connective"><code>%lex-connective</code></h3>
+<pre class="code jock" data-refuses="lex-connective">let a = true; let b = false; a &amp;&amp; b</pre>
+<blockquote>&amp;&amp; is not Jock; the connectives are words: a and b, a or b, not a (bitwise is hoon.dis/con/mix)</blockquote>
+<blockquote>|| is not Jock; the connectives are words: a and b, a or b, not a (| joins types: A | B)</blockquote>
+<p>pinned by <code>t-hint-amp</code> · spec: docs/spec/language.md L-91, docs/spec/language.md L-178</p>
+<h3 id="mint-call-arity"><code>%mint-call-arity</code></h3>
+<blockquote>call supplies no arguments;  this one takes some</blockquote>
+<blockquote>no arguments minted for a call that supplied some</blockquote>
+<p>pinned by <code>t-mint-call-arity</code>, <code>t-mint-import-arity</code>, all of which build an AST directly, so no program can be shown · spec: docs/spec/language.md L-171</p>
+<h3 id="mint-cast-sealed"><code>%mint-cast-sealed</code></h3>
+<p class="label">module</p>
+<pre class="code jock" data-refuses="mint-cast-sealed">struct CS { n: @ }; class Counter(CS) impl Add { add(self: Self, p: Self) -&gt; Self { Counter( n: self.n + p.n ) }; bump(self: Self) -&gt; Self { Counter( n: self.n + 1 ) }; twice(self: Self) -&gt; Self { self.bump().bump() }; }; func mk(n: @) -&gt; Counter { Counter( n: n ) }; </pre>
+<p class="label">program</p>
+<pre class="code jock" data-refuses="mint-cast-sealed">import m; (5 as m.Counter).n</pre>
+<blockquote>a class is constructed only by the module that declares it; a cast would forge one</blockquote>
+<blockquote>a class is constructed only by the module that declares it; ask it for an arm that validates</blockquote>
+<p>pinned by <code>t-jimp-seal-cast</code> · spec: docs/imports.md I-5</p>
+<h3 id="mint-cast-sint"><code>%mint-cast-sint</code></h3>
+<pre class="code jock" data-refuses="mint-cast-sint">42 as Int</pre>
+<blockquote>a cast reinterprets bits; sint(n) converts @ to Int</blockquote>
+<blockquote>a cast reinterprets bits; sint(n) converts @ to Int (an untyped noun may still be molded: it is ZigZag by provenance)</blockquote>
+<blockquote>a type test reinterprets bits; sint(n) converts @ to Int (an untyped noun may still be molded: it is ZigZag by provenance)</blockquote>
+<p>pinned by <code>t-sint-cast</code> · spec: docs/imports.md I-5, docs/spec/language.md L-12, docs/spec/language.md L-127</p>
+<h3 id="mint-edit-sealed"><code>%mint-edit-sealed</code></h3>
+<p class="label">module</p>
+<pre class="code jock" data-refuses="mint-edit-sealed">struct CS { n: @ }; class Counter(CS) impl Add { add(self: Self, p: Self) -&gt; Self { Counter( n: self.n + p.n ) }; bump(self: Self) -&gt; Self { Counter( n: self.n + 1 ) }; twice(self: Self) -&gt; Self { self.bump().bump() }; }; func mk(n: @) -&gt; Counter { Counter( n: n ) }; </pre>
+<p class="label">program</p>
+<pre class="code jock" data-refuses="mint-edit-sealed">import m; var c = m.mk(1); c.n = 9; c.n</pre>
+<blockquote>a class is written only by the module that declares it; ask it for an arm that rebuilds</blockquote>
+<p>pinned by <code>t-jimp-seal-edit</code> · spec: docs/imports.md I-5</p>
+<h3 id="mint-patt-bare"><code>%mint-patt-bare</code></h3>
+<pre class="code jock" data-refuses="mint-patt-bare">enum C { red, green } let c = C.green; match c { red =&gt; 1, green =&gt; 2, }</pre>
+<blockquote>a bare name is a binding, never a case; write .name or Type.name to match the case</blockquote>
+<p>pinned by <code>t-arc-patt-bare</code> · spec: docs/spec/language.md L-149</p>
+<h3 id="mint-slit-sealed"><code>%mint-slit-sealed</code></h3>
+<p class="label">module</p>
+<pre class="code jock" data-refuses="mint-slit-sealed">struct BS&lt;T&gt; { v: T }; class Box&lt;T&gt;(BS&lt;T&gt;) { get(self: Self) -&gt; T { self.v } }; func mk(x: @) -&gt; Box&lt;@&gt; { Box( v: x ) }; </pre>
+<p class="label">program</p>
+<pre class="code jock" data-refuses="mint-slit-sealed">import m; m.Box( v: 6 ).get()</pre>
+<blockquote>a class is constructed only by the module that declares it; use a constructor it exports</blockquote>
+<p>pinned by <code>t-jimp-class-gen-seal</code> · spec: docs/imports.md I-5</p>
+<h3 id="mint-unblessed"><code>%mint-unblessed</code></h3>
+<pre class="code jock" data-refuses="mint-unblessed">func g() -&gt; @ { 2 };</pre>
+<blockquote>module is not on the blessed list; see vendor/BLESSED.txt</blockquote>
+<p>pinned by <code>t-halo-unblessed</code></p>
+<h3 id="mint-unblessed-scry"><code>%mint-unblessed-scry</code></h3>
+<blockquote>the namespace is denied under --nockchain</blockquote>
+<p>pinned by <code>t-halo-scry-peek</code>, <code>t-halo-scry-try</code>, <code>t-halo-scry-under</code>, all of which build an AST directly, so no program can be shown</p>
+<h3 id="parse-lark-cmp"><code>%parse-lark-cmp</code></h3>
+<pre class="code jock" data-refuses="parse-lark-cmp">var p = (7, 9); p.&gt;= 3; p</pre>
+<blockquote>p.&gt;= is the lark p.&gt; then =; write p.&gt; &gt;= 3 to compare, or p.&gt; = 3 to assign</blockquote>
+<p>pinned by <code>t-lark-eq-glued</code> · spec: docs/spec/language.md L-105</p>
+<h3 id="parse-let-mut"><code>%parse-let-mut</code></h3>
+<pre class="code jock" data-refuses="parse-let-mut">let mut x = 5; x</pre>
+<blockquote>mut is not a Jock keyword; let x binds immutably, var x = e is the mutable binding</blockquote>
+<p>pinned by <code>t-hint-let-mut</code></p>
+<h3 id="parse-minus-glue"><code>%parse-minus-glue</code></h3>
+<pre class="code jock" data-refuses="parse-minus-glue">let a = 5; a- 1</pre>
+<blockquote>a-1 and a -1 are reserved; write a - 1 to subtract</blockquote>
+<p>pinned by <code>t-minus-glued-l</code> · spec: docs/spec/language.md L-10, docs/spec/language.md L-109</p>
+<h3 id="parse-no-result"><code>%parse-no-result</code></h3>
+<pre class="code jock" data-refuses="parse-no-result">let a = 1; let b = 2; let c = 3;</pre>
+<blockquote>a program ends in an EXPRESSION; this one ends after its last statement</blockquote>
+<p>pinned by <code>t-parse-no-result</code></p>
+<h3 id="parse-not"><code>%parse-not</code></h3>
+<pre class="code jock" data-refuses="parse-not">let a = true; !a</pre>
+<blockquote>! does not negate; write not e (! appears only in !=)</blockquote>
+<p>pinned by <code>t-hint-not</code></p>
+<h3 id="parse-private"><code>%parse-private</code></h3>
+<pre class="code jock" data-refuses="parse-private">private let x = 1; x</pre>
+<blockquote>private marks a declaration or a func; nothing else exports</blockquote>
+<p>pinned by <code>t-err-private-let</code> · spec: docs/spec/language.md L-20</p>
+<h3 id="parse-private-impl"><code>%parse-private-impl</code></h3>
+<pre class="code jock" data-refuses="parse-private-impl">private impl Meas for @ { len(self: @) -&gt; @ { 1 } }; 0</pre>
+<blockquote>an impl is a global fact scoped by reachability; it cannot be private</blockquote>
+<p>pinned by <code>t-err-private-impl</code> · spec: docs/spec/language.md L-20</p>
+<h3 id="parse-switch-gone"><code>%parse-switch-gone</code></h3>
+<pre class="code jock" data-refuses="parse-switch-gone">let a: @ = 3; switch a { 1 =&gt; 0, _ =&gt; 84, }</pre>
+<blockquote>switch is retired; write match --- it takes the same arms, and always did</blockquote>
+<p>pinned by <code>t-switch-gone</code> · spec: docs/spec/language.md L-61, docs/spec/language.md L-151</p>
+<h3 id="parse-ternary"><code>%parse-ternary</code></h3>
+<pre class="code jock" data-refuses="parse-ternary">true ? 1 : 2</pre>
+<blockquote>no ternary ?: in Jock; if c { a } else { b } is an expression</blockquote>
+<p>pinned by <code>t-hint-ternary</code></p>
+<h3 id="parse-unglued"><code>%parse-unglued</code></h3>
+<pre class="code jock" data-refuses="parse-unglued">f (3)</pre>
+<blockquote>f (x) does not call f; write f(x) to call, or ; to sequence</blockquote>
+<blockquote>xs [0] does not index xs; write xs[0] to index, or ; to sequence</blockquote>
+<p>pinned by <code>t-parse-unglued</code> · spec: docs/spec/language.md L-85</p>
+</main>
+</div>
+</body>
+</html>

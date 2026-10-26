@@ -5,11 +5,11 @@ Every literal form Jock can spell, the aura each carries, and the names the lang
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `645928b` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
+> channel `%rc` · commit `040e9a1` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
 
 ## The literal inventory
 
-`language.md` L-77 — which says the table *is* the inventory, and that the `$jatom` mold in `sur/jock.hoon` must match it. Projected verbatim; the Example column is the spec’s own, not an extract, and the extracted programs are under Rules below.
+`language.md` L-77 — which says the table *is* the inventory, and that the `$jatom` mold in `sur/jock.hoon` must match it. Projected verbatim. The Example column is the spec’s own; the programs extracted from the corpus are in the Rules section of this page.
 
 | Form | Aura | Example |
 |---|---|---|
@@ -29,7 +29,7 @@ Every literal form Jock can spell, the aura each carries, and the names the lang
 | set | Set<T> | `Set<@>([1, 2, 3])` — CONSTRUCTED, not spelled; `Set<@>()` is empty |
 | tuple | product | `(a, b, c)` |
 
-**L-78:** `Date`, `Span` and `Path` exist as *types*, but what a literal of one looks like is **unspecified** — the `/a/b/c` above is indicative, not normative. A program needing one constructs it. That rule is itself `⟨none — UNPINNED⟩`.
+**L-78:** `Date`, `Span` and `Path` exist as *types*, but what a literal of one looks like is **unspecified** — the `/a/b/c` in the inventory table is indicative, not normative. A program needing one constructs it. That rule is itself `⟨none — UNPINNED⟩`.
 
 ## Rules
 
