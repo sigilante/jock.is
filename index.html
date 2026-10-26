@@ -58,6 +58,7 @@
     <a href="#keywords">keywords</a>
     <a href="#punctuation">punctuation</a>
     <a href="#punctuators">punctuators</a>
+    <a href="/reference/">reference</a>
     <a href="https://github.com/zorp-corp/jock-lang">github</a>
   </nav>
 </header>
@@ -312,14 +313,18 @@ CounterV2( n: 0, total: 100 )</pre>
     <p class="intro" style="margin-top:18px">
       <code>**</code> and unary <code>-</code> are reserved through 1.0: they lex and parse at frozen
       precedence but refuse at desugar, so their placement cannot be renegotiated when they land.
-      Ten Unicode glyphs (<code>&#8859; &cap; &otimes; &compfn; &sdot; &cup; &oplus; &ominus; &plusmn; &sub;</code>)
+      Eleven Unicode glyphs (<code>&#8859; &cap; &otimes; &compfn; &middot; &cup; &oplus; &ominus; &plusmn; &sub; &sup;</code>)
       are <em>trait-only</em>: the language lexes and parses them and assigns no meaning, so a library
-      supplies one through the ops registry.
+      supplies one through the ops registry, or the program refuses <code>%mint-op</code>.
+      The other three glyphs are sugar &mdash; <code>&times;</code> for <code>*</code>,
+      <code>&divide;</code> for <code>/</code>, <code>&isin;</code> for <code>in</code>.
+      The full table, with codepoints, is in the
+      <a href="/reference/keywords/#glyphs">generated reference</a>.
     </p>
   </section>
 
   <section id="punctuators">
-    <h2 class="head">05 » Punctuators</h2>
+    <h2 class="head">06 » Punctuators</h2>
     <div class="rule"></div>
     <p class="intro">
       Everything the language spells with punctuation rather than a word. Each glyph has one
