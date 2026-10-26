@@ -36,10 +36,10 @@ Twelve levels, tightest first — `language.md` L-107, which says the table *is*
 | 2 | `as`, `as?`, `as!` | left |
 | 3 | `**` *(reserved — L-112)* | right |
 | 4 | unary `-` *(reserved — L-112)* | — |
-| 5 | `*` `/` `%` `×` `÷` `⊛` | left |
-| 6 | `+` `-` (binary `-` is spaced — L-109) | left |
+| 5 | `*` `/` `%` `×` `÷` `⊛` `∩` `⊗` `∘` `·` | left |
+| 6 | `+` `-` (binary `-` is spaced — L-109) `∪` `⊕` `⊖` `±` | left |
 | 7 | `??` | right |
-| 8 | `<` `>` `<=` `>=` `in` `∈` | none |
+| 8 | `<` `>` `<=` `>=` `in` `∈` `⊂` `⊃` | none |
 | 9 | `==` `!=` `===` `!==` | none |
 | 10 | `not` | — |
 | 11 | `and`, `xor` | left |
@@ -239,7 +239,7 @@ defined by: `language.md` L-61, `language.md` L-185
 
 ### `in`
 
-**operator keyword.** Precedence level 8 of 12 (none-associative), sharing it with `<` `>` `<=` `>=`  `∈`.
+**operator keyword.** Precedence level 8 of 12 (none-associative), sharing it with `<` `>` `<=` `>=`  `∈` `⊂` `⊃`.
 
 ```
 let s = "in"; "[{s}]"
@@ -423,6 +423,30 @@ From the `$jpunc` mold, the same authority as the keywords.
 
 - **single byte** (29): `!` `#` `$` `%` `&` `(` `)` `*` `+` `,` `-` `.` `/` `:` `;` `<` `=` `>` `?` `@` `[` `\` `]` `^` `_` `{` `|` `}` `~`
 - **two byte** (3): `->` `..` `=>`
-- **glyphs** (14): `uni-ast` `uni-cap` `uni-cup` `uni-div` `uni-dot` `uni-in` `uni-mul` `uni-ominus` `uni-oplus` `uni-otimes` `uni-pm` `uni-ring` `uni-sub` `uni-sup`
 
-The glyphs are ASCII sugar — each has an ASCII spelling that is the normal way to write it. Emitting that mapping needs the byte tables in `lex.hoon`, and is not done yet.
+## Glyphs
+
+The 14 multi-byte punctuators, decoded from the LSB-first UTF-8 byte sequences in `+unis:lex` — which is how the lexer stores them, because a multibyte cord literal in compiler source is a compiler-dependent constant.
+
+| Glyph | Codepoint | Unicode name | ASCII | Status |
+|---|---|---|---|---|
+| `×` | U+00D7 | MULTIPLICATION SIGN | `*` | sugar for `*` |
+| `÷` | U+00F7 | DIVISION SIGN | `/` | sugar for `/` |
+| `±` | U+00B1 | PLUS-MINUS SIGN | — | its own operator — no ASCII spelling |
+| `⊕` | U+2295 | CIRCLED PLUS | — | its own operator — no ASCII spelling |
+| `⊗` | U+2297 | CIRCLED TIMES | — | its own operator — no ASCII spelling |
+| `⊖` | U+2296 | CIRCLED MINUS | — | its own operator — no ASCII spelling |
+| `∘` | U+2218 | RING OPERATOR | — | its own operator — no ASCII spelling |
+| `·` | U+00B7 | MIDDLE DOT | — | its own operator — no ASCII spelling |
+| `∩` | U+2229 | INTERSECTION | — | its own operator — no ASCII spelling |
+| `∪` | U+222A | UNION | — | its own operator — no ASCII spelling |
+| `∈` | U+2208 | ELEMENT OF | `in` | sugar for `in` |
+| `⊂` | U+2282 | SUBSET OF | — | its own operator — no ASCII spelling |
+| `⊃` | U+2283 | SUPERSET OF | — | its own operator — no ASCII spelling |
+| `⊛` | U+229B | CIRCLED ASTERISK OPERATOR | — | its own operator — no ASCII spelling |
+
+**Only 3 of the 14 are sugar.** `+desugar` normalizes `×` to `*` and `÷` to `/`, and the parser reads `∈` as the `in` keyword. The other 11 are, in `sugar.hoon`’s own words, *deliberately* not normalized — "not being a second spelling of anything but its own operator with no pinned arm, so it survives to mint and dispatches through the ops registry alone. A library binds it or it refuses." Probed: `6 × 7` is `42` and `42 ÷ 6` is `7`, while `a ∩ b` and `6 ⊕ 7` both refuse `%mint-op`.
+
+So a glyph with no ASCII column is not a typographic alternative to anything. It is an operator name that happens to be spelled with one non-ASCII character, and reaching for it commits you to an `impl` that binds it.
+
+`language.md` L-115 (the three aliases), L-116 (the eleven trait-only operators) and L-107a (their precedence: multiplicative glyphs parse at station 5, additive at 6, relational at 8 — fixed at parse, so a library may give a glyph meaning but cannot move it).
