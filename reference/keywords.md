@@ -4,7 +4,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `78cf220` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
+> channel `%rc` · commit `5155e6b` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
 
 The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexer’s own authority, which `tools/hilite.py` holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.
 
@@ -428,22 +428,22 @@ From the `$jpunc` mold, the same authority as the keywords.
 
 The 14 multi-byte punctuators, decoded from the LSB-first UTF-8 byte sequences in `+unis:lex` — which is how the lexer stores them, because a multibyte cord literal in compiler source is a compiler-dependent constant.
 
-| Glyph | Codepoint | Unicode name | ASCII | Status |
+| Glyph | Punctuator | Codepoint | ASCII | Status |
 |---|---|---|---|---|
-| `×` | U+00D7 | MULTIPLICATION SIGN | `*` | sugar for `*` |
-| `÷` | U+00F7 | DIVISION SIGN | `/` | sugar for `/` |
-| `±` | U+00B1 | PLUS-MINUS SIGN | — | its own operator — no ASCII spelling |
-| `⊕` | U+2295 | CIRCLED PLUS | — | its own operator — no ASCII spelling |
-| `⊗` | U+2297 | CIRCLED TIMES | — | its own operator — no ASCII spelling |
-| `⊖` | U+2296 | CIRCLED MINUS | — | its own operator — no ASCII spelling |
-| `∘` | U+2218 | RING OPERATOR | — | its own operator — no ASCII spelling |
-| `·` | U+00B7 | MIDDLE DOT | — | its own operator — no ASCII spelling |
-| `∩` | U+2229 | INTERSECTION | — | its own operator — no ASCII spelling |
-| `∪` | U+222A | UNION | — | its own operator — no ASCII spelling |
-| `∈` | U+2208 | ELEMENT OF | `in` | sugar for `in` |
-| `⊂` | U+2282 | SUBSET OF | — | its own operator — no ASCII spelling |
-| `⊃` | U+2283 | SUPERSET OF | — | its own operator — no ASCII spelling |
-| `⊛` | U+229B | CIRCLED ASTERISK OPERATOR | — | its own operator — no ASCII spelling |
+| `×` | `%uni-mul` | U+00D7 | `*` | sugar for `*` |
+| `÷` | `%uni-div` | U+00F7 | `/` | sugar for `/` |
+| `±` | `%uni-pm` | U+00B1 | — | its own operator — no ASCII spelling |
+| `⊕` | `%uni-oplus` | U+2295 | — | its own operator — no ASCII spelling |
+| `⊗` | `%uni-otimes` | U+2297 | — | its own operator — no ASCII spelling |
+| `⊖` | `%uni-ominus` | U+2296 | — | its own operator — no ASCII spelling |
+| `∘` | `%uni-ring` | U+2218 | — | its own operator — no ASCII spelling |
+| `·` | `%uni-dot` | U+00B7 | — | its own operator — no ASCII spelling |
+| `∩` | `%uni-cap` | U+2229 | — | its own operator — no ASCII spelling |
+| `∪` | `%uni-cup` | U+222A | — | its own operator — no ASCII spelling |
+| `∈` | `%uni-in` | U+2208 | `in` | sugar for `in` |
+| `⊂` | `%uni-sub` | U+2282 | — | its own operator — no ASCII spelling |
+| `⊃` | `%uni-sup` | U+2283 | — | its own operator — no ASCII spelling |
+| `⊛` | `%uni-ast` | U+229B | — | its own operator — no ASCII spelling |
 
 **Only 3 of the 14 are sugar.** `+desugar` normalizes `×` to `*` and `÷` to `/`, and the parser reads `∈` as the `in` keyword. The other 11 are, in `sugar.hoon`’s own words, *deliberately* not normalized — "not being a second spelling of anything but its own operator with no pinned arm, so it survives to mint and dispatches through the ops registry alone. A library binds it or it refuses." Probed: `6 × 7` is `42` and `42 ÷ 6` is `7`, while `a ∩ b` and `6 ⊕ 7` both refuse `%mint-op`.
 
