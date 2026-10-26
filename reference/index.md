@@ -5,7 +5,7 @@ Generated from the compiler and its corpus. Every table is projected from a norm
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes these pages.
 >
-> channel `%rc` · commit `81306cd` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
+> channel `%rc` · commit `e6a7ae2` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
 
 ## Writing Jock
 
@@ -29,6 +29,12 @@ All 31 keywords, each with its syntactic slot, its precedence where it has one, 
 
 [`examples/`](examples/) — the page · [`examples.md`](examples.md) — the same content as raw Markdown
 
+### [Deliberate absences](absences/)
+
+10 things Jock does not have, each stated as a rule that refuses. The only part of a language a reader cannot guess at, so it is written down.
+
+[`absences/`](absences/) — the page · [`absences.md`](absences.md) — the same content as raw Markdown
+
 ## When it refuses
 
 The compiler talking back, and what it means.
@@ -44,6 +50,16 @@ The compiler talking back, and what it means.
 All 206 refusals the compiler can raise: 124 with the minimal program that triggers one, 59 pinned only by an AST-level vector, 23 pinned by nothing at all.
 
 [`tags/`](tags/) — the page · [`tags.md`](tags.md) — the same content as raw Markdown
+
+## Driving the compiler
+
+Reading its output from a program.
+
+### [Machine interface](machine/)
+
+`jockc.sh --diag` emits one JSON object per run, with a schema corpus vectors pin by asserting the whole string. Parse this rather than the human output.
+
+[`machine/`](machine/) — the page · [`machine.md`](machine.md) — the same content as raw Markdown
 
 ## What it becomes
 

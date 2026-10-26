@@ -45,7 +45,7 @@
 <div class="page">
 <header class="bar">
   <nav><a href="/">jock</a> <span>reference</span></nav>
-  <span>7 pages</span>
+  <span>9 pages</span>
 </header>
 <main class="prose">
 <h1 class="ruled">Jock reference</h1>
@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes these pages. channel <code>%rc</code> · commit <code>81306cd</code> (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes these pages. channel <code>%rc</code> · commit <code>e6a7ae2</code> (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27</aside>
 <h2>Writing Jock</h2>
 <p>What the language offers and how it is spelled.</p>
 <h3 id="keywords"><a href="keywords/">Keywords</a></h3>
@@ -66,6 +66,9 @@
 <h3 id="worked-examples"><a href="examples/">Worked examples</a></h3>
 <p>45 complete programs with the values <code>tools/examples.sh</code> pins on every push. The 15 shortest are shown in full.</p>
 <p><a href="examples/"><code>examples/</code></a> — the page · <a href="examples.md"><code>examples.md</code></a> — the same content as raw Markdown</p>
+<h3 id="deliberate-absences"><a href="absences/">Deliberate absences</a></h3>
+<p>10 things Jock does not have, each stated as a rule that refuses. The only part of a language a reader cannot guess at, so it is written down.</p>
+<p><a href="absences/"><code>absences/</code></a> — the page · <a href="absences.md"><code>absences.md</code></a> — the same content as raw Markdown</p>
 <h2>When it refuses</h2>
 <p>The compiler talking back, and what it means.</p>
 <h3 id="negative-transfer"><a href="transfer/">Negative transfer</a></h3>
@@ -74,6 +77,11 @@
 <h3 id="refusal-tags"><a href="tags/">Refusal tags</a></h3>
 <p>All 206 refusals the compiler can raise: 124 with the minimal program that triggers one, 59 pinned only by an AST-level vector, 23 pinned by nothing at all.</p>
 <p><a href="tags/"><code>tags/</code></a> — the page · <a href="tags.md"><code>tags.md</code></a> — the same content as raw Markdown</p>
+<h2>Driving the compiler</h2>
+<p>Reading its output from a program.</p>
+<h3 id="machine-interface"><a href="machine/">Machine interface</a></h3>
+<p><code>jockc.sh --diag</code> emits one JSON object per run, with a schema corpus vectors pin by asserting the whole string. Parse this rather than the human output.</p>
+<p><a href="machine/"><code>machine/</code></a> — the page · <a href="machine.md"><code>machine.md</code></a> — the same content as raw Markdown</p>
 <h2>What it becomes</h2>
 <p>The noun on the other side of the compiler.</p>
 <h3 id="erasure-and-lowering"><a href="erasure/">Erasure and lowering</a></h3>

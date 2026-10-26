@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Machine interface — Jock reference</title>
+<meta name="description" content="jockc.sh --diag emits one JSON object per run. The schema is pinned by corpus vectors that assert the exact string, so a change to it is deliberate and versioned rather than drift.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!--  ABSOLUTE, not relative.  These were `../jock-highlight.css`,
+      which from /reference/tags/ resolves to
+      /reference/jock-highlight.css --- a 404 on every generated
+      page, so the highlighter never loaded and the listings were
+      marked `class="code jock"` for a script that was not there.
+      The site is served at an apex root, so an absolute path is
+      correct and is immune to however deep a page is nested.  -->
+<link rel="stylesheet" href="/jock-highlight.css">
+<script src="/jock-highlight.js" defer></script>
+<!--
+  HAND-MAINTAINED.  This is the only file in the reference that a
+  person edits:  tools/refgen.py in the compiler repo fills
+  the four placeholders below and writes the pages beside it.
+  Naming them here in their own spelling would be a bug:  the
+  substitution is a plain string replace, so a comment mentioning a
+  placeholder gets the substitution too --- which silently injected
+  the whole document into this comment, doubling every page, until
+  2026-10-27.  Nor may this comment contain a close-comment
+  sequence;  the sentence that said so, spelling it out, closed the
+  comment early and spilled the rest of this text onto the page.  Design lives here, content is generated, and
+  neither needs the other to change.
+
+  Styling is /jock.css, authored from design/style-guide.html ---
+  the design system's own document, which is a visual specimen of
+  inline styles rather than a stylesheet.  This page carries NO copy
+  of it:  that was the whole point of extracting it.
+
+  Jekyll ignores a file whose name starts with `_`, so this template
+  is never served.
+-->
+<link rel="stylesheet" href="/jock.css">
+</head>
+<body>
+<div class="page">
+<header class="bar">
+  <nav><a href="/">jock</a> <span>reference</span></nav>
+  <span>--diag</span>
+</header>
+<main class="prose">
+<h1 class="ruled">Machine interface</h1>
+<p class="sub"><code>jockc.sh --diag</code> emits one JSON object per run. The schema is pinned by corpus vectors that assert the exact string, so a change to it is deliberate and versioned rather than drift.</p>
+<!--  §3:  text column beside the 186px margin rail.  A marginal
+      floats into the rail where it was written, so it sits beside
+      its referent;  the rail is empty wherever nothing was said,
+      which §7 calls correct.  -->
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>e6a7ae2</code> (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27</aside>
+<p>An agent driving the compiler should parse this rather than the human output, which is built for a terminal and whose alignment is meaningful.</p>
+<h2>Fields</h2>
+<table><thead><tr><th>Field</th><th>On success</th><th>On refusal</th></tr></thead><tbody><tr><td><code>status</code></td><td><code>"ok"</code></td><td><code>"refused"</code>, or <code>"crashed"</code> with no tag</td></tr><tr><td><code>type</code></td><td>the program’s type, as a string</td><td>absent</td></tr><tr><td><code>tag</code></td><td>absent</td><td>the refusal tag, without its <code>%</code></td></tr><tr><td><code>line</code>, <code>col</code></td><td>absent</td><td>1-indexed position; <code>0,0</code> means end of input</td></tr><tr><td><code>module</code></td><td>absent</td><td>the <code>--data-dir</code> module the refusal came from, or <code>null</code></td></tr><tr><td><code>report</code></td><td>absent</td><td>the human report, one string per line</td></tr></tbody></table>
+<h2>Exit codes</h2>
+<table><thead><tr><th>Code</th><th>Meaning</th></tr></thead><tbody><tr><td><code>0</code></td><td>the program compiled (and ran, for <code>run</code>)</td></tr><tr><td><code>1</code></td><td>refused or crashed — a JSON object was still emitted</td></tr><tr><td><code>2</code></td><td>usage error: an unknown flag, or no mode given</td></tr></tbody></table>
+<p><code>1</code> and <code>0</code> both produce output. A tool should read <code>status</code> rather than branch on the exit code alone, since a refusal is a successful compile <em>run</em> that reports a rejection.</p>
+<h2>Pinned examples</h2>
+<p>Each is a corpus vector asserting the whole output string verbatim.</p>
+<h3 id="t-chkj-ok"><code>t-chkj-ok</code></h3>
+<pre class="code jock">1 + 41</pre>
+<p class="label">the JSON it emits</p>
+<pre class="code">{"status":"ok","type":"Nat"}</pre>
+<h3 id="t-chkj-refuse"><code>t-chkj-refuse</code></h3>
+<pre class="code jock">nope</pre>
+<p class="label">the JSON it emits</p>
+<pre class="code">{"status":"refused","tag":"mint-limb","line":1,"col":1,"module":null,"report":["refused: %mint-limb at 1:1","  1 | nope","    | ^","  hint: [ %mint-limb","            '`nope` is unbound: no binding, declaration, or import provides it; if it is a `func` declared below, only ADJACENT funcs see each other --- move them together'","            p=1","            q=1","          ]"]}</pre>
+<h3 id="t-chkjm-parse"><code>t-chkjm-parse</code></h3>
+<p class="label">module</p>
+<pre class="code jock">import b; b.viab(</pre>
+<p class="label">program</p>
+<pre class="code jock">import badparse; 1</pre>
+<p class="label">the JSON it emits</p>
+<pre class="code">{"status":"refused","tag":"parse-expected","line":0,"col":0,"module":"badparse","report":["refused: %parse-expected at end of input (in module badparse)","  hint: [%parse-expected %')' p=0 q=0]","  hint: [%in-module %badparse]"]}</pre>
+<h3 id="t-chkjm-coord"><code>t-chkjm-coord</code></h3>
+<p class="label">module</p>
+<pre class="code jock">func f(n: @) -&gt; @ { n + 1 };
+let z = nosuchname;</pre>
+<p class="label">program</p>
+<pre class="code jock">import broke; broke.f(1)</pre>
+<p class="label">the JSON it emits</p>
+<pre class="code">{"status":"refused","tag":"mint-limb","line":2,"col":9,"module":"broke","report":["refused: %mint-limb at 2:9 (in module broke)","  2 | let z = nosuchname;","    |         ^","  hint: [ %mint-limb","            '`nosuchname` is unbound: no binding, declaration, or import provides it; if it is a `func` declared below, only ADJACENT funcs see each other --- move them together'","            p=2","            q=9","          ]","  hint: [%in-module %broke]"]}</pre>
+</main>
+</div>
+</body>
+</html>

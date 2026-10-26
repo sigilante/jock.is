@@ -1,0 +1,258 @@
+# Jock
+
+> Jock is a statically typed language that compiles to Nock (via the Nockasm
+> intermediate form). Syntax is Swift-inspired first, Rust-inspired second;
+> semantics are Nock-native: everything is a noun, functions are closures
+> (cores at the ABI only), recursion is the loop primitive. Surface syntax is
+> frozen for 1.0. Compiler and spec: https://github.com/sigilante/jock
+> Site: https://jock.is
+
+This file is the canonical compact reference for language models writing or
+checking Jock. It states rules an unfamiliar model gets wrong; the normative
+spec is docs/spec/ in the repository (language.md, types.md). When this file
+and the spec disagree, the spec wins.
+
+## Program shape
+
+A program is a sequence of `;`-terminated statements followed by one final
+expression, whose value is the program's value:
+
+    let a: @ = 3;
+    func inc(n: @) -> @ { n + 1 };
+    inc(a)
+
+Bindings (`let`, `var`, `func`, declarations, `import`, `assert`, assignment)
+are statements and REQUIRE the trailing `;`. Sequencing is always explicit
+with `;` — adjacent expressions never compose silently. There is no
+juxtaposition anywhere in the grammar.
+
+## Rules models get wrong
+
+- **The adjacency law.** Postfix forms bind only when GLUED: `f(x)` is a
+  call, `f (x)` is a parse error with a hint (`%parse-unglued`); `xs[0]` is
+  an index, `xs [0]` is not; `Point( x: 1 )` is a struct literal, a
+  free-standing `{ ... }` is a block. No exceptions.
+- **Casing is grammar.** Lowercase-initial identifiers are values/functions/
+  fields; Uppercase-initial are types. Union case tags are lowercase (they
+  erase to term atoms). No underscores in identifiers (`_` is the wildcard
+  pattern). Names admit glued hyphens, Hoon-Term-style: `a-1` and `foo-bar`
+  are each ONE name, never a subtraction. Type names take no hyphens.
+- **Binary `-` is spaced on both sides.** `a - 1` is subtraction; `a- 1`
+  and `a -1` refuse `%parse-minus-glue`; fully glued `a-1` is the NAME
+  `a-1` (see casing rule above), refusing `%mint-limb` only if unbound.
+- **Signed integers are `Int`** (ZigZag-encoded atoms), written as a
+  sign GLUED to a decimal literal: `+42`, `-42`. `a +42` is still
+  addition (position disambiguates). Arithmetic and comparisons work
+  (`-7 / +2` is `-3`: division truncates toward zero); mixed `@`/Int
+  arithmetic refuses. `42 as Int` REFUSES (`%mint-cast-sint`) — casts
+  reinterpret bits; convert with `hoon.sint(n)` and `hoon.uint(s)`
+  (`uint` crashes `%uint-neg` on a negative; `hoon.sabs` is the
+  magnitude). There is no unary minus: negate with `0 - n` (naturals),
+  `0.0 - x` (Float64), or a Int literal.
+- **Commas everywhere.** Tuples `(a, b)`, lists `[1, 2, 3]`, maps
+  `[1 -> 100, 2 -> 200]`, sets `Set<@>([1, 2])`, match arms, call
+  arguments, type arguments. Trailing comma permitted. No
+  space-separated collections.
+- **Brackets carry list AND map**, told apart by the arrow the type
+  also writes (`Map<K->V>`). `[]` is the empty list, `[->]` the empty
+  map. A set is CONSTRUCTED, `Set<T>([...])` / `Set<T>()`, because
+  braces are blocks and `{1, 2}` could not say whether it meant a set
+  or a block with a stray comma.
+- **Word connectives.** `and`, `or`, `xor`, `not` — there is no `&&`, `||`,
+  or `!`. `==`/`!=` dispatch through the Eq trait; `===`/`!==` are raw noun
+  equality (Nock 5), never overloadable.
+- **Comparisons are non-associative.** `a < b < c` is a parse error;
+  parenthesize.
+- **`{` inside a string interpolates.** `"x = {x}"` renders `x` through the
+  Show trait; `{{` and `}}` are literal braces. No string literals and no
+  newlines inside a fragment (`%lex-interp-str`).
+- **Bare `{}` refuses** (`%parse-empty-brace`): a block must produce a
+  value. Empty collections are `[]`, `[->]` and `Set<T>()`.
+- **Tabs and CR are lexical errors.** Source is UTF-8, LF lines.
+- **Statement vs expression bodies.** `if`/`match`/`loop` are
+  expressions; as the final expression they take no trailing `;`.
+- **Assignment edits an existing `var`.** `let` is immutable; assigning a
+  `let`-bound or unbound name is an error. Assignment is not a declaration.
+
+## Types (surface)
+
+    @  Atom        any-aura atom            Bool   true / false
+    *              any noun                 Byte   'a'
+    Hex            0x2a                     String "hello"
+    Float64           3.14 (digit-dot-digit)   Base   atom < 2^64 - 2^32 + 1
+    List<@>        [1, 2, 3]                Map<@->Bool>  [1 -> true]
+    (Float64, Float64)  tuple / product       Set<@>  Set<@>([1, 2])
+    T?             option (postfix)         A | B  erasure-disjoint union
+    %foo           term constant            /a/b/c Path
+    Int           +42, -42 (signed)
+
+Type expressions: `TypeName`, application `List<@>`, products `(A, B)`,
+function `A -> B`. `T?` is option sugar; `A | B` members must be
+distinguishable at bounded depth (atom vs cell, or distinct head tags).
+
+## Operators, tightest first (frozen)
+
+    1  postfix: glued ( [ . and lark .< .> , axis .+n     left
+    2  as  as?  as!                                        left
+    3  ** (reserved)                                       right
+    4  unary - (reserved)                                  —
+    5  *  /  %  ×  ÷  ⊛                                    left
+    6  +  -  (binary - spaced both sides)                  left
+    7  ??                                                  right
+    8  <  >  <=  >=  in  ∈                                 none
+    9  ==  !=  ===  !==                                    none
+    10 not
+    11 and, xor                                            left
+    12 or                                                  left
+
+Casts: `p as (Float64, Float64)` static (must nest, compile-time); `x as? Atom`
+soft (produces option); `x as! Atom` forced (crash on failure);
+`(x as? Atom) ?? 99` coalesce. `eval(subj, form)` is Nock 2, call-shaped.
+
+Positional access into anonymous products: `p.<` head, `p.>` tail (compose
+left-to-right: `p.<>` is tail of head), `p.+5` names a Nock axis directly
+(literal only). Indexing: `e[i]` and `e[i] = v` only, desugaring to `.at()` /
+`.put()` through the Idx/Put traits; slices/has/del/pop are not spellings.
+
+## Functions, recursion, shadowing
+
+    func fib(n: @) -> @ {
+      if n == 0 { 1 }
+      else if n == 1 { 1 }
+      else { $(n - 1) + $(n - 2) }
+    };
+
+`$(...)` re-enters the enclosing `func` or `loop` with edited arguments;
+`recur` re-enters a `loop`. A named `func` is recursive by construction.
+Lambdas: `lambda (b: @) -> @ { b + 1 }` — monomorphic, immediately callable
+with a glued paren.
+
+**Adjacent `func`s form a mutually recursive group** and a group may not
+repeat a name (`%mint-func-dup`). Any interposed statement splits the group;
+a `func` after a split SHADOWS an earlier binding of the same name, like
+`let` shadowing. Calling forward across a split is an error.
+
+Generics: binder parens on the declaring keyword for values —
+`func<T> id(x: T) -> T { x };`, bounds `func<T: Arithmetic>` — and on the
+declared name for types — `struct Pair<T> { a: T, b: T };`. Instantiation is
+inferred; there is no call-site instantiation syntax.
+
+    loop {
+      if a == b + 1 { b }
+      else { b = b + 1; recur }
+    }
+
+## Declarations
+
+    struct Circle { radius: Float64 };            // fields comma-separated
+    enum Shape { point, circle(Circle) };     // first case is the bunt;
+                                               // tags lowercase, positional
+                                               // payloads, once per enum
+    trait Area { area(self: Self) -> Float64; };  // methods ;-terminated
+    impl Area for Circle {
+      area(self: Circle) -> Float64 { 3.14 * self.radius * self.radius };
+    };
+    class Point(PointState) impl Arithmetic { ... };
+
+Construction is qualified and applied: `Shape.point`, `Shape.circle(c)`.
+Case patterns are QUALIFIED and positional: `match s { .point => 0.0,
+.circle(c) => c.area(), }` — a leading `.` (or `Shape.point`) marks a
+case; a BARE name is a binding and refuses `%mint-patt-bare` if it
+names a case. Arms are comma-separated (`=>` not `->`), terminator
+optional on the last arm, exhaustiveness checked (non-exhaustive match errors with a
+witness). `switch` is RETIRED (reserved; refuses %parse-switch-gone) —
+`match` takes literal values as patterns, so it always covered value
+dispatch. `self` is an
+ordinary parameter name, not a keyword. Operator binding in traits is
+per-method: `trait Add { add(+); }`.
+
+String's prelude methods (the `Str` trait): `.len()` (bytes),
+`.cat(t)` (concatenation), `.trip()` (to `List<Byte>`),
+`.starts-with(pre)` (byte-prefix test; the empty prefix is a prefix
+of everything). These are byte-semantics on LSB-first cords, not
+character-aware — and a cord cannot represent a TRAILING NUL
+byte (`"ab\0"` is the same atom as `"ab"`, so `.len()` says 2).
+
+Adjacent declarations register simultaneously (mutual recursion). Behavior
+attaches by trait impls; a union is a nominal head so impls attach to it too.
+Heterogeneous collections are closed unions (`List<Shape>`) — there are no
+trait objects.
+
+`import hoon;` brings the Hoon FFI library into scope: `hoon.add(a, b)`,
+`hoon.dec`, `hoon.sub`, `hoon.mul`, `hoon.div`, `hoon.mod`, `hoon.lth`,
+`hoon.lte`, `hoon.gth`, `hoon.gte`. A local binding shadows an import.
+Other libraries (e.g. `import urbit;`) resolve only when the compiler is
+given their sources (`--data-dir`); an unknown library refuses.
+
+## Deliberately absent
+
+No exceptions, no null, no inheritance, no macros, no trait objects, no
+implicit composition, no whitespace-blind calls, no `&&`/`||`/`!`, no
+variadic print (`print e;` takes ONE String; render by interpolation), no
+negative literals, no computed axes, no user-visible core algebra.
+
+## The REPL
+
+Statements (entries ending `;`) trial-compile and accumulate into the
+session history; expressions evaluate against the history and print their
+value. The session is a program written one statement at a time — the
+language rules above apply unchanged (including func-group adjacency: two
+consecutive `func f` entries are one group and refuse `%mint-func-dup`;
+interpose any statement to shadow instead). `:nock <expr>` prints the
+compiled Nock formula. Atoms print with dot-grouped decimals (`3.628.800`).
+
+## Errors
+
+Every refusal is a tagged crash with a 1-based line:col position:
+
+    error: %mint-limb at col 1              (REPL)
+    refused: %parse-unglued at 1:14         (CLI, with source line + caret
+                                             and a hint chain)
+
+Tag families: `%lex-*` lexer (bad char, quote/newline, interpolation);
+`%parse-*` grammar (`%parse-unglued` un-glued postfix, `%parse-minus-glue`
+glued minus, `%parse-lark-cmp` lark/comparison garble, `%parse-place` bad
+assignment target, `%parse-nonassoc` chained comparison, `%parse-empty-brace`,
+and did-you-mean hints for foreign habits: `%lex-connective` for `&&`/`||`,
+`%parse-not` for `!a`, `%parse-ternary` for `?:`, `%parse-let-mut` for
+Rust's `let mut`);
+`%sugar-*` desugar (withdrawn spellings, connective arity); `%mint-*` /
+`%mill-*` type checking and emission (`%mint-limb` unbound name,
+`%mill-nest` type mismatch, `%mint-func-dup` duplicate func in a group,
+`%mint-call-arity`, `%mint-op-aura` operand aura mismatch, `%mint-todo`
+unimplemented); `%decl-*` declaration registration; `%join-*` branch-type
+join failures. An untagged crash is a runtime crash, reported honestly as
+such.
+
+## Machine interface (for agent tooling)
+
+`tools/check.sh [-e EXPR | file | -]` (batch, ~5 s) and
+`jojo <kernel.jam> --check file.jock` (warm kernel: ~0.7 s module-free;
+a `--data-dir`-bearing kernel resolves imports per check, ~2 s) both emit ONE JSON
+object — written by the compiler itself, schema pinned by corpus vectors:
+
+    {"status":"ok","type":"@"}
+    {"status":"refused"|"crashed","tag":"mint-limb"|null,
+     "line":1|null,"col":1|null,"module":"m"|null,
+     "report":["refused: ...","  1 | ...",...]}
+
+`module` names the `--data-dir` module a crash belongs to — its
+line/col index THAT module's source, and `report` excerpts it
+(null = the main program). Every configured module compiles at
+build time (its top-level statements run then), so a broken
+module in a `--data-dir` fails every build that configures it —
+the diagnostic names the culprit.
+
+Exit 0 = typechecks, 1 = refusal, 2 = tool error. `check` compiles WITHOUT
+running: a program that typechecks but would crash at runtime still checks
+green. `jockc.sh run f.jock` compiles and evaluates; `jockc.sh --diag run`
+gives `{"status":"ok","value":<noun>}` on the same failure schema.
+`--data-dir DIR` supplies library modules to any of these.
+
+## Pointers
+
+- Spec: https://github.com/sigilante/jock/tree/master/docs/spec
+  (language.md surface syntax; types.md type system, both normative)
+- Examples: https://github.com/sigilante/jock/tree/master/examples
+- Reviewer orientation (REPL walkthrough): https://jock.is/reviewers.html
+- Runtime host (REPL + checks): https://github.com/sigilante/jojo
