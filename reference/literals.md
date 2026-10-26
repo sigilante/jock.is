@@ -4,7 +4,7 @@ Every literal form Jock can spell, the aura each carries, and the names the lang
 
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `10050b9` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
+> channel `%rc` · commit `683a6cd` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
 
 ## The literal inventory
 
@@ -36,7 +36,7 @@ Each rule as `language.md` states it, followed by a program from one of the vect
 
 ### L-77 · The table below is the literal inventory
 
-```
+```jock
 "hi" 'ab'
 ```
 
@@ -48,7 +48,7 @@ from `t-lex-str-p` (`%lex`, `%pos`) · also cites `t-sint-lit`
 
 ### L-26 · `{expr}` renders through `.show()`
 
-```
+```jock
 let a = 1; "{a a}"
 ```
 
@@ -56,7 +56,7 @@ from `t-parse-interp` (`%parse`, `%err`)
 
 ### L-27 · `{{` and `}}` are literal braces
 
-```
+```jock
 "lit {{x}} ok"
 ```
 
@@ -64,7 +64,7 @@ from `t-text-interp-esc` (`%text`, `%pos`)
 
 ### L-28 · A backslash escape is one BYTE, written as two hex digits.
 
-```
+```jock
 "back\\slash"
 ```
 
@@ -72,7 +72,7 @@ from `t-str-esc-backslash` (`%text`, `%pos`) · also cites `t-str-esc-newline`, 
 
 ### L-29 · Anything else after a backslash refuses
 
-```
+```jock
 "a\zzb"
 ```
 
@@ -80,7 +80,7 @@ from `t-str-esc-bad` (`%text`, `%err`)
 
 ### L-30 · Per-byte escapes are what settle Unicode.
 
-```
+```jock
 "caf\c3\a9"
 ```
 
@@ -88,7 +88,7 @@ from `t-str-esc-utf8` (`%text`, `%pos`)
 
 ### L-31 · A fragment is a single expression.
 
-```
+```jock
 "a{"b"}c"
 ```
 
@@ -100,7 +100,7 @@ from `t-err-interp-str` (`%text`, `%err`) · also cites `t-err-interp-open`, `t-
 
 ### L-6 · Int is ZigZag `@s`.
 
-```
+```jock
 +42 as @
 ```
 
@@ -108,7 +108,7 @@ from `t-sint-lit` (`%text`, `%pos`)
 
 ### L-7 · An Int literal is a sign glued to a decimal, in operand position.
 
-```
+```jock
 +42 as @
 ```
 
@@ -116,7 +116,7 @@ from `t-sint-lit` (`%text`, `%pos`) · also cites `t-sint-lit-neg`, `t-sint-lit-
 
 ### L-8 · The glued sign cannot be mistaken for arithmetic
 
-```
+```jock
 let a = 5; a +42
 ```
 
@@ -128,7 +128,7 @@ from `t-sint-not-add` (`%text`, `%pos`)
 
 ### L-10 · The near-misses refuse, each with its own tag.
 
-```
+```jock
 `
 ```
 
@@ -136,7 +136,7 @@ from `t-lex-stray-n` (`%lex`, `%err`) · also cites `t-minus-spaced`, `t-minus-g
 
 ### L-11 · Arithmetic and comparison ride the trait route
 
-```
+```jock
 (-7 + +3) as @
 ```
 
@@ -144,7 +144,7 @@ from `t-sint-sum` (`%text`, `%pos`) · also cites `t-sint-sub`, `t-sint-mul`, `t
 
 ### L-12 · Casting INTO Int refuses through all three doors
 
-```
+```jock
 42 as Int
 ```
 
@@ -152,7 +152,7 @@ from `t-sint-cast` (`%text`, `%err`) · also cites `t-sint-castp`, `t-sint-castq
 
 ### L-13 · Ingestion is the one sanctioned soft use.
 
-```
+```jock
 let v = eval(83, (0, 1)); (v as! Int) as @
 ```
 
@@ -160,7 +160,7 @@ from `t-sint-ingest` (`%text`, `%pos`) · also cites `t-sint-ingestp`
 
 ### L-14 · Conversion from a known nat is a function, not a cast.
 
-```
+```jock
 import hoon; (hoon.uint(+5), (hoon.sint(5) as @, hoon.sabs(-42)))
 ```
 
@@ -172,7 +172,7 @@ from `t-sint-conv` (`%text`, `%pos`) · also cites `t-sint-uint-neg`
 
 ### L-16 · Division truncates toward zero
 
-```
+```jock
 (-7 / +2) as @
 ```
 
@@ -180,7 +180,7 @@ from `t-sint-div` (`%text`, `%pos`) · also cites `t-sint-rem`, `t-sint-dul`
 
 ### L-79 · Separators are commas everywhere
 
-```
+```jock
 struct P { x: @, y: @ } let p = P(x: 1, y: 2); p.x
 ```
 
@@ -192,7 +192,7 @@ from `t-arc-ctor` (`%text`, `%pos`)
 
 ### L-81 · A braced declaration needs no terminator.
 
-```
+```jock
 func inc(x: @) -> @ { x + 1 } inc(41)
 ```
 
@@ -200,7 +200,7 @@ from `t-arc-decl-nosemi` (`%text`, `%pos`) · also cites `t-arc-term-semi`
 
 ### L-82 · Data shapes take commas; signatures take semicolons.
 
-```
+```jock
 enum C { red, green } let c = C.green; match c { .red => 1, .green => 2, }
 ```
 
@@ -208,7 +208,7 @@ from `t-arc-enum` (`%text`, `%pos`)
 
 ### L-83 · The last separator is optional; the ones between are not.
 
-```
+```jock
 struct A { n: @ }; class C(A) { f(self: C) -> @ { self.n } g(self: C) -> @ { self.n }; }; 0
 ```
 
@@ -216,7 +216,7 @@ from `t-parse-method-nosep` (`%parse`, `%err`) · also cites `t-text-method-nose
 
 ### L-84 · `match` arms are comma-separated
 
-```
+```jock
 match a { 1 => 0, _ => 84 }
 ```
 

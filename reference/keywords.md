@@ -4,7 +4,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `10050b9` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
+> channel `%rc` · commit `683a6cd` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
 
 The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexer’s own authority, which `tools/hilite.py` holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.
 
@@ -61,7 +61,7 @@ These work — verified by hand with `tools/jockc.sh` on 2026-10-27; this genera
 
 **declaration keyword.**
 
-```
+```jock
 alias Foo is @; let x: Foo = 1; x
 ```
 
@@ -81,7 +81,7 @@ defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `langu
 
 **operator keyword.** Precedence level 2 of 12 (left-associative), sharing it with `as?`, `as!`.
 
-```
+```jock
 +42 as @
 ```
 
@@ -95,13 +95,13 @@ defined by: `language.md` L-24, `language.md` L-61, `language.md` L-107, `langua
 
 *module*
 
-```
+```jock
 func dbl(n: @) -> @ { n + n }; assert 1 == 1; func inc(n: @) -> @ { n + 1 };
 ```
 
 *program*
 
-```
+```jock
 import m; m.inc(41)
 ```
 
@@ -113,7 +113,7 @@ defined by: `language.md` L-61, `language.md` L-185
 
 **declaration keyword.**
 
-```
+```jock
 struct BS<T> { v: T }; class Box<T>(BS<T>) { get(self: Self) -> T { self.v } }; Box( v: 5 ).get()
 ```
 
@@ -125,7 +125,7 @@ defined by: `language.md` L-22, `language.md` L-45, `language.md` L-61, `languag
 
 **control keyword.**
 
-```
+```jock
 enum Nope {}; func f(x: @) -> Nope { crash }; 1
 ```
 
@@ -145,7 +145,7 @@ defined by: `language.md` L-61
 
 **control keyword.**
 
-```
+```jock
 if 3 != 4 { 7 } else { 9 }
 ```
 
@@ -157,7 +157,7 @@ defined by: `language.md` L-61
 
 **declaration keyword.**
 
-```
+```jock
 enum Rec { leaf, cell(Rec, Rec) }; 0
 ```
 
@@ -169,7 +169,7 @@ defined by: `language.md` L-22, `language.md` L-45, `language.md` L-61, `languag
 
 **control keyword.**
 
-```
+```jock
 (eval(42, (0, 1)) as? @) ?? 99
 ```
 
@@ -181,7 +181,7 @@ defined by: `language.md` L-13, `language.md` L-61, `language.md` L-129, `langua
 
 **declaration keyword.**
 
-```
+```jock
 struct P { v: @ }; impl Show for P { show(self: P) -> String { "P!" }; }; let p = P( v: 1 ); "{p}"
 ```
 
@@ -193,7 +193,7 @@ defined by: `language.md` L-61
 
 **declaration keyword.**
 
-```
+```jock
 func<T> id(x: T) -> T { x }; id(42)
 ```
 
@@ -205,7 +205,7 @@ defined by: `language.md` L-17, `language.md` L-20, `language.md` L-61, `languag
 
 **control keyword.**
 
-```
+```jock
 if 3 != 4 { 7 } else { 9 }
 ```
 
@@ -217,7 +217,7 @@ defined by: `language.md` L-61, `language.md` L-185
 
 **declaration keyword.**
 
-```
+```jock
 struct P { v: @ }; impl Show for P { show(self: P) -> String { "P!" }; }; let p = P( v: 1 ); "{p}"
 ```
 
@@ -229,7 +229,7 @@ defined by: `language.md` L-20, `language.md` L-45, `language.md` L-61
 
 **declaration keyword.**
 
-```
+```jock
 import hoon; 20 + 22
 ```
 
@@ -241,7 +241,7 @@ defined by: `language.md` L-61, `language.md` L-185
 
 **operator keyword.** Precedence level 8 of 12 (none-associative), sharing it with `<` `>` `<=` `>=`  `∈` `⊂` `⊃`.
 
-```
+```jock
 let s = "in"; "[{s}]"
 ```
 
@@ -253,7 +253,7 @@ defined by: `language.md` L-61, `language.md` L-73, `language.md` L-107, `langua
 
 **declaration keyword.**
 
-```
+```jock
 alias Foo is @; let x: Foo = 1; x
 ```
 
@@ -265,7 +265,7 @@ defined by: `language.md` L-61, `language.md` L-69
 
 **declaration keyword.**
 
-```
+```jock
 let f = lambda (x: @) -> @ { x * 10 }; hoon.lturn([1, 2, 3], f)
 ```
 
@@ -277,7 +277,7 @@ defined by: `language.md` L-61
 
 **declaration keyword.**
 
-```
+```jock
 let x = 1; x;
 ```
 
@@ -289,7 +289,7 @@ defined by: `language.md` L-20, `language.md` L-61, `language.md` L-129, `langua
 
 **control keyword.**
 
-```
+```jock
 import hoon; var b = 0; loop { if b == 5 { b } else { b = b + 1; recur } }
 ```
 
@@ -301,7 +301,7 @@ defined by: `language.md` L-61, `language.md` L-87, `language.md` L-140, `langua
 
 **control keyword.**
 
-```
+```jock
 let a: @ = 3; match a { 1 => 0, _ => 84, }
 ```
 
@@ -313,7 +313,7 @@ defined by: `language.md` L-61, `language.md` L-84, `language.md` L-101, `langua
 
 **operator keyword.** Precedence level 10 of 12 (—-associative), sharing it with nothing.
 
-```
+```jock
 not a == b
 ```
 
@@ -333,7 +333,7 @@ defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `langu
 
 **control keyword.**
 
-```
+```jock
 print("hi"); 42
 ```
 
@@ -345,7 +345,7 @@ defined by: `language.md` L-35, `language.md` L-61, `language.md` L-76
 
 **declaration keyword.**
 
-```
+```jock
 private func dbl(n: @) -> @ { n + n }; dbl(21)
 ```
 
@@ -357,7 +357,7 @@ defined by: `language.md` L-17, `language.md` L-25, `language.md` L-37, `languag
 
 **control keyword.**
 
-```
+```jock
 import hoon; var b = 0; loop { if b == 5 { b } else { b = b + 1; recur } }
 ```
 
@@ -369,7 +369,7 @@ defined by: `language.md` L-61, `language.md` L-140, `language.md` L-152
 
 **declaration keyword.**
 
-```
+```jock
 struct Q { w: @ }; Q( w: 9 ).w
 ```
 
@@ -389,7 +389,7 @@ defined by: `language.md` L-61, `language.md` L-151, `language.md` L-183
 
 **declaration keyword.**
 
-```
+```jock
 trait Tw { tw(self: Self) -> @; } struct B { v: @ } impl Tw for B { tw(self: B) -> @ { self.v } } let b = B(v: 7); b.tw()
 ```
 
@@ -401,7 +401,7 @@ defined by: `language.md` L-22, `language.md` L-45, `language.md` L-61
 
 **declaration keyword.**
 
-```
+```jock
 var b = 1; b = 3; b
 ```
 

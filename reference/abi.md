@@ -4,7 +4,7 @@ What a Jock program can call: the arms the runtime pins, the traits the prelude 
 
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `10050b9` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
+> channel `%rc` · commit `683a6cd` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
 
 `docs/spec/runtime.md` is the authority for everything here. R-9 freezes the ABI through 1.0 with **append** as the one sanctioned change shape — a new arm enters at the END so every prior arm keeps its index, and a modification in place is not available because it would move an index that emitted code already depends on. R-10: the freeze rests on two pins, and only one is a mug.
 
