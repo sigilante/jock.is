@@ -91,6 +91,12 @@
     'lex-stray':        'stray character: not in the punctuator inventory',
     'lex-quote-open':   'unterminated string literal',
     'lex-quote-newline': 'a string literal may not span a newline',
+    'lex-number':       'a number needs a digit, and _ groups only between digits',
+    'lex-hex':          '0x needs at least one hex digit',
+    'lex-real-prec':    'a real carries at most 15 digits',
+    'lex-string-escape': 'a backslash escape is \\\\ \\n \\t \\" \\\' or two hex digits (\\0a)',
+    'lex-interp-open':  'unterminated interpolation fragment',
+    'lex-connective':   '&& and || are not Jock; the connectives are words: a and b, a or b, not a',
     'lex-comment-open': 'unterminated block comment',
     'lex-interp-str':   'no string literal inside an interpolation fragment',
     'lex-interp-brace': 'a bare } in a string is an error; write }} for a literal brace',
@@ -197,18 +203,45 @@
       //  digit-dot-digit real.  `.` is never a digit separator —
       //  grouping is `_`, and only between digits.
       if (c === '0' && src[i + 1] === 'x') {
-        var h = i + 2;
-        while (h < n && (isHex(src[h]) || src[h] === '_')) h++;
+        //  +ghex:lex --- at least one hex digit, and '_' only
+        //  BETWEEN hex digits (never leading, never trailing)
+        var h = i + 2, hk = 0, hbad = false;
+        while (h < n) {
+          if (isHex(src[h])) { hk++; h++; continue; }
+          if (src[h] === '_') {
+            if (hk === 0 || !isHex(src[h + 1] || '')) { hbad = true; }
+            h++; hk++; continue;
+          }
+          break;
+        }
+        if (hk === 0 || hbad) {
+          emit('error', Math.max(h - i, 2), { why: 'lex-hex' }); continue;
+        }
         emit('number', h - i, { sub: 'hex' });
         continue;
       }
       if (isDig(c)) {
-        var d = i;
-        while (d < n && (isDig(src[d]) || src[d] === '_')) d++;
+        //  +gnum:lex --- '_' groups only BETWEEN digits, so a
+        //  trailing one refuses.  k counts underscores too, which is
+        //  what the 15-digit real bound is measured against.
+        var d = i, dk = 0, dbad = false;
+        while (d < n) {
+          if (isDig(src[d])) { dk++; d++; continue; }
+          if (src[d] === '_') {
+            if (dk === 0 || !isDig(src[d + 1] || '')) { dbad = true; }
+            d++; dk++; continue;
+          }
+          break;
+        }
+        if (dbad) { emit('error', d - i, { why: 'lex-number' }); continue; }
         //  a real is digit-dot-digit, both sides required
         if (src[d] === '.' && isDig(src[d + 1] || '')) {
-          var f = d + 1;
-          while (f < n && isDig(src[f])) f++;
+          var f = d + 1, fk = 0;
+          while (f < n && isDig(src[f])) { fk++; f++; }
+          //  +grel:lex --- (lte (add k.gn k.gf) 15)
+          if (dk + fk > 15) {
+            emit('error', f - i, { why: 'lex-real-prec' }); continue;
+          }
           emit('number', f - i, { sub: 'real' });
         } else {
           emit('number', d - i, { sub: 'decimal' });
@@ -289,6 +322,15 @@
       //  the multi-byte glyph operators
       if (UNI.indexOf(c) >= 0) { emit('op', 1); continue; }
 
+      //  refuse premature tokens with prose, as lex.hoon does: ANY
+      //  '&' (it is in the punctuator mold but never starts a Jock
+      //  token), and '||' specifically, since a single '|' joins
+      //  types (A | B).
+      if (c === '&') { emit('error', 1, { why: 'lex-connective' }); continue; }
+      if (c === '|' && src[i + 1] === '|') {
+        emit('error', 2, { why: 'lex-connective' }); continue;
+      }
+
       //  single-byte punctuators, from the mold
       if (PUNCS.indexOf(c) >= 0) {
         if (c === '~') emit('null', 1);
@@ -311,6 +353,21 @@
         var ch = src[j];
         if (ch === '\n') { why = 'lex-quote-newline'; break; }
         if (ch === '"') { j++; break; }
+        //  +gesc:lex --- `\NN` with two hex digits is that byte, and
+        //  five NAMED escapes are sugar over exactly that: `\\`,
+        //  `\n` (0a), `\t` (09), `\"` and `\'`.  Anything else
+        //  refuses (L-29).  The port accepted every escape silently,
+        //  so "a\zzb" coloured as a clean string.
+        if (ch === '\\') {
+          var e = src[j + 1] || '';
+          if (e === '\\' || e === 'n' || e === 't' || e === '"' || e === "'") {
+            j += 2; continue;
+          }
+          if (!isHex(e) || !isHex(src[j + 2] || '')) {
+            why = 'lex-string-escape'; break;
+          }
+          j += 3; continue;
+        }
         if (ch === '{' && src[j + 1] === '{') { j += 2; continue; }
         if (ch === '}' && src[j + 1] === '}') { j += 2; continue; }
         if (ch === '}') { why = 'lex-interp-brace'; break; }
@@ -326,7 +383,7 @@
             if (dep > 0) f++;
           }
           if (why) break;
-          if (dep > 0) { why = 'lex-quote-open'; break; }
+          if (dep > 0) { why = 'lex-interp-open'; break; }
           parts.push({ k: 'str', t: src.slice(seg, j) });
           parts.push({ k: 'interp-brace', t: '{' });
           parts.push({ k: 'interp', toks: tokenize(src.slice(j + 1, f)) });

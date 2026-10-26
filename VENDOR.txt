@@ -12,11 +12,14 @@
 ::  that goes stale against the frozen surface syntax is a failure
 ::  rather than a wrong colour.
 
-jock: sigilante/jock @ 6dfb4b2 (editors/web; the syntax-highlighting
-PR, #15) --- the highlighter is a port of the compiler's own lexer
+jock: sigilante/jock @ 5155e6b+ (editors/web; the syntax-highlighting
+PR, #15, plus the 2026-10-27 lexer-parity pass that closed six
+refusals the port did not raise --- %lex-number, %lex-hex,
+%lex-real-prec, %lex-string-escape, %lex-connective and
+%lex-interp-open) --- the highlighter is a port of the compiler's own lexer
 (lib/lex.hoon) with the adjacency layer from +p-post:parse on top, and
 its keyword and punctuator inventories are pinned to $keyword and
 $jpunc in /sur/jock by tools/hilite.py on every push there.
 
-13060268f5729a154bba7e5c9788d4b78cd30da65f987ff6ec993cc166d63195  jock-highlight.js
+86889d7bf35afd8e232194f3900b7b37d1af8ca29aab25a60c7fcff7ce9b8497  jock-highlight.js
 807d95b2b540b7593c4fab5b440880baee5f7cbc1b62574bed6d6d34c6d7fe85  jock-highlight.css
