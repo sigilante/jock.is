@@ -56,13 +56,13 @@ behind it, which is the whole reason this is cheap:
 
 | source | owns | checked by |
 |---|---|---|
-| the corpus `value.jam` (`[%vex report gates jets vectors]`) | 959 `$tvec` rows: `[id judgment mode in out]`, `mode` ∈ `%pos`/`%neg`/`%err` | `tools/vex.sh`, every push |
+| the corpus `value.jam` (`[%vex report gates jets vectors]`) | 1,055 `$tvec` rows: `[id judgment mode in out]`, `mode` ∈ `%pos`/`%neg`/`%err` | `tools/vex.sh`, every push |
 | `examples/*.jock` | 45 programs with pinned `// expect:` values | `tools/examples.sh`, 45/45 |
 | `docs/spec/language.md` | surface syntax, precedence, keywords — NORMATIVE | the spec is the authority |
 | `docs/spec/types.md` | judgment inventory, the `$typ` lattice, erasure table, ledger D-1..D-24 | ditto |
 | `docs/spec/runtime.md` | the pinned ABI arm records, operator table, `Kernel` trait, Effect union | `t-fabi-frozen` mug-pins `+harms` |
 | `crates/jockc/hoon/lib/lex.hoon` | keyword and punctuator molds | `tools/hilite.py` holds the web highlighter to them |
-| the compiler's `~|` clue sites | every refusal tag that can reach a user | partially — see the coverage gap |
+| the compiler's `~|` clue sites **and `+$ diag`** | every refusal tag that can reach a user | `tools/tags.py`, which computes the coverage gap below |
 
 **The rule: emit only what is checked.** A fact with no vector, no
 pinned example, and no normative table does not get emitted — or gets
@@ -130,24 +130,96 @@ from the same example set, with difficulty taken from the gradient
 `OUTLINE.md` §1 already describes. The narrative chapters stay
 hand-written; only the back matter is generated.
 
-## The coverage gap it would surface on day one
+## The coverage gap, measured (2026-10-27)
 
-A crude grep over the compiler and the corpus — the generator would
-compute this exactly, excluding comment mentions, which this does not:
+`tools/tags.py` now computes this exactly, joining a scan of the
+compiler against the **built** corpus:
 
-- **~170** distinct refusal tags exist in the compiler
-- **~109** are pinned by at least one corpus vector
-- **~62** are reachable by a user and pinned by nothing
+- **206** refusal tags exist — 200 distinct `~|` heads plus the six
+  members of `+$ diag`
+- **183** (89%) are pinned by an `%err` vector, which checks the tag
+- **23** (11%) are pinned by nothing
 
-Those 62 are simultaneously a documentation gap (no verified
-explanation to emit) and a test gap (no vector). Sample:
-`%bunt-empty-struct`, `%decl-dup-field`, `%decl-op-gen`,
-`%lex-quote-newline`, `%mill-lambda-arity`. One tag appears in vectors
-but not in the compiler (`%parse-dot-expr`) — either renamed or a stale
-mention, which is itself worth knowing.
+The 23 are simultaneously a documentation gap (no verified explanation
+to emit) and a test gap (no vector). The whole list, which is short
+enough to print and therefore short enough to close:
 
-This is the generator's best argument for existing: it converts "the
-docs might be incomplete" into a number and a list.
+`%mint-case` `%mint-field` `%mint-join` `%mint-list-join`
+`%mint-meth-fore` `%mint-method` `%match-duplicate-default`
+`%match-needs-default` `%pfix-plug` `%pfix-snap` `%desugar-snap`
+`%duplicate-schema-name` `%habi-empty` `%impl-conflict` `%in-module`
+`%kernel-trait` `%modl-synims-count` `%module-type`
+`%nock-payload-needs-two-elements` `%op-conflict` `%opcode`
+`%parse-eof` `%raw-cell-needs-two-elements`
+
+Four of them (`%mint-case`, `%field`, `%method`, and `%mint-join`'s
+neighbours) are `+$ diag` members, which is the natural first vector
+sitting: one union, one `%err` row each.
+
+### Why the earlier figures were wrong
+
+This section previously read **~170 / ~109 / ~62**, and all three
+numbers came from **one grep of the test corpus**. 170 is the count of
+`[~ %tag]` *occurrences* in `tests/hoon/lib/vex-*.hoon`; 109 is the
+distinct count of the same thing; 62 is their difference. So
+"tags that exist in the compiler" was measured on the test side of a
+join whose entire purpose is to cross the two sides, and the compiler
+was never read at all.
+
+Both halves were wrong, in opposite directions:
+
+- the inventory was **under**-counted (170 for 206), because the
+  compiler was not consulted;
+- the pinned set was **under**-counted too (109 for 183), because the
+  test sources spell a row three ways — a literal `[~ %tag]`, and
+  helper gates like `+er` and `+be` that take the tag as a plain
+  argument and build the unit themselves. A regex sees the first and
+  misses the rest.
+
+Reading the **built** corpus rather than its sources removes the
+second error entirely, which is why `tools/tags.py` takes a
+`value.jam` and not a glob. A `%neg` row is also not counted as
+pinning: it refuses without naming a tag, so it pins *that* the
+program is rejected and never *in what words*. 36 rows are `%neg`.
+
+The one carried-over claim that survives revision only in part:
+`%parse-dot-expr` was described here as a tag appearing in vectors but
+not in the compiler. It is neither. `t-parse-dot-expr` is a vector
+**id**, and `%parse-dot-expr` appears once in `vex-parse.hoon` in a
+**comment**. Nothing asserts it.
+
+## The argument that replaced the coverage gap
+
+An 11% gap is a weaker case for building this than a 36% one, so the
+honest thing is to say what turned out to be the stronger argument.
+Running the join for the first time found **seven wrong refusal-tag
+names in the normative specs** — not missing documentation, but
+documentation that names tags the compiler cannot emit:
+
+| the spec said | the compiler emits |
+|---|---|
+| `language.md` L-137 `%mint-grp-dup` | `%mint-func-dup` |
+| L-157 `%mint-decl-dup` | `%decl-dup` |
+| L-157 `%mint-decl-redecl` | `%decl-dup` — *the same tag* |
+| L-171 `%mint-import-unknown` | `%mint-import` |
+| L-171 `%mint-import-arity` | `%mint-call-arity` |
+| L-171 `%mint-import-gen` | `%mint-inst` |
+| `imports.md` §3 `%module-import-todo` | `%import-unknown` |
+
+Every one of those rules **cites a vector, and the citation resolves**
+— `tools/citecheck.py` is green at 913 citations and always was. The
+tag names were derived from the vector *ids* (`t-mint-grp-dup` →
+`%mint-grp-dup`), which is the join run backwards, and nothing could
+see it: citecheck checks that a cited vector exists, never that the
+prose agrees with what that vector pins.
+
+L-157 is the one that is more than a spelling: the spec distinguished
+two refusals by tag and the compiler does not distinguish them at all.
+
+All seven are corrected. That is the generator's real argument — not
+that the docs might be incomplete, but that they were **confidently
+wrong in a way no existing lane could catch**, in the document that
+had just been recomposed rule-by-rule.
 
 ## The chunking contract (Rendering A only)
 
@@ -169,7 +241,7 @@ Because retrieval returns one chunk, not a book:
 ## Mechanism
 
 Follow the convention the check JSON already set: **one writer, in the
-compiler.**
+compiler** — with one exception, now known, stated below.
 
 1. A façade arm in `lib/jock.hoon` — the sibling of `+chkj` — emits the
    language surface as one JSON object: keywords, punctuators,
@@ -185,6 +257,35 @@ compiler.**
    able to go stale: it stops being a document and becomes a build
    target.
 
+### The one place "one writer" cannot hold
+
+**The tag inventory must be a source scan.** A `~|` clue site is a
+static source construct: no arm can enumerate its own hint sites at
+runtime, so the façade arm of step 1 cannot emit the tag list, and
+`tools/tags.py` reads `crates/jockc/hoon/lib/*.hoon` instead. The rule
+is honoured as closely as it can be — the scan reads *the compiler*,
+never the spec, so a renamed tag moves the inventory on the next run
+rather than going stale in a document.
+
+Two shapes it has to know about, both found by running it:
+
+- **`+$ diag`** (`mint.hoon`) is a second refusal mechanism: a typed
+  six-member union behind a single untagged `~|(dg !!)`. None of its
+  members appears as a literal tag anywhere, so a `~|`-only scan
+  misses all six. The union exists because a hint typed `*` renders as
+  a `%noun` vase that `+mook` drops, so an untyped clue arrives
+  carrying nothing — the mold is what makes the refusal printable.
+- **Five families discriminate on their second element**, and the
+  index key for those is the pair, not the head: `%mint-todo` (8
+  literal leaves), `%mint-mold` (4), `%module-form` (2),
+  `%parse-todo` (2), `%sugar-todo` (2) — 18 leaves in all. Every one
+  is an "unsupported thing" family, which is exactly where the
+  compiler has to say *which* thing. The other 195 heads carry a
+  position, a name or a type there, which is data. `%module-form` and
+  `%mint-mold` also have leaves that are *computed*, so those are not
+  enumerable from source at all and the index must say so rather than
+  imply completeness.
+
 ## What it must not do
 
 - **Invent prose.** The narrative layer is hand-written; the generator
@@ -196,16 +297,41 @@ compiler.**
 
 ## Open questions
 
-- **Where does it live?** It reads jock-repo sources and writes
-  site-repo artifacts, across a repository boundary that already caused
-  the `VENDOR.txt` pinning problem twice. Likely: generator in
-  `jock/tools/`, output committed to both, with the `JOCK_SITE=`
-  convention `hilite.py` already uses.
+- ~~**Where does it live?**~~ **SETTLED 2026-10-27 — generator in
+  `jock/tools/`, output committed, `JOCK_SITE=` for the site side**,
+  which is what `tools/tags.py` already does. `site/LISTINGS.md` X-16
+  rules the same way for listings and gives the two structural reasons:
+  jock.is has no build step and is served by Pages from the repo root,
+  and the sources live in a different repository from the pages.
+- **Hosted docs platform — considered and declined.** GitBook (the
+  `docs.urbit.org` model: one `.gitbook.yaml`, a `content/` tree, a
+  `SUMMARY.md`, bidirectional Git Sync) would supply search, navigation
+  and PR previews for nothing. Three reasons it does not fit *this*
+  content, in increasing order of weight:
+  1. **Its editing UI is a hazard rather than a feature here.** Git
+     Sync is documented as bidirectional, with the direction chosen
+     only at initial sync and no read-only mode; the guard against an
+     in-GitBook edit landing on generated output is therefore a
+     permissions setting, which is a social guard where this repo uses
+     mechanical ones everywhere else.
+  2. **It cannot highlight Jock.** Highlighting is Prism with a fixed
+     language list and no custom grammar. Jock has a tokenizer ported
+     from the compiler's own `lex.hoon`, held to the keyword and
+     punctuator molds by `tools/hilite.py` on every push — an asset
+     a hosted platform throws away.
+  3. **A near-miss language would be actively harmful.** Rendering A2
+     exists because a model's failure mode is confident transfer from
+     Rust, Swift and Hoon. Colouring Jock as Rust reinforces precisely
+     that prior, visually, on every page.
+  So: generated into `jock.is` in the existing design system. If a
+  hosted platform is revisited, the content is Markdown either way, so
+  the cost of changing course stays low — that is the property worth
+  protecting, and it is the reason not to decide under pressure.
 - **One file or a tree?** The emerging convention is a small `llms.txt`
   index plus a large `llms-full.txt`. Purely a retrieval question now:
   metering is closed (the compiler is going open source), so both are
   free and the split is about context budget, not tiers.
-- **Does the tag index ship before its 62 unpinned tags are vectored?**
+- **Does the tag index ship before its 23 unpinned tags are vectored?**
   Emitting them unexplained is honest but weak; waiting means the
   generator blocks on test work. Probably: ship with them listed as
   unpinned, which makes the gap visible and creates the pressure to
