@@ -44,7 +44,13 @@
 <main class="prose">
 <h1 class="ruled">{{title}}</h1>
 <p class="sub">{{blurb}}</p>
-{{body}}
+<!--  §3:  text column beside the 186px margin rail.  The rail is
+      often empty, which §7 says is correct --- "leave the margin
+      column empty when there is nothing to say".  -->
+<div class="grid">
+  <div>{{body}}</div>
+  <div class="notes">{{notes}}</div>
+</div>
 </main>
 </div>
 </body>

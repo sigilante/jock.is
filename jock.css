@@ -93,7 +93,19 @@ main.prose{padding:34px 48px 60px}
 
 /*  §3 again:  the text column beside the 186px margin column,
  *  28px gutter, hairline on the margin.  */
-.grid{display:grid;grid-template-columns:1fr var(--margin-col);gap:0 var(--gutter)}
+/*  minmax(0,1fr), not 1fr.  A bare `1fr` floors at the column's
+ *  MIN-CONTENT width, so one wide table or an unwrapped listing
+ *  pushes the text column past the page and shoves the margin rail
+ *  off-screen --- which is exactly what a reference page full of
+ *  tables did.  minmax(0,…) lets it shrink and the content scroll.  */
+.grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) var(--margin-col);
+  gap:0 var(--gutter);
+}
+/*  and the wide things inside it stay inside it  */
+.grid table{max-width:100%}
+.grid pre{max-width:100%}
 .notes{
   border-left:1px solid var(--hair-soft);padding-left:18px;
   display:flex;flex-direction:column;gap:18px;padding-top:6px;
