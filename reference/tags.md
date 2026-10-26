@@ -6,14 +6,14 @@ that raises it, and the vector that pins it.
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler
 > repo writes this file; edits here are overwritten.
 >
-> channel `%rc` · commit `8b5fbba` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
+> channel `%rc` · commit `666a8e0` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
 
 | | count | |
 |---|---:|---|
 | tags the compiler can raise | 206 | 200 `~|` heads + 6 `$diag` members |
 | pinned by a vector | 183 | the tag itself is asserted |
-| …with a runnable program | 123 | shown below |
-| …vector is AST-level only | 60 | no program exists to show |
+| …with a runnable program | 124 | shown below |
+| …vector is AST-level only | 59 | no program exists to show |
 | pinned by nothing | 23 | listed at the end, unexplained |
 
 A `%neg` vector refuses *without* naming a tag, so it pins that a
@@ -141,8 +141,16 @@ pinned by `t-elab-too-large`
 
 ### `%elab-unbound`
 
+*module*
+
 ```
 private struct Hidden { h: @ }; struct Shown { s: @ };
+```
+
+*program*
+
+```
+import m; let h: m.Hidden = m.Hidden( h: 1 ); h.h
 ```
 
 pinned by `t-jimp-private-type`, `t-timp-type-unbound` · also `t-elab-unbound-err`, `t-elab-unbound-n` (AST-level) · spec: docs/imports.md I-5, docs/spec/runtime.md R-83
@@ -150,15 +158,23 @@ pinned by `t-jimp-private-type`, `t-timp-type-unbound` · also `t-elab-unbound-e
 ### `%elab-unimported`
 
 ```
-struct P { v: @ }; func mkp(n: @) -> P { P( v: n ) }; 
+import b; let p: a.P = b.getp(42); p.v
 ```
 
 pinned by `t-jdag-layer-spell` · spec: docs/imports.md I-3
 
 ### `%export-private`
 
+*module*
+
 ```
 private struct Key { k: @ }; func mkKey(n: @) -> Key { Key( k: n ) };
+```
+
+*program*
+
+```
+import m; m.mkKey(3).k
 ```
 
 pinned by `t-jimp-export-private`, `t-jimp-export-private-alias`, `t-jimp-export-private-field` · spec: docs/imports.md I-5, docs/spec/language.md L-21
@@ -166,15 +182,23 @@ pinned by `t-jimp-export-private`, `t-jimp-export-private-alias`, `t-jimp-export
 ### `%import-cycle`
 
 ```
-import b; func fa(n: @) -> @ { n }; 
+import a; a.fa(1)
 ```
 
 pinned by `t-jdag-cycle`
 
 ### `%import-unknown`
 
+*module*
+
 ```
 import bar; func f(n: @) -> @ { n };
+```
+
+*program*
+
+```
+import m; m.f(1)
 ```
 
 pinned by `t-jimp-mimp` · spec: docs/imports.md I-6, docs/spec/language.md L-171
@@ -251,6 +275,15 @@ pinned by `t-err-interp-str` · spec: docs/spec/language.md L-31
 
 pinned by `t-lex-num-n`
 
+### `%lex-quote-newline`
+
+```
+let s: String = "ab
+cd"; s
+```
+
+pinned by `t-lex-quote-newline`
+
 ### `%lex-quote-open`
 
 ```
@@ -267,6 +300,14 @@ pinned by `t-lex-strop-n`
 
 pinned by `t-lex-real-prec`
 
+### `%lex-stray`
+
+```
+`
+```
+
+pinned by `t-lex-stray-n` · also `t-lex-uni-n` (AST-level)
+
 ### `%lex-string-escape`
 
 ```
@@ -282,6 +323,14 @@ pinned by `t-str-esc-bad`, `t-str-esc-short` · spec: docs/spec/language.md L-29
 ```
 
 pinned by `t-lex-term`
+
+### `%lex-whitespace`
+
+```
+a	b
+```
+
+pinned by `t-lex-tab-n`
 
 ### `%mill-lambda`
 
@@ -325,8 +374,16 @@ pinned by `t-as-grd-bool`, `t-as-grd-char`, `t-cast-sint-deep`, `t-err-chars-cas
 
 ### `%mint-cast-sealed`
 
+*module*
+
 ```
 struct CS { n: @ }; class Counter(CS) impl Add { add(self: Self, p: Self) -> Self { Counter( n: self.n + p.n ) }; bump(self: Self) -> Self { Counter( n: self.n + 1 ) }; twice(self: Self) -> Self { self.bump().bump() }; }; func mk(n: @) -> Counter { Counter( n: n ) }; 
+```
+
+*program*
+
+```
+import m; (5 as m.Counter).n
 ```
 
 pinned by `t-jimp-seal-cast`, `t-jimp-seal-deep-arg`, `t-jimp-seal-deep-cast`, `t-jimp-seal-deep-soft`, `t-jimp-seal-soft`, `t-jimp-seal-test` · spec: docs/imports.md I-5
@@ -397,8 +454,16 @@ pinned by `t-let-no-edit` · also `t-mint-edit-let` (AST-level) · spec: docs/sp
 
 ### `%mint-edit-sealed`
 
+*module*
+
 ```
 struct CS { n: @ }; class Counter(CS) impl Add { add(self: Self, p: Self) -> Self { Counter( n: self.n + p.n ) }; bump(self: Self) -> Self { Counter( n: self.n + 1 ) }; twice(self: Self) -> Self { self.bump().bump() }; }; func mk(n: @) -> Counter { Counter( n: n ) }; 
+```
+
+*program*
+
+```
+import m; var c = m.mk(1); c.n = 9; c.n
 ```
 
 pinned by `t-jimp-seal-edit` · spec: docs/imports.md I-5
@@ -429,8 +494,16 @@ pinned by `t-mint-gimpl-coh` · also `t-mint-impl-coh` (AST-level)
 
 ### `%mint-impl-orphan`
 
+*module*
+
 ```
 impl Show for @ { show(self: @) -> String { "x" } }; func noop(n: @) -> @ { n }; 
+```
+
+*program*
+
+```
+import m; 0
 ```
 
 pinned by `t-jimp-orphan`
@@ -469,8 +542,16 @@ pinned by `t-timp-absent` · also `t-mint-import-unknown` (AST-level) · spec: d
 
 ### `%mint-import-arm`
 
+*module*
+
 ```
 func dbl(n: @) -> @ { n + n };
+```
+
+*program*
+
+```
+import m; m.nope(1)
 ```
 
 pinned by `t-jimp-absent`, `t-jimp-private-arm`
@@ -597,8 +678,16 @@ pinned by `t-loop-label-bad` · also `t-mint-recur-naked` (AST-level) · spec: d
 
 ### `%mint-slit`
 
+*module*
+
 ```
 private struct St { v: @ }; class C(St) { get(self: Self) -> @ { self.v } }; func mk(n: @) -> C { C( v: n ) }; 
+```
+
+*program*
+
+```
+import m; m.St( v: 9 ).v
 ```
 
 pinned by `t-jimp-private-forge`
@@ -613,8 +702,16 @@ pinned by `t-slit-miss`
 
 ### `%mint-slit-sealed`
 
+*module*
+
 ```
 struct BS<T> { v: T }; class Box<T>(BS<T>) { get(self: Self) -> T { self.v } }; func mk(x: @) -> Box<@> { Box( v: x ) }; 
+```
+
+*program*
+
+```
+import m; m.Box( v: 6 ).get()
 ```
 
 pinned by `t-jimp-class-gen-seal`, `t-jimp-seal-lit` · spec: docs/imports.md I-5
@@ -630,31 +727,15 @@ pinned by `t-err-bound-ptrait`, `t-err-class-gen-bound`, `t-jimp-bound-qual-ptra
 ### `%mint-unblessed`
 
 ```
-import evil; evil.g()
+func g() -> @ { 2 };
 ```
 
 pinned by `t-halo-unblessed`
 
-### `%mint-unblessed-abi`
-
-```
-1 + 41
-```
-
-pinned by `t-halo-abi-moved`
-
-### `%mint-unblessed-scry`
-
-```
-peekContext(42)
-```
-
-pinned by `t-halo-scry-peek` · also `t-halo-scry-try`, `t-halo-scry-under` (AST-level)
-
 ### `%mint-unimported`
 
 ```
-struct P { v: @ }; func mkp(n: @) -> P { P( v: n ) }; 
+import b; a.mkp(1).v
 ```
 
 pinned by `t-jdag-unimported`
@@ -1041,9 +1122,6 @@ for source-level vectors.**
 | `%empty-raw-cell` | `t-nx-emptycell-n` | — |
 | `%join-fail` | `t-join-fail-n`, `t-join-ref-n`, `t-join-sub-miss-n`, `t-mint-join-err` | docs/spec/chain.md C-48 |
 | `%let-shadows` | `t-nx-shadow-n` | — |
-| `%lex-quote-newline` | `t-lex-quote-newline` | — |
-| `%lex-stray` | `t-lex-stray-n`, `t-lex-uni-n` | — |
-| `%lex-whitespace` | `t-lex-tab-n` | — |
 | `%mint-axis` | `t-mint-axis` | — |
 | `%mint-call` | `t-mint-call-gate` | — |
 | `%mint-call-arity` | `t-mint-call-arity`, `t-mint-import-arity` | docs/spec/language.md L-171 |
@@ -1070,6 +1148,8 @@ for source-level vectors.**
 | `%mint-recur-outer` | `t-mint-recur-outer` | — |
 | `%mint-slit-cover` | `t-mint-slit-missing` | — |
 | `%mint-slit-empty` | `t-mint-slit-empty` | — |
+| `%mint-unblessed-abi` | `t-halo-abi-moved` | — |
+| `%mint-unblessed-scry` | `t-halo-scry-peek`, `t-halo-scry-try`, `t-halo-scry-under` | — |
 | `%mint-unreachable` | `t-mint-match-unreach` | — |
 | `%module-form` | `t-module-form` | — |
 | `%module-shape` | `t-module-shape` | — |
