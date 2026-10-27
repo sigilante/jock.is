@@ -7,10 +7,27 @@
 > frozen for 1.0. Compiler and spec: https://github.com/sigilante/jock
 > Site: https://jock.is
 
-This file is the canonical compact reference for language models writing or
-checking Jock. It states rules an unfamiliar model gets wrong; the normative
-spec is docs/spec/ in the repository (language.md, types.md). When this file
-and the spec disagree, the spec wins.
+This is the HAND-WRITTEN half of the model-facing reference. The generated
+half is <https://jock.is/llms.txt>, projected from the compiler and its corpus
+on every push; it carries the keyword list, the precedence ladder, the literal
+and aura tables, the erasure table, the absences, the refusal index and the
+`--diag` schema. **Wherever both files carry a fact, llms.txt wins** — it is
+checked and this one is written. The normative spec is `docs/spec/` in the
+repository (language.md, types.md), and the spec wins over both.
+
+What is here is what a generator cannot produce: program shape, the rules an
+unfamiliar model gets wrong, how funcs and recursion actually compose, and the
+REPL.
+
+> **Audited 2026-10-27**, and it had drifted. Nothing checked this file: the
+> citation lane read `docs/` and the repo root, and the site is its own repo,
+> so every claim here was unlanded by construction. Four things were wrong and
+> are corrected below — the recursion idiom, the trailing-NUL paragraph, the
+> operator-binding example, and "no negative literals", which contradicted the
+> `Int` bullet in this same file. The ladder that had gone stale is gone
+> rather than re-typed; it is generated, and a second copy only drifts again.
+> Every program below is now a corpus row, cited, so the next drift reddens a
+> lane instead of teaching a model something false.
 
 ## Program shape
 
@@ -20,6 +37,8 @@ expression, whose value is the program's value:
     let a: @ = 3;
     func inc(n: @) -> @ { n + 1 };
     inc(a)
+
+⟨`t-gde-shape`⟩ — 4.
 
 Bindings (`let`, `var`, `func`, declarations, `import`, `assert`, assignment)
 are statements and REQUIRE the trailing `;`. Sequencing is always explicit
@@ -76,34 +95,32 @@ juxtaposition anywhere in the grammar.
 
 ## Types (surface)
 
-    @  Atom        any-aura atom            Bool   true / false
-    *              any noun                 Byte   'a'
-    Hex            0x2a                     String "hello"
-    Float64           3.14 (digit-dot-digit)   Base   atom < 2^64 - 2^32 + 1
-    List<@>        [1, 2, 3]                Map<@->Bool>  [1 -> true]
-    (Float64, Float64)  tuple / product       Set<@>  Set<@>([1, 2])
-    T?             option (postfix)         A | B  erasure-disjoint union
-    %foo           term constant            /a/b/c Path
-    Int           +42, -42 (signed)
+    @       Atom    any-aura atom         Bool     true / false
+    *               any noun              Byte     'a'
+    Hex             0x2a                  String   "hello"
+    Float64         3.14                  Base     atom < 2^64 - 2^32 + 1
+    Int             +42, -42 (signed)     Path     /a/b/c
+    %foo            term constant         List<@>  [1, 2, 3]
+    Map<@->Bool>    [1 -> true]           Set<@>   Set<@>([1, 2])
+    (Float64, Float64)  tuple / product
+    T?              option (postfix)      A | B    erasure-disjoint union
+
+The full literal grammar, the utterable aura set and the 41 reserved type
+names are generated: <https://jock.is/reference/literals/>.
 
 Type expressions: `TypeName`, application `List<@>`, products `(A, B)`,
 function `A -> B`. `T?` is option sugar; `A | B` members must be
 distinguishable at bounded depth (atom vs cell, or distinct head tags).
 
-## Operators, tightest first (frozen)
+## Operators
 
-    1  postfix: glued ( [ . and lark .< .> , axis .+n     left
-    2  as  as?  as!                                        left
-    3  ** (reserved)                                       right
-    4  unary - (reserved)                                  —
-    5  *  /  %  ×  ÷  ⊛                                    left
-    6  +  -  (binary - spaced both sides)                  left
-    7  ??                                                  right
-    8  <  >  <=  >=  in  ∈                                 none
-    9  ==  !=  ===  !==                                    none
-    10 not
-    11 and, xor                                            left
-    12 or                                                  left
+**The ladder is generated** — <https://jock.is/reference/keywords/> carries
+every operator keyword with its level, its associativity and a working
+program, and llms.txt carries the same table in text. A copy here went stale
+the day `xor` took its own station (2026-10-27, thirteen levels now, not
+twelve) and would again, so there is no copy here.
+
+What is worth saying in prose, because the table cannot:
 
 Casts: `p as (Float64, Float64)` static (must nest, compile-time); `x as? Atom`
 soft (produces option); `x as! Atom` forced (crash on failure);
@@ -111,21 +128,48 @@ soft (produces option); `x as! Atom` forced (crash on failure);
 
 Positional access into anonymous products: `p.<` head, `p.>` tail (compose
 left-to-right: `p.<>` is tail of head), `p.+5` names a Nock axis directly
-(literal only). Indexing: `e[i]` and `e[i] = v` only, desugaring to `.at()` /
-`.put()` through the Idx/Put traits; slices/has/del/pop are not spellings.
+(literal only — an axis the subject does not have refuses `%mint-naxis`).
+Indexing: `e[i]` and `e[i] = v` only, desugaring to `.at()` / `.put()` through
+the Idx/Put traits; slices/has/del/pop are not spellings.
+
+The Unicode glyphs split three ways, probed 2026-10-27 — all fourteen lex, and
+that is where the resemblance ends:
+
+- `×` `÷` are ASCII SUGAR for `*` and `/`, and work out of the box.
+- `∈` routes through a trait METHOD, so it refuses `%mint-method` on a type
+  that provides none — not `%mint-op`.
+- the other eleven — `± ⊕ ⊗ ⊖ ∘ · ∩ ∪ ⊂ ⊃ ⊛` — are PLACED but unbound:
+  each holds a precedence level and refuses `%mint-op` until a trait binds it.
+  That is the extension point; see the `trait` note under Declarations.
 
 ## Functions, recursion, shadowing
 
     func fib(n: @) -> @ {
       if n == 0 { 1 }
       else if n == 1 { 1 }
-      else { $(n - 1) + $(n - 2) }
+      else { fib(n - 1) + fib(n - 2) }
     };
+    fib(5)
 
-`$(...)` re-enters the enclosing `func` or `loop` with edited arguments;
-`recur` re-enters a `loop`. A named `func` is recursive by construction.
+⟨`t-gde-fib`⟩ — 8.
+
+**A named `func` is recursive by construction: call it by its name.** This
+paragraph used to say `$(...)` re-enters the enclosing func with edited
+arguments, and showed the fib above spelled with it. It does not work. `$` in
+expression position refuses `%parse-todo %recur-edits` — the edit syntax is
+parsed and reserved, not implemented, so there is no `$(...)` and no
+`recur(x: 1)` either. `recur` re-enters a `loop` as a bare word, and a `loop`
+carries its state in the `var`s the body assigns:
+
+    var a: @ = 3;
+    var b: @ = 0;
+    loop { if a == b + 1 { b } else { b = b + 1; recur } }
+
+⟨`t-gde-loop`⟩ — 2. Labelled loops nest: `loop outer { … recur outer }`.
+
 Lambdas: `lambda (b: @) -> @ { b + 1 }` — monomorphic, immediately callable
-with a glued paren.
+with a glued paren, and every parameter and the return must be annotated
+(`%mint-lambda-annot` otherwise).
 
 **Adjacent `func`s form a mutually recursive group** and a group may not
 repeat a name (`%mint-func-dup`). Any interposed statement splits the group;
@@ -136,11 +180,6 @@ Generics: binder parens on the declaring keyword for values —
 `func<T> id(x: T) -> T { x };`, bounds `func<T: Arithmetic>` — and on the
 declared name for types — `struct Pair<T> { a: T, b: T };`. Instantiation is
 inferred; there is no call-site instantiation syntax.
-
-    loop {
-      if a == b + 1 { b }
-      else { b = b + 1; recur }
-    }
 
 ## Declarations
 
@@ -164,14 +203,22 @@ witness). `switch` is RETIRED (reserved; refuses %parse-switch-gone) —
 `match` takes literal values as patterns, so it always covered value
 dispatch. `self` is an
 ordinary parameter name, not a keyword. Operator binding in traits is
-per-method: `trait Add { add(+); }`.
+per-method, and the glyph must be one nothing has claimed:
+`trait Scale { s(⊛); }` binds `⊛`. The example here used to be
+`trait Add { add(+); }`, which refuses `%decl-op-rebind` — the prelude's own
+`Add` already owns `+`, and `t-err-op-rebind` pins exactly that text as a
+refusal. The eleven placed-but-unbound glyphs under Operators are what this
+feature is for.
 
 String's prelude methods (the `Str` trait): `.len()` (bytes),
 `.cat(t)` (concatenation), `.trip()` (to `List<Byte>`),
 `.starts-with(pre)` (byte-prefix test; the empty prefix is a prefix
 of everything). These are byte-semantics on LSB-first cords, not
-character-aware — and a cord cannot represent a TRAILING NUL
-byte (`"ab\0"` is the same atom as `"ab"`, so `.len()` says 2).
+character-aware. This used to add that a cord cannot hold a TRAILING NUL, with
+`"ab\0"` as the illustration; the lexer does not accept that escape at all
+(`%lex-string-escape`), so the sentence described an erasure of a program that
+does not compile. The underlying fact about cords stands and is the lexer's
+reason for refusing.
 
 Adjacent declarations register simultaneously (mutual recursion). Behavior
 attaches by trait impls; a union is a nominal head so impls attach to it too.
@@ -189,7 +236,14 @@ given their sources (`--data-dir`); an unknown library refuses.
 No exceptions, no null, no inheritance, no macros, no trait objects, no
 implicit composition, no whitespace-blind calls, no `&&`/`||`/`!`, no
 variadic print (`print e;` takes ONE String; render by interpolation), no
-negative literals, no computed axes, no user-visible core algebra.
+computed axes, no user-visible core algebra.
+
+"No negative literals" was in that list and was wrong — it contradicted the
+`Int` bullet above it in this same file. A sign glued to a decimal **is** a
+literal (`-42`, `+42`, ZigZag-encoded); what does not exist is unary minus as
+an operator, which is a different claim. The generated list is
+<https://jock.is/reference/absences/>, which states each absence as the rule
+that refuses it.
 
 ## The REPL
 
@@ -198,56 +252,61 @@ session history; expressions evaluate against the history and print their
 value. The session is a program written one statement at a time — the
 language rules above apply unchanged (including func-group adjacency: two
 consecutive `func f` entries are one group and refuse `%mint-func-dup`;
-interpose any statement to shadow instead). `:nock <expr>` prints the
-compiled Nock formula. Atoms print with dot-grouped decimals (`3.628.800`).
+interpose any statement to shadow instead). Atoms print with dot-grouped
+decimals (`3.628.800`).
+
+`:nock <expr>` prints the expression's compiled Nock formula, with the
+prelude's push spine stripped — `:nock 42` is `[1 42]` ⟨`t-repl-nock`⟩ and
+`:nock (1, 2)` is `[[1 1] [1 2]]` ⟨`t-repl-nock2`⟩. `jockc.sh nock f.jock`
+is the same thing from the CLI. The stripping is not cosmetic: every program
+grafts the prelude, so an unstripped formula for `42` is megabytes of library.
+More at <https://jock.is/reference/erasure/>.
 
 ## Errors
 
-Every refusal is a tagged crash with a 1-based line:col position:
+Every refusal is a tagged crash with a 1-based line:col position. The two
+renderings differ, and only the tag is stable:
 
     error: %mint-limb at col 1              (REPL)
     refused: %parse-unglued at 1:14         (CLI, with source line + caret
                                              and a hint chain)
 
-Tag families: `%lex-*` lexer (bad char, quote/newline, interpolation);
-`%parse-*` grammar (`%parse-unglued` un-glued postfix, `%parse-minus-glue`
-glued minus, `%parse-lark-cmp` lark/comparison garble, `%parse-place` bad
-assignment target, `%parse-nonassoc` chained comparison, `%parse-empty-brace`,
-and did-you-mean hints for foreign habits: `%lex-connective` for `&&`/`||`,
-`%parse-not` for `!a`, `%parse-ternary` for `?:`, `%parse-let-mut` for
-Rust's `let mut`);
-`%sugar-*` desugar (withdrawn spellings, connective arity); `%mint-*` /
-`%mill-*` type checking and emission (`%mint-limb` unbound name,
-`%mill-nest` type mismatch, `%mint-func-dup` duplicate func in a group,
-`%mint-call-arity`, `%mint-op-aura` operand aura mismatch, `%mint-todo`
-unimplemented); `%decl-*` declaration registration; `%join-*` branch-type
-join failures. An untagged crash is a runtime crash, reported honestly as
-such.
+**Parse the tag; read the report.** The report's formatting is unstable by
+declaration — it carries the hint chain, which line:col cannot reconstruct,
+but its shape is not a contract.
+
+The tag INDEX is generated: <https://jock.is/reference/tags/> lists all 206
+refusals the compiler can raise, 164 of them with the minimal program that
+raises one, plus the five tag families that discriminate on a second element
+and the refusals no input can reach. A hand-written taxonomy stood here and
+is gone; it named tag families accurately but could only ever be a subset,
+and the generated index is a join against the compiler. For the refusals that
+specifically catch a habit from another language, with the compiler's own
+correction quoted, <https://jock.is/reference/transfer/>.
 
 ## Machine interface (for agent tooling)
 
 `tools/check.sh [-e EXPR | file | -]` (batch, ~5 s) and
-`jojo <kernel.jam> --check file.jock` (warm kernel: ~0.7 s module-free;
-a `--data-dir`-bearing kernel resolves imports per check, ~2 s) both emit ONE JSON
-object — written by the compiler itself, schema pinned by corpus vectors:
+`jojo <kernel.jam> --check file.jock` (warm kernel: ~0.7 s module-free; a
+`--data-dir`-bearing kernel resolves imports per check, ~2 s) both emit ONE
+JSON object, written by the compiler itself.
 
-    {"status":"ok","type":"@"}
-    {"status":"refused"|"crashed","tag":"mint-limb"|null,
-     "line":1|null,"col":1|null,"module":"m"|null,
-     "report":["refused: ...","  1 | ...",...]}
+**The schema is generated** — <https://jock.is/reference/machine/> carries it
+with the corpus vectors that pin each field by asserting the whole string.
+A copy of a JSON schema in hand-written prose is the worst kind of duplicate,
+so there is no copy here. What is worth knowing in prose:
 
-`module` names the `--data-dir` module a crash belongs to — its
-line/col index THAT module's source, and `report` excerpts it
-(null = the main program). Every configured module compiles at
-build time (its top-level statements run then), so a broken
-module in a `--data-dir` fails every build that configures it —
-the diagnostic names the culprit.
+`module` names the `--data-dir` module a crash belongs to — its line/col index
+THAT module's source, and `report` excerpts it (null = the main program).
+Every configured module compiles at build time (its top-level statements run
+then), so a broken module in a `--data-dir` fails every build that configures
+it, and the diagnostic names the culprit.
 
 Exit 0 = typechecks, 1 = refusal, 2 = tool error. `check` compiles WITHOUT
 running: a program that typechecks but would crash at runtime still checks
-green. `jockc.sh run f.jock` compiles and evaluates; `jockc.sh --diag run`
-gives `{"status":"ok","value":<noun>}` on the same failure schema.
-`--data-dir DIR` supplies library modules to any of these.
+green. `jockc.sh run f.jock` compiles and evaluates; `jockc.sh nock f.jock` prints
+the compiled Nock formula (see The REPL). `--diag` puts any of them on the
+JSON schema. `--data-dir DIR` supplies library modules to all of them.
 
 ## Pointers
 
