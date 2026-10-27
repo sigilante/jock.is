@@ -5,7 +5,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `1ab8e45` (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28
+> channel `%rc` · commit `273416c` (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28
 
 |  | count |  |
 |---|---:|---|
@@ -629,7 +629,7 @@ func dbl(n: @) -> @ { n + n };
 import m; m.dbl.g
 ```
 
-pinned by `t-jimp-arm-value-deep`, `t-rch-field`
+pinned by `t-jimp-arm-value-deep`, `t-rch-field` · spec: docs/spec/language.md L-171
 
 ### `%mint-func-annot`
 
@@ -757,7 +757,7 @@ func dbl(n: @) -> @ { n + n };
 import m; m.nope(1)
 ```
 
-pinned by `t-jimp-absent`, `t-jimp-arm-value-absent`, `t-jimp-private-arm`
+pinned by `t-jimp-absent`, `t-jimp-arm-value-absent`, `t-jimp-private-arm` · spec: docs/spec/language.md L-171
 
 ### `%mint-inexhaustive`
 
@@ -989,7 +989,7 @@ pinned by `t-jimp-class-gen-seal`, `t-jimp-seal-lit` · spec: docs/imports.md I-
 trait G<A> { g(self: Self) -> A; }; func<T: G> f(x: T) -> @ { 1 }; f(2)
 ```
 
-pinned by `t-err-bound-ptrait`, `t-err-class-gen-bound`, `t-jdag-arm-generic-n`, `t-jimp-arm-gen`, `t-jimp-bound-qual-ptrait`, `t-mint-gimpl-bound`
+pinned by `t-err-bound-ptrait`, `t-err-class-gen-bound`, `t-jdag-arm-generic-n`, `t-jimp-arm-gen`, `t-jimp-bound-qual-ptrait`, `t-mint-gimpl-bound` · spec: docs/spec/language.md L-171
 
 ### `%mint-unblessed`
 
@@ -1033,7 +1033,7 @@ pinned by `t-halo-scry-peek`, `t-halo-scry-try`, `t-halo-scry-under`
 import b; a.mkp(1).v
 ```
 
-pinned by `t-jdag-unimported`
+pinned by `t-jdag-unimported` · spec: docs/spec/language.md L-172
 
 ### `%mint-unreachable`
 

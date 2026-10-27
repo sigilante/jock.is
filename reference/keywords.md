@@ -5,7 +5,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `1ab8e45` (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28
+> channel `%rc` · commit `273416c` (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28
 
 The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexer’s own authority, which `tools/hilite.py` holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.
 
@@ -281,7 +281,7 @@ let x = 1; x;
 
 pinned by `t-arc-term-semi` · 183 vectors use this keyword
 
-defined by: `language.md` L-20, `language.md` L-61, `language.md` L-129, `language.md` L-130, `language.md` L-131, `language.md` L-134, `language.md` L-185
+defined by: `language.md` L-20, `language.md` L-61, `language.md` L-129, `language.md` L-130, `language.md` L-131, `language.md` L-134, `language.md` L-171, `language.md` L-185
 
 ### `loop`
 

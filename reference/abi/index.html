@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>1ab8e45</code> (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>273416c</code> (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28</aside>
 <p><code>docs/spec/runtime.md</code> is the authority for everything here. R-9 freezes the ABI through 1.0 with <strong>append</strong> as the one sanctioned change shape — a new arm enters at the END so every prior arm keeps its index, and a modification in place is not available because it would move an index that emitted code already depends on. R-10: the freeze rests on two pins, and only one is a mug.</p>
 <h2 id="the-pinned-arms">The pinned arms</h2>
 <p>37 rows, projected from <code>runtime.md</code> §4.1. Each names its signature and the corpus vectors that exercise it through Jock source — R-11 pins the pairing <strong>behaviourally</strong>, so a reorder in either table breaks a vector rather than passing quietly.</p>

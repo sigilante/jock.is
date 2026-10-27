@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>1ab8e45</code> (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>273416c</code> (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28</aside>
 <table><thead><tr><th></th><th>count</th><th></th></tr></thead><tbody><tr><td>tags the compiler can raise</td><td>204</td><td>199 <code>~|</code> heads + 6 <code>$diag</code> members</td></tr><tr><td><strong>with a runnable program</strong></td><td><strong>164</strong></td><td>the vector carries source, and the page shows it</td></tr><tr><td>no input can reach the guard</td><td>36</td><td>registered with the reason, and the registry is checked</td></tr><tr><td>…of those, still pinned by a vector</td><td>30</td><td>an AST- or judgment-level row reaches the arm directly</td></tr><tr><td>…and pinned by nothing</td><td>6</td><td>nothing to point an input at</td></tr><tr><td>compiler invariant with a tripwire</td><td>2</td><td>a vector green only while the invariant holds</td></tr><tr><td><strong>reachable, and pinned by nothing</strong></td><td><strong>2</strong></td><td>the gap list</td></tr><tr><td>AST-level only, with no reason recorded</td><td>0</td><td>the other gap: pinned, but never watched from a program</td></tr></tbody></table>
 <p>A <code>%neg</code> vector refuses <em>without</em> naming a tag, so it pins that a program is rejected and never in what words. 36 rows are <code>%neg</code>; none of them pins a tag here.</p>
 <p><strong>The two gap rows are the ones to read.</strong> Every other row is a refusal the corpus pins and this page can explain. A count of unpinned tags on its own cannot tell a missing test from a guard the compiler holds against itself, and this page published 82 of them as one list until the difference was worked out tag by tag.</p>
@@ -289,7 +289,7 @@ cd"; s</pre>
 <pre class="code jock" data-refuses="mint-field">func dbl(n: @) -&gt; @ { n + n };</pre>
 <p class="label">program</p>
 <pre class="code jock" data-refuses="mint-field">import m; m.dbl.g</pre>
-<p>pinned by <code>t-jimp-arm-value-deep</code>, <code>t-rch-field</code></p>
+<p>pinned by <code>t-jimp-arm-value-deep</code>, <code>t-rch-field</code> · spec: docs/spec/language.md L-171</p>
 <h3 id="mint-func-annot"><code>%mint-func-annot</code></h3>
 <pre class="code jock" data-refuses="mint-func-annot">func f(a) -&gt; @ { 1 }; f(1)</pre>
 <p>pinned by <code>t-mint-func-annot</code> · spec: docs/spec/language.md L-136</p>
@@ -337,7 +337,7 @@ cd"; s</pre>
 <pre class="code jock" data-refuses="mint-import-arm">func dbl(n: @) -&gt; @ { n + n };</pre>
 <p class="label">program</p>
 <pre class="code jock" data-refuses="mint-import-arm">import m; m.nope(1)</pre>
-<p>pinned by <code>t-jimp-absent</code>, <code>t-jimp-arm-value-absent</code>, <code>t-jimp-private-arm</code></p>
+<p>pinned by <code>t-jimp-absent</code>, <code>t-jimp-arm-value-absent</code>, <code>t-jimp-private-arm</code> · spec: docs/spec/language.md L-171</p>
 <h3 id="mint-inexhaustive"><code>%mint-inexhaustive</code></h3>
 <pre class="code jock" data-refuses="mint-inexhaustive">let o: @? = 5; match o { ~ =&gt; 0, }</pre>
 <p>pinned by <code>t-text-opt-no-cell</code>, <code>t-text-opt-no-null</code> · also <code>t-mint-match-inex</code>, <code>t-mint-witness</code> (AST-level)</p>
@@ -424,7 +424,7 @@ cd"; s</pre>
 <p>pinned by <code>t-jimp-class-gen-seal</code>, <code>t-jimp-seal-lit</code> · spec: docs/imports.md I-5</p>
 <h3 id="mint-todo"><code>%mint-todo</code></h3>
 <pre class="code jock" data-refuses="mint-todo">trait G&lt;A&gt; { g(self: Self) -&gt; A; }; func&lt;T: G&gt; f(x: T) -&gt; @ { 1 }; f(2)</pre>
-<p>pinned by <code>t-err-bound-ptrait</code>, <code>t-err-class-gen-bound</code>, <code>t-jdag-arm-generic-n</code>, <code>t-jimp-arm-gen</code>, <code>t-jimp-bound-qual-ptrait</code>, <code>t-mint-gimpl-bound</code></p>
+<p>pinned by <code>t-err-bound-ptrait</code>, <code>t-err-class-gen-bound</code>, <code>t-jdag-arm-generic-n</code>, <code>t-jimp-arm-gen</code>, <code>t-jimp-bound-qual-ptrait</code>, <code>t-mint-gimpl-bound</code> · spec: docs/spec/language.md L-171</p>
 <h3 id="mint-unblessed"><code>%mint-unblessed</code></h3>
 <p class="label">module</p>
 <pre class="code jock" data-refuses="mint-unblessed">func g() -&gt; @ { 2 };</pre>
@@ -441,7 +441,7 @@ cd"; s</pre>
 <p>pinned by <code>t-halo-scry-peek</code>, <code>t-halo-scry-try</code>, <code>t-halo-scry-under</code></p>
 <h3 id="mint-unimported"><code>%mint-unimported</code></h3>
 <pre class="code jock" data-refuses="mint-unimported">import b; a.mkp(1).v</pre>
-<p>pinned by <code>t-jdag-unimported</code></p>
+<p>pinned by <code>t-jdag-unimported</code> · spec: docs/spec/language.md L-172</p>
 <h3 id="mint-unreachable"><code>%mint-unreachable</code></h3>
 <pre class="code jock" data-refuses="mint-unreachable">match 1 { _ =&gt; 0, 1 =&gt; 2 }</pre>
 <p>pinned by <code>t-rch-unrch</code> · also <code>t-mint-match-unreach</code> (AST-level)</p>
