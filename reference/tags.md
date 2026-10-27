@@ -5,7 +5,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `218b0a0` (sigilante/review-fixes) · corpus 1131 vectors · 2026-10-28
+> channel `%rc` · commit `1ab8e45` (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28
 
 |  | count |  |
 |---|---:|---|
@@ -517,7 +517,7 @@ pinned by `t-rch-case`
 let n = 42; let b: Bool = n as Bool; b
 ```
 
-pinned by `t-as-grd-bool`, `t-as-grd-char`, `t-cast-sint-deep`, `t-err-chars-cast` · also `t-mint-cast` (AST-level) · spec: docs/spec/language.md L-24, docs/spec/language.md L-120, docs/spec/runtime.md R-44
+pinned by `t-as-grd-bool`, `t-as-grd-char`, `t-err-chars-cast` · also `t-mint-cast` (AST-level) · spec: docs/spec/language.md L-24, docs/spec/language.md L-120, docs/spec/runtime.md R-44
 
 ### `%mint-cast-sealed`
 
@@ -538,10 +538,10 @@ pinned by `t-jimp-seal-cast`, `t-jimp-seal-deep-arg`, `t-jimp-seal-deep-cast`, `
 ### `%mint-cast-sint`
 
 ```jock
-42 as Int
+struct SB { a: Int, k: @ }; let s = (5, 4) as SB; if s.a == -3 { 111 } else { 222 }
 ```
 
-pinned by `t-sint-cast`, `t-sint-castp`, `t-sint-castq`, `t-sint-castx` · spec: docs/imports.md I-5, docs/spec/language.md L-12, docs/spec/language.md L-127
+pinned by `t-cast-sint-deep`, `t-cast-sint-deep-soft`, `t-cast-sint-deep-test`, `t-cast-sint-deep-tuple`, `t-sint-cast`, `t-sint-castp`, `t-sint-castq`, `t-sint-castx` · spec: docs/imports.md I-5, docs/spec/language.md L-12, docs/spec/language.md L-127
 
 ### `%mint-ctor`
 
@@ -1485,11 +1485,11 @@ The guard protects against an AST the grammar has no spelling for. Reaching it f
 |---|---|---|
 | `%desugar-snap` | %snap is the prelude checkpoint;  the parser has no spelling for it | — |
 | `%empty-raw-cell` | the nasm raw-cell rule takes one or more elements, so an empty cell has no spelling | `t-nx-emptycell-n` |
+| `%mint-axis` | +p-naxis and +p-lark only ever APPEND an %axis limb to an existing path (parse.hoon:639,647) or wrap a %dot over an expression, so a limb path never STARTS with one --- and +dimb reaches this branch only at k=0, the first segment.  An axis-headed path has no spelling:  bare `.+n` is %parse-stray, and `p.+99999` is %mint-naxis.  (The reason given here until 2026-10-28 was the prelude resolving every writable axis, which is unfalsifiable from source;  the grammar reason is checkable by reading one arm.) | `t-mint-axis` |
 | `%mint-func-shape` | a func body is a %lambda by grammar | `t-mint-func-shape` |
 | `%mint-meth-ret` | the method grammar requires `->` and a return type | `t-mint-meth-ret` |
 | `%mint-meth-shape` | a method body is a %lambda by grammar | `t-mint-meth-shape` |
 | `%mint-op-unary` | the %operator form always carries its second operand | `t-mint-op-unary` |
-| `%mint-patt-ambiguous` | an or-type member set is erasure-disjoint by +dish at declaration, so at most one member fits a pattern | `t-mint-patt-ambiguous` |
 | `%mint-recur-arm` | recur edits refuse %parse-todo;  edits is always ~ | `t-mint-recur-arm` |
 | `%mint-recur-limb` | recur edits refuse %parse-todo;  edits is always ~ | `t-mint-recur-limb` |
 | `%mint-recur-outer` | recur edits refuse %parse-todo;  edits is always ~ | `t-mint-recur-outer` |
@@ -1506,8 +1506,9 @@ The program that would reach this guard is rejected earlier, every time, so the 
 
 | tag | why | pinned by |
 |---|---|---|
-| `%mint-axis` | under the prelude the subject resolves every axis a program can write | `t-mint-axis` |
+| `%mint-patt-ambiguous` | +dish refuses an indiscriminable or-type AT DECLARATION, so by the time a pattern meets one at most one member fits;  the parser builds the shape fine, which is why this is upstream and not grammar | `t-mint-patt-ambiguous` |
 | `%mint-slit-empty` | a fieldless struct refuses %decl-empty-struct at its declaration | `t-mint-slit-empty` |
+| `%module-form` | THREE guard shapes, and the reason here described one.  (a) the bare form:  +jmod requires a module to END after a statement, so every violation is %parse-trailing first --- upstream, not an invariant.  (b) %private:  +p-private builds %private only over a %decl or %func and otherwise refuses %parse-private (parse.hoon:1370), so that leaf is unreachable by GRAMMAR.  (c) %if:  a coupling to +desugar %assert rather than a reachability fact, pinned by t-jimp-assert.  t-module-form pins only the dynamic default. | `t-module-form` |
 
 ### invariant — *the compiler against itself*
 
@@ -1521,7 +1522,6 @@ The pass that could violate the invariant is the pass that satisfies it. Two of 
 | `%mint-dict-scope` | the dictionary marker is pushed by the same pass that looks it up | `t-mint-dict-scope` |
 | `%mint-grp-empty` | the closure battery is built from a non-empty member list by the pass that then combs it | `t-mint-grp-empty` |
 | `%modl-synims-count` | a documented precondition:  +dimpls orders both lists and the caller keeps them in step | — |
-| `%module-form` | +jmod requires a module to END after a statement, so every violation is %parse-trailing first | `t-module-form` |
 | `%module-shape` | a module terminal is built by the +modl synthesis itself, which cannot build a non-cell for two names | `t-module-shape` |
 | `%pfix-plug` | the prelude nasm spine is written by +pfix and read by +plug | — |
 | `%pfix-snap` | the prelude nasm spine is written by +pfix and read by +psnap | — |

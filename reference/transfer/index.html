@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>218b0a0</code> (sigilante/review-fixes) · corpus 1131 vectors · 2026-10-28</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>1ab8e45</code> (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28</aside>
 <p>A refusal is counted here when its <code>~|</code> clue carries a <strong>prose sentence</strong>. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.</p>
 <p>Every message under <strong>The corrections</strong> is quoted from the compiler, not written here, so the words a reader sees are the words the terminal will use. The one section that is authored says so in its own heading, and even there the program and the value come from a vector.</p>
 <table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>refusals that correct you</td><td>25</td></tr><tr><td>…shown with the program that triggers one</td><td>25</td></tr><tr><td>…pinned only by an AST-level vector</td><td>0</td></tr><tr><td>…pinned by no vector at all</td><td>0</td></tr></tbody></table>
@@ -102,11 +102,11 @@
 <blockquote>a class is constructed only by the module that declares it; ask it for an arm that validates</blockquote>
 <p>pinned by <code>t-jimp-seal-cast</code> · spec: docs/imports.md I-5</p>
 <h3 id="mint-cast-sint"><code>%mint-cast-sint</code></h3>
-<pre class="code jock" data-refuses="mint-cast-sint">42 as Int</pre>
+<pre class="code jock" data-refuses="mint-cast-sint">struct SB { a: Int, k: @ }; let s = (5, 4) as SB; if s.a == -3 { 111 } else { 222 }</pre>
 <blockquote>a cast reinterprets bits; sint(n) converts @ to Int</blockquote>
 <blockquote>a cast reinterprets bits; sint(n) converts @ to Int (an untyped noun may still be molded: it is ZigZag by provenance)</blockquote>
 <blockquote>a type test reinterprets bits; sint(n) converts @ to Int (an untyped noun may still be molded: it is ZigZag by provenance)</blockquote>
-<p>pinned by <code>t-sint-cast</code> · spec: docs/imports.md I-5, docs/spec/language.md L-12, docs/spec/language.md L-127</p>
+<p>pinned by <code>t-cast-sint-deep</code> · spec: docs/imports.md I-5, docs/spec/language.md L-12, docs/spec/language.md L-127</p>
 <h3 id="mint-edit-sealed"><code>%mint-edit-sealed</code></h3>
 <p class="label">module</p>
 <pre class="code jock" data-refuses="mint-edit-sealed">struct CS { n: @ }; class Counter(CS) impl Add { add(self: Self, p: Self) -&gt; Self { Counter( n: self.n + p.n ) }; bump(self: Self) -&gt; Self { Counter( n: self.n + 1 ) }; twice(self: Self) -&gt; Self { self.bump().bump() }; }; func mk(n: @) -&gt; Counter { Counter( n: n ) }; </pre>

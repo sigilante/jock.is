@@ -5,7 +5,7 @@ Every literal form Jock can spell, the aura each carries, and the names the lang
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `218b0a0` (sigilante/review-fixes) · corpus 1131 vectors · 2026-10-28
+> channel `%rc` · commit `1ab8e45` (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28
 
 ## The literal inventory
 
@@ -143,13 +143,13 @@ from `t-lex-stray-n` (`%lex`, `%err`) · also cites `t-minus-spaced`, `t-minus-g
 
 from `t-sint-sum` (`%text`, `%pos`) · also cites `t-sint-sub`, `t-sint-mul`, `t-sint-cmp`, `t-sint-sum-mixed`
 
-### L-12 · Casting INTO Int refuses through all three doors
+### L-12 · Casting INTO Int refuses through all three doors, at every position
 
 ```jock
 42 as Int
 ```
 
-from `t-sint-cast` (`%text`, `%err`) · also cites `t-sint-castp`, `t-sint-castq`, `t-sint-castx`, `t-cast-sint-out`, `t-cast-sint-deep`, `t-cast-sint-out-deep`
+from `t-sint-cast` (`%text`, `%err`) · also cites `t-sint-castp`, `t-sint-castq`, `t-sint-castx`, `t-cast-sint-out`, `t-cast-sint-out-deep`, `t-cast-sint-deep`, `t-cast-sint-deep-soft`, `t-cast-sint-deep-test`, `t-cast-sint-deep-tuple`, `t-cast-sint-deep-same`
 
 ### L-13 · Ingestion is the one sanctioned soft use.
 
@@ -157,7 +157,7 @@ from `t-sint-cast` (`%text`, `%err`) · also cites `t-sint-castp`, `t-sint-castq
 let v = eval(83, (0, 1)); (v as! Int) as @
 ```
 
-from `t-sint-ingest` (`%text`, `%pos`) · also cites `t-sint-ingestp`
+from `t-sint-ingest` (`%text`, `%pos`) · also cites `t-sint-ingestp`, `t-cast-sint-ingest`
 
 ### L-14 · Conversion from a known nat is a function, not a cast.
 

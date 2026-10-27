@@ -5,7 +5,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `218b0a0` (sigilante/review-fixes) · corpus 1131 vectors · 2026-10-28
+> channel `%rc` · commit `1ab8e45` (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28
 
 The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexer’s own authority, which `tools/hilite.py` holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.
 
@@ -83,9 +83,9 @@ defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `langu
 +42 as @
 ```
 
-pinned by `t-sint-lit` · 47 vectors use this keyword
+pinned by `t-sint-lit` · 49 vectors use this keyword
 
-defined by: `language.md` L-24, `language.md` L-61, `language.md` L-107, `language.md` L-120
+defined by: `language.md` L-12, `language.md` L-24, `language.md` L-61, `language.md` L-107, `language.md` L-120
 
 ### `assert`
 
@@ -279,7 +279,7 @@ defined by: `language.md` L-61
 let x = 1; x;
 ```
 
-pinned by `t-arc-term-semi` · 181 vectors use this keyword
+pinned by `t-arc-term-semi` · 183 vectors use this keyword
 
 defined by: `language.md` L-20, `language.md` L-61, `language.md` L-129, `language.md` L-130, `language.md` L-131, `language.md` L-134, `language.md` L-185
 
@@ -375,7 +375,7 @@ defined by: `language.md` L-61, `language.md` L-140, `language.md` L-152
 struct Q { w: @ }; Q( w: 9 ).w
 ```
 
-pinned by `t-text-dot-slit` · 66 vectors use this keyword
+pinned by `t-text-dot-slit` · 68 vectors use this keyword
 
 defined by: `language.md` L-45, `language.md` L-61
 

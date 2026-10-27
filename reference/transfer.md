@@ -5,7 +5,7 @@ The 25 refusals that exist to catch a habit from another language, each with the
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `218b0a0` (sigilante/review-fixes) · corpus 1131 vectors · 2026-10-28
+> channel `%rc` · commit `1ab8e45` (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28
 
 A refusal is counted here when its `~|` clue carries a **prose sentence**. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.
 
@@ -127,7 +127,7 @@ pinned by `t-jimp-seal-cast` · spec: docs/imports.md I-5
 ### `%mint-cast-sint`
 
 ```jock
-42 as Int
+struct SB { a: Int, k: @ }; let s = (5, 4) as SB; if s.a == -3 { 111 } else { 222 }
 ```
 
 > a cast reinterprets bits; sint(n) converts @ to Int
@@ -136,7 +136,7 @@ pinned by `t-jimp-seal-cast` · spec: docs/imports.md I-5
 
 > a type test reinterprets bits; sint(n) converts @ to Int (an untyped noun may still be molded: it is ZigZag by provenance)
 
-pinned by `t-sint-cast` · spec: docs/imports.md I-5, docs/spec/language.md L-12, docs/spec/language.md L-127
+pinned by `t-cast-sint-deep` · spec: docs/imports.md I-5, docs/spec/language.md L-12, docs/spec/language.md L-127
 
 ### `%mint-edit-sealed`
 
