@@ -5,7 +5,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `8214ae6` (sigilante/drop-the-dead-tex) · corpus 1121 vectors · 2026-10-27
+> channel `%rc` · commit `fd2c243` (sigilante/drop-the-dead-tex) · corpus 1129 vectors · 2026-10-28
 
 The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexer’s own authority, which `tools/hilite.py` holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.
 
@@ -195,7 +195,7 @@ defined by: `language.md` L-61
 func<T> id(x: T) -> T { x }; id(42)
 ```
 
-pinned by `t-text-gen` · 72 vectors use this keyword
+pinned by `t-text-gen` · 76 vectors use this keyword
 
 defined by: `language.md` L-17, `language.md` L-20, `language.md` L-61, `language.md` L-87, `language.md` L-135, `language.md` L-136, `language.md` L-137, `language.md` L-139, `language.md` L-140, `language.md` L-143, `language.md` L-185
 
@@ -231,7 +231,7 @@ defined by: `language.md` L-20, `language.md` L-45, `language.md` L-61
 import hoon; 20 + 22
 ```
 
-pinned by `t-text-arith` · 65 vectors use this keyword
+pinned by `t-text-arith` · 71 vectors use this keyword
 
 defined by: `language.md` L-61, `language.md` L-185
 
@@ -267,7 +267,7 @@ defined by: `language.md` L-61, `language.md` L-69
 let f = lambda (x: @) -> @ { x * 10 }; hoon.lturn([1, 2, 3], f)
 ```
 
-pinned by `t-list-turn-lambda` · 11 vectors use this keyword
+pinned by `t-list-turn-lambda` · 12 vectors use this keyword
 
 defined by: `language.md` L-61
 
@@ -279,7 +279,7 @@ defined by: `language.md` L-61
 let x = 1; x;
 ```
 
-pinned by `t-arc-term-semi` · 178 vectors use this keyword
+pinned by `t-arc-term-semi` · 181 vectors use this keyword
 
 defined by: `language.md` L-20, `language.md` L-61, `language.md` L-129, `language.md` L-130, `language.md` L-131, `language.md` L-134, `language.md` L-185
 
@@ -375,7 +375,7 @@ defined by: `language.md` L-61, `language.md` L-140, `language.md` L-152
 struct Q { w: @ }; Q( w: 9 ).w
 ```
 
-pinned by `t-text-dot-slit` · 65 vectors use this keyword
+pinned by `t-text-dot-slit` · 66 vectors use this keyword
 
 defined by: `language.md` L-45, `language.md` L-61
 

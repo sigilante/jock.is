@@ -5,7 +5,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `8214ae6` (sigilante/drop-the-dead-tex) · corpus 1121 vectors · 2026-10-27
+> channel `%rc` · commit `fd2c243` (sigilante/drop-the-dead-tex) · corpus 1129 vectors · 2026-10-28
 
 |  | count |  |
 |---|---:|---|
@@ -981,7 +981,7 @@ pinned by `t-jimp-class-gen-seal`, `t-jimp-seal-lit` · spec: docs/imports.md I-
 trait G<A> { g(self: Self) -> A; }; func<T: G> f(x: T) -> @ { 1 }; f(2)
 ```
 
-pinned by `t-err-bound-ptrait`, `t-err-class-gen-bound`, `t-jimp-bound-qual-ptrait`, `t-mint-gimpl-bound`
+pinned by `t-err-bound-ptrait`, `t-err-class-gen-bound`, `t-jdag-arm-generic-n`, `t-jimp-arm-gen`, `t-jimp-bound-qual-ptrait`, `t-mint-gimpl-bound`
 
 ### `%mint-unblessed`
 
@@ -1548,7 +1548,7 @@ Reachable, and no vector asserts them: 2 of 204. Simultaneously a documentation 
 Five tags discriminate on a *second* element, so the thing to search for is the pair. Every one is an "unsupported thing" family, which is exactly where the compiler must say which.
 
 - `%mint-mold` · `%deep` `%gate` `%var` `%void` — plus 4 computed leaf site(s), not enumerable from source
-- `%mint-todo` · `%bound-ptrait` `%class-bound` `%export-class-ptrait` `%func-gen` `%impl-bound` `%impl-head` `%list-annot` `%trait-bound` — plus 1 computed leaf site(s), not enumerable from source
+- `%mint-todo` · `%bound-ptrait` `%class-bound` `%export-class-ptrait` `%func-gen` `%impl-bound` `%impl-head` `%import-arm-gen` `%list-annot` `%trait-bound` — plus 1 computed leaf site(s), not enumerable from source
 - `%module-form` · `%if` `%private` — plus 10 computed leaf site(s), not enumerable from source
 - `%parse-todo` · `%defer` `%recur-edits`
 - `%sugar-todo` · `%list-annot` `%map-annot`

@@ -5,7 +5,7 @@
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `8214ae6` (sigilante/drop-the-dead-tex) · corpus 1121 vectors · 2026-10-27
+> channel `%rc` · commit `fd2c243` (sigilante/drop-the-dead-tex) · corpus 1129 vectors · 2026-10-28
 
 The descriptions are the authors’ own header comments, not written here: `examples/README.md` calls each example "executable documentation — the header comments are the prose, and a `// expect: <noun>` trailer pins the program’s value". 10 of them are **kernels**, carrying `// kernel: N` — built, poked N times, then peeked.
 
