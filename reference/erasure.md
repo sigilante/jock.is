@@ -5,7 +5,7 @@ What a Jock program becomes. Types erase totally — there is no runtime type in
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `00f7804` (sigilante/escape-octal-aside) · corpus 1082 vectors · 2026-10-27
+> channel `%rc` · commit `5c88a7f` (sigilante/reach-the-tags) · corpus 1124 vectors · 2026-10-27
 
 ## The erasure table
 
@@ -104,6 +104,32 @@ true
 | string interpolation | `.show()` per head | L-26 to L-32 |
 | collection literals | constructor calls / raw nouns | L-79 |
 
+## The formula
+
+What a program compiles to, not just what its types erase to. Each row below is a corpus vector: the input is the REPL’s `:nock` command and the asserted output is the formula it printed, so these are pinned rather than probed.
+
+`:nock` strips the prelude’s push spine before printing — every program grafts the prelude, so a raw whole-program formula is thousands of nodes of library and a handful of the program. What is left is the terminal expression’s own code, with axes reading the stripped environment.
+
+```jock
+42
+```
+
+→ `[1 42]` — an atom is a CONSTANT: Nock 1, the one opcode that quotes ⟨`t-repl-nock`⟩
+
+```jock
+(1, 2)
+```
+
+→ `[[1 1] [1 2]]` — a tuple is a cons of two constants — the formula has the shape of the value ⟨`t-repl-nock2`⟩
+
+```jock
+peekContext(42)
+```
+
+→ `[12 [[1 0] [1 42]]]` — a namespace read is Nock 12, reference and path, each quoted ⟨`t-repl-peek`⟩
+
+`jockc.sh nock f.jock` reaches the same place from the CLI, added 2026-10-27. It calls the REPL’s arm rather than `+compile` directly, and the difference is the whole point: `+compile` answers the formula for the WHOLE program, and since every program grafts the prelude, that answer for `42` is megabytes of library with `[1 42]` somewhere inside it. Measured — the first draft of that verb had not finished after four minutes.
+
 ## What this page does not carry
 
-The **Nock formula** a program compiles to. `tools/jockc.sh` has `run`, `check`, `kernel` and `jets`, and none of them dumps a formula, so there is nothing to extract — emitting source-to-Nock means adding that mode first. The erasure table is the type-level half of the same story and is the half that exists today.
+A formula for a whole PROGRAM rather than for its terminal expression. The spine `:nock` strips is real code — the prelude’s own pushes — and showing it would be honest but useless at this size. Nothing is withheld for want of a tool now; what is missing is a rendering that can summarise a large formula without lying about it.

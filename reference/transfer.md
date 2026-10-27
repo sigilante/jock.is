@@ -5,7 +5,7 @@ The 25 refusals that exist to catch a habit from another language, each with the
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `00f7804` (sigilante/escape-octal-aside) · corpus 1082 vectors · 2026-10-27
+> channel `%rc` · commit `5c88a7f` (sigilante/reach-the-tags) · corpus 1124 vectors · 2026-10-27
 
 A refusal is counted here when its `~|` clue carries a **prose sentence**. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.
 
@@ -14,9 +14,9 @@ Every message under **The corrections** is quoted from the compiler, not written
 |  | count |
 |---|---:|
 | refusals that correct you | 25 |
-| …shown with the program that triggers one | 22 |
-| …pinned only by an AST-level vector | 2 |
-| …pinned by no vector at all | 1 |
+| …shown with the program that triggers one | 25 |
+| …pinned only by an AST-level vector | 0 |
+| …pinned by no vector at all | 0 |
 
 ## The corrections
 
@@ -72,9 +72,13 @@ pinned by `t-elab-too-large`
 
 ### `%kernel-trait`
 
+```jock
+struct KS { n: @ }; class Counter(KS) { load(self: Counter, old: *) -> Counter { old as! Counter }; peek(self: Counter, p: *) -> * { self.n }; poke(self: Counter, e: *) -> (List<*>, Counter) { (~, self) }; }; Counter( n: 0 )
+```
+
 > the class must impl Kernel<E> or FullKernel<E>, naming its effect type
 
-**no vector pins this one** — it is reachable and the corpus does not assert it · spec: docs/spec/runtime.md R-70
+pinned by `t-rch-kern-tr` · spec: docs/spec/runtime.md R-70
 
 ### `%lex-connective`
 
@@ -90,11 +94,15 @@ pinned by `t-hint-amp` · spec: docs/spec/language.md L-91, docs/spec/language.m
 
 ### `%mint-call-arity`
 
+```jock
+func f(a: @, b: @) -> @ { a }; f(1)
+```
+
 > call supplies no arguments;  this one takes some
 
 > no arguments minted for a call that supplied some
 
-pinned by `t-mint-call-arity`, `t-mint-import-arity`, all of which build an AST directly, so no program can be shown · spec: docs/spec/language.md L-171
+pinned by `t-rch-arity` · spec: docs/spec/language.md L-171
 
 ### `%mint-cast-sealed`
 
@@ -178,8 +186,16 @@ pinned by `t-jimp-class-gen-seal` · spec: docs/imports.md I-5
 
 ### `%mint-unblessed`
 
+*module*
+
 ```jock
 func g() -> @ { 2 };
+```
+
+*program*
+
+```jock
+import evil; evil.g()
 ```
 
 > module is not on the blessed list; see vendor/BLESSED.txt
@@ -188,9 +204,15 @@ pinned by `t-halo-unblessed`
 
 ### `%mint-unblessed-scry`
 
+*program*
+
+```jock
+peekContext(42)
+```
+
 > the namespace is denied under --nockchain
 
-pinned by `t-halo-scry-peek`, `t-halo-scry-try`, `t-halo-scry-under`, all of which build an AST directly, so no program can be shown
+pinned by `t-halo-scry-peek`
 
 ### `%parse-lark-cmp`
 

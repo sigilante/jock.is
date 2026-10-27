@@ -5,7 +5,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `00f7804` (sigilante/escape-octal-aside) · corpus 1082 vectors · 2026-10-27
+> channel `%rc` · commit `5c88a7f` (sigilante/reach-the-tags) · corpus 1124 vectors · 2026-10-27
 
 The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexer’s own authority, which `tools/hilite.py` holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.
 
@@ -147,7 +147,7 @@ defined by: `language.md` L-61
 if 3 != 4 { 7 } else { 9 }
 ```
 
-pinned by `t-eq-ne` · 30 vectors use this keyword
+pinned by `t-eq-ne` · 33 vectors use this keyword
 
 defined by: `language.md` L-61
 
@@ -195,7 +195,7 @@ defined by: `language.md` L-61
 func<T> id(x: T) -> T { x }; id(42)
 ```
 
-pinned by `t-text-gen` · 70 vectors use this keyword
+pinned by `t-text-gen` · 72 vectors use this keyword
 
 defined by: `language.md` L-17, `language.md` L-20, `language.md` L-61, `language.md` L-87, `language.md` L-135, `language.md` L-136, `language.md` L-137, `language.md` L-139, `language.md` L-140, `language.md` L-143, `language.md` L-185
 
@@ -207,7 +207,7 @@ defined by: `language.md` L-17, `language.md` L-20, `language.md` L-61, `languag
 if 3 != 4 { 7 } else { 9 }
 ```
 
-pinned by `t-eq-ne` · 31 vectors use this keyword
+pinned by `t-eq-ne` · 34 vectors use this keyword
 
 defined by: `language.md` L-61, `language.md` L-185
 
@@ -231,7 +231,7 @@ defined by: `language.md` L-20, `language.md` L-45, `language.md` L-61
 import hoon; 20 + 22
 ```
 
-pinned by `t-text-arith` · 60 vectors use this keyword
+pinned by `t-text-arith` · 65 vectors use this keyword
 
 defined by: `language.md` L-61, `language.md` L-185
 
@@ -279,7 +279,7 @@ defined by: `language.md` L-61
 let x = 1; x;
 ```
 
-pinned by `t-arc-term-semi` · 174 vectors use this keyword
+pinned by `t-arc-term-semi` · 178 vectors use this keyword
 
 defined by: `language.md` L-20, `language.md` L-61, `language.md` L-129, `language.md` L-130, `language.md` L-131, `language.md` L-134, `language.md` L-185
 
@@ -291,7 +291,7 @@ defined by: `language.md` L-20, `language.md` L-61, `language.md` L-129, `langua
 import hoon; var b = 0; loop { if b == 5 { b } else { b = b + 1; recur } }
 ```
 
-pinned by `t-text-loop` · 3 vectors use this keyword
+pinned by `t-text-loop` · 4 vectors use this keyword
 
 defined by: `language.md` L-61, `language.md` L-87, `language.md` L-140, `language.md` L-185
 
@@ -363,7 +363,7 @@ defined by: `language.md` L-17, `language.md` L-25, `language.md` L-37, `languag
 import hoon; var b = 0; loop { if b == 5 { b } else { b = b + 1; recur } }
 ```
 
-pinned by `t-text-loop` · 3 vectors use this keyword
+pinned by `t-text-loop` · 4 vectors use this keyword
 
 defined by: `language.md` L-61, `language.md` L-140, `language.md` L-152
 
@@ -407,7 +407,7 @@ defined by: `language.md` L-22, `language.md` L-45, `language.md` L-61
 var b = 1; b = 3; b
 ```
 
-pinned by `t-var-widen` · 11 vectors use this keyword
+pinned by `t-var-widen` · 12 vectors use this keyword
 
 defined by: `language.md` L-61, `language.md` L-129, `language.md` L-130, `language.md` L-131, `language.md` L-132, `language.md` L-134
 

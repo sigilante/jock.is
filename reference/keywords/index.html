@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>00f7804</code> (sigilante/escape-octal-aside) · corpus 1082 vectors · 2026-10-27</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>5c88a7f</code> (sigilante/reach-the-tags) · corpus 1124 vectors · 2026-10-27</aside>
 <p>The keyword set is read from the <code>$keyword</code> mold in <code>sur/jock.hoon</code> — the lexer’s own authority, which <code>tools/hilite.py</code> holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.</p>
 <table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>keywords in the mold</td><td>31</td></tr><tr><td>usable, with a demonstrating program</td><td>29</td></tr><tr><td>usable, demonstrated by nothing</td><td>0</td></tr><tr><td>deliberately not usable</td><td>2</td></tr><tr><td>defined by at least one <code>language.md</code> rule</td><td>31</td></tr></tbody></table>
 <h2 id="syntactic-slots">Syntactic slots</h2>
@@ -106,7 +106,7 @@
 <h3 id="else"><code>else</code></h3>
 <p><strong>control keyword.</strong></p>
 <pre class="code jock">if 3 != 4 { 7 } else { 9 }</pre>
-<p>pinned by <code>t-eq-ne</code> · 30 vectors use this keyword</p>
+<p>pinned by <code>t-eq-ne</code> · 33 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-61</p>
 <h3 id="enum"><code>enum</code></h3>
 <p><strong>declaration keyword.</strong></p>
@@ -126,12 +126,12 @@
 <h3 id="func"><code>func</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <pre class="code jock">func&lt;T&gt; id(x: T) -&gt; T { x }; id(42)</pre>
-<p>pinned by <code>t-text-gen</code> · 70 vectors use this keyword</p>
+<p>pinned by <code>t-text-gen</code> · 72 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-17, <code>language.md</code> L-20, <code>language.md</code> L-61, <code>language.md</code> L-87, <code>language.md</code> L-135, <code>language.md</code> L-136, <code>language.md</code> L-137, <code>language.md</code> L-139, <code>language.md</code> L-140, <code>language.md</code> L-143, <code>language.md</code> L-185</p>
 <h3 id="if"><code>if</code></h3>
 <p><strong>control keyword.</strong></p>
 <pre class="code jock">if 3 != 4 { 7 } else { 9 }</pre>
-<p>pinned by <code>t-eq-ne</code> · 31 vectors use this keyword</p>
+<p>pinned by <code>t-eq-ne</code> · 34 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-185</p>
 <h3 id="impl"><code>impl</code></h3>
 <p><strong>declaration keyword.</strong></p>
@@ -141,7 +141,7 @@
 <h3 id="import"><code>import</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <pre class="code jock">import hoon; 20 + 22</pre>
-<p>pinned by <code>t-text-arith</code> · 60 vectors use this keyword</p>
+<p>pinned by <code>t-text-arith</code> · 65 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-185</p>
 <h3 id="in"><code>in</code></h3>
 <p><strong>operator keyword.</strong> Precedence level 8 of 13 (non-associative), sharing it with <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code>  <code>∈</code> <code>⊂</code> <code>⊃</code>.</p>
@@ -161,12 +161,12 @@
 <h3 id="let"><code>let</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <pre class="code jock">let x = 1; x;</pre>
-<p>pinned by <code>t-arc-term-semi</code> · 174 vectors use this keyword</p>
+<p>pinned by <code>t-arc-term-semi</code> · 178 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-20, <code>language.md</code> L-61, <code>language.md</code> L-129, <code>language.md</code> L-130, <code>language.md</code> L-131, <code>language.md</code> L-134, <code>language.md</code> L-185</p>
 <h3 id="loop"><code>loop</code></h3>
 <p><strong>control keyword.</strong></p>
 <pre class="code jock">import hoon; var b = 0; loop { if b == 5 { b } else { b = b + 1; recur } }</pre>
-<p>pinned by <code>t-text-loop</code> · 3 vectors use this keyword</p>
+<p>pinned by <code>t-text-loop</code> · 4 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-87, <code>language.md</code> L-140, <code>language.md</code> L-185</p>
 <h3 id="match"><code>match</code></h3>
 <p><strong>control keyword.</strong></p>
@@ -196,7 +196,7 @@
 <h3 id="recur"><code>recur</code></h3>
 <p><strong>control keyword.</strong></p>
 <pre class="code jock">import hoon; var b = 0; loop { if b == 5 { b } else { b = b + 1; recur } }</pre>
-<p>pinned by <code>t-text-loop</code> · 3 vectors use this keyword</p>
+<p>pinned by <code>t-text-loop</code> · 4 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-140, <code>language.md</code> L-152</p>
 <h3 id="struct"><code>struct</code></h3>
 <p><strong>declaration keyword.</strong></p>
@@ -215,7 +215,7 @@
 <h3 id="var"><code>var</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <pre class="code jock">var b = 1; b = 3; b</pre>
-<p>pinned by <code>t-var-widen</code> · 11 vectors use this keyword</p>
+<p>pinned by <code>t-var-widen</code> · 12 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-129, <code>language.md</code> L-130, <code>language.md</code> L-131, <code>language.md</code> L-132, <code>language.md</code> L-134</p>
 <h3 id="xor"><code>xor</code></h3>
 <p><strong>operator keyword.</strong> Precedence level 12 of 13 (left-associative), sharing it with nothing.</p>

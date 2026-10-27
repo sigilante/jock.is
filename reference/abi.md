@@ -5,7 +5,7 @@ What a Jock program can call: the arms the runtime pins, the traits the prelude 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `00f7804` (sigilante/escape-octal-aside) · corpus 1082 vectors · 2026-10-27
+> channel `%rc` · commit `5c88a7f` (sigilante/reach-the-tags) · corpus 1124 vectors · 2026-10-27
 
 `docs/spec/runtime.md` is the authority for everything here. R-9 freezes the ABI through 1.0 with **append** as the one sanctioned change shape — a new arm enters at the END so every prior arm keeps its index, and a modification in place is not available because it would move an index that emitted code already depends on. R-10: the freeze rests on two pins, and only one is a mug.
 
@@ -97,6 +97,21 @@ R-12 is the one to read twice: nineteen arms return `Nat`, not `@`. `Nat` sits *
 | nominal head (struct/union/class/data) or NON-numeric aura (`%chars`, `%logical`, …) | the ops registry → trait-method dispatch (`+mmet`: class-inherent, impl-dictionary, generic-head). An impl gives the operator meaning; its absence refuses `%mint-op-impl` |
 | bounded `%var` | the same synthesized method call; the `$bnd` dictionary route resolves it |
 
+## Jet status (R-5’s sixth field)
+
+Not per arm, and it cannot be. Every arm above lives in `hoon`, the one library that is hot **by construction**: `+hoonlib` builds it by evaluating in-process, so its arms are the substrate’s own kernel gates and the NockVM hot state matches them by formula identity. What varies is whether anything **registers**, and that is a property of the artifact you ship, not of the arm you call.
+
+| shipping shape | gate | the ABI core | effective | pinned by |
+|---|---|---|---|---|
+| `kernel` | `%live` | `hoon` is `%hot` | **hot** | `t-jres-bare` |
+| `sealed` | `%dead` | `hoon` is `%hot` | **cold** | `t-jres-sealed` |
+
+So the same call is jetted in a kernel or value artifact and interpreted in a sealed one — `%fast` registration fires only while a trap evaluates, and a sealed artifact is a constant trap. This is the sealed-kernel finding stated as a predicate; `tools/jets.sh` answers it per program, and `jockc.sh jets` is the same lane.
+
+Call sites are attributed individually — `hoon.add(20, 22)` reports `hoon`/`add`/`%hot` at 1:1 ⟨`t-jres-site-hot`⟩ — so the question "will the code I wrote hit jets in the artifact I am about to ship" has a build-time answer rather than a deployment surprise.
+
 ## What this page does not yet carry
 
-The per-arm record format (R-5) asks for six fields — label, formula hash, mask, signature, vectors, jet status — and the §4.1 table carries four. Formula hashes, `%wild` masks and hot/cold jet status live in the NockVM hot state and the `tools/jets.sh` lane, not in a markdown table, so emitting them means reading that lane's output rather than this document. Until then this page is honest about showing four of six.
+The per-arm record format (R-5) asks for six fields — label, formula hash, mask, signature, vectors, jet status. The §4.1 table carries **three** of them: label, signature and vectors. Its fourth column, `notes`, is not an R-5 field, and this page counted it as one and claimed four of six until 2026-10-27. Jet status is the section above, which makes it four for real.
+
+The two that remain are **formula hash** and **mask**, and neither is withheld for want of a table. A formula hash needs the R-6 hash-diff protocol to pin a hash *per arm* — `tools/jets-lane.sh` diffs the stdlib’s hashes in bulk, which catches drift without ever naming which arm moved. The `%wild` mask needs the `$sock` cape, whose emission is the paused half of UIP-0122: the molds and the builder exist and pass, and the `%hintd` emission waits on runtime co-design. Both are tool work, not documentation work, and this page will carry them when the tools answer.

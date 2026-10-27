@@ -54,10 +54,10 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>00f7804</code> (sigilante/escape-octal-aside) · corpus 1082 vectors · 2026-10-27</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>5c88a7f</code> (sigilante/reach-the-tags) · corpus 1124 vectors · 2026-10-27</aside>
 <p>A refusal is counted here when its <code>~|</code> clue carries a <strong>prose sentence</strong>. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.</p>
 <p>Every message under <strong>The corrections</strong> is quoted from the compiler, not written here, so the words a reader sees are the words the terminal will use. The one section that is authored says so in its own heading, and even there the program and the value come from a vector.</p>
-<table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>refusals that correct you</td><td>25</td></tr><tr><td>…shown with the program that triggers one</td><td>22</td></tr><tr><td>…pinned only by an AST-level vector</td><td>2</td></tr><tr><td>…pinned by no vector at all</td><td>1</td></tr></tbody></table>
+<table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>refusals that correct you</td><td>25</td></tr><tr><td>…shown with the program that triggers one</td><td>25</td></tr><tr><td>…pinned only by an AST-level vector</td><td>0</td></tr><tr><td>…pinned by no vector at all</td><td>0</td></tr></tbody></table>
 <h2 id="the-corrections">The corrections</h2>
 <h3 id="decl-fond"><code>%decl-fond</code></h3>
 <pre class="code jock" data-refuses="decl-fond">enum Rec { mk(Rec) }; 0</pre>
@@ -80,17 +80,19 @@
 <blockquote>this alias elaborates to more nodes than a type may hold; aliases expand inline at every use</blockquote>
 <p>pinned by <code>t-elab-too-large</code></p>
 <h3 id="kernel-trait"><code>%kernel-trait</code></h3>
+<pre class="code jock" data-refuses="kernel-trait">struct KS { n: @ }; class Counter(KS) { load(self: Counter, old: *) -&gt; Counter { old as! Counter }; peek(self: Counter, p: *) -&gt; * { self.n }; poke(self: Counter, e: *) -&gt; (List&lt;*&gt;, Counter) { (~, self) }; }; Counter( n: 0 )</pre>
 <blockquote>the class must impl Kernel&lt;E&gt; or FullKernel&lt;E&gt;, naming its effect type</blockquote>
-<p><strong>no vector pins this one</strong> — it is reachable and the corpus does not assert it · spec: docs/spec/runtime.md R-70</p>
+<p>pinned by <code>t-rch-kern-tr</code> · spec: docs/spec/runtime.md R-70</p>
 <h3 id="lex-connective"><code>%lex-connective</code></h3>
 <pre class="code jock" data-refuses="lex-connective">let a = true; let b = false; a &amp;&amp; b</pre>
 <blockquote>&amp;&amp; is not Jock; the connectives are words: a and b, a or b, not a (bitwise is hoon.dis/con/mix)</blockquote>
 <blockquote>|| is not Jock; the connectives are words: a and b, a or b, not a (| joins types: A | B)</blockquote>
 <p>pinned by <code>t-hint-amp</code> · spec: docs/spec/language.md L-91, docs/spec/language.md L-178</p>
 <h3 id="mint-call-arity"><code>%mint-call-arity</code></h3>
+<pre class="code jock" data-refuses="mint-call-arity">func f(a: @, b: @) -&gt; @ { a }; f(1)</pre>
 <blockquote>call supplies no arguments;  this one takes some</blockquote>
 <blockquote>no arguments minted for a call that supplied some</blockquote>
-<p>pinned by <code>t-mint-call-arity</code>, <code>t-mint-import-arity</code>, all of which build an AST directly, so no program can be shown · spec: docs/spec/language.md L-171</p>
+<p>pinned by <code>t-rch-arity</code> · spec: docs/spec/language.md L-171</p>
 <h3 id="mint-cast-sealed"><code>%mint-cast-sealed</code></h3>
 <p class="label">module</p>
 <pre class="code jock" data-refuses="mint-cast-sealed">struct CS { n: @ }; class Counter(CS) impl Add { add(self: Self, p: Self) -&gt; Self { Counter( n: self.n + p.n ) }; bump(self: Self) -&gt; Self { Counter( n: self.n + 1 ) }; twice(self: Self) -&gt; Self { self.bump().bump() }; }; func mk(n: @) -&gt; Counter { Counter( n: n ) }; </pre>
@@ -124,12 +126,17 @@
 <blockquote>a class is constructed only by the module that declares it; use a constructor it exports</blockquote>
 <p>pinned by <code>t-jimp-class-gen-seal</code> · spec: docs/imports.md I-5</p>
 <h3 id="mint-unblessed"><code>%mint-unblessed</code></h3>
+<p class="label">module</p>
 <pre class="code jock" data-refuses="mint-unblessed">func g() -&gt; @ { 2 };</pre>
+<p class="label">program</p>
+<pre class="code jock" data-refuses="mint-unblessed">import evil; evil.g()</pre>
 <blockquote>module is not on the blessed list; see vendor/BLESSED.txt</blockquote>
 <p>pinned by <code>t-halo-unblessed</code></p>
 <h3 id="mint-unblessed-scry"><code>%mint-unblessed-scry</code></h3>
+<p class="label">program</p>
+<pre class="code jock" data-refuses="mint-unblessed-scry">peekContext(42)</pre>
 <blockquote>the namespace is denied under --nockchain</blockquote>
-<p>pinned by <code>t-halo-scry-peek</code>, <code>t-halo-scry-try</code>, <code>t-halo-scry-under</code>, all of which build an AST directly, so no program can be shown</p>
+<p>pinned by <code>t-halo-scry-peek</code></p>
 <h3 id="parse-lark-cmp"><code>%parse-lark-cmp</code></h3>
 <pre class="code jock" data-refuses="parse-lark-cmp">var p = (7, 9); p.&gt;= 3; p</pre>
 <blockquote>p.&gt;= is the lark p.&gt; then =; write p.&gt; &gt;= 3 to compare, or p.&gt; = 3 to assign</blockquote>

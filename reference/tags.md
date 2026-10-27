@@ -5,21 +5,52 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `00f7804` (sigilante/escape-octal-aside) · corpus 1082 vectors · 2026-10-27
+> channel `%rc` · commit `5c88a7f` (sigilante/reach-the-tags) · corpus 1124 vectors · 2026-10-27
 
 |  | count |  |
 |---|---:|---|
 | tags the compiler can raise | 206 | 200 `~|` heads + 6 `$diag` members |
-| pinned by a vector | 183 | the tag itself is asserted |
-| …with a runnable program | 124 | the vector carries Jock source |
-| …vector is AST-level only | 59 | the vector builds an AST, so no program exists |
-| pinned by nothing | 23 | reachable, and no vector asserts it |
+| **with a runnable program** | **164** | the vector carries source, and the page shows it |
+| no input can reach the guard | 38 | registered with the reason, and the registry is checked |
+| …of those, still pinned by a vector | 32 | an AST- or judgment-level row reaches the arm directly |
+| …and pinned by nothing | 6 | nothing to point an input at |
+| compiler invariant with a tripwire | 2 | a vector green only while the invariant holds |
+| **reachable, and pinned by nothing** | **2** | the gap list |
+| AST-level only, with no reason recorded | 0 | the other gap: pinned, but never watched from a program |
 
 A `%neg` vector refuses *without* naming a tag, so it pins that a program is rejected and never in what words. 36 rows are `%neg`; none of them pins a tag here.
+
+**The two gap rows are the ones to read.** Every other row is a refusal the corpus pins and this page can explain. A count of unpinned tags on its own cannot tell a missing test from a guard the compiler holds against itself, and this page published 82 of them as one list until the difference was worked out tag by tag.
 
 ## Tags with a minimal program
 
 Each program is the vector’s own input, verbatim — extracted, never transcribed (`LISTINGS.md` X-1), and pinned by its tag rather than a value (X-8). Running it reproduces the refusal.
+
+### `%axis-arg-must-be-atom`
+
+A **Nock Assembly** program, not a Jock one — `nexpand` is the judgment, and `lib/nockasm` the language.
+
+```nasm
+(%slot [1 2])
+```
+
+pinned by `t-rch-nx-axarg` · also `t-nx-axarg-n` (AST-level)
+
+### `%decl-class-state`
+
+```jock
+class C(@) { m(self: C) -> @ { 1 }; }; 1
+```
+
+pinned by `t-rch-cls-state` · also `t-mint-class-state` (AST-level) · spec: docs/spec/language.md L-159
+
+### `%decl-dup`
+
+```jock
+struct S { x: @ }; struct S { y: @ }; 1
+```
+
+pinned by `t-rch-decl-dup` · also `t-mint-decl-dup`, `t-mint-decl-redecl` (AST-level) · spec: docs/spec/language.md L-73, docs/spec/language.md L-157
 
 ### `%decl-dup-field`
 
@@ -44,6 +75,14 @@ enum E { a, a }; 1
 ```
 
 pinned by `t-decl-dup-tag` · spec: docs/spec/language.md L-157
+
+### `%decl-empty-struct`
+
+```jock
+struct S { }; 1
+```
+
+pinned by `t-rch-decl-mt` · also `t-mint-decl-empty` (AST-level)
 
 ### `%decl-fond`
 
@@ -117,6 +156,25 @@ trait Zero { zero() -> Self; }; 1
 
 pinned by `t-trait-nullary` · also `t-mint-trait-self` (AST-level) · spec: docs/spec/language.md L-44
 
+### `%duplicate-schema-name`
+
+A **Nock Assembly** program, not a Jock one — `nexpand` is the judgment, and `lib/nockasm` the language.
+
+```nasm
+:subject {.a .a}
+(%self)
+```
+
+pinned by `t-rch-nx-schdup` · also `t-nx-schdup-n` (AST-level) · spec: docs/spec/nockasm-target.md N-39, docs/spec/nockasm-target.md N-40, docs/spec/nockasm.md N-13
+
+### `%elab-arity`
+
+```jock
+struct BS<T> { v: T }; func f(b: BS) -> @ { 1 }; 1
+```
+
+pinned by `t-rch-el-arity` · also `t-elab-arity-n` (AST-level)
+
 ### `%elab-indiscriminable`
 
 ```jock
@@ -132,6 +190,14 @@ alias A0 is @; alias A1 is (A0,A0); alias A2 is (A1,A1); alias A3 is (A2,A2); al
 ```
 
 pinned by `t-elab-too-large`
+
+### `%elab-trait-not-type`
+
+```jock
+trait G { g(self: Self) -> @; }; let x: @ = 1; x as! G
+```
+
+pinned by `t-rch-tr-type` · also `t-elab-trait-n` (AST-level)
 
 ### `%elab-unbound`
 
@@ -197,6 +263,23 @@ import m; m.f(1)
 
 pinned by `t-jimp-mimp` · spec: docs/imports.md I-6, docs/spec/language.md L-171
 
+### `%in-module`
+
+*module*
+
+```jock
+func f(n: @) -> @ { n + 1 };
+let z = nosuchname;
+```
+
+*program*
+
+```jock
+import broke; broke.f(1)
+```
+
+pinned by `t-chkjm-coord`, `t-chkjm-parse`
+
 ### `%join-aura`
 
 ```jock
@@ -205,6 +288,14 @@ if 2 == 2 { 1 } else { 1.5 }
 
 pinned by `t-err-join-if`, `t-err-join-list` · also `t-join-aura-chars-e`, `t-join-aura-loob-e`, `t-join-aura-real-e` (AST-level)
 
+### `%join-fail`
+
+```jock
+let xs = [1, "a"]; xs
+```
+
+pinned by `t-dtags-list-join`, `t-rch-dtags-if`, `t-rch-join` · also `t-join-fail-n`, `t-join-ref-n`, `t-join-sub-miss-n`, `t-mint-join-err` (AST-level) · spec: docs/spec/chain.md C-48
+
 ### `%kernel-shape`
 
 ```jock
@@ -212,6 +303,24 @@ pinned by `t-err-join-if`, `t-err-join-list` · also `t-join-aura-chars-e`, `t-j
 ```
 
 pinned by `t-kern-shape`
+
+### `%kernel-trait`
+
+```jock
+struct KS { n: @ }; class Counter(KS) { load(self: Counter, old: *) -> Counter { old as! Counter }; peek(self: Counter, p: *) -> * { self.n }; poke(self: Counter, e: *) -> (List<*>, Counter) { (~, self) }; }; Counter( n: 0 )
+```
+
+pinned by `t-rch-kern-tr` · spec: docs/spec/runtime.md R-70
+
+### `%let-shadows`
+
+A **Nock Assembly** program, not a Jock one — `nexpand` is the judgment, and `lib/nockasm` the language.
+
+```nasm
+#let .a = (%const 1) in #let .a = (%const 2) in (%self)
+```
+
+pinned by `t-rch-nx-shadow` · also `t-nx-shadow-n` (AST-level)
 
 ### `%lex-comment-open`
 
@@ -326,6 +435,26 @@ a	b
 
 pinned by `t-lex-tab-n`
 
+### `%match-duplicate-default`
+
+A **Nock Assembly** program, not a Jock one — `nparse` is the judgment, and `lib/nockasm` the language.
+
+```nasm
+#match (%self) { _ => (%const 1) _ => (%const 2) }
+```
+
+pinned by `t-rch-nasm-mdup`
+
+### `%match-needs-default`
+
+A **Nock Assembly** program, not a Jock one — `nparse` is the judgment, and `lib/nockasm` the language.
+
+```nasm
+#match (%self) { 1 => (%const 2) }
+```
+
+pinned by `t-rch-nasm-mdef`
+
 ### `%mill-lambda`
 
 ```jock
@@ -350,6 +479,22 @@ let u: UniChar = 0x1f600 as! UniChar; let b: Byte = u; b
 
 pinned by `t-arc-unichar-narrow`, `t-err-class-gen-arg`, `t-err-map-annot-real`, `t-err-print-num`, `t-gen-rigid-arg`, `t-gen-rigid-unit`, `t-rigid-mcon`, `t-rigid-slit`, `t-text-char-no`, `t-var-widen-shallow` · also `t-mint-annot`, `t-mint-cond`, `t-mint-guard`, `t-mint-inc-cell` (AST-level) · spec: docs/spec/language.md L-132
 
+### `%mint-call`
+
+```jock
+1(2)
+```
+
+pinned by `t-rch-call` · also `t-mint-call-gate` (AST-level)
+
+### `%mint-call-arity`
+
+```jock
+func f(a: @, b: @) -> @ { a }; f(1)
+```
+
+pinned by `t-rch-arity` · also `t-mint-call-arity`, `t-mint-import-arity` (AST-level) · spec: docs/spec/language.md L-171
+
 ### `%mint-call-bound`
 
 ```jock
@@ -357,6 +502,14 @@ func<T> f(x: T) -> T { g(x) }; func<T: Lt> g(x: T) -> T { x }; f(1)
 ```
 
 pinned by `t-err-ggroup-unbound` · also `t-mint-gen-nobound` (AST-level)
+
+### `%mint-case`
+
+```jock
+enum E { a }; E.b
+```
+
+pinned by `t-rch-case`
 
 ### `%mint-cast`
 
@@ -462,6 +615,14 @@ import m; var c = m.mk(1); c.n = 9; c.n
 
 pinned by `t-jimp-seal-edit` · spec: docs/imports.md I-5
 
+### `%mint-field`
+
+```jock
+struct S { x: @ }; let s = S( x: 1 ); s.y
+```
+
+pinned by `t-rch-field`
+
 ### `%mint-func-annot`
 
 ```jock
@@ -469,6 +630,22 @@ func f(a) -> @ { 1 }; f(1)
 ```
 
 pinned by `t-mint-func-annot` · spec: docs/spec/language.md L-136
+
+### `%mint-func-dup`
+
+```jock
+func f(a: @) -> @ { a }; func f(b: @) -> @ { b }; 1
+```
+
+pinned by `t-rch-fn-dup` · also `t-mint-grp-dup` (AST-level) · spec: docs/spec/language.md L-137
+
+### `%mint-func-ret`
+
+```jock
+func f(a: @) { a }; 1
+```
+
+pinned by `t-rch-fn-ret` · also `t-mint-func-ret` (AST-level)
 
 ### `%mint-gen-unused`
 
@@ -485,6 +662,22 @@ impl<T> Meas for List<T> { len(self: List<T>) -> @ { 0 }; }; 1
 ```
 
 pinned by `t-mint-gimpl-coh` · also `t-mint-impl-coh` (AST-level)
+
+### `%mint-impl-extra`
+
+```jock
+struct B { v: @ }; trait G { g(self: Self) -> @; }; impl G for B { g(self: B) -> @ { 1 }; h(self: B) -> @ { 2 }; }; 0
+```
+
+pinned by `t-rch-im-xtra` · also `t-mint-impl-extra` (AST-level)
+
+### `%mint-impl-miss`
+
+```jock
+struct B { v: @ }; trait G { g(self: Self) -> @; }; impl G for B { }; 0
+```
+
+pinned by `t-rch-im-miss` · also `t-mint-impl-miss` (AST-level)
 
 ### `%mint-impl-orphan`
 
@@ -509,6 +702,14 @@ impl<T> Str for List<(T, T)> { len(self: List<(T, T)>) -> @ { 0 }; cat(self: Lis
 ```
 
 pinned by `t-mint-gimpl-shape`
+
+### `%mint-impl-sig`
+
+```jock
+struct B { v: @ }; trait G { g(self: Self) -> @; }; impl G for B { g(self: B) -> Bool { true }; }; 0
+```
+
+pinned by `t-rch-im-sig` · also `t-mint-impl-sig` (AST-level)
 
 ### `%mint-impl-targs`
 
@@ -558,6 +759,14 @@ let o: @? = 5; match o { ~ => 0, }
 
 pinned by `t-text-opt-no-cell`, `t-text-opt-no-null` · also `t-mint-match-inex`, `t-mint-witness` (AST-level)
 
+### `%mint-inst`
+
+```jock
+struct BS<T> { v: @ }; BS( v: 1 )
+```
+
+pinned by `t-rch-inst` · also `t-mint-import-gen` (AST-level) · spec: docs/spec/language.md L-171
+
 ### `%mint-inst-annot`
 
 ```jock
@@ -566,13 +775,37 @@ enum E<T> { a }; E.a
 
 pinned by `t-mint-inst-annot` · spec: docs/spec/language.md L-147
 
+### `%mint-join`
+
+```jock
+if 1 == 1 { 1 } else { (1, 2) }
+```
+
+pinned by `t-rch-dtags-if`
+
+### `%mint-lambda-annot`
+
+```jock
+let f = lambda (x) -> @ { x }; 1
+```
+
+pinned by `t-rch-lam` · also `t-mint-lam-annot` (AST-level)
+
 ### `%mint-limb`
 
 ```jock
-func a() -> @ { b() }; struct S { v: @ }; func b() -> @ { 7 }; a()
+nope
 ```
 
-pinned by `t-text-grp-split-decl`, `t-text-grp-split-let` · also `t-mint-unbound` (AST-level) · spec: docs/spec/language.md L-139
+pinned by `t-chkj-refuse`, `t-chkjm-coord`, `t-dtags-one`, `t-repl-pos`, `t-text-grp-split-decl`, `t-text-grp-split-let` · also `t-mint-unbound` (AST-level) · spec: docs/spec/language.md L-139
+
+### `%mint-list-join`
+
+```jock
+let xs = [1, "a"]; xs
+```
+
+pinned by `t-dtags-list-join`
 
 ### `%mint-meth-amb`
 
@@ -606,6 +839,22 @@ struct S { x: @ }; class C(S) { m(self: @) -> @ { 1 }; }; let c = C( x: 1 ); c.m
 
 pinned by `t-mint-meth-self` · spec: docs/spec/language.md L-158
 
+### `%mint-method`
+
+```jock
+struct S { x: @ }; let s = S( x: 1 ); s.nope()
+```
+
+pinned by `t-rch-meth`
+
+### `%mint-mold`
+
+```jock
+let x: @ = 1; x as! Never
+```
+
+pinned by `t-rch-mold` · also `t-mint-asx-gate`, `t-mint-tt-gate` (AST-level) · spec: docs/spec/language.md L-124
+
 ### `%mint-naxis`
 
 ```jock
@@ -637,6 +886,14 @@ struct P { v: @ }; let a = P( v: 1 ); let b = P( v: 2 ); let c = a + b; 0
 ```
 
 pinned by `t-err-op-impl`, `t-err-op-impl-bool`, `t-err-op-impl-char` · spec: docs/spec/runtime.md R-51
+
+### `%mint-patt`
+
+```jock
+enum E { a, b }; let s = E.a; match s { 7 => 1, _ => 0 }
+```
+
+pinned by `t-rch-patt` · also `t-mint-match-patt`, `t-mint-match-sing` (AST-level)
 
 ### `%mint-patt-bare`
 
@@ -686,6 +943,14 @@ import m; m.St( v: 9 ).v
 
 pinned by `t-jimp-private-forge`
 
+### `%mint-slit-cover`
+
+```jock
+struct Q { q: @, r: @ }; Q( q: 0 )
+```
+
+pinned by `t-rch-cover` · also `t-mint-slit-missing` (AST-level)
+
 ### `%mint-slit-missing`
 
 ```jock
@@ -720,11 +985,39 @@ pinned by `t-err-bound-ptrait`, `t-err-class-gen-bound`, `t-jimp-bound-qual-ptra
 
 ### `%mint-unblessed`
 
+*module*
+
 ```jock
 func g() -> @ { 2 };
 ```
 
+*program*
+
+```jock
+import evil; evil.g()
+```
+
 pinned by `t-halo-unblessed`
+
+### `%mint-unblessed-abi`
+
+*program*
+
+```jock
+1 + 41
+```
+
+pinned by `t-halo-abi-moved`
+
+### `%mint-unblessed-scry`
+
+*program*
+
+```jock
+peekContext(42)
+```
+
+pinned by `t-halo-scry-peek`, `t-halo-scry-try`, `t-halo-scry-under`
 
 ### `%mint-unimported`
 
@@ -733,6 +1026,24 @@ import b; a.mkp(1).v
 ```
 
 pinned by `t-jdag-unimported`
+
+### `%mint-unreachable`
+
+```jock
+match 1 { _ => 0, 1 => 2 }
+```
+
+pinned by `t-rch-unrch` · also `t-mint-match-unreach` (AST-level)
+
+### `%nock-payload-needs-two-elements`
+
+A **Nock Assembly** program, not a Jock one — `nparse` is the judgment, and `lib/nockasm` the language.
+
+```nasm
+(%nock [1])
+```
+
+pinned by `t-rch-nasm-nock`
 
 ### `%parse-alias-is`
 
@@ -774,6 +1085,12 @@ if 1 == 1 { 2 }
 
 pinned by `t-parse-noelse`
 
+### `%parse-empty`
+
+The program is **empty** — no characters at all. Not whitespace, and not a program whose value is `~`.
+
+pinned by `t-parse-empty`, `t-rch-empty`
+
 ### `%parse-empty-brace`
 
 ```jock
@@ -790,6 +1107,14 @@ enum S { Point }; 1
 
 pinned by `t-parse-casing` · spec: docs/spec/language.md L-163
 
+### `%parse-eof`
+
+```jock
+not
+```
+
+pinned by `t-rch-eof`
+
 ### `%parse-eval`
 
 ```jock
@@ -804,7 +1129,7 @@ pinned by `t-parse-eval` · spec: docs/spec/language.md L-129
 let a: @ = 3; match a { 1 => 0; _ => 84; }
 ```
 
-pinned by `t-arc-arm-semi`, `t-arc-ctor-brace`, `t-eq-bind-raw`, `t-hint-index-q`, `t-index-gone-has`, `t-index-gone-slice`, `t-parse-match-nosep`, `t-parse-method-nosep` · spec: docs/spec/language.md L-84, docs/spec/language.md L-85
+pinned by `t-arc-arm-semi`, `t-arc-ctor-brace`, `t-chkjm-parse`, `t-eq-bind-raw`, `t-hint-index-q`, `t-index-gone-has`, `t-index-gone-slice`, `t-parse-match-nosep`, `t-parse-method-nosep` · spec: docs/spec/language.md L-84, docs/spec/language.md L-85
 
 ### `%parse-func-parens`
 
@@ -1062,6 +1387,14 @@ trait T { m () -> @; }; 1
 
 pinned by `t-parse-trait-sig`
 
+### `%parse-type`
+
+```jock
+struct s { x: @ }; 1
+```
+
+pinned by `t-rch-ty-decl`, `t-rch-ty-impl` · also `t-parse-type-eof`, `t-parse-type-lower` (AST-level)
+
 ### `%parse-unglued`
 
 ```jock
@@ -1078,6 +1411,16 @@ var (a, b) = (1, 2); a
 
 pinned by `t-parse-var-patt` · spec: docs/spec/language.md L-134
 
+### `%raw-cell-needs-two-elements`
+
+A **Nock Assembly** program, not a Jock one — `nparse` is the judgment, and `lib/nockasm` the language.
+
+```nasm
+[1]
+```
+
+pinned by `t-rch-nasm-cell`
+
 ### `%uint-neg`
 
 ```jock
@@ -1086,99 +1429,121 @@ import hoon; hoon.uint(-3)
 
 pinned by `t-sint-uint-neg` · spec: docs/spec/language.md L-14, docs/spec/runtime.md R-15
 
-## Tags with no runnable program
+### `%unbound-axis`
 
-These are pinned by vectors that build an AST or an environment directly, so the corpus proves the refusal without ever expressing it as source. No program can be shown, and this is where the specs’ tag names drifted: of the seven wrong names this join found, five were tags in this list — tags nobody had watched come out of a program. **This is the priority list for source-level vectors.**
+A **Nock Assembly** program, not a Jock one — `nexpand` is the judgment, and `lib/nockasm` the language.
 
-| tag | pinned by | spec |
+```nasm
+.z
+```
+
+pinned by `t-rch-nx-unbax` · also `t-nx-unbound-n` (AST-level)
+
+### `%unknown-opcode`
+
+A **Nock Assembly** program, not a Jock one — `nexpand` is the judgment, and `lib/nockasm` the language.
+
+```nasm
+(%zork)
+```
+
+pinned by `t-rch-nx-unkop` · also `t-nx-unkop-n` (AST-level)
+
+## Tags no input can reach
+
+38 refusals that no program, module or IR a user can write will raise. A guard the compiler holds against itself is not a missing test, and counting it as one invites a vector that pins nothing — so each is registered in `tests/hoon/run.hoon`’s `+unreach` table with the reason it is out of reach.
+
+**The registry is checked, not asserted.** A registered tag that acquires a source-level vector reddens `t-unreach-registry`, because the recorded reason would have stopped being true. That is what lets this page subtract them from the gap list without taking anybody’s word for it. This section is read from that table; it is not written here.
+
+### judgment-only — *the judgment has no caller in the compile path*
+
+The arm implements a judgment `types.md` specifies, and the corpus calls it directly. Nothing in the compiler calls it, so no program can reach it.
+
+| tag | why | pinned by |
 |---|---|---|
-| `%axis-arg-must-be-atom` | `t-nx-axarg-n` | — |
-| `%bunt-diverges` | `t-bunt-fond-n` | — |
-| `%bunt-empty-struct` | `t-bunt-empty-struct` | — |
-| `%bunt-trait` | `t-bunt-trait` | — |
-| `%bunt-unbound` | `t-bunt-unbound` | — |
-| `%bunt-var` | `t-bunt-var-n` | — |
-| `%bunt-void` | `t-bunt-void-n` | — |
-| `%decl-class-state` | `t-mint-class-state` | docs/spec/language.md L-159 |
-| `%decl-dup` | `t-mint-decl-dup`, `t-mint-decl-redecl` | docs/spec/language.md L-73, docs/spec/language.md L-157 |
-| `%decl-empty-struct` | `t-mint-decl-empty` | — |
-| `%elab-arity` | `t-elab-arity-n` | — |
-| `%elab-gate-noarg` | `t-elab-gate-noarg-n` | — |
-| `%elab-infer` | `t-elab-infer-err`, `t-elab-infer-n` | — |
-| `%elab-trait-not-type` | `t-elab-trait-n` | — |
-| `%embed-out` | `t-embed-gate-n`, `t-embed-or-n`, `t-embed-ref-n`, `t-embed-sum-n`, `t-embed-var-n` | docs/spec/language.md L-173 |
-| `%empty-raw-cell` | `t-nx-emptycell-n` | — |
-| `%join-fail` | `t-join-fail-n`, `t-join-ref-n`, `t-join-sub-miss-n`, `t-mint-join-err` | docs/spec/chain.md C-48 |
-| `%let-shadows` | `t-nx-shadow-n` | — |
-| `%mint-axis` | `t-mint-axis` | — |
-| `%mint-call` | `t-mint-call-gate` | — |
-| `%mint-call-arity` | `t-mint-call-arity`, `t-mint-import-arity` | docs/spec/language.md L-171 |
-| `%mint-cls-scope` | `t-mint-cls-scope` | — |
-| `%mint-dict-arm` | `t-mint-dict-arm` | — |
-| `%mint-dict-scope` | `t-mint-dict-scope` | docs/imports.md I-4 |
-| `%mint-func-dup` | `t-mint-grp-dup` | docs/spec/language.md L-137 |
-| `%mint-func-ret` | `t-mint-func-ret` | — |
-| `%mint-func-shape` | `t-mint-func-shape` | — |
-| `%mint-grp-empty` | `t-mint-grp-empty` | — |
-| `%mint-impl-extra` | `t-mint-impl-extra` | — |
-| `%mint-impl-miss` | `t-mint-impl-miss` | — |
-| `%mint-impl-sig` | `t-mint-impl-sig` | — |
-| `%mint-inst` | `t-mint-import-gen` | docs/spec/language.md L-171 |
-| `%mint-lambda-annot` | `t-mint-lam-annot` | — |
-| `%mint-meth-ret` | `t-mint-meth-ret` | — |
-| `%mint-meth-shape` | `t-mint-meth-shape` | — |
-| `%mint-mold` | `t-mint-asx-gate`, `t-mint-tt-gate` | docs/spec/language.md L-124 |
-| `%mint-op-unary` | `t-mint-op-unary` | docs/spec/language.md L-111 |
-| `%mint-patt` | `t-mint-match-patt`, `t-mint-match-sing` | — |
-| `%mint-patt-ambiguous` | `t-mint-patt-ambiguous` | — |
-| `%mint-recur-arm` | `t-mint-recur-arm` | — |
-| `%mint-recur-limb` | `t-mint-recur-limb` | — |
-| `%mint-recur-outer` | `t-mint-recur-outer` | — |
-| `%mint-slit-cover` | `t-mint-slit-missing` | — |
-| `%mint-slit-empty` | `t-mint-slit-empty` | — |
-| `%mint-unblessed-abi` | `t-halo-abi-moved` | — |
-| `%mint-unblessed-scry` | `t-halo-scry-peek`, `t-halo-scry-try`, `t-halo-scry-under` | — |
-| `%mint-unreachable` | `t-mint-match-unreach` | — |
-| `%module-form` | `t-module-form` | — |
-| `%module-shape` | `t-module-shape` | — |
-| `%parse-empty` | `t-parse-empty` | — |
-| `%parse-type` | `t-parse-type-eof`, `t-parse-type-lower` | — |
-| `%sugar-index-place` | `t-des-put-place` | — |
-| `%sugar-istring` | `t-sugar-istring` | — |
-| `%sugar-logic-arity` | `t-sugar-logic-arity` | — |
-| `%sugar-op` | `t-des-op-bad` | docs/spec/language.md L-118 |
-| `%sugar-op-unary` | `t-des-op-unary` | docs/spec/language.md L-10, docs/spec/language.md L-111 |
-| `%sugar-todo` | `t-sugar-todo` | — |
-| `%unbound-axis` | `t-nx-unbound-n` | — |
-| `%unknown-opcode` | `t-nx-unkop-n` | — |
+| `%bunt-diverges` | the bunt judgment has no caller in the compile path | `t-bunt-fond-n` |
+| `%bunt-empty-struct` | the bunt judgment has no caller in the compile path | `t-bunt-empty-struct` |
+| `%bunt-trait` | the bunt judgment has no caller in the compile path | `t-bunt-trait` |
+| `%bunt-unbound` | the bunt judgment has no caller in the compile path | `t-bunt-unbound` |
+| `%bunt-var` | the bunt judgment has no caller in the compile path | `t-bunt-var-n` |
+| `%bunt-void` | the bunt judgment has no caller in the compile path | `t-bunt-void-n` |
+| `%embed-out` | the embed judgment is called only by the %agree oracle, harness-side | `t-embed-gate-n`, `t-embed-or-n`, `t-embed-ref-n`, `t-embed-sum-n`, `t-embed-var-n` |
+
+### grammar — *the parser cannot build the shape*
+
+The guard protects against an AST the grammar has no spelling for. Reaching it from source would mean the parser had a new form.
+
+| tag | why | pinned by |
+|---|---|---|
+| `%desugar-snap` | %snap is the prelude checkpoint;  the parser has no spelling for it | — |
+| `%elab-gate-noarg` | +p-tex-fn always builds [%gate [~ t] _];  an argumentless gate type has no spelling | `t-elab-gate-noarg-n` |
+| `%elab-infer` | nothing in parse.hoon builds [%infer ~];  `let x = ...` carries type=~, a unit, not an infer tex | `t-elab-infer-err`, `t-elab-infer-n` |
+| `%empty-raw-cell` | the nasm raw-cell rule takes one or more elements, so an empty cell has no spelling | `t-nx-emptycell-n` |
+| `%mint-func-shape` | a func body is a %lambda by grammar | `t-mint-func-shape` |
+| `%mint-meth-ret` | the method grammar requires `->` and a return type | `t-mint-meth-ret` |
+| `%mint-meth-shape` | a method body is a %lambda by grammar | `t-mint-meth-shape` |
+| `%mint-op-unary` | the %operator form always carries its second operand | `t-mint-op-unary` |
+| `%mint-patt-ambiguous` | an or-type member set is erasure-disjoint by +dish at declaration, so at most one member fits a pattern | `t-mint-patt-ambiguous` |
+| `%mint-recur-arm` | recur edits refuse %parse-todo;  edits is always ~ | `t-mint-recur-arm` |
+| `%mint-recur-limb` | recur edits refuse %parse-todo;  edits is always ~ | `t-mint-recur-limb` |
+| `%mint-recur-outer` | recur edits refuse %parse-todo;  edits is always ~ | `t-mint-recur-outer` |
+| `%sugar-index-place` | the put form takes a limb on its left by grammar | `t-des-put-place` |
+| `%sugar-istring` | the parser lifts an istring jnoun to the %istring form;  one reaching desugar is a parser bug | `t-sugar-istring` |
+| `%sugar-logic-arity` | the grammar supplies the second operand for and/or/xor and never one for not | `t-sugar-logic-arity` |
+| `%sugar-op` | every operator the grammar admits in %operator position is in the desugar legal set | `t-des-op-bad` |
+| `%sugar-op-unary` | the %operator form always carries its second operand | `t-des-op-unary` |
+| `%sugar-todo` | both leaves are annotated collection literals, and the grammar has no spelling for annotating one | `t-sugar-todo` |
+
+### upstream — *a different refusal always fires first*
+
+The program that would reach this guard is rejected earlier, every time, so the message a reader actually gets is the other one.
+
+| tag | why | pinned by |
+|---|---|---|
+| `%mint-axis` | under the prelude the subject resolves every axis a program can write | `t-mint-axis` |
+| `%mint-slit-empty` | a fieldless struct refuses %decl-empty-struct at its declaration | `t-mint-slit-empty` |
+
+### invariant — *the compiler against itself*
+
+The pass that could violate the invariant is the pass that satisfies it. Two of these have mutation-verified tripwire vectors, which is the stronger treatment; these are the rest.
+
+| tag | why | pinned by |
+|---|---|---|
+| `%habi-empty` | the curated battery is built from a non-empty arm list by the pass that then combs it | — |
+| `%mint-cls-scope` | the class marker is pushed by the same pass that looks it up | `t-mint-cls-scope` |
+| `%mint-dict-arm` | the synthetic arm name is written by +snam and read by the same pass | `t-mint-dict-arm` |
+| `%mint-dict-scope` | the dictionary marker is pushed by the same pass that looks it up | `t-mint-dict-scope` |
+| `%mint-grp-empty` | the closure battery is built from a non-empty member list by the pass that then combs it | `t-mint-grp-empty` |
+| `%modl-synims-count` | a documented precondition:  +dimpls orders both lists and the caller keeps them in step | — |
+| `%module-form` | +jmod requires a module to END after a statement, so every violation is %parse-trailing first | `t-module-form` |
+| `%module-shape` | a module terminal is built by the +modl synthesis itself, which cannot build a non-cell for two names | `t-module-shape` |
+| `%pfix-plug` | the prelude nasm spine is written by +pfix and read by +plug | — |
+| `%pfix-snap` | the prelude nasm spine is written by +pfix and read by +psnap | — |
+
+### clue — *reachable, but never the innermost tag*
+
+The guard leaves a context clue around another arm’s refusal, so the innermost tag — the one `+dtag` reports and an `%err` row asserts — is always the other one. Where a chain judgment exists at that layer, the clue is pinned through it instead of appearing here.
+
+| tag | why | pinned by |
+|---|---|---|
+| `%opcode` | an outer clue on the opcode dispatch;  the innermost tag is %unknown-opcode or an arity refusal | — |
+
+## Compiler invariants with a tripwire
+
+Stronger than a registry entry, and listed apart from it. No input reaches these either, but each has a vector that is green **only while the invariant holds** — so breaking the invariant reddens a named row rather than going unnoticed. Each pairing was verified by mutation, once, by hand, and is recorded at the guard and at the row. `run.hoon` refuses the whole run if one of these vectors disappears.
+
+| tag | tripwire vector |
+|---|---|
+| `%mint-meth-fore` | `t-meth-fore-tripwire` |
+| `%module-type` | `t-module-type-tripwire` |
 
 ## Tags pinned by nothing
 
-Reachable, and no vector asserts them. Simultaneously a documentation gap (no verified explanation to emit) and a test gap. Listed rather than dropped, so the gap is visible.
+Reachable, and no vector asserts them: 2 of 206. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.
 
-- `%desugar-snap`
-- `%duplicate-schema-name`  — docs/spec/nockasm-target.md N-39, docs/spec/nockasm-target.md N-40, docs/spec/nockasm.md N-13
-- `%habi-empty`
-- `%impl-conflict`
-- `%in-module`
-- `%kernel-trait`  — docs/spec/runtime.md R-70
-- `%match-duplicate-default`
-- `%match-needs-default`
-- `%mint-case`
-- `%mint-field`
-- `%mint-join`
-- `%mint-list-join`
-- `%mint-meth-fore`
-- `%mint-method`
-- `%modl-synims-count`
-- `%module-type`
-- `%nock-payload-needs-two-elements`
-- `%op-conflict`
-- `%opcode`
-- `%parse-eof`
-- `%pfix-plug`
-- `%pfix-snap`
-- `%raw-cell-needs-two-elements`
+**`%impl-conflict`** — Two libraries supplying different impl facts for one (trait, head) pair. Not reached from any spelling tried: two modules each declaring their own trait do not collide, because a module’s trait is its own, and the single-module spelling refuses `%mint-impl-coh` first. Probed, not inferred.
+
+**`%op-conflict`** — The operator half of the same shape — two libraries binding one operator to different (trait, method) pairs. Same reason it is still open, and it will probably fall to the same vector as `%impl-conflict`.
 
 ## Families
 
