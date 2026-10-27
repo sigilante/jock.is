@@ -29,7 +29,7 @@ There is deliberately **no BNF here.** Jock’s parser is recursive descent (`pa
 
 ## Precedence
 
-Twelve levels, tightest first — `language.md` L-107, which says the table *is* the rule. Projected from it verbatim.
+13 levels, tightest first — `language.md` L-107, which says the table *is* the rule. Projected from it verbatim.
 
 | Level | Operators | Associativity |
 |---|---|---|
@@ -43,8 +43,9 @@ Twelve levels, tightest first — `language.md` L-107, which says the table *is*
 | 8 | `<` `>` `<=` `>=` `in` `∈` `⊂` `⊃` | none |
 | 9 | `==` `!=` `===` `!==` | none |
 | 10 | `not` | — |
-| 11 | `and`, `xor` | left |
-| 12 | `or` | left |
+| 11 | `and` | left |
+| 12 | `xor` | left |
+| 13 | `or` | left |
 
 The comparisons at 8 and 9 are **non-associative** and must be parenthesized: `a < b < c` refuses `%parse-nonassoc` rather than returning a boolean surprise (L-108).
 
@@ -64,7 +65,7 @@ defined by: `language.md` L-22, `language.md` L-45, `language.md` L-61, `languag
 
 ### `and`
 
-**operator keyword.** Precedence level 11 of 12 (left-associative), sharing it with `xor`.
+**operator keyword.** Precedence level 11 of 13 (left-associative), sharing it with nothing.
 
 ```jock
 true and true
@@ -76,7 +77,7 @@ defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `langu
 
 ### `as`
 
-**operator keyword.** Precedence level 2 of 12 (left-associative), sharing it with `as?`, `as!`.
+**operator keyword.** Precedence level 2 of 13 (left-associative), sharing it with `as?`, `as!`.
 
 ```jock
 +42 as @
@@ -236,7 +237,7 @@ defined by: `language.md` L-61, `language.md` L-185
 
 ### `in`
 
-**operator keyword.** Precedence level 8 of 12 (none-associative), sharing it with `<` `>` `<=` `>=`  `∈` `⊂` `⊃`.
+**operator keyword.** Precedence level 8 of 13 (non-associative), sharing it with `<` `>` `<=` `>=`  `∈` `⊂` `⊃`.
 
 ```jock
 let s = "in"; "[{s}]"
@@ -308,7 +309,7 @@ defined by: `language.md` L-61, `language.md` L-84, `language.md` L-101, `langua
 
 ### `not`
 
-**operator keyword.** Precedence level 10 of 12 (—-associative), sharing it with nothing.
+**operator keyword.** Precedence level 10 of 13 (nothing to associate, being prefix), sharing it with nothing.
 
 ```jock
 not true
@@ -320,7 +321,7 @@ defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `langu
 
 ### `or`
 
-**operator keyword.** Precedence level 12 of 12 (left-associative), sharing it with nothing.
+**operator keyword.** Precedence level 13 of 13 (left-associative), sharing it with nothing.
 
 ```jock
 true or true
@@ -412,7 +413,7 @@ defined by: `language.md` L-61, `language.md` L-129, `language.md` L-130, `langu
 
 ### `xor`
 
-**operator keyword.** Precedence level 11 of 12 (left-associative), sharing it with `and`.
+**operator keyword.** Precedence level 12 of 13 (left-associative), sharing it with nothing.
 
 ```jock
 true xor true

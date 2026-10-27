@@ -62,8 +62,8 @@
 <ul><li><strong>declaration</strong> (14): <code>alias</code> <code>class</code> <code>enum</code> <code>for</code> <code>func</code> <code>impl</code> <code>import</code> <code>is</code> <code>lambda</code> <code>let</code> <code>private</code> <code>struct</code> <code>trait</code> <code>var</code></li><li><strong>control</strong> (11): <code>assert</code> <code>crash</code> <code>defer</code> <code>else</code> <code>eval</code> <code>if</code> <code>loop</code> <code>match</code> <code>print</code> <code>recur</code> <code>switch</code></li><li><strong>operator</strong> (6): <code>and</code> <code>as</code> <code>in</code> <code>not</code> <code>or</code> <code>xor</code></li></ul>
 <p>There is deliberately <strong>no BNF here.</strong> Jock’s parser is recursive descent (<code>parse.hoon</code>); no grammar artifact exists to project from, so a written-out grammar would be a second author of the syntax rather than a rendering of it — which is exactly how this reference’s predecessor acquired seven wrong tag names. A formal grammar is worth having and is expressible (the adjacency law needs glued and spaced <code>(</code> as <em>distinct terminals</em>, which the lexer’s <code>glu</code> flag already supplies), but it should arrive with the corpus as its acceptance suite — every source-bearing <code>%pos</code> vector parsing, every <code>%parse</code> and <code>%lex</code> refusal failing to — so that it is a lane and not a claim.</p>
 <h2 id="precedence">Precedence</h2>
-<p>Twelve levels, tightest first — <code>language.md</code> L-107, which says the table <em>is</em> the rule. Projected from it verbatim.</p>
-<table><thead><tr><th>Level</th><th>Operators</th><th>Associativity</th></tr></thead><tbody><tr><td>1</td><td>postfix: glued call <code>(</code>, glued index <code>[</code>, field <code>.</code>, lark <code>.&lt;</code> <code>.&gt;</code>, axis <code>.+n</code> (L-46 to L-51, L-98 to L-105)</td><td>left</td></tr><tr><td>2</td><td><code>as</code>, <code>as?</code>, <code>as!</code></td><td>left</td></tr><tr><td>3</td><td><code>**</code> <em>(reserved — L-112)</em></td><td>right</td></tr><tr><td>4</td><td>unary <code>-</code> <em>(reserved — L-112)</em></td><td>—</td></tr><tr><td>5</td><td><code>*</code> <code>/</code> <code>%</code> <code>×</code> <code>÷</code> <code>⊛</code> <code>∩</code> <code>⊗</code> <code>∘</code> <code>·</code></td><td>left</td></tr><tr><td>6</td><td><code>+</code> <code>-</code> (binary <code>-</code> is spaced — L-109) <code>∪</code> <code>⊕</code> <code>⊖</code> <code>±</code></td><td>left</td></tr><tr><td>7</td><td><code>??</code></td><td>right</td></tr><tr><td>8</td><td><code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code> <code>in</code> <code>∈</code> <code>⊂</code> <code>⊃</code></td><td>none</td></tr><tr><td>9</td><td><code>==</code> <code>!=</code> <code>===</code> <code>!==</code></td><td>none</td></tr><tr><td>10</td><td><code>not</code></td><td>—</td></tr><tr><td>11</td><td><code>and</code>, <code>xor</code></td><td>left</td></tr><tr><td>12</td><td><code>or</code></td><td>left</td></tr></tbody></table>
+<p>13 levels, tightest first — <code>language.md</code> L-107, which says the table <em>is</em> the rule. Projected from it verbatim.</p>
+<table><thead><tr><th>Level</th><th>Operators</th><th>Associativity</th></tr></thead><tbody><tr><td>1</td><td>postfix: glued call <code>(</code>, glued index <code>[</code>, field <code>.</code>, lark <code>.&lt;</code> <code>.&gt;</code>, axis <code>.+n</code> (L-46 to L-51, L-98 to L-105)</td><td>left</td></tr><tr><td>2</td><td><code>as</code>, <code>as?</code>, <code>as!</code></td><td>left</td></tr><tr><td>3</td><td><code>**</code> <em>(reserved — L-112)</em></td><td>right</td></tr><tr><td>4</td><td>unary <code>-</code> <em>(reserved — L-112)</em></td><td>—</td></tr><tr><td>5</td><td><code>*</code> <code>/</code> <code>%</code> <code>×</code> <code>÷</code> <code>⊛</code> <code>∩</code> <code>⊗</code> <code>∘</code> <code>·</code></td><td>left</td></tr><tr><td>6</td><td><code>+</code> <code>-</code> (binary <code>-</code> is spaced — L-109) <code>∪</code> <code>⊕</code> <code>⊖</code> <code>±</code></td><td>left</td></tr><tr><td>7</td><td><code>??</code></td><td>right</td></tr><tr><td>8</td><td><code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code> <code>in</code> <code>∈</code> <code>⊂</code> <code>⊃</code></td><td>none</td></tr><tr><td>9</td><td><code>==</code> <code>!=</code> <code>===</code> <code>!==</code></td><td>none</td></tr><tr><td>10</td><td><code>not</code></td><td>—</td></tr><tr><td>11</td><td><code>and</code></td><td>left</td></tr><tr><td>12</td><td><code>xor</code></td><td>left</td></tr><tr><td>13</td><td><code>or</code></td><td>left</td></tr></tbody></table>
 <p>The comparisons at 8 and 9 are <strong>non-associative</strong> and must be parenthesized: <code>a &lt; b &lt; c</code> refuses <code>%parse-nonassoc</code> rather than returning a boolean surprise (L-108).</p>
 <h2 id="keywords">Keywords</h2>
 <h3 id="alias"><code>alias</code></h3>
@@ -72,12 +72,12 @@
 <p>pinned by <code>t-arc-alias-is</code> · 6 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-22, <code>language.md</code> L-45, <code>language.md</code> L-61, <code>language.md</code> L-66, <code>language.md</code> L-81</p>
 <h3 id="and"><code>and</code></h3>
-<p><strong>operator keyword.</strong> Precedence level 11 of 12 (left-associative), sharing it with <code>xor</code>.</p>
+<p><strong>operator keyword.</strong> Precedence level 11 of 13 (left-associative), sharing it with nothing.</p>
 <pre class="code jock">true and true</pre>
 <p>pinned by <code>t-logic-and-tt</code> · 8 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-107, <code>language.md</code> L-173, <code>language.md</code> L-178</p>
 <h3 id="as"><code>as</code></h3>
-<p><strong>operator keyword.</strong> Precedence level 2 of 12 (left-associative), sharing it with <code>as?</code>, <code>as!</code>.</p>
+<p><strong>operator keyword.</strong> Precedence level 2 of 13 (left-associative), sharing it with <code>as?</code>, <code>as!</code>.</p>
 <pre class="code jock">+42 as @</pre>
 <p>pinned by <code>t-sint-lit</code> · 47 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-24, <code>language.md</code> L-61, <code>language.md</code> L-107, <code>language.md</code> L-120</p>
@@ -144,7 +144,7 @@
 <p>pinned by <code>t-text-arith</code> · 60 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-185</p>
 <h3 id="in"><code>in</code></h3>
-<p><strong>operator keyword.</strong> Precedence level 8 of 12 (none-associative), sharing it with <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code>  <code>∈</code> <code>⊂</code> <code>⊃</code>.</p>
+<p><strong>operator keyword.</strong> Precedence level 8 of 13 (non-associative), sharing it with <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code>  <code>∈</code> <code>⊂</code> <code>⊃</code>.</p>
 <pre class="code jock">let s = "in"; "[{s}]"</pre>
 <p>pinned by <code>t-text-interp-str</code> · 6 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-73, <code>language.md</code> L-107, <code>language.md</code> L-108, <code>language.md</code> L-115, <code>language.md</code> L-173, <code>language.md</code> L-183</p>
@@ -174,12 +174,12 @@
 <p>pinned by <code>t-arc-arm-comma</code> · 20 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-84, <code>language.md</code> L-101, <code>language.md</code> L-126, <code>language.md</code> L-148, <code>language.md</code> L-150, <code>language.md</code> L-151, <code>language.md</code> L-173, <code>language.md</code> L-185</p>
 <h3 id="not"><code>not</code></h3>
-<p><strong>operator keyword.</strong> Precedence level 10 of 12 (—-associative), sharing it with nothing.</p>
+<p><strong>operator keyword.</strong> Precedence level 10 of 13 (nothing to associate, being prefix), sharing it with nothing.</p>
 <pre class="code jock">not true</pre>
 <p>pinned by <code>t-logic-not-t</code> · 4 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-107, <code>language.md</code> L-173, <code>language.md</code> L-178</p>
 <h3 id="or"><code>or</code></h3>
-<p><strong>operator keyword.</strong> Precedence level 12 of 12 (left-associative), sharing it with nothing.</p>
+<p><strong>operator keyword.</strong> Precedence level 13 of 13 (left-associative), sharing it with nothing.</p>
 <pre class="code jock">true or true</pre>
 <p>pinned by <code>t-logic-or-tt</code> · 6 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-107, <code>language.md</code> L-173, <code>language.md</code> L-178</p>
@@ -218,7 +218,7 @@
 <p>pinned by <code>t-var-widen</code> · 11 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-129, <code>language.md</code> L-130, <code>language.md</code> L-131, <code>language.md</code> L-132, <code>language.md</code> L-134</p>
 <h3 id="xor"><code>xor</code></h3>
-<p><strong>operator keyword.</strong> Precedence level 11 of 12 (left-associative), sharing it with <code>and</code>.</p>
+<p><strong>operator keyword.</strong> Precedence level 12 of 13 (left-associative), sharing it with nothing.</p>
 <pre class="code jock">true xor true</pre>
 <p>pinned by <code>t-logic-xor-tt</code> · 6 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-107, <code>language.md</code> L-173, <code>language.md</code> L-178</p>

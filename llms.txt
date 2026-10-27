@@ -73,8 +73,9 @@ The compiler carries 25 refusals whose whole job is to catch a habit from anothe
 | 8 | `<` `>` `<=` `>=` `in` `∈` `⊂` `⊃` | none |
 | 9 | `==` `!=` `===` `!==` | none |
 | 10 | `not` | — |
-| 11 | `and`, `xor` | left |
-| 12 | `or` | left |
+| 11 | `and` | left |
+| 12 | `xor` | left |
+| 13 | `or` | left |
 
 ## Literal forms
 
