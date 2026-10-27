@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>c8aac24</code> (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>4291355</code> (sigilante/vector-glyph-connective) · corpus 1081 vectors · 2026-10-27</aside>
 <table><thead><tr><th></th><th>count</th><th></th></tr></thead><tbody><tr><td>tags the compiler can raise</td><td>206</td><td>200 <code>~|</code> heads + 6 <code>$diag</code> members</td></tr><tr><td>pinned by a vector</td><td>183</td><td>the tag itself is asserted</td></tr><tr><td>…with a runnable program</td><td>124</td><td>the vector carries Jock source</td></tr><tr><td>…vector is AST-level only</td><td>59</td><td>the vector builds an AST, so no program exists</td></tr><tr><td>pinned by nothing</td><td>23</td><td>reachable, and no vector asserts it</td></tr></tbody></table>
 <p>A <code>%neg</code> vector refuses <em>without</em> naming a tag, so it pins that a program is rejected and never in what words. 36 rows are <code>%neg</code>; none of them pins a tag here.</p>
 <h2 id="tags-with-a-minimal-program">Tags with a minimal program</h2>
@@ -386,7 +386,7 @@ cd"; s</pre>
 <p>pinned by <code>t-parse-no-result</code></p>
 <h3 id="parse-nonassoc"><code>%parse-nonassoc</code></h3>
 <pre class="code jock" data-refuses="parse-nonassoc">let s = Set&lt;@&gt;([1, 2]); if 1 in s in s { 7 } else { 9 }</pre>
-<p>pinned by <code>t-in-nonassoc</code>, <code>t-parse-nonassoc</code> · also <code>t-parse-subset-nonassoc</code> (AST-level) · spec: docs/spec/language.md L-108</p>
+<p>pinned by <code>t-in-nonassoc</code>, <code>t-parse-nonassoc</code> · also <code>t-parse-subset-nonassoc</code>, <code>t-parse-supset-nonassoc</code> (AST-level) · spec: docs/spec/language.md L-108</p>
 <h3 id="parse-not"><code>%parse-not</code></h3>
 <pre class="code jock" data-refuses="parse-not">let a = true; !a</pre>
 <p>pinned by <code>t-hint-not</code>, <code>t-index-gone-pop</code></p>

@@ -5,7 +5,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `c8aac24` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
+> channel `%rc` · commit `4291355` (sigilante/vector-glyph-connective) · corpus 1081 vectors · 2026-10-27
 
 |  | count |  |
 |---|---:|---|
@@ -892,7 +892,7 @@ pinned by `t-parse-no-result`
 let s = Set<@>([1, 2]); if 1 in s in s { 7 } else { 9 }
 ```
 
-pinned by `t-in-nonassoc`, `t-parse-nonassoc` · also `t-parse-subset-nonassoc` (AST-level) · spec: docs/spec/language.md L-108
+pinned by `t-in-nonassoc`, `t-parse-nonassoc` · also `t-parse-subset-nonassoc`, `t-parse-supset-nonassoc` (AST-level) · spec: docs/spec/language.md L-108
 
 ### `%parse-not`
 

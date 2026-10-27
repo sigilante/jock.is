@@ -5,15 +5,15 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `c8aac24` (sigilante/spec-recomposition) · corpus 1055 vectors · 2026-10-27
+> channel `%rc` · commit `4291355` (sigilante/vector-glyph-connective) · corpus 1081 vectors · 2026-10-27
 
 The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexer’s own authority, which `tools/hilite.py` holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.
 
 |  | count |
 |---|---:|
 | keywords in the mold | 31 |
-| usable, with a demonstrating program | 26 |
-| usable, demonstrated by nothing | 3 |
+| usable, with a demonstrating program | 29 |
+| usable, demonstrated by nothing | 0 |
 | deliberately not usable | 2 |
 | defined by at least one `language.md` rule | 31 |
 
@@ -48,14 +48,6 @@ Twelve levels, tightest first — `language.md` L-107, which says the table *is*
 
 The comparisons at 8 and 9 are **non-associative** and must be parenthesized: `a < b < c` refuses `%parse-nonassoc` rather than returning a boolean surprise (L-108).
 
-## Usable, and demonstrated by nothing
-
-These work — verified by hand with `tools/jockc.sh` on 2026-10-27; this generator classifies, it does not probe — and no `%pos` vector exercises them. A test gap, and a documentation gap of the worst kind, because the compiler *recommends* them: `%lex-connective` refuses `&&` and `||` and points the user at `and` and `or`, so the did-you-mean names a spelling the corpus never runs. The refusal is pinned twice; what it advises is pinned zero times.
-
-- `and` — language.md L-61, language.md L-107, language.md L-173, language.md L-178
-- `or` — language.md L-61, language.md L-107, language.md L-173, language.md L-178
-- `xor` — language.md L-61, language.md L-107, language.md L-173, language.md L-178
-
 ## Keywords
 
 ### `alias`
@@ -74,7 +66,11 @@ defined by: `language.md` L-22, `language.md` L-45, `language.md` L-61, `languag
 
 **operator keyword.** Precedence level 11 of 12 (left-associative), sharing it with `xor`.
 
-**Usable, and no `%pos` vector exercises it.** It works — verified by hand with `tools/jockc.sh` on 2026-10-27 — and nothing in the corpus runs it. `%lex-connective` refuses `&&` and `||` and points the user at `and` and `or`, so the compiler recommends a spelling its own tests never execute.
+```jock
+true and true
+```
+
+pinned by `t-logic-and-tt` · 8 vectors use this keyword
 
 defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `language.md` L-178
 
@@ -130,9 +126,9 @@ defined by: `language.md` L-22, `language.md` L-45, `language.md` L-61, `languag
 enum Nope {}; func f(x: @) -> Nope { crash }; 1
 ```
 
-pinned by `t-text-never` · 3 vectors use this keyword
+pinned by `t-text-never` · 4 vectors use this keyword
 
-defined by: `language.md` L-61, `language.md` L-182
+defined by: `language.md` L-61, `language.md` L-178, `language.md` L-182
 
 ### `defer`
 
@@ -315,10 +311,10 @@ defined by: `language.md` L-61, `language.md` L-84, `language.md` L-101, `langua
 **operator keyword.** Precedence level 10 of 12 (—-associative), sharing it with nothing.
 
 ```jock
-not a == b
+not true
 ```
 
-pinned by `t-parse-not` · 1 vector use this keyword
+pinned by `t-logic-not-t` · 4 vectors use this keyword
 
 defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `language.md` L-178
 
@@ -326,7 +322,11 @@ defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `langu
 
 **operator keyword.** Precedence level 12 of 12 (left-associative), sharing it with nothing.
 
-**Usable, and no `%pos` vector exercises it.** It works — verified by hand with `tools/jockc.sh` on 2026-10-27 — and nothing in the corpus runs it. `%lex-connective` refuses `&&` and `||` and points the user at `and` and `or`, so the compiler recommends a spelling its own tests never execute.
+```jock
+true or true
+```
+
+pinned by `t-logic-or-tt` · 6 vectors use this keyword
 
 defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `language.md` L-178
 
@@ -414,7 +414,11 @@ defined by: `language.md` L-61, `language.md` L-129, `language.md` L-130, `langu
 
 **operator keyword.** Precedence level 11 of 12 (left-associative), sharing it with `and`.
 
-**Usable, and no `%pos` vector exercises it.** It works — verified by hand with `tools/jockc.sh` on 2026-10-27 — and nothing in the corpus runs it. `%lex-connective` refuses `&&` and `||` and points the user at `and` and `or`, so the compiler recommends a spelling its own tests never execute.
+```jock
+true xor true
+```
+
+pinned by `t-logic-xor-tt` · 6 vectors use this keyword
 
 defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `language.md` L-178
 
