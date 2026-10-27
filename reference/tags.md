@@ -5,14 +5,14 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `5c88a7f` (sigilante/reach-the-tags) · corpus 1124 vectors · 2026-10-27
+> channel `%rc` · commit `8214ae6` (sigilante/drop-the-dead-tex) · corpus 1121 vectors · 2026-10-27
 
 |  | count |  |
 |---|---:|---|
-| tags the compiler can raise | 206 | 200 `~|` heads + 6 `$diag` members |
+| tags the compiler can raise | 204 | 198 `~|` heads + 6 `$diag` members |
 | **with a runnable program** | **164** | the vector carries source, and the page shows it |
-| no input can reach the guard | 38 | registered with the reason, and the registry is checked |
-| …of those, still pinned by a vector | 32 | an AST- or judgment-level row reaches the arm directly |
+| no input can reach the guard | 36 | registered with the reason, and the registry is checked |
+| …of those, still pinned by a vector | 30 | an AST- or judgment-level row reaches the arm directly |
 | …and pinned by nothing | 6 | nothing to point an input at |
 | compiler invariant with a tripwire | 2 | a vector green only while the invariant holds |
 | **reachable, and pinned by nothing** | **2** | the gap list |
@@ -1451,7 +1451,7 @@ pinned by `t-rch-nx-unkop` · also `t-nx-unkop-n` (AST-level)
 
 ## Tags no input can reach
 
-38 refusals that no program, module or IR a user can write will raise. A guard the compiler holds against itself is not a missing test, and counting it as one invites a vector that pins nothing — so each is registered in `tests/hoon/run.hoon`’s `+unreach` table with the reason it is out of reach.
+36 refusals that no program, module or IR a user can write will raise. A guard the compiler holds against itself is not a missing test, and counting it as one invites a vector that pins nothing — so each is registered in `tests/hoon/run.hoon`’s `+unreach` table with the reason it is out of reach.
 
 **The registry is checked, not asserted.** A registered tag that acquires a source-level vector reddens `t-unreach-registry`, because the recorded reason would have stopped being true. That is what lets this page subtract them from the gap list without taking anybody’s word for it. This section is read from that table; it is not written here.
 
@@ -1476,8 +1476,6 @@ The guard protects against an AST the grammar has no spelling for. Reaching it f
 | tag | why | pinned by |
 |---|---|---|
 | `%desugar-snap` | %snap is the prelude checkpoint;  the parser has no spelling for it | — |
-| `%elab-gate-noarg` | +p-tex-fn always builds [%gate [~ t] _];  an argumentless gate type has no spelling | `t-elab-gate-noarg-n` |
-| `%elab-infer` | nothing in parse.hoon builds [%infer ~];  `let x = ...` carries type=~, a unit, not an infer tex | `t-elab-infer-err`, `t-elab-infer-n` |
 | `%empty-raw-cell` | the nasm raw-cell rule takes one or more elements, so an empty cell has no spelling | `t-nx-emptycell-n` |
 | `%mint-func-shape` | a func body is a %lambda by grammar | `t-mint-func-shape` |
 | `%mint-meth-ret` | the method grammar requires `->` and a return type | `t-mint-meth-ret` |
@@ -1539,7 +1537,7 @@ Stronger than a registry entry, and listed apart from it. No input reaches these
 
 ## Tags pinned by nothing
 
-Reachable, and no vector asserts them: 2 of 206. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.
+Reachable, and no vector asserts them: 2 of 204. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.
 
 **`%impl-conflict`** — Two libraries supplying different impl facts for one (trait, head) pair. Not reached from any spelling tried: two modules each declaring their own trait do not collide, because a module’s trait is its own, and the single-module spelling refuses `%mint-impl-coh` first. Probed, not inferred.
 
