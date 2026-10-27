@@ -275,7 +275,7 @@ renderings differ, and only the tag is stable:
 declaration — it carries the hint chain, which line:col cannot reconstruct,
 but its shape is not a contract.
 
-The tag INDEX is generated: <https://jock.is/reference/tags/> lists all 206
+The tag INDEX is generated: <https://jock.is/reference/tags/> lists all 204
 refusals the compiler can raise, 164 of them with the minimal program that
 raises one, plus the five tag families that discriminate on a second element
 and the refusals no input can reach. A hand-written taxonomy stood here and

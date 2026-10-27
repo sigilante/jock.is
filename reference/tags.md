@@ -5,11 +5,11 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `fd2c243` (sigilante/drop-the-dead-tex) · corpus 1129 vectors · 2026-10-28
+> channel `%rc` · commit `218b0a0` (sigilante/review-fixes) · corpus 1131 vectors · 2026-10-28
 
 |  | count |  |
 |---|---:|---|
-| tags the compiler can raise | 204 | 198 `~|` heads + 6 `$diag` members |
+| tags the compiler can raise | 204 | 199 `~|` heads + 6 `$diag` members |
 | **with a runnable program** | **164** | the vector carries source, and the page shows it |
 | no input can reach the guard | 36 | registered with the reason, and the registry is checked |
 | …of those, still pinned by a vector | 30 | an AST- or judgment-level row reaches the arm directly |
@@ -617,11 +617,19 @@ pinned by `t-jimp-seal-edit` · spec: docs/imports.md I-5
 
 ### `%mint-field`
 
+*module*
+
 ```jock
-struct S { x: @ }; let s = S( x: 1 ); s.y
+func dbl(n: @) -> @ { n + n };
 ```
 
-pinned by `t-rch-field`
+*program*
+
+```jock
+import m; m.dbl.g
+```
+
+pinned by `t-jimp-arm-value-deep`, `t-rch-field`
 
 ### `%mint-func-annot`
 
@@ -749,7 +757,7 @@ func dbl(n: @) -> @ { n + n };
 import m; m.nope(1)
 ```
 
-pinned by `t-jimp-absent`, `t-jimp-private-arm`
+pinned by `t-jimp-absent`, `t-jimp-arm-value-absent`, `t-jimp-private-arm`
 
 ### `%mint-inexhaustive`
 
