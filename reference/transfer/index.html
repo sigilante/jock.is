@@ -54,9 +54,9 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>4291355</code> (sigilante/vector-glyph-connective) · corpus 1081 vectors · 2026-10-27</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>00f7804</code> (sigilante/escape-octal-aside) · corpus 1082 vectors · 2026-10-27</aside>
 <p>A refusal is counted here when its <code>~|</code> clue carries a <strong>prose sentence</strong>. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.</p>
-<p>Every message on this page is quoted from the compiler, not written here, so the words a reader sees are the words the terminal will use.</p>
+<p>Every message under <strong>The corrections</strong> is quoted from the compiler, not written here, so the words a reader sees are the words the terminal will use. The one section that is authored says so in its own heading, and even there the program and the value come from a vector.</p>
 <table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>refusals that correct you</td><td>25</td></tr><tr><td>…shown with the program that triggers one</td><td>22</td></tr><tr><td>…pinned only by an AST-level vector</td><td>2</td></tr><tr><td>…pinned by no vector at all</td><td>1</td></tr></tbody></table>
 <h2 id="the-corrections">The corrections</h2>
 <h3 id="decl-fond"><code>%decl-fond</code></h3>
@@ -171,6 +171,13 @@
 <blockquote>f (x) does not call f; write f(x) to call, or ; to sequence</blockquote>
 <blockquote>xs [0] does not index xs; write xs[0] to index, or ; to sequence</blockquote>
 <p>pinned by <code>t-parse-unglued</code> · spec: docs/spec/language.md L-85</p>
+<h2 id="divergences-that-do-not-refuse-authored">Divergences that do not refuse (authored)</h2>
+<p>Everything above is a refusal, which means the compiler already tells the reader they are wrong. This section is the other class: the same characters are legal in Jock and in the language the reader came from, and they mean different things. Nothing warns, in either direction.</p>
+<aside class="marginal"><span class="n">2.</span> <strong>The contrast sentences here are written, not quoted</strong> — a divergence with no refusal has no compiler message to quote. The program and the value under each heading are a corpus vector’s own claim, and <code>refgen</code> fails if the vector stops pinning one.</aside>
+<h3 id="a-two-digit-escape-is-hex-and-collides-with-octal">A two-digit escape is hex, and collides with octal</h3>
+<pre class="code jock">"\41"</pre>
+<p><code>t-str-esc-octal-trap</code> asserts 65 · spec: <code>language.md L-28</code></p>
+<p>C, Python, JavaScript and Ruby read <code>\41</code> as an <strong>octal</strong> escape and give <code>!</code>, because <code>0o41</code> is 33. Jock reads the pair as hexadecimal with no <code>x</code> marker, so the same four characters are <code>A</code> — <code>0x41</code>, the 65 the vector asserts. Both readings compile and neither warns. Ruled 2026-10-27: the collision stands rather than being respelled <code>\xNN</code>, and is recorded rather than left to be discovered.</p>
 </main>
 </div>
 </body>

@@ -5,7 +5,7 @@ Every literal form Jock can spell, the aura each carries, and the names the lang
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `4291355` (sigilante/vector-glyph-connective) · corpus 1081 vectors · 2026-10-27
+> channel `%rc` · commit `00f7804` (sigilante/escape-octal-aside) · corpus 1082 vectors · 2026-10-27
 
 ## The literal inventory
 
@@ -74,10 +74,10 @@ from `t-str-esc-backslash` (`%text`, `%pos`) · also cites `t-str-esc-newline`, 
 ### L-29 · Anything else after a backslash refuses
 
 ```jock
-"a\zzb"
+"\41"
 ```
 
-from `t-str-esc-bad` (`%text`, `%err`)
+from `t-str-esc-octal-trap` (`%text`, `%pos`)
 
 ### L-30 · Per-byte escapes are what settle Unicode.
 

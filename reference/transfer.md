@@ -5,11 +5,11 @@ The 25 refusals that exist to catch a habit from another language, each with the
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `4291355` (sigilante/vector-glyph-connective) · corpus 1081 vectors · 2026-10-27
+> channel `%rc` · commit `00f7804` (sigilante/escape-octal-aside) · corpus 1082 vectors · 2026-10-27
 
 A refusal is counted here when its `~|` clue carries a **prose sentence**. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.
 
-Every message on this page is quoted from the compiler, not written here, so the words a reader sees are the words the terminal will use.
+Every message under **The corrections** is quoted from the compiler, not written here, so the words a reader sees are the words the terminal will use. The one section that is authored says so in its own heading, and even there the program and the value come from a vector.
 
 |  | count |
 |---|---:|
@@ -293,3 +293,20 @@ f (3)
 > xs [0] does not index xs; write xs[0] to index, or ; to sequence
 
 pinned by `t-parse-unglued` · spec: docs/spec/language.md L-85
+
+## Divergences that do not refuse (authored)
+
+Everything above is a refusal, which means the compiler already tells the reader they are wrong. This section is the other class: the same characters are legal in Jock and in the language the reader came from, and they mean different things. Nothing warns, in either direction.
+
+> [!NOTE]
+> **The contrast sentences here are written, not quoted** — a divergence with no refusal has no compiler message to quote. The program and the value under each heading are a corpus vector’s own claim, and `refgen` fails if the vector stops pinning one.
+
+### A two-digit escape is hex, and collides with octal
+
+```jock
+"\41"
+```
+
+`t-str-esc-octal-trap` asserts 65 · spec: `language.md L-28`
+
+C, Python, JavaScript and Ruby read `\41` as an **octal** escape and give `!`, because `0o41` is 33. Jock reads the pair as hexadecimal with no `x` marker, so the same four characters are `A` — `0x41`, the 65 the vector asserts. Both readings compile and neither warns. Ruled 2026-10-27: the collision stands rather than being respelled `\xNN`, and is recorded rather than left to be discovered.
