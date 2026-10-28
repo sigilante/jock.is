@@ -5,11 +5,11 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `c3b03d9` (sigilante/review-fixes) · corpus 1143 vectors · 2026-10-28
+> channel `%rc` · commit `019736f` (sigilante/review-fixes) · corpus 1147 vectors · 2026-10-28
 
 |  | count |  |
 |---|---:|---|
-| tags the compiler can raise | 204 | 199 `~|` heads + 6 `$diag` members |
+| tags the compiler can raise | 204 | 199 `~|` heads + 7 `$diag` members |
 | **with a runnable program** | **164** | the vector carries source, and the page shows it |
 | no input can reach the guard | 36 | registered with the reason, and the registry is checked |
 | …of those, still pinned by a vector | 30 | an AST- or judgment-level row reaches the arm directly |
@@ -18,7 +18,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 | **reachable, and pinned by nothing** | **2** | the gap list |
 | AST-level only, with no reason recorded | 0 | the other gap: pinned, but never watched from a program |
 
-A `%neg` vector refuses *without* naming a tag, so it pins that a program is rejected and never in what words. 36 rows are `%neg`; none of them pins a tag here.
+A `%neg` vector refuses *without* naming a tag, so it pins that a program is rejected and never in what words. 38 rows are `%neg`; none of them pins a tag here.
 
 **The two gap rows are the ones to read.** Every other row is a refusal the corpus pins and this page can explain. A count of unpinned tags on its own cannot tell a missing test from a guard the compiler holds against itself, and this page published 82 of them as one list until the difference was worked out tag by tag.
 
@@ -477,7 +477,7 @@ pinned by `t-mill-lambda-arity` · spec: docs/spec/language.md L-141
 let u: UniChar = 0x1f600 as! UniChar; let b: Byte = u; b
 ```
 
-pinned by `t-arc-unichar-narrow`, `t-err-class-gen-arg`, `t-err-map-annot-real`, `t-err-print-num`, `t-gen-rigid-arg`, `t-gen-rigid-unit`, `t-rigid-mcon`, `t-rigid-slit`, `t-text-char-no`, `t-var-widen-shallow` · also `t-mint-annot`, `t-mint-cond`, `t-mint-guard`, `t-mint-inc-cell` (AST-level) · spec: docs/spec/language.md L-132
+pinned by `t-arc-unichar-narrow`, `t-err-class-gen-arg`, `t-err-map-annot-real`, `t-err-print-num`, `t-gen-rigid-arg`, `t-gen-rigid-unit`, `t-rigid-mcon`, `t-rigid-slit`, `t-text-char-no`, `t-var-widen-shallow` · also `t-mint-annot`, `t-mint-cond`, `t-mint-guard`, `t-mint-inc-cell` (AST-level) · spec: docs/spec/language.md L-132, docs/spec/runtime.md R-59
 
 ### `%mint-call`
 
@@ -730,10 +730,10 @@ pinned by `t-mint-impl-trait`
 ### `%mint-import`
 
 ```jock
-import nope; 1
+import my-lib; 1
 ```
 
-pinned by `t-timp-absent` · also `t-mint-import-unknown` (AST-level) · spec: docs/imports.md I-6, docs/spec/language.md L-171
+pinned by `t-dtags-user-name`, `t-timp-absent` · also `t-mint-import-unknown` (AST-level) · spec: docs/imports.md I-6, docs/spec/language.md L-171
 
 ### `%mint-import-arm`
 

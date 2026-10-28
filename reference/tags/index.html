@@ -54,9 +54,9 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>c3b03d9</code> (sigilante/review-fixes) · corpus 1143 vectors · 2026-10-28</aside>
-<table><thead><tr><th></th><th>count</th><th></th></tr></thead><tbody><tr><td>tags the compiler can raise</td><td>204</td><td>199 <code>~|</code> heads + 6 <code>$diag</code> members</td></tr><tr><td><strong>with a runnable program</strong></td><td><strong>164</strong></td><td>the vector carries source, and the page shows it</td></tr><tr><td>no input can reach the guard</td><td>36</td><td>registered with the reason, and the registry is checked</td></tr><tr><td>…of those, still pinned by a vector</td><td>30</td><td>an AST- or judgment-level row reaches the arm directly</td></tr><tr><td>…and pinned by nothing</td><td>6</td><td>nothing to point an input at</td></tr><tr><td>compiler invariant with a tripwire</td><td>2</td><td>a vector green only while the invariant holds</td></tr><tr><td><strong>reachable, and pinned by nothing</strong></td><td><strong>2</strong></td><td>the gap list</td></tr><tr><td>AST-level only, with no reason recorded</td><td>0</td><td>the other gap: pinned, but never watched from a program</td></tr></tbody></table>
-<p>A <code>%neg</code> vector refuses <em>without</em> naming a tag, so it pins that a program is rejected and never in what words. 36 rows are <code>%neg</code>; none of them pins a tag here.</p>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>019736f</code> (sigilante/review-fixes) · corpus 1147 vectors · 2026-10-28</aside>
+<table><thead><tr><th></th><th>count</th><th></th></tr></thead><tbody><tr><td>tags the compiler can raise</td><td>204</td><td>199 <code>~|</code> heads + 7 <code>$diag</code> members</td></tr><tr><td><strong>with a runnable program</strong></td><td><strong>164</strong></td><td>the vector carries source, and the page shows it</td></tr><tr><td>no input can reach the guard</td><td>36</td><td>registered with the reason, and the registry is checked</td></tr><tr><td>…of those, still pinned by a vector</td><td>30</td><td>an AST- or judgment-level row reaches the arm directly</td></tr><tr><td>…and pinned by nothing</td><td>6</td><td>nothing to point an input at</td></tr><tr><td>compiler invariant with a tripwire</td><td>2</td><td>a vector green only while the invariant holds</td></tr><tr><td><strong>reachable, and pinned by nothing</strong></td><td><strong>2</strong></td><td>the gap list</td></tr><tr><td>AST-level only, with no reason recorded</td><td>0</td><td>the other gap: pinned, but never watched from a program</td></tr></tbody></table>
+<p>A <code>%neg</code> vector refuses <em>without</em> naming a tag, so it pins that a program is rejected and never in what words. 38 rows are <code>%neg</code>; none of them pins a tag here.</p>
 <p><strong>The two gap rows are the ones to read.</strong> Every other row is a refusal the corpus pins and this page can explain. A count of unpinned tags on its own cannot tell a missing test from a guard the compiler holds against itself, and this page published 82 of them as one list until the difference was worked out tag by tag.</p>
 <h2 id="tags-with-a-minimal-program">Tags with a minimal program</h2>
 <p>Each program is the vector’s own input, verbatim — extracted, never transcribed (<code>LISTINGS.md</code> X-1), and pinned by its tag rather than a value (X-8). Running it reproduces the refusal.</p>
@@ -232,7 +232,7 @@ cd"; s</pre>
 <p>pinned by <code>t-mill-lambda-arity</code> · spec: docs/spec/language.md L-141</p>
 <h3 id="mill-nest"><code>%mill-nest</code></h3>
 <pre class="code jock" data-refuses="mill-nest">let u: UniChar = 0x1f600 as! UniChar; let b: Byte = u; b</pre>
-<p>pinned by <code>t-arc-unichar-narrow</code>, <code>t-err-class-gen-arg</code>, <code>t-err-map-annot-real</code>, <code>t-err-print-num</code>, <code>t-gen-rigid-arg</code>, <code>t-gen-rigid-unit</code>, <code>t-rigid-mcon</code>, <code>t-rigid-slit</code>, <code>t-text-char-no</code>, <code>t-var-widen-shallow</code> · also <code>t-mint-annot</code>, <code>t-mint-cond</code>, <code>t-mint-guard</code>, <code>t-mint-inc-cell</code> (AST-level) · spec: docs/spec/language.md L-132</p>
+<p>pinned by <code>t-arc-unichar-narrow</code>, <code>t-err-class-gen-arg</code>, <code>t-err-map-annot-real</code>, <code>t-err-print-num</code>, <code>t-gen-rigid-arg</code>, <code>t-gen-rigid-unit</code>, <code>t-rigid-mcon</code>, <code>t-rigid-slit</code>, <code>t-text-char-no</code>, <code>t-var-widen-shallow</code> · also <code>t-mint-annot</code>, <code>t-mint-cond</code>, <code>t-mint-guard</code>, <code>t-mint-inc-cell</code> (AST-level) · spec: docs/spec/language.md L-132, docs/spec/runtime.md R-59</p>
 <h3 id="mint-call"><code>%mint-call</code></h3>
 <pre class="code jock" data-refuses="mint-call">1(2)</pre>
 <p>pinned by <code>t-rch-call</code> · also <code>t-mint-call-gate</code> (AST-level)</p>
@@ -327,8 +327,8 @@ cd"; s</pre>
 <pre class="code jock" data-refuses="mint-impl-trait">struct P { x: @ }; impl Nope for P { }; 1</pre>
 <p>pinned by <code>t-mint-impl-trait</code></p>
 <h3 id="mint-import"><code>%mint-import</code></h3>
-<pre class="code jock" data-refuses="mint-import">import nope; 1</pre>
-<p>pinned by <code>t-timp-absent</code> · also <code>t-mint-import-unknown</code> (AST-level) · spec: docs/imports.md I-6, docs/spec/language.md L-171</p>
+<pre class="code jock" data-refuses="mint-import">import my-lib; 1</pre>
+<p>pinned by <code>t-dtags-user-name</code>, <code>t-timp-absent</code> · also <code>t-mint-import-unknown</code> (AST-level) · spec: docs/imports.md I-6, docs/spec/language.md L-171</p>
 <h3 id="mint-import-arm"><code>%mint-import-arm</code></h3>
 <p class="label">module</p>
 <pre class="code jock" data-refuses="mint-import-arm">func dbl(n: @) -&gt; @ { n + n };</pre>
