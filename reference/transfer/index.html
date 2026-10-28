@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>273416c</code> (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>c3b03d9</code> (sigilante/review-fixes) · corpus 1143 vectors · 2026-10-28</aside>
 <p>A refusal is counted here when its <code>~|</code> clue carries a <strong>prose sentence</strong>. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.</p>
 <p>Every message under <strong>The corrections</strong> is quoted from the compiler, not written here, so the words a reader sees are the words the terminal will use. The one section that is authored says so in its own heading, and even there the program and the value come from a vector.</p>
 <table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>refusals that correct you</td><td>25</td></tr><tr><td>…shown with the program that triggers one</td><td>25</td></tr><tr><td>…pinned only by an AST-level vector</td><td>0</td></tr><tr><td>…pinned by no vector at all</td><td>0</td></tr></tbody></table>
@@ -74,7 +74,7 @@
 <h3 id="decl-indiscriminable"><code>%decl-indiscriminable</code></h3>
 <pre class="code jock" data-refuses="decl-indiscriminable">struct P { a: @, b: @ }; struct Q { c: @, d: @ }; alias C is P | Q; 0</pre>
 <blockquote>this declaration holds a union whose members are not told apart by their nouns</blockquote>
-<p>pinned by <code>t-err-decl-indiscrim</code></p>
+<p>pinned by <code>t-decl-dish-stub-still</code></p>
 <h3 id="elab-too-large"><code>%elab-too-large</code></h3>
 <pre class="code jock" data-refuses="elab-too-large">alias A0 is @; alias A1 is (A0,A0); alias A2 is (A1,A1); alias A3 is (A2,A2); alias A4 is (A3,A3); alias A5 is (A4,A4); alias A6 is (A5,A5); alias A7 is (A6,A6); alias A8 is (A7,A7); alias A9 is (A8,A8); alias A10 is (A9,A9); alias A11 is (A10,A10); alias A12 is (A11,A11); alias A13 is (A12,A12); alias A14 is (A13,A13); alias A15 is (A14,A14); alias A16 is (A15,A15); alias A17 is (A16,A16); alias A18 is (A17,A17); alias A19 is (A18,A18); alias A20 is (A19,A19); alias A21 is (A20,A20); alias A22 is (A21,A21); alias A23 is (A22,A22); alias A24 is (A23,A23); let x: A24 = 1; 1</pre>
 <blockquote>this alias elaborates to more nodes than a type may hold; aliases expand inline at every use</blockquote>
@@ -147,7 +147,7 @@
 <p>pinned by <code>t-hint-let-mut</code></p>
 <h3 id="parse-minus-glue"><code>%parse-minus-glue</code></h3>
 <pre class="code jock" data-refuses="parse-minus-glue">let a = 5; a- 1</pre>
-<blockquote>a-1 and a -1 are reserved; write a - 1 to subtract</blockquote>
+<blockquote>write a - 1 to subtract; the glued and half-glued spellings are reserved</blockquote>
 <p>pinned by <code>t-minus-glued-l</code> · spec: docs/spec/language.md L-10, docs/spec/language.md L-109</p>
 <h3 id="parse-no-result"><code>%parse-no-result</code></h3>
 <pre class="code jock" data-refuses="parse-no-result">let a = 1; let b = 2; let c = 3;</pre>

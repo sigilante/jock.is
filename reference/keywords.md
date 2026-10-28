@@ -5,7 +5,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `273416c` (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28
+> channel `%rc` · commit `c3b03d9` (sigilante/review-fixes) · corpus 1143 vectors · 2026-10-28
 
 The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexer’s own authority, which `tools/hilite.py` holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.
 
@@ -59,7 +59,7 @@ The comparisons at 8 and 9 are **non-associative** and must be parenthesized: `a
 alias Foo is @; let x: Foo = 1; x
 ```
 
-pinned by `t-arc-alias-is` · 6 vectors use this keyword
+pinned by `t-arc-alias-is` · 7 vectors use this keyword
 
 defined by: `language.md` L-22, `language.md` L-45, `language.md` L-61, `language.md` L-66, `language.md` L-81
 
@@ -195,7 +195,7 @@ defined by: `language.md` L-61
 func<T> id(x: T) -> T { x }; id(42)
 ```
 
-pinned by `t-text-gen` · 76 vectors use this keyword
+pinned by `t-text-gen` · 77 vectors use this keyword
 
 defined by: `language.md` L-17, `language.md` L-20, `language.md` L-61, `language.md` L-87, `language.md` L-135, `language.md` L-136, `language.md` L-137, `language.md` L-139, `language.md` L-140, `language.md` L-143, `language.md` L-185
 
@@ -255,7 +255,7 @@ defined by: `language.md` L-61, `language.md` L-73, `language.md` L-107, `langua
 alias Foo is @; let x: Foo = 1; x
 ```
 
-pinned by `t-arc-alias-is` · 6 vectors use this keyword
+pinned by `t-arc-alias-is` · 7 vectors use this keyword
 
 defined by: `language.md` L-61, `language.md` L-69
 
@@ -279,7 +279,7 @@ defined by: `language.md` L-61
 let x = 1; x;
 ```
 
-pinned by `t-arc-term-semi` · 183 vectors use this keyword
+pinned by `t-arc-term-semi` · 185 vectors use this keyword
 
 defined by: `language.md` L-20, `language.md` L-61, `language.md` L-129, `language.md` L-130, `language.md` L-131, `language.md` L-134, `language.md` L-171, `language.md` L-185
 
@@ -375,7 +375,7 @@ defined by: `language.md` L-61, `language.md` L-140, `language.md` L-152
 struct Q { w: @ }; Q( w: 9 ).w
 ```
 
-pinned by `t-text-dot-slit` · 68 vectors use this keyword
+pinned by `t-text-dot-slit` · 70 vectors use this keyword
 
 defined by: `language.md` L-45, `language.md` L-61
 

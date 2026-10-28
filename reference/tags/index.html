@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>273416c</code> (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>c3b03d9</code> (sigilante/review-fixes) · corpus 1143 vectors · 2026-10-28</aside>
 <table><thead><tr><th></th><th>count</th><th></th></tr></thead><tbody><tr><td>tags the compiler can raise</td><td>204</td><td>199 <code>~|</code> heads + 6 <code>$diag</code> members</td></tr><tr><td><strong>with a runnable program</strong></td><td><strong>164</strong></td><td>the vector carries source, and the page shows it</td></tr><tr><td>no input can reach the guard</td><td>36</td><td>registered with the reason, and the registry is checked</td></tr><tr><td>…of those, still pinned by a vector</td><td>30</td><td>an AST- or judgment-level row reaches the arm directly</td></tr><tr><td>…and pinned by nothing</td><td>6</td><td>nothing to point an input at</td></tr><tr><td>compiler invariant with a tripwire</td><td>2</td><td>a vector green only while the invariant holds</td></tr><tr><td><strong>reachable, and pinned by nothing</strong></td><td><strong>2</strong></td><td>the gap list</td></tr><tr><td>AST-level only, with no reason recorded</td><td>0</td><td>the other gap: pinned, but never watched from a program</td></tr></tbody></table>
 <p>A <code>%neg</code> vector refuses <em>without</em> naming a tag, so it pins that a program is rejected and never in what words. 36 rows are <code>%neg</code>; none of them pins a tag here.</p>
 <p><strong>The two gap rows are the ones to read.</strong> Every other row is a refusal the corpus pins and this page can explain. A count of unpinned tags on its own cannot tell a missing test from a guard the compiler holds against itself, and this page published 82 of them as one list until the difference was worked out tag by tag.</p>
@@ -93,7 +93,7 @@
 <p>pinned by <code>t-decl-fond-cycl</code> · spec: docs/spec/language.md L-164</p>
 <h3 id="decl-indiscriminable"><code>%decl-indiscriminable</code></h3>
 <pre class="code jock" data-refuses="decl-indiscriminable">struct P { a: @, b: @ }; struct Q { c: @, d: @ }; alias C is P | Q; 0</pre>
-<p>pinned by <code>t-err-decl-indiscrim</code>, <code>t-err-or-arg-cell</code>, <code>t-err-or-arg-stub</code>, <code>t-err-or-headshape-both</code>, <code>t-err-or-headshape-onefield</code></p>
+<p>pinned by <code>t-decl-dish-stub-still</code>, <code>t-err-decl-indiscrim</code>, <code>t-err-or-arg-cell</code>, <code>t-err-or-arg-stub</code>, <code>t-err-or-headshape-both</code>, <code>t-err-or-headshape-onefield</code></p>
 <h3 id="decl-op-eq"><code>%decl-op-eq</code></h3>
 <pre class="code jock" data-refuses="decl-op-eq">trait E { ne(!=); }; 0</pre>
 <p>pinned by <code>t-err-op-ne</code> · spec: docs/spec/language.md L-43</p>
@@ -256,7 +256,7 @@ cd"; s</pre>
 <p>pinned by <code>t-jimp-seal-cast</code>, <code>t-jimp-seal-deep-arg</code>, <code>t-jimp-seal-deep-cast</code>, <code>t-jimp-seal-deep-soft</code>, <code>t-jimp-seal-soft</code>, <code>t-jimp-seal-test</code> · spec: docs/imports.md I-5</p>
 <h3 id="mint-cast-sint"><code>%mint-cast-sint</code></h3>
 <pre class="code jock" data-refuses="mint-cast-sint">struct SB { a: Int, k: @ }; let s = (5, 4) as SB; if s.a == -3 { 111 } else { 222 }</pre>
-<p>pinned by <code>t-cast-sint-deep</code>, <code>t-cast-sint-deep-soft</code>, <code>t-cast-sint-deep-test</code>, <code>t-cast-sint-deep-tuple</code>, <code>t-sint-cast</code>, <code>t-sint-castp</code>, <code>t-sint-castq</code>, <code>t-sint-castx</code> · spec: docs/imports.md I-5, docs/spec/language.md L-12, docs/spec/language.md L-127</p>
+<p>pinned by <code>t-cast-sint-deep</code>, <code>t-cast-sint-deep-nom</code>, <code>t-cast-sint-deep-nom-test</code>, <code>t-cast-sint-deep-soft</code>, <code>t-cast-sint-deep-test</code>, <code>t-cast-sint-deep-tuple</code>, <code>t-sint-cast</code>, <code>t-sint-castp</code>, <code>t-sint-castq</code>, <code>t-sint-castx</code> · spec: docs/imports.md I-5, docs/spec/language.md L-12, docs/spec/language.md L-127</p>
 <h3 id="mint-ctor"><code>%mint-ctor</code></h3>
 <pre class="code jock" data-refuses="mint-ctor">E.a(1)</pre>
 <p>pinned by <code>t-mint-ctor</code></p>
@@ -285,11 +285,8 @@ cd"; s</pre>
 <pre class="code jock" data-refuses="mint-edit-sealed">import m; var c = m.mk(1); c.n = 9; c.n</pre>
 <p>pinned by <code>t-jimp-seal-edit</code> · spec: docs/imports.md I-5</p>
 <h3 id="mint-field"><code>%mint-field</code></h3>
-<p class="label">module</p>
-<pre class="code jock" data-refuses="mint-field">func dbl(n: @) -&gt; @ { n + n };</pre>
-<p class="label">program</p>
-<pre class="code jock" data-refuses="mint-field">import m; m.dbl.g</pre>
-<p>pinned by <code>t-jimp-arm-value-deep</code>, <code>t-rch-field</code> · spec: docs/spec/language.md L-171</p>
+<pre class="code jock" data-refuses="mint-field">struct S { x: @, y: @ }; trait T { dist(self: Self) -&gt; @; } impl T for S { dist(self: Self) -&gt; @ { self.x } } let v = S( x: 4, y: 5 ); let g = v.dist; 0</pre>
+<p>pinned by <code>t-dimb-meth-value</code>, <code>t-jimp-arm-value-deep</code>, <code>t-rch-field</code> · spec: docs/spec/language.md L-171</p>
 <h3 id="mint-func-annot"><code>%mint-func-annot</code></h3>
 <pre class="code jock" data-refuses="mint-func-annot">func f(a) -&gt; @ { 1 }; f(1)</pre>
 <p>pinned by <code>t-mint-func-annot</code> · spec: docs/spec/language.md L-136</p>

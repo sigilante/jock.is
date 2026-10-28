@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>273416c</code> (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>c3b03d9</code> (sigilante/review-fixes) · corpus 1143 vectors · 2026-10-28</aside>
 <p>The keyword set is read from the <code>$keyword</code> mold in <code>sur/jock.hoon</code> — the lexer’s own authority, which <code>tools/hilite.py</code> holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.</p>
 <table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>keywords in the mold</td><td>31</td></tr><tr><td>usable, with a demonstrating program</td><td>29</td></tr><tr><td>usable, demonstrated by nothing</td><td>0</td></tr><tr><td>deliberately not usable</td><td>2</td></tr><tr><td>defined by at least one <code>language.md</code> rule</td><td>31</td></tr></tbody></table>
 <h2 id="syntactic-slots">Syntactic slots</h2>
@@ -69,7 +69,7 @@
 <h3 id="alias"><code>alias</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <pre class="code jock">alias Foo is @; let x: Foo = 1; x</pre>
-<p>pinned by <code>t-arc-alias-is</code> · 6 vectors use this keyword</p>
+<p>pinned by <code>t-arc-alias-is</code> · 7 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-22, <code>language.md</code> L-45, <code>language.md</code> L-61, <code>language.md</code> L-66, <code>language.md</code> L-81</p>
 <h3 id="and"><code>and</code></h3>
 <p><strong>operator keyword.</strong> Precedence level 11 of 13 (left-associative), sharing it with nothing.</p>
@@ -126,7 +126,7 @@
 <h3 id="func"><code>func</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <pre class="code jock">func&lt;T&gt; id(x: T) -&gt; T { x }; id(42)</pre>
-<p>pinned by <code>t-text-gen</code> · 76 vectors use this keyword</p>
+<p>pinned by <code>t-text-gen</code> · 77 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-17, <code>language.md</code> L-20, <code>language.md</code> L-61, <code>language.md</code> L-87, <code>language.md</code> L-135, <code>language.md</code> L-136, <code>language.md</code> L-137, <code>language.md</code> L-139, <code>language.md</code> L-140, <code>language.md</code> L-143, <code>language.md</code> L-185</p>
 <h3 id="if"><code>if</code></h3>
 <p><strong>control keyword.</strong></p>
@@ -151,7 +151,7 @@
 <h3 id="is"><code>is</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <pre class="code jock">alias Foo is @; let x: Foo = 1; x</pre>
-<p>pinned by <code>t-arc-alias-is</code> · 6 vectors use this keyword</p>
+<p>pinned by <code>t-arc-alias-is</code> · 7 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-69</p>
 <h3 id="lambda"><code>lambda</code></h3>
 <p><strong>declaration keyword.</strong></p>
@@ -161,7 +161,7 @@
 <h3 id="let"><code>let</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <pre class="code jock">let x = 1; x;</pre>
-<p>pinned by <code>t-arc-term-semi</code> · 183 vectors use this keyword</p>
+<p>pinned by <code>t-arc-term-semi</code> · 185 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-20, <code>language.md</code> L-61, <code>language.md</code> L-129, <code>language.md</code> L-130, <code>language.md</code> L-131, <code>language.md</code> L-134, <code>language.md</code> L-171, <code>language.md</code> L-185</p>
 <h3 id="loop"><code>loop</code></h3>
 <p><strong>control keyword.</strong></p>
@@ -201,7 +201,7 @@
 <h3 id="struct"><code>struct</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <pre class="code jock">struct Q { w: @ }; Q( w: 9 ).w</pre>
-<p>pinned by <code>t-text-dot-slit</code> · 68 vectors use this keyword</p>
+<p>pinned by <code>t-text-dot-slit</code> · 70 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-45, <code>language.md</code> L-61</p>
 <h3 id="switch"><code>switch</code></h3>
 <p><strong>control keyword.</strong></p>

@@ -5,7 +5,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `273416c` (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28
+> channel `%rc` · commit `c3b03d9` (sigilante/review-fixes) · corpus 1143 vectors · 2026-10-28
 
 |  | count |  |
 |---|---:|---|
@@ -114,7 +114,7 @@ pinned by `t-decl-fond-cycl` · spec: docs/spec/language.md L-164
 struct P { a: @, b: @ }; struct Q { c: @, d: @ }; alias C is P | Q; 0
 ```
 
-pinned by `t-err-decl-indiscrim`, `t-err-or-arg-cell`, `t-err-or-arg-stub`, `t-err-or-headshape-both`, `t-err-or-headshape-onefield`
+pinned by `t-decl-dish-stub-still`, `t-err-decl-indiscrim`, `t-err-or-arg-cell`, `t-err-or-arg-stub`, `t-err-or-headshape-both`, `t-err-or-headshape-onefield`
 
 ### `%decl-op-eq`
 
@@ -541,7 +541,7 @@ pinned by `t-jimp-seal-cast`, `t-jimp-seal-deep-arg`, `t-jimp-seal-deep-cast`, `
 struct SB { a: Int, k: @ }; let s = (5, 4) as SB; if s.a == -3 { 111 } else { 222 }
 ```
 
-pinned by `t-cast-sint-deep`, `t-cast-sint-deep-soft`, `t-cast-sint-deep-test`, `t-cast-sint-deep-tuple`, `t-sint-cast`, `t-sint-castp`, `t-sint-castq`, `t-sint-castx` · spec: docs/imports.md I-5, docs/spec/language.md L-12, docs/spec/language.md L-127
+pinned by `t-cast-sint-deep`, `t-cast-sint-deep-nom`, `t-cast-sint-deep-nom-test`, `t-cast-sint-deep-soft`, `t-cast-sint-deep-test`, `t-cast-sint-deep-tuple`, `t-sint-cast`, `t-sint-castp`, `t-sint-castq`, `t-sint-castx` · spec: docs/imports.md I-5, docs/spec/language.md L-12, docs/spec/language.md L-127
 
 ### `%mint-ctor`
 
@@ -617,19 +617,11 @@ pinned by `t-jimp-seal-edit` · spec: docs/imports.md I-5
 
 ### `%mint-field`
 
-*module*
-
 ```jock
-func dbl(n: @) -> @ { n + n };
+struct S { x: @, y: @ }; trait T { dist(self: Self) -> @; } impl T for S { dist(self: Self) -> @ { self.x } } let v = S( x: 4, y: 5 ); let g = v.dist; 0
 ```
 
-*program*
-
-```jock
-import m; m.dbl.g
-```
-
-pinned by `t-jimp-arm-value-deep`, `t-rch-field` · spec: docs/spec/language.md L-171
+pinned by `t-dimb-meth-value`, `t-jimp-arm-value-deep`, `t-rch-field` · spec: docs/spec/language.md L-171
 
 ### `%mint-func-annot`
 

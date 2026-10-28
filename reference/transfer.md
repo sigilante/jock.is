@@ -5,7 +5,7 @@ The 25 refusals that exist to catch a habit from another language, each with the
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `273416c` (sigilante/review-fixes) · corpus 1136 vectors · 2026-10-28
+> channel `%rc` · commit `c3b03d9` (sigilante/review-fixes) · corpus 1143 vectors · 2026-10-28
 
 A refusal is counted here when its `~|` clue carries a **prose sentence**. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.
 
@@ -58,7 +58,7 @@ struct P { a: @, b: @ }; struct Q { c: @, d: @ }; alias C is P | Q; 0
 
 > this declaration holds a union whose members are not told apart by their nouns
 
-pinned by `t-err-decl-indiscrim`
+pinned by `t-decl-dish-stub-still`
 
 ### `%elab-too-large`
 
@@ -240,7 +240,7 @@ pinned by `t-hint-let-mut`
 let a = 5; a- 1
 ```
 
-> a-1 and a -1 are reserved; write a - 1 to subtract
+> write a - 1 to subtract; the glued and half-glued spellings are reserved
 
 pinned by `t-minus-glued-l` · spec: docs/spec/language.md L-10, docs/spec/language.md L-109
 
