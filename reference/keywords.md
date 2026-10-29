@@ -1,28 +1,28 @@
 # Keywords
 
-All 31 keywords Jock reserves, what each one does, and a working program that uses it. The counterpart to [refusal tags](../tags/), which is the same corpus read for what it rejects.
+All 30 keywords Jock reserves, what each one does, and a working program that uses it. The counterpart to [refusal tags](../tags/), which is the same corpus read for what it rejects.
 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `c215ea7` (sigilante/review-fixes) · corpus 1147 vectors · 2026-10-29
+> channel `%rc` · commit `974956f` (sigilante/pre-rc-sweep) · corpus 1147 vectors · 2026-10-29
 
 The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexer’s own authority, which `tools/hilite.py` holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.
 
 |  | count |
 |---|---:|
-| keywords in the mold | 31 |
+| keywords in the mold | 30 |
 | usable, with a demonstrating program | 29 |
 | usable, demonstrated by nothing | 0 |
-| deliberately not usable | 2 |
-| defined by at least one `language.md` rule | 31 |
+| deliberately not usable | 1 |
+| defined by at least one `language.md` rule | 30 |
 
 ## Syntactic slots
 
 Which slot each keyword occupies, from the tmLanguage grammar’s three keyword groups — the only machine-readable statement of this in the tree. `tools/hilite.py` checks that the three **partition** the `$keyword` mold: disjoint, and summing to it.
 
 - **declaration** (14): `alias` `class` `enum` `for` `func` `impl` `import` `is` `lambda` `let` `private` `struct` `trait` `var`
-- **control** (11): `assert` `crash` `defer` `else` `eval` `if` `loop` `match` `print` `recur` `switch`
+- **control** (10): `assert` `crash` `defer` `else` `eval` `if` `loop` `match` `print` `recur`
 - **operator** (6): `and` `as` `in` `not` `or` `xor`
 
 There is deliberately **no BNF here.** Jock’s parser is recursive descent (`parse.hoon`); no grammar artifact exists to project from, so a written-out grammar would be a second author of the syntax rather than a rendering of it — which is exactly how this reference’s predecessor acquired seven wrong tag names. A formal grammar is worth having and is expressible (the adjacency law needs glued and spaced `(` as *distinct terminals*, which the lexer’s `glu` flag already supplies), but it should arrive with the corpus as its acceptance suite — every source-bearing `%pos` vector parsing, every `%parse` and `%lex` refusal failing to — so that it is a lane and not a claim.
@@ -279,7 +279,7 @@ defined by: `language.md` L-61
 let x = 1; x;
 ```
 
-pinned by `t-arc-term-semi` · 185 vectors use this keyword
+pinned by `t-arc-term-semi` · 187 vectors use this keyword
 
 defined by: `language.md` L-20, `language.md` L-61, `language.md` L-129, `language.md` L-130, `language.md` L-131, `language.md` L-134, `language.md` L-171, `language.md` L-185
 
@@ -378,14 +378,6 @@ struct Q { w: @ }; Q( w: 9 ).w
 pinned by `t-text-dot-slit` · 70 vectors use this keyword
 
 defined by: `language.md` L-45, `language.md` L-61
-
-### `switch`
-
-**control keyword.**
-
-**RETIRED.** Reserved in the lexer’s mold so that the parser recognises it and refuses with a diagnosis rather than an unbound name. Refuses `%parse-switch-gone` — use `match`, which replaced it.
-
-defined by: `language.md` L-61, `language.md` L-151, `language.md` L-183
 
 ### `trait`
 

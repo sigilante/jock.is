@@ -199,10 +199,11 @@ Case patterns are QUALIFIED and positional: `match s { .point => 0.0,
 case; a BARE name is a binding and refuses `%mint-patt-bare` if it
 names a case. Arms are comma-separated (`=>` not `->`), terminator
 optional on the last arm, exhaustiveness checked (non-exhaustive match errors with a
-witness). `switch` is RETIRED (reserved; refuses %parse-switch-gone) —
-`match` takes literal values as patterns, so it always covered value
-dispatch. `self` is an
-ordinary parameter name, not a keyword. Operator binding in traits is
+witness). `switch` is RETIRED and is NOT a keyword — `match` takes
+literal values as patterns, so it always covered value dispatch, and
+the word was unsquatted 2026-10-29, so writing `switch` names a
+binding like any other word. `self` and `mut` are likewise
+ordinary names, not keywords. Operator binding in traits is
 per-method, and the glyph must be one nothing has claimed:
 `trait Scale { s(⊛); }` binds `⊛`. The example here used to be
 `trait Add { add(+); }`, which refuses `%decl-op-rebind` — the prelude's own
@@ -275,8 +276,8 @@ renderings differ, and only the tag is stable:
 declaration — it carries the hint chain, which line:col cannot reconstruct,
 but its shape is not a contract.
 
-The tag INDEX is generated: <https://jock.is/reference/tags/> lists all 204
-refusals the compiler can raise, 164 of them with the minimal program that
+The tag INDEX is generated: <https://jock.is/reference/tags/> lists all 202
+refusals the compiler can raise, 162 of them with the minimal program that
 raises one, plus the five tag families that discriminate on a second element
 and the refusals no input can reach. A hand-written taxonomy stood here and
 is gone; it named tag families accurately but could only ever be a subset,

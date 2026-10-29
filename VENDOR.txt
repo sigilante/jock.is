@@ -21,5 +21,5 @@ refusals the port did not raise --- %lex-number, %lex-hex,
 its keyword and punctuator inventories are pinned to $keyword and
 $jpunc in /sur/jock by tools/hilite.py on every push there.
 
-86889d7bf35afd8e232194f3900b7b37d1af8ca29aab25a60c7fcff7ce9b8497  jock-highlight.js
+2cfd4d478c6739dcffcdc421230c8c8813ac9969b8274f9c1a868456f6418f22  jock-highlight.js
 807d95b2b540b7593c4fab5b440880baee5f7cbc1b62574bed6d6d34c6d7fe85  jock-highlight.css

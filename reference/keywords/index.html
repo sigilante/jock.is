@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Keywords — Jock reference</title>
-<meta name="description" content="All 31 keywords Jock reserves, what each one does, and a working program that uses it. The counterpart to refusal tags, which is the same corpus read for what it rejects.">
+<meta name="description" content="All 30 keywords Jock reserves, what each one does, and a working program that uses it. The counterpart to refusal tags, which is the same corpus read for what it rejects.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,21 +45,21 @@
 <div class="page">
 <header class="bar">
   <nav><a href="/">jock</a> <span>reference</span></nav>
-  <span>31 keywords</span>
+  <span>30 keywords</span>
 </header>
 <main class="prose">
 <h1 class="ruled">Keywords</h1>
-<p class="sub">All 31 keywords Jock reserves, what each one does, and a working program that uses it. The counterpart to <a href="../tags/">refusal tags</a>, which is the same corpus read for what it rejects.</p>
+<p class="sub">All 30 keywords Jock reserves, what each one does, and a working program that uses it. The counterpart to <a href="../tags/">refusal tags</a>, which is the same corpus read for what it rejects.</p>
 <!--  §3:  text column beside the 186px margin rail.  A marginal
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>c215ea7</code> (sigilante/review-fixes) · corpus 1147 vectors · 2026-10-29</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>974956f</code> (sigilante/pre-rc-sweep) · corpus 1147 vectors · 2026-10-29</aside>
 <p>The keyword set is read from the <code>$keyword</code> mold in <code>sur/jock.hoon</code> — the lexer’s own authority, which <code>tools/hilite.py</code> holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.</p>
-<table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>keywords in the mold</td><td>31</td></tr><tr><td>usable, with a demonstrating program</td><td>29</td></tr><tr><td>usable, demonstrated by nothing</td><td>0</td></tr><tr><td>deliberately not usable</td><td>2</td></tr><tr><td>defined by at least one <code>language.md</code> rule</td><td>31</td></tr></tbody></table>
+<table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>keywords in the mold</td><td>30</td></tr><tr><td>usable, with a demonstrating program</td><td>29</td></tr><tr><td>usable, demonstrated by nothing</td><td>0</td></tr><tr><td>deliberately not usable</td><td>1</td></tr><tr><td>defined by at least one <code>language.md</code> rule</td><td>30</td></tr></tbody></table>
 <h2 id="syntactic-slots">Syntactic slots</h2>
 <p>Which slot each keyword occupies, from the tmLanguage grammar’s three keyword groups — the only machine-readable statement of this in the tree. <code>tools/hilite.py</code> checks that the three <strong>partition</strong> the <code>$keyword</code> mold: disjoint, and summing to it.</p>
-<ul><li><strong>declaration</strong> (14): <code>alias</code> <code>class</code> <code>enum</code> <code>for</code> <code>func</code> <code>impl</code> <code>import</code> <code>is</code> <code>lambda</code> <code>let</code> <code>private</code> <code>struct</code> <code>trait</code> <code>var</code></li><li><strong>control</strong> (11): <code>assert</code> <code>crash</code> <code>defer</code> <code>else</code> <code>eval</code> <code>if</code> <code>loop</code> <code>match</code> <code>print</code> <code>recur</code> <code>switch</code></li><li><strong>operator</strong> (6): <code>and</code> <code>as</code> <code>in</code> <code>not</code> <code>or</code> <code>xor</code></li></ul>
+<ul><li><strong>declaration</strong> (14): <code>alias</code> <code>class</code> <code>enum</code> <code>for</code> <code>func</code> <code>impl</code> <code>import</code> <code>is</code> <code>lambda</code> <code>let</code> <code>private</code> <code>struct</code> <code>trait</code> <code>var</code></li><li><strong>control</strong> (10): <code>assert</code> <code>crash</code> <code>defer</code> <code>else</code> <code>eval</code> <code>if</code> <code>loop</code> <code>match</code> <code>print</code> <code>recur</code></li><li><strong>operator</strong> (6): <code>and</code> <code>as</code> <code>in</code> <code>not</code> <code>or</code> <code>xor</code></li></ul>
 <p>There is deliberately <strong>no BNF here.</strong> Jock’s parser is recursive descent (<code>parse.hoon</code>); no grammar artifact exists to project from, so a written-out grammar would be a second author of the syntax rather than a rendering of it — which is exactly how this reference’s predecessor acquired seven wrong tag names. A formal grammar is worth having and is expressible (the adjacency law needs glued and spaced <code>(</code> as <em>distinct terminals</em>, which the lexer’s <code>glu</code> flag already supplies), but it should arrive with the corpus as its acceptance suite — every source-bearing <code>%pos</code> vector parsing, every <code>%parse</code> and <code>%lex</code> refusal failing to — so that it is a lane and not a claim.</p>
 <h2 id="precedence">Precedence</h2>
 <p>13 levels, tightest first — <code>language.md</code> L-107, which says the table <em>is</em> the rule. Projected from it verbatim.</p>
@@ -161,7 +161,7 @@
 <h3 id="let"><code>let</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <pre class="code jock">let x = 1; x;</pre>
-<p>pinned by <code>t-arc-term-semi</code> · 185 vectors use this keyword</p>
+<p>pinned by <code>t-arc-term-semi</code> · 187 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-20, <code>language.md</code> L-61, <code>language.md</code> L-129, <code>language.md</code> L-130, <code>language.md</code> L-131, <code>language.md</code> L-134, <code>language.md</code> L-171, <code>language.md</code> L-185</p>
 <h3 id="loop"><code>loop</code></h3>
 <p><strong>control keyword.</strong></p>
@@ -203,10 +203,6 @@
 <pre class="code jock">struct Q { w: @ }; Q( w: 9 ).w</pre>
 <p>pinned by <code>t-text-dot-slit</code> · 70 vectors use this keyword</p>
 <p>defined by: <code>language.md</code> L-45, <code>language.md</code> L-61</p>
-<h3 id="switch"><code>switch</code></h3>
-<p><strong>control keyword.</strong></p>
-<p><strong>RETIRED.</strong> Reserved in the lexer’s mold so that the parser recognises it and refuses with a diagnosis rather than an unbound name. Refuses <code>%parse-switch-gone</code> — use <code>match</code>, which replaced it.</p>
-<p>defined by: <code>language.md</code> L-61, <code>language.md</code> L-151, <code>language.md</code> L-183</p>
 <h3 id="trait"><code>trait</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <pre class="code jock">trait Tw { tw(self: Self) -&gt; @; } struct B { v: @ } impl Tw for B { tw(self: B) -&gt; @ { self.v } } let b = B(v: 7); b.tw()</pre>

@@ -5,7 +5,7 @@ Generated from the compiler and its corpus. Every table is projected from a norm
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes these pages.
 >
-> channel `%rc` · commit `c215ea7` (sigilante/review-fixes) · corpus 1147 vectors · 2026-10-29
+> channel `%rc` · commit `974956f` (sigilante/pre-rc-sweep) · corpus 1147 vectors · 2026-10-29
 
 ## Writing Jock
 
@@ -13,7 +13,7 @@ What the language offers and how it is spelled.
 
 ### [Keywords](keywords/)
 
-All 31 keywords, each with its syntactic slot, its precedence where it has one, a working program that uses it, and the `language.md` rules that define it.
+All 30 keywords, each with its syntactic slot, its precedence where it has one, a working program that uses it, and the `language.md` rules that define it.
 
 [`keywords/`](keywords/) — the page · [`keywords.md`](keywords.md) — the same content as raw Markdown
 
@@ -41,13 +41,13 @@ The compiler talking back, and what it means.
 
 ### [Negative transfer](transfer/)
 
-25 refusals that exist to catch a habit from another language, each quoting the compiler’s own correction. Start here if Jock rejected something that would be correct Rust, Swift or Hoon.
+23 refusals that exist to catch a habit from another language, each quoting the compiler’s own correction. Start here if Jock rejected something that would be correct Rust, Swift or Hoon.
 
 [`transfer/`](transfer/) — the page · [`transfer.md`](transfer.md) — the same content as raw Markdown
 
 ### [Refusal tags](tags/)
 
-All 204 refusals the compiler can raise: 164 with the minimal program that triggers one, 30 pinned only by an AST-level vector, 10 pinned by nothing at all.
+All 202 refusals the compiler can raise: 162 with the minimal program that triggers one, 30 pinned only by an AST-level vector, 10 pinned by nothing at all.
 
 [`tags/`](tags/) — the page · [`tags.md`](tags.md) — the same content as raw Markdown
 

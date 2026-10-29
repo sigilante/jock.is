@@ -5,7 +5,7 @@
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `c215ea7` (sigilante/review-fixes) · corpus 1147 vectors · 2026-10-29
+> channel `%rc` · commit `974956f` (sigilante/pre-rc-sweep) · corpus 1147 vectors · 2026-10-29
 
 The descriptions are the authors’ own header comments, not written here: `examples/README.md` calls each example "executable documentation — the header comments are the prose, and a `// expect: <noun>` trailer pins the program’s value". 10 of them are **kernels**, carrying `// kernel: N` — built, poked N times, then peeked.
 
@@ -17,7 +17,7 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 | …with a pinned value | 45 |
 | …that are kernels | 10 |
 | …shown in full on this page | 15 |
-| total lines of Jock | 4105 |
+| total lines of Jock | 4079 |
 
 ## Every example
 
@@ -48,8 +48,8 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 | `interval` | 60 | `'[5/2, 4]|[1, 3]|[1/2, 3]|1/2|yes|[0, 1]'` | interval.jock — modules that STACK. |
 | `rational-arms` | 64 | `19` | rational-arms.jock |
 | `chaintx-arms` | 68 | `6` | chaintx-arms.jock |
+| `http-counter` | 68 | `0` | **kernel (2 pokes).** http-counter.jock — a NockApp whose counter PERSISTS across restarts, ported from nockd's examples/http-counter. |
 | `parser-combinators` | 70 | `'aaa|ab|<x>|x|123|Q7 |zz|ok|9|2|a b|~'` | parser-combinators.jock --- coverage for lib/parser.jock. |
-| `http-counter` | 71 | `0` | **kernel (2 pokes).** http-counter.jock — a NockApp whose counter PERSISTS across restarts, ported from nockd's examples/http-counter. |
 | `chainrand-arms` | 74 | `9` | chainrand-arms.jock |
 | `matmul` | 74 | `[[58 64 0] [139 154 0] 0]` | matmul.jock — matrix multiplication over unsigned integers. |
 | `twoc-arms` | 77 | `29` | twoc-arms.jock |
@@ -63,11 +63,11 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 | `watcher` | 121 | `[2 2 1 1]` | Chain watcher — the TWO-MAP STORE (chain.md §6.1's state shape, unblocked by %mold-gen: class state can hold containers, so load's `old as! Watch` mol |
 | `string-views` | 126 | `45` | string-views.jock |
 | `chainkernel` | 127 | `[0 0 0]` | **kernel (2 pokes).** The gRPC chain kernel — phase 1 of chain.md §6: the kernel the chainwatch driver boots (tools/watch.sh emits out/watch.jam). |
-| `poker` | 154 | `%first` | poker.jock — score and compare two 5-card poker hands. |
-| `conway` | 238 | `0` | **kernel (2 pokes).** conway.jock — Life on a bounded 25x25 grid. Ported from nockd's examples/conway. |
-| `minesweeper` | 349 | `0` | **kernel (2 pokes).** minesweeper.jock — 9x9, 10 mines, all game logic in the kernel. Ported from nockd's examples/minesweeper. |
+| `poker` | 167 | `%first` | poker.jock — score and compare two 5-card poker hands. |
+| `conway` | 237 | `0` | **kernel (2 pokes).** conway.jock — Life on a bounded 25x25 grid. Ported from nockd's examples/conway. |
+| `minesweeper` | 335 | `0` | **kernel (2 pokes).** minesweeper.jock — 9x9, 10 mines, all game logic in the kernel. Ported from nockd's examples/minesweeper. |
 | `wordle` | 364 | `0` | **kernel (2 pokes).** wordle.jock — six guesses at a five-letter word. Ported from nockd's examples/wordle. |
-| `walletkernel` | 761 | `0` | **kernel (2 pokes).** The WALLET SIGNER kernel — phase 3 of chain.md §6.2.  It is the kernel that goes where assets/wal.jam goes, and it serves the SIGNING slice of the wal |
+| `walletkernel` | 740 | `0` | **kernel (2 pokes).** The WALLET SIGNER kernel — phase 3 of chain.md §6.2.  It is the kernel that goes where assets/wal.jam goes, and it serves the SIGNING slice of the wal |
 
 ## The short ones, in full
 

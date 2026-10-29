@@ -45,7 +45,7 @@
 <div class="page">
 <header class="bar">
   <nav><a href="/">jock</a> <span>reference</span></nav>
-  <span>204 tags · 194 pinned</span>
+  <span>202 tags · 192 pinned</span>
 </header>
 <main class="prose">
 <h1 class="ruled">Refusal tags</h1>
@@ -54,8 +54,8 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>c215ea7</code> (sigilante/review-fixes) · corpus 1147 vectors · 2026-10-29</aside>
-<table><thead><tr><th></th><th>count</th><th></th></tr></thead><tbody><tr><td>tags the compiler can raise</td><td>204</td><td>199 <code>~|</code> heads + 7 <code>$diag</code> members</td></tr><tr><td><strong>with a runnable program</strong></td><td><strong>164</strong></td><td>the vector carries source, and the page shows it</td></tr><tr><td>no input can reach the guard</td><td>36</td><td>registered with the reason, and the registry is checked</td></tr><tr><td>…of those, still pinned by a vector</td><td>30</td><td>an AST- or judgment-level row reaches the arm directly</td></tr><tr><td>…and pinned by nothing</td><td>6</td><td>nothing to point an input at</td></tr><tr><td>compiler invariant with a tripwire</td><td>2</td><td>a vector green only while the invariant holds</td></tr><tr><td><strong>reachable, and pinned by nothing</strong></td><td><strong>2</strong></td><td>the gap list</td></tr><tr><td>AST-level only, with no reason recorded</td><td>0</td><td>the other gap: pinned, but never watched from a program</td></tr></tbody></table>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>974956f</code> (sigilante/pre-rc-sweep) · corpus 1147 vectors · 2026-10-29</aside>
+<table><thead><tr><th></th><th>count</th><th></th></tr></thead><tbody><tr><td>tags the compiler can raise</td><td>202</td><td>197 <code>~|</code> heads + 7 <code>$diag</code> members</td></tr><tr><td><strong>with a runnable program</strong></td><td><strong>162</strong></td><td>the vector carries source, and the page shows it</td></tr><tr><td>no input can reach the guard</td><td>36</td><td>registered with the reason, and the registry is checked</td></tr><tr><td>…of those, still pinned by a vector</td><td>30</td><td>an AST- or judgment-level row reaches the arm directly</td></tr><tr><td>…and pinned by nothing</td><td>6</td><td>nothing to point an input at</td></tr><tr><td>compiler invariant with a tripwire</td><td>2</td><td>a vector green only while the invariant holds</td></tr><tr><td><strong>reachable, and pinned by nothing</strong></td><td><strong>2</strong></td><td>the gap list</td></tr><tr><td>AST-level only, with no reason recorded</td><td>0</td><td>the other gap: pinned, but never watched from a program</td></tr></tbody></table>
 <p>A <code>%neg</code> vector refuses <em>without</em> naming a tag, so it pins that a program is rejected and never in what words. 38 rows are <code>%neg</code>; none of them pins a tag here.</p>
 <p><strong>The two gap rows are the ones to read.</strong> Every other row is a refusal the corpus pins and this page can explain. A count of unpinned tags on its own cannot tell a missing test from a guard the compiler holds against itself, and this page published 82 of them as one list until the difference was worked out tag by tag.</p>
 <h2 id="tags-with-a-minimal-program">Tags with a minimal program</h2>
@@ -494,9 +494,6 @@ cd"; s</pre>
 <h3 id="parse-lark-cmp"><code>%parse-lark-cmp</code></h3>
 <pre class="code jock" data-refuses="parse-lark-cmp">var p = (7, 9); p.&gt;= 3; p</pre>
 <p>pinned by <code>t-lark-eq-glued</code>, <code>t-lark-eq-glued-lt</code> · spec: docs/spec/language.md L-105</p>
-<h3 id="parse-let-mut"><code>%parse-let-mut</code></h3>
-<pre class="code jock" data-refuses="parse-let-mut">let mut x = 5; x</pre>
-<p>pinned by <code>t-hint-let-mut</code></p>
 <h3 id="parse-method"><code>%parse-method</code></h3>
 <pre class="code jock" data-refuses="parse-method">struct S { x: @ }; class C(S) { m () -&gt; @ { 1 }; }; 1</pre>
 <p>pinned by <code>t-parse-method</code></p>
@@ -551,9 +548,6 @@ cd"; s</pre>
 <h3 id="parse-stray"><code>%parse-stray</code></h3>
 <pre class="code jock" data-refuses="parse-stray">let xs = [1]; xs[]</pre>
 <p>pinned by <code>t-index-gone-peek</code>, <code>t-index-gone-push</code> · spec: docs/spec/language.md L-10, docs/spec/language.md L-88</p>
-<h3 id="parse-switch-gone"><code>%parse-switch-gone</code></h3>
-<pre class="code jock" data-refuses="parse-switch-gone">let a: @ = 3; switch a { 1 =&gt; 0, _ =&gt; 84, }</pre>
-<p>pinned by <code>t-switch-gone</code> · spec: docs/spec/language.md L-61, docs/spec/language.md L-151</p>
 <h3 id="parse-ternary"><code>%parse-ternary</code></h3>
 <pre class="code jock" data-refuses="parse-ternary">true ? 1 : 2</pre>
 <p>pinned by <code>t-hint-ternary</code>, <code>t-hint-ternary-mid</code></p>
@@ -568,7 +562,7 @@ cd"; s</pre>
 <p>pinned by <code>t-recur-edits</code> · spec: docs/spec/language.md L-154</p>
 <h3 id="parse-trailing"><code>%parse-trailing</code></h3>
 <pre class="code jock" data-refuses="parse-trailing">union C { red, green } C.red</pre>
-<p>pinned by <code>t-arc-union-gone</code> · spec: docs/spec/language.md L-174</p>
+<p>pinned by <code>t-arc-union-gone</code> · spec: docs/spec/language.md L-151, docs/spec/language.md L-174</p>
 <h3 id="parse-trait-op"><code>%parse-trait-op</code></h3>
 <pre class="code jock" data-refuses="parse-trait-op">trait Bad { go(~); }; 1</pre>
 <p>pinned by <code>t-trait-op-junk</code> · spec: docs/spec/language.md L-42</p>
@@ -621,7 +615,7 @@ cd"; s</pre>
 <p>Stronger than a registry entry, and listed apart from it. No input reaches these either, but each has a vector that is green <strong>only while the invariant holds</strong> — so breaking the invariant reddens a named row rather than going unnoticed. Each pairing was verified by mutation, once, by hand, and is recorded at the guard and at the row. <code>run.hoon</code> refuses the whole run if one of these vectors disappears.</p>
 <table><thead><tr><th>tag</th><th>tripwire vector</th></tr></thead><tbody><tr><td><code>%mint-meth-fore</code></td><td><code>t-meth-fore-tripwire</code></td></tr><tr><td><code>%module-type</code></td><td><code>t-module-type-tripwire</code></td></tr></tbody></table>
 <h2 id="tags-pinned-by-nothing">Tags pinned by nothing</h2>
-<p>Reachable, and no vector asserts them: 2 of 204. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.</p>
+<p>Reachable, and no vector asserts them: 2 of 202. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.</p>
 <p><strong><code>%impl-conflict</code></strong> — Two libraries supplying different impl facts for one (trait, head) pair. Not reached from any spelling tried: two modules each declaring their own trait do not collide, because a module’s trait is its own, and the single-module spelling refuses <code>%mint-impl-coh</code> first. Probed, not inferred.</p>
 <p><strong><code>%op-conflict</code></strong> — The operator half of the same shape — two libraries binding one operator to different (trait, method) pairs. Same reason it is still open, and it will probably fall to the same vector as <code>%impl-conflict</code>.</p>
 <h2 id="families">Families</h2>

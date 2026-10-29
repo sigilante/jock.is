@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Negative transfer — Jock reference</title>
-<meta name="description" content="The 25 refusals that exist to catch a habit from another language, each with the compiler’s own correction. A model writing Jock does not usually fail from ignorance; it fails by writing confident Rust, Swift or Hoon. These are the places the compiler says so.">
+<meta name="description" content="The 23 refusals that exist to catch a habit from another language, each with the compiler’s own correction. A model writing Jock does not usually fail from ignorance; it fails by writing confident Rust, Swift or Hoon. These are the places the compiler says so.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,19 +45,19 @@
 <div class="page">
 <header class="bar">
   <nav><a href="/">jock</a> <span>reference</span></nav>
-  <span>25 corrections</span>
+  <span>23 corrections</span>
 </header>
 <main class="prose">
 <h1 class="ruled">Negative transfer</h1>
-<p class="sub">The 25 refusals that exist to catch a habit from another language, each with the compiler’s own correction. A model writing Jock does not usually fail from ignorance; it fails by writing confident Rust, Swift or Hoon. These are the places the compiler says so.</p>
+<p class="sub">The 23 refusals that exist to catch a habit from another language, each with the compiler’s own correction. A model writing Jock does not usually fail from ignorance; it fails by writing confident Rust, Swift or Hoon. These are the places the compiler says so.</p>
 <!--  §3:  text column beside the 186px margin rail.  A marginal
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>c215ea7</code> (sigilante/review-fixes) · corpus 1147 vectors · 2026-10-29</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>974956f</code> (sigilante/pre-rc-sweep) · corpus 1147 vectors · 2026-10-29</aside>
 <p>A refusal is counted here when its <code>~|</code> clue carries a <strong>prose sentence</strong>. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.</p>
 <p>Every message under <strong>The corrections</strong> is quoted from the compiler, not written here, so the words a reader sees are the words the terminal will use. The one section that is authored says so in its own heading, and even there the program and the value come from a vector.</p>
-<table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>refusals that correct you</td><td>25</td></tr><tr><td>…shown with the program that triggers one</td><td>25</td></tr><tr><td>…pinned only by an AST-level vector</td><td>0</td></tr><tr><td>…pinned by no vector at all</td><td>0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>refusals that correct you</td><td>23</td></tr><tr><td>…shown with the program that triggers one</td><td>23</td></tr><tr><td>…pinned only by an AST-level vector</td><td>0</td></tr><tr><td>…pinned by no vector at all</td><td>0</td></tr></tbody></table>
 <h2 id="the-corrections">The corrections</h2>
 <h3 id="decl-fond"><code>%decl-fond</code></h3>
 <pre class="code jock" data-refuses="decl-fond">enum Rec { mk(Rec) }; 0</pre>
@@ -141,10 +141,6 @@
 <pre class="code jock" data-refuses="parse-lark-cmp">var p = (7, 9); p.&gt;= 3; p</pre>
 <blockquote>p.&gt;= is the lark p.&gt; then =; write p.&gt; &gt;= 3 to compare, or p.&gt; = 3 to assign</blockquote>
 <p>pinned by <code>t-lark-eq-glued</code> · spec: docs/spec/language.md L-105</p>
-<h3 id="parse-let-mut"><code>%parse-let-mut</code></h3>
-<pre class="code jock" data-refuses="parse-let-mut">let mut x = 5; x</pre>
-<blockquote>mut is not a Jock keyword; let x binds immutably, var x = e is the mutable binding</blockquote>
-<p>pinned by <code>t-hint-let-mut</code></p>
 <h3 id="parse-minus-glue"><code>%parse-minus-glue</code></h3>
 <pre class="code jock" data-refuses="parse-minus-glue">let a = 5; a- 1</pre>
 <blockquote>write a - 1 to subtract; the glued and half-glued spellings are reserved</blockquote>
@@ -165,10 +161,6 @@
 <pre class="code jock" data-refuses="parse-private-impl">private impl Meas for @ { len(self: @) -&gt; @ { 1 } }; 0</pre>
 <blockquote>an impl is a global fact scoped by reachability; it cannot be private</blockquote>
 <p>pinned by <code>t-err-private-impl</code> · spec: docs/spec/language.md L-20</p>
-<h3 id="parse-switch-gone"><code>%parse-switch-gone</code></h3>
-<pre class="code jock" data-refuses="parse-switch-gone">let a: @ = 3; switch a { 1 =&gt; 0, _ =&gt; 84, }</pre>
-<blockquote>switch is retired; write match --- it takes the same arms, and always did</blockquote>
-<p>pinned by <code>t-switch-gone</code> · spec: docs/spec/language.md L-61, docs/spec/language.md L-151</p>
 <h3 id="parse-ternary"><code>%parse-ternary</code></h3>
 <pre class="code jock" data-refuses="parse-ternary">true ? 1 : 2</pre>
 <blockquote>no ternary ?: in Jock; if c { a } else { b } is an expression</blockquote>

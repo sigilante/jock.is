@@ -39,7 +39,7 @@
                        'impl', 'trait', 'enum', 'for', 'is', 'alias',
                        'import', 'private'];
   var KEYWORDS_CTRL = ['if', 'else', 'crash', 'assert', 'loop', 'defer',
-                       'recur', 'match', 'switch', 'eval', 'print'];
+                       'recur', 'match', 'eval', 'print'];
   var KEYWORDS_OP   = ['as', 'in', 'and', 'or', 'xor', 'not'];
   var KEYWORDS = KEYWORDS_DECL.concat(KEYWORDS_CTRL, KEYWORDS_OP);
 

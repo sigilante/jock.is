@@ -1,11 +1,11 @@
 # Negative transfer
 
-The 25 refusals that exist to catch a habit from another language, each with the compiler’s own correction. A model writing Jock does not usually fail from ignorance; it fails by writing confident Rust, Swift or Hoon. These are the places the compiler says so.
+The 23 refusals that exist to catch a habit from another language, each with the compiler’s own correction. A model writing Jock does not usually fail from ignorance; it fails by writing confident Rust, Swift or Hoon. These are the places the compiler says so.
 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `c215ea7` (sigilante/review-fixes) · corpus 1147 vectors · 2026-10-29
+> channel `%rc` · commit `974956f` (sigilante/pre-rc-sweep) · corpus 1147 vectors · 2026-10-29
 
 A refusal is counted here when its `~|` clue carries a **prose sentence**. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.
 
@@ -13,8 +13,8 @@ Every message under **The corrections** is quoted from the compiler, not written
 
 |  | count |
 |---|---:|
-| refusals that correct you | 25 |
-| …shown with the program that triggers one | 25 |
+| refusals that correct you | 23 |
+| …shown with the program that triggers one | 23 |
 | …pinned only by an AST-level vector | 0 |
 | …pinned by no vector at all | 0 |
 
@@ -224,16 +224,6 @@ var p = (7, 9); p.>= 3; p
 
 pinned by `t-lark-eq-glued` · spec: docs/spec/language.md L-105
 
-### `%parse-let-mut`
-
-```jock
-let mut x = 5; x
-```
-
-> mut is not a Jock keyword; let x binds immutably, var x = e is the mutable binding
-
-pinned by `t-hint-let-mut`
-
 ### `%parse-minus-glue`
 
 ```jock
@@ -283,16 +273,6 @@ private impl Meas for @ { len(self: @) -> @ { 1 } }; 0
 > an impl is a global fact scoped by reachability; it cannot be private
 
 pinned by `t-err-private-impl` · spec: docs/spec/language.md L-20
-
-### `%parse-switch-gone`
-
-```jock
-let a: @ = 3; switch a { 1 => 0, _ => 84, }
-```
-
-> switch is retired; write match --- it takes the same arms, and always did
-
-pinned by `t-switch-gone` · spec: docs/spec/language.md L-61, docs/spec/language.md L-151
 
 ### `%parse-ternary`
 

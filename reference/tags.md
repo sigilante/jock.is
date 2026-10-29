@@ -5,12 +5,12 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `c215ea7` (sigilante/review-fixes) · corpus 1147 vectors · 2026-10-29
+> channel `%rc` · commit `974956f` (sigilante/pre-rc-sweep) · corpus 1147 vectors · 2026-10-29
 
 |  | count |  |
 |---|---:|---|
-| tags the compiler can raise | 204 | 199 `~|` heads + 7 `$diag` members |
-| **with a runnable program** | **164** | the vector carries source, and the page shows it |
+| tags the compiler can raise | 202 | 197 `~|` heads + 7 `$diag` members |
+| **with a runnable program** | **162** | the vector carries source, and the page shows it |
 | no input can reach the guard | 36 | registered with the reason, and the registry is checked |
 | …of those, still pinned by a vector | 30 | an AST- or judgment-level row reaches the arm directly |
 | …and pinned by nothing | 6 | nothing to point an input at |
@@ -1171,14 +1171,6 @@ var p = (7, 9); p.>= 3; p
 
 pinned by `t-lark-eq-glued`, `t-lark-eq-glued-lt` · spec: docs/spec/language.md L-105
 
-### `%parse-let-mut`
-
-```jock
-let mut x = 5; x
-```
-
-pinned by `t-hint-let-mut`
-
 ### `%parse-method`
 
 ```jock
@@ -1323,14 +1315,6 @@ let xs = [1]; xs[]
 
 pinned by `t-index-gone-peek`, `t-index-gone-push` · spec: docs/spec/language.md L-10, docs/spec/language.md L-88
 
-### `%parse-switch-gone`
-
-```jock
-let a: @ = 3; switch a { 1 => 0, _ => 84, }
-```
-
-pinned by `t-switch-gone` · spec: docs/spec/language.md L-61, docs/spec/language.md L-151
-
 ### `%parse-ternary`
 
 ```jock
@@ -1369,7 +1353,7 @@ pinned by `t-recur-edits` · spec: docs/spec/language.md L-154
 union C { red, green } C.red
 ```
 
-pinned by `t-arc-union-gone` · spec: docs/spec/language.md L-174
+pinned by `t-arc-union-gone` · spec: docs/spec/language.md L-151, docs/spec/language.md L-174
 
 ### `%parse-trait-op`
 
@@ -1537,7 +1521,7 @@ Stronger than a registry entry, and listed apart from it. No input reaches these
 
 ## Tags pinned by nothing
 
-Reachable, and no vector asserts them: 2 of 204. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.
+Reachable, and no vector asserts them: 2 of 202. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.
 
 **`%impl-conflict`** — Two libraries supplying different impl facts for one (trait, head) pair. Not reached from any spelling tried: two modules each declaring their own trait do not collide, because a module’s trait is its own, and the single-module spelling refuses `%mint-impl-coh` first. Probed, not inferred.
 
