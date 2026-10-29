@@ -5,37 +5,37 @@ Every literal form Jock can spell, the aura each carries, and the names the lang
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `dd95321` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+> channel `%rc` · commit `8b5492e` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
 
 ## The literal inventory
 
-`language.md` L-77 — which says the table *is* the inventory, and that the `$jatom` mold in `sur/jock.hoon` must match it. Projected verbatim. The Example column is the spec’s own; the programs extracted from the corpus are in the Rules section of this page.
+`language.md` [L-77](/spec/language/#l-77) — which says the table *is* the inventory, and that the `$jatom` mold in `sur/jock.hoon` must match it. Projected verbatim. The Example column is the spec’s own; the programs extracted from the corpus are in the Rules section of this page.
 
 | Form | Aura | Example |
 |---|---|---|
 | decimal | `@` (number) | `42`, `1_024` — underscore grouping (OPEN-11); `.` is never a digit separator |
 | hexadecimal | Hex | `0x2a` |
-| signed | Int | `+42`, `-42` — ZigZag. Rules L-6 to L-16 below |
+| signed | Int | `+42`, `-42` — ZigZag. Rules [L-6](/spec/language/#l-6) to [L-16](/spec/language/#l-16) below |
 | float | Float64 (`@rd`) | `3.14` — digit-dot-digit, both sides required, ≤ 15 digits; rounding pinned `%n`, no mode surface. Float16/32/128 pend need |
 | boolean | `Bool` (logical) | `true`, `false` — the beta `?` type spelling is retired (OPEN-2) |
 | char/cord | chars | `'a'` |
 | string | String | `"hello"` |
 | term constant | (constant atom) | `%foo` — tag spellings match `[a-z][a-z0-9]*`; `%1` is the numeric constant 1 |
-| date / span | Date / Span | unspecified — L-78 |
-| path | Path | indicative `/a/b/c` — L-78 |
-| interpolated string | String | `"x = {x}"`. Rules L-26 to L-32 below |
+| date / span | Date / Span | unspecified — [L-78](/spec/language/#l-78) |
+| path | Path | indicative `/a/b/c` — [L-78](/spec/language/#l-78) |
+| interpolated string | String | `"x = {x}"`. Rules [L-26](/spec/language/#l-26) to [L-32](/spec/language/#l-32) below |
 | list | List<T> | `[1, 2, 3]`, `[]` empty — KERNEL form, typed nominally: `List<join of widened elements>` (heterogeneous elements are a join error); `[]` stays sing-null, nesting into every `List<T>` by N13; against a wanted `List<T>` the elements check against `T` directly (at parameterized traits) |
 | map | Map<K->V> | `[1 -> 100, 2 -> 200]` — brackets, told from a list by the arrow; `[->]` is the empty map |
 | set | Set<T> | `Set<@>([1, 2, 3])` — CONSTRUCTED, not spelled; `Set<@>()` is empty |
 | tuple | product | `(a, b, c)` |
 
-**L-78:** `Date`, `Span` and `Path` exist as *types*, but what a literal of one looks like is **unspecified** — the `/a/b/c` in the inventory table is indicative, not normative. A program needing one constructs it. That rule is itself `⟨none — UNPINNED⟩`.
+**[L-78](/spec/language/#l-78):** `Date`, `Span` and `Path` exist as *types*, but what a literal of one looks like is **unspecified** — the `/a/b/c` in the inventory table is indicative, not normative. A program needing one constructs it. That rule is itself `⟨none — UNPINNED⟩`.
 
 ## Rules
 
 Each rule as `language.md` states it, followed by a program from one of the vectors that rule itself cites — so the example is chosen by the spec and extracted from the corpus, not picked by this generator.
 
-### L-77 · The table below is the literal inventory
+### [L-77](/spec/language/#l-77) · The table below is the literal inventory
 
 ```jock
 "hi" 'ab'
@@ -43,11 +43,11 @@ Each rule as `language.md` states it, followed by a program from one of the vect
 
 from `t-lex-str-p` (`%lex`, `%pos`) · also cites `t-sint-lit`
 
-### L-78 · Date, span and path literals have no settled surface spelling.
+### [L-78](/spec/language/#l-78) · Date, span and path literals have no settled surface spelling.
 
 ⟨none — UNPINNED⟩ — the spec states this rule and no corpus vector pins it.
 
-### L-26 · `{expr}` renders through `.show()`
+### [L-26](/spec/language/#l-26) · `{expr}` renders through `.show()`
 
 ```jock
 let a = 1; "{a a}"
@@ -55,7 +55,7 @@ let a = 1; "{a a}"
 
 from `t-parse-interp` (`%parse`, `%err`)
 
-### L-27 · `{{` and `}}` are literal braces
+### [L-27](/spec/language/#l-27) · `{{` and `}}` are literal braces
 
 ```jock
 "lit {{x}} ok"
@@ -63,7 +63,7 @@ from `t-parse-interp` (`%parse`, `%err`)
 
 from `t-text-interp-esc` (`%text`, `%pos`)
 
-### L-28 · A backslash escape is one BYTE, written as two hex digits.
+### [L-28](/spec/language/#l-28) · A backslash escape is one BYTE, written as two hex digits.
 
 ```jock
 "back\\slash"
@@ -71,7 +71,7 @@ from `t-text-interp-esc` (`%text`, `%pos`)
 
 from `t-str-esc-backslash` (`%text`, `%pos`) · also cites `t-str-esc-newline`, `t-str-esc-tab`, `t-str-esc-upper`, `t-str-esc-short`
 
-### L-29 · Anything else after a backslash refuses
+### [L-29](/spec/language/#l-29) · Anything else after a backslash refuses
 
 ```jock
 "\41"
@@ -79,7 +79,7 @@ from `t-str-esc-backslash` (`%text`, `%pos`) · also cites `t-str-esc-newline`, 
 
 from `t-str-esc-octal-trap` (`%text`, `%pos`)
 
-### L-30 · Per-byte escapes are what settle Unicode.
+### [L-30](/spec/language/#l-30) · Per-byte escapes are what settle Unicode.
 
 ```jock
 "caf\c3\a9"
@@ -87,7 +87,7 @@ from `t-str-esc-octal-trap` (`%text`, `%pos`)
 
 from `t-str-esc-utf8` (`%text`, `%pos`)
 
-### L-31 · A fragment is a single expression.
+### [L-31](/spec/language/#l-31) · A fragment is a single expression.
 
 ```jock
 "a{"b"}c"
@@ -95,11 +95,11 @@ from `t-str-esc-utf8` (`%text`, `%pos`)
 
 from `t-err-interp-str` (`%text`, `%err`) · also cites `t-err-interp-open`, `t-err-interp-brace`
 
-### L-32 · Comment markers inside a string are literal text.
+### [L-32](/spec/language/#l-32) · Comment markers inside a string are literal text.
 
 ⟨none — UNPINNED⟩ — the spec states this rule and no corpus vector pins it.
 
-### L-6 · Int is ZigZag `@s`.
+### [L-6](/spec/language/#l-6) · Int is ZigZag `@s`.
 
 ```jock
 +42 as @
@@ -107,7 +107,7 @@ from `t-err-interp-str` (`%text`, `%err`) · also cites `t-err-interp-open`, `t-
 
 from `t-sint-lit` (`%text`, `%pos`)
 
-### L-7 · An Int literal is a sign glued to a decimal, in operand position.
+### [L-7](/spec/language/#l-7) · An Int literal is a sign glued to a decimal, in operand position.
 
 ```jock
 +42 as @
@@ -115,7 +115,7 @@ from `t-sint-lit` (`%text`, `%pos`)
 
 from `t-sint-lit` (`%text`, `%pos`) · also cites `t-sint-lit-neg`, `t-sint-lit-zero`
 
-### L-8 · The glued sign cannot be mistaken for arithmetic
+### [L-8](/spec/language/#l-8) · The glued sign cannot be mistaken for arithmetic
 
 ```jock
 let a = 5; a +42
@@ -123,11 +123,11 @@ let a = 5; a +42
 
 from `t-sint-not-add` (`%text`, `%pos`)
 
-### L-9 · An Int literal is a primary
+### [L-9](/spec/language/#l-9) · An Int literal is a primary
 
 ⟨none — UNPINNED⟩ — the spec states this rule and no corpus vector pins it.
 
-### L-10 · The near-misses refuse, each with its own tag.
+### [L-10](/spec/language/#l-10) · The near-misses refuse, each with its own tag.
 
 ```jock
 `
@@ -135,7 +135,7 @@ from `t-sint-not-add` (`%text`, `%pos`)
 
 from `t-lex-stray-n` (`%lex`, `%err`) · also cites `t-minus-spaced`, `t-minus-glued-l`, `t-minus-glued-r`
 
-### L-11 · Arithmetic and comparison ride the trait route
+### [L-11](/spec/language/#l-11) · Arithmetic and comparison ride the trait route
 
 ```jock
 (-7 + +3) as @
@@ -143,7 +143,7 @@ from `t-lex-stray-n` (`%lex`, `%err`) · also cites `t-minus-spaced`, `t-minus-g
 
 from `t-sint-sum` (`%text`, `%pos`) · also cites `t-sint-sub`, `t-sint-mul`, `t-sint-cmp`, `t-sint-sum-mixed`
 
-### L-12 · Casting INTO Int refuses through all three doors, at every position
+### [L-12](/spec/language/#l-12) · Casting INTO Int refuses through all three doors, at every position
 
 ```jock
 42 as Int
@@ -151,7 +151,7 @@ from `t-sint-sum` (`%text`, `%pos`) · also cites `t-sint-sub`, `t-sint-mul`, `t
 
 from `t-sint-cast` (`%text`, `%err`) · also cites `t-sint-castp`, `t-sint-castq`, `t-sint-castx`, `t-cast-sint-out`, `t-cast-sint-out-deep`, `t-cast-sint-deep`, `t-cast-sint-deep-soft`, `t-cast-sint-deep-test`, `t-cast-sint-deep-tuple`, `t-cast-sint-deep-same`
 
-### L-13 · Ingestion is the one sanctioned soft use.
+### [L-13](/spec/language/#l-13) · Ingestion is the one sanctioned soft use.
 
 ```jock
 let v = eval(83, (0, 1)); (v as! Int) as @
@@ -159,7 +159,7 @@ let v = eval(83, (0, 1)); (v as! Int) as @
 
 from `t-sint-ingest` (`%text`, `%pos`) · also cites `t-sint-ingestp`, `t-cast-sint-ingest`
 
-### L-14 · Conversion from a known nat is a function, not a cast.
+### [L-14](/spec/language/#l-14) · Conversion from a known nat is a function, not a cast.
 
 ```jock
 import hoon; (hoon.uint(+5), (hoon.sint(5) as @, hoon.sabs(-42)))
@@ -167,11 +167,11 @@ import hoon; (hoon.uint(+5), (hoon.sint(5) as @, hoon.sabs(-42)))
 
 from `t-sint-conv` (`%text`, `%pos`) · also cites `t-sint-uint-neg`
 
-### L-15 · `Int -> @` is general, and is a deliberate footgun.
+### [L-15](/spec/language/#l-15) · `Int -> @` is general, and is a deliberate footgun.
 
 ⟨none — UNPINNED⟩ — the spec states this rule and no corpus vector pins it.
 
-### L-16 · Division truncates toward zero
+### [L-16](/spec/language/#l-16) · Division truncates toward zero
 
 ```jock
 (-7 / +2) as @
@@ -179,7 +179,7 @@ from `t-sint-conv` (`%text`, `%pos`) · also cites `t-sint-uint-neg`
 
 from `t-sint-div` (`%text`, `%pos`) · also cites `t-sint-rem`, `t-sint-dul`
 
-### L-79 · Separators are commas everywhere
+### [L-79](/spec/language/#l-79) · Separators are commas everywhere
 
 ```jock
 struct P { x: @, y: @ } let p = P(x: 1, y: 2); p.x
@@ -187,11 +187,11 @@ struct P { x: @, y: @ } let p = P(x: 1, y: 2); p.x
 
 from `t-arc-ctor` (`%text`, `%pos`)
 
-### L-80 · A trailing comma is permitted
+### [L-80](/spec/language/#l-80) · A trailing comma is permitted
 
 ⟨none — UNPINNED⟩ — the spec states this rule and no corpus vector pins it.
 
-### L-81 · A braced declaration needs no terminator.
+### [L-81](/spec/language/#l-81) · A braced declaration needs no terminator.
 
 ```jock
 func inc(x: @) -> @ { x + 1 } inc(41)
@@ -199,7 +199,7 @@ func inc(x: @) -> @ { x + 1 } inc(41)
 
 from `t-arc-decl-nosemi` (`%text`, `%pos`) · also cites `t-arc-term-semi`
 
-### L-82 · Data shapes take commas; signatures take semicolons.
+### [L-82](/spec/language/#l-82) · Data shapes take commas; signatures take semicolons.
 
 ```jock
 enum C { red, green } let c = C.green; match c { .red => 1, .green => 2, }
@@ -207,7 +207,7 @@ enum C { red, green } let c = C.green; match c { .red => 1, .green => 2, }
 
 from `t-arc-enum` (`%text`, `%pos`)
 
-### L-83 · The last separator is optional; the ones between are not.
+### [L-83](/spec/language/#l-83) · The last separator is optional; the ones between are not.
 
 ```jock
 struct A { n: @ }; class C(A) { f(self: C) -> @ { self.n } g(self: C) -> @ { self.n }; }; 0
@@ -215,7 +215,7 @@ struct A { n: @ }; class C(A) { f(self: C) -> @ { self.n } g(self: C) -> @ { sel
 
 from `t-parse-method-nosep` (`%parse`, `%err`) · also cites `t-text-method-nosemi`, `t-parse-match-nosep`
 
-### L-84 · `match` arms are comma-separated
+### [L-84](/spec/language/#l-84) · `match` arms are comma-separated
 
 ```jock
 match a { 1 => 0, _ => 84 }
@@ -223,7 +223,7 @@ match a { 1 => 0, _ => 84 }
 
 from `t-parse-match-nocomma` (`%parse`, `%pos`) · also cites `t-parse-match-nosep`, `t-arc-patt-bare`
 
-### L-85 · Literal-ness is lexical; constancy is a judgment.
+### [L-85](/spec/language/#l-85) · Literal-ness is lexical; constancy is a judgment.
 
 ⟨none — UNPINNED⟩ — the spec states this rule and no corpus vector pins it.
 
@@ -231,7 +231,7 @@ Of 27 rules in this section, 21 cite at least one vector and 6 are marked `⟨no
 
 ## Aura names
 
-`language.md` L-97 — the *utterable* aura set: the names a program may write, each mapping to a `$jatom-type`. The semantic aura vocabulary is open-ended; this is the spellable part of it. Projected verbatim.
+`language.md` [L-97](/spec/language/#l-97) — the *utterable* aura set: the names a program may write, each mapping to a `$jatom-type`. The semantic aura vocabulary is open-ended; this is the spellable part of it. Projected verbatim.
 
 | Surface | `$jatom-type` | Notes |
 |---|---|---|
@@ -246,14 +246,14 @@ Of 27 rules in this section, 21 cite at least one vector and 6 are marked `⟨no
 | `Date`, `Span` | `%date`, `%span` |  |
 | `String`, `Path` | (jnoun) | noun types, not atoms |
 | `*`, `Noun` | — | any noun (top) |
-| `Base` | — | BasedAtom: atom < 2^64 − 2^32 + 1 (types.md S3.4; OPEN-4 resolved) |
+| `Base` | — | BasedAtom: atom < 2^64 − 2^32 + 1 (types.md [S3.4](/spec/types/#s3.4); OPEN-4 resolved) |
 
 ## Builtin type names
 
 The 41 names the lexer treats as type names. Read from the tmLanguage grammar’s `types-builtin` rule, which `tools/hilite.py` holds in agreement with the web highlighter’s own table on every push — the two have no mold to check against, so mutual agreement is the available invariant.
 
-- **named in L-97** (17): `Atom` `Base` `Bool` `Byte` `Date` `Float128` `Float16` `Float32` `Float64` `Hex` `Int` `Nat` `Noun` `Path` `Span` `String` `UniChar` — note that table is the utterable set, not the atoms: it lists `String` and `Path` as noun types and `Noun`/`Base` as neither
-- **not in L-97** (24): `Add` `Del` `Div` `Effect` `Eq` `Gt` `Gte` `Has` `Idx` `Kernel` `List` `Lt` `Lte` `Map` `Meas` `Mul` `Octs` `Put` `Roof` `Self` `Set` `Show` `Str` `Sub`
+- **named in [L-97](/spec/language/#l-97)** (17): `Atom` `Base` `Bool` `Byte` `Date` `Float128` `Float16` `Float32` `Float64` `Hex` `Int` `Nat` `Noun` `Path` `Span` `String` `UniChar` — note that table is the utterable set, not the atoms: it lists `String` and `Path` as noun types and `Noun`/`Base` as neither
+- **not in [L-97](/spec/language/#l-97)** (24): `Add` `Del` `Div` `Effect` `Eq` `Gt` `Gte` `Has` `Idx` `Kernel` `List` `Lt` `Lte` `Map` `Meas` `Mul` `Octs` `Put` `Roof` `Self` `Set` `Show` `Str` `Sub`
 
 The second group is where this reference is still thin: container heads (`List`, `Map`, `Set`, `Octs`), the prelude traits (`Add`, `Sub`, `Eq`, `Show`, `Idx`, `Put`, `Meas`, `Has` and the comparison family) and the kernel types (`Kernel`, `Effect`, `Roof`, `Self`, `Str`). Nothing here yet says what each one is. `runtime.md` is their authority, and projecting it is the next slice (GENERATOR.md A5).
 

@@ -5,7 +5,7 @@ Every keyword by the slot it occupies, and for the sugar forms, what each one re
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> 30 keywords · channel `%rc` · commit `dd95321`
+> 30 keywords · channel `%rc` · commit `8b5492e`
 
 ## No railroad diagrams, and that is a ruling
 
@@ -68,16 +68,16 @@ That ruling binds this page. It also says what would lift it — a formal gramma
 
 | Sugar | Rewrite | Stated at |
 |---|---|---|
-| `assert c; e` | `if c { e } else { crash }` | L-61 (the inventory) |
-| `a ?? b` | `match` on unit | L-126 |
-| binary operators | stdlib calls | L-38 to L-45 |
-| `===` / `!==` | kernel `%same` | L-106 |
-| `and` / `or` | nested `%if` (short-circuit) | L-61 |
-| `xor` / `not` | `%if` and stdlib rewrites | L-61 |
-| `%dot` (postfix `.`, non-limb receiver) | irrefutable match binding the receiver once | L-113 |
-| index family | `.at(i)` / `.slice(a, b)` / `.put(i, v)` | L-46 to L-51 |
-| lark | head/tail by axis | L-100 to L-105 |
-| Unicode glyph aliases | `∈`→`in`, `×`→`*`, `÷`→`/` | L-115 |
-| `print e; k` | `%slog` dynamic hint | L-33 to L-37 |
-| string interpolation | `.show()` per head | L-26 to L-32 |
-| collection literals | constructor calls / raw nouns | L-79 |
+| `assert c; e` | `if c { e } else { crash }` | [L-61](/spec/language/#l-61) (the inventory) |
+| `a ?? b` | `match` on unit | [L-126](/spec/language/#l-126) |
+| binary operators | stdlib calls | [L-38](/spec/language/#l-38) to [L-45](/spec/language/#l-45) |
+| `===` / `!==` | kernel `%same` | [L-106](/spec/language/#l-106) |
+| `and` / `or` | nested `%if` (short-circuit) | [L-61](/spec/language/#l-61) |
+| `xor` / `not` | `%if` and stdlib rewrites | [L-61](/spec/language/#l-61) |
+| `%dot` (postfix `.`, non-limb receiver) | irrefutable match binding the receiver once | [L-113](/spec/language/#l-113) |
+| index family | `.at(i)` / `.slice(a, b)` / `.put(i, v)` | [L-46](/spec/language/#l-46) to [L-51](/spec/language/#l-51) |
+| lark | head/tail by axis | [L-100](/spec/language/#l-100) to [L-105](/spec/language/#l-105) |
+| Unicode glyph aliases | `∈`→`in`, `×`→`*`, `÷`→`/` | [L-115](/spec/language/#l-115) |
+| `print e; k` | `%slog` dynamic hint | [L-33](/spec/language/#l-33) to [L-37](/spec/language/#l-37) |
+| string interpolation | `.show()` per head | [L-26](/spec/language/#l-26) to [L-32](/spec/language/#l-32) |
+| collection literals | constructor calls / raw nouns | [L-79](/spec/language/#l-79) |

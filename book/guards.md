@@ -3,15 +3,15 @@
 A guard is a value refinement carried by a type. There are five, the set is closed, and it is not a general refinement mechanism.
 
 > [!NOTE]
-> **GENERATED — do not edit.** `tools/refgen.py` writes this page from `docs/spec/types.md` S3.4.
+> **GENERATED — do not edit.** `tools/refgen.py` writes this page from `docs/spec/types.md` [S3.4](/spec/types/#s3.4).
 >
-> channel `%rc` · commit `dd95321`
+> channel `%rc` · commit `8b5492e`
 
 ## The set
 
 > Guards are a **closed, enumerated set** — `%based` (value < 2⁶⁴ − 2³² + 1, the Goldilocks prime), `%byte` (< 256), `%unic` (a Unicode scalar, `0x0`–`0x10FFFF`), `%loob` (< 2), `%term` (a valid Hoon term). **Five.** A guard is not a general refinement mechanism and never will be.
 
-| guard | admits (S3.4) | reached by |
+| guard | admits ([S3.4](/spec/types/#s3.4)) | reached by |
 |---|---|---|
 | `%based` | value < 2⁶⁴ − 2³² + 1, the Goldilocks prime | `Base` — the only guard utterable as a type expression; also the `%$`, `%number` and `%hex` auras |
 | `%byte` | < 256 | `Byte`, a boot-env alias carrying the guard |

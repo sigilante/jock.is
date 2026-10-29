@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> emits this page from <code>vendor/nock-4k.txt</code>. channel <code>%rc</code> · commit <code>dd95321</code></aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> emits this page from <code>vendor/nock-4k.txt</code>. channel <code>%rc</code> · commit <code>8b5492e</code></aside>
 <h2 id="nock-4k">Nock 4K</h2>
 <pre class="code">Nock 4K
 
@@ -110,8 +110,8 @@ nock(a)             *a
 <p>The text above is the fenced block of &lt;https://nock.is/_sources/content/history/nock-4k.md&gt;, which cites &lt;https://docs.urbit.org/language/nock/reference/definition&gt; as its own source. Quoted here with the owner’s permission.</p>
 <p>It is <strong>vendored rather than transcribed</strong>. <code>vendor/nock-4k.txt</code> holds the block and nothing else — no header, no reflow, no commentary — and its <code>sha256</code> is recorded in <code>vendor/SNAPSHOT.txt</code>, which the <code>pins</code> lane verifies on every push. So the hash is a hash of the specification rather than of this project’s presentation of it, and the word <em>verbatim</em> above is a claim a lane can check. A copy pasted into <code>tools/refgen.py</code> would have been a claim nobody could.</p>
 <h2 id="what-jock-actually-emits">What Jock actually emits</h2>
-<p>Jock does not emit Nock directly. It emits <code>nockasm</code>, an IR whose opcode set is closed, and <code>nockasm.md</code> N-19 states the set:</p>
-<blockquote>N-19 · Twenty-one is the count because <code>%scry</code> joined.</blockquote>
+<p>Jock does not emit Nock directly. It emits <code>nockasm</code>, an IR whose opcode set is closed, and <code>nockasm.md</code> <a href="/spec/nockasm/#n-19">N-19</a> states the set:</p>
+<blockquote><a href="/spec/nockasm/#n-19">N-19</a> · Twenty-one is the count because <code>%scry</code> joined.</blockquote>
 <p><code>+expa-op</code> refines against that set, so an unknown opcode is a crash at expansion time rather than an unknown formula at runtime.</p>
 <p>Pinned by <code>t-nx-scry-p</code>, <code>t-nx-law-scry-p</code>, <code>t-nx-unkop-n</code>.</p>
 <p>The IR’s twenty-one opcodes are not Nock’s 12: several name subject structure (<code>%self</code>, <code>%battery</code>, <code>%payload</code>, <code>%sample</code>, <code>%context</code>) that lowers to axis reads, and the conformance law and deterministic lift in <code>docs/spec/nockasm-target.md</code> are what relate the two. For the formula a given program compiles to, <code>tools/jockc.sh nock</code> prints it with the prelude’s push spine stripped.</p>

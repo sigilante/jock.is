@@ -5,11 +5,11 @@ What a Jock program becomes. Types erase totally — there is no runtime type in
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `dd95321` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+> channel `%rc` · commit `8b5492e` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
 
 ## The erasure table
 
-`types.md` S10.1 — the total function `⟦τ⟧` from types to noun shapes, Hoon-compatible for every interop type (decision D-1). Projected verbatim.
+`types.md` [S10.1](/spec/types/#s10.1) — the total function `⟦τ⟧` from types to noun shapes, Hoon-compatible for every interop type (decision D-1). Projected verbatim.
 
 | τ | ⟦τ⟧ |
 |---|---|
@@ -18,7 +18,7 @@ What a Jock program becomes. Types erase totally — there is no runtime type in
 | `%cell p q` | `[⟦p⟧ ⟦q⟧]` |
 | `%face`, alias | transparent |
 | `%ref` | ⟦unfolding⟧ (seals erased) |
-| struct | right-nested tuple of fields, **declaration order**. A **one-field** struct erases to its field alone and is therefore atom-headed if the field is — which is what S6's struct-implies-cell caveat and chain.md C-25 both turn on |
+| struct | right-nested tuple of fields, **declaration order**. A **one-field** struct erases to its field alone and is therefore atom-headed if the field is — which is what S6's struct-implies-cell caveat and chain.md [C-25](/spec/chain/#c-25) both turn on |
 | union case, nullary | the tag's **cord** — `enum E { zebra, … }` gives `E.zebra` the atom `418.530.878.842`, not an index. Probed |
 | union case, payload | `[tag ⟦payload⟧]` (payload tuple right-nested) |
 | `%or` | the union of member shapes (discriminable by S6) |
@@ -26,7 +26,7 @@ What a Jock program becomes. Types erase totally — there is no runtime type in
 | `List<T>` | null-terminated right-nested list |
 | `Map<K->V>`, `Set<T>` | hoon-138 treap shape, `+mug`-ordered — ordering pinned per language version; changing the hash is a versioned break |
 | `Bool` | `0` (true) / `1` (false) |
-| `%gate` | closure per S9.8 — opaque |
+| `%gate` | closure per [S9.8](/spec/types/#s9.8) — opaque |
 | `%var` | opaque |
 | `%noun` | any noun; `%void` — no values |
 
@@ -34,7 +34,7 @@ Erasure is **total**: no runtime type information, and no vases beyond the FFI b
 
 ## The same table, run
 
-Each row is a claim S10.1 makes and the value the compiler produced when asked, probed with `tools/jockc.sh run` on 2026-10-30. These are probes, not corpus rows: the corpus asserts field *accesses* on these shapes rather than the shapes themselves, and a field access is not an erasure.
+Each row is a claim [S10.1](/spec/types/#s10.1) makes and the value the compiler produced when asked, probed with `tools/jockc.sh run` on 2026-10-30. These are probes, not corpus rows: the corpus asserts field *accesses* on these shapes rather than the shapes themselves, and a field access is not an erasure.
 
 ```jock
 struct P { x: @, y: @ }; P( x: 1, y: 2 )
@@ -90,19 +90,19 @@ true
 
 | Sugar | Rewrite | Stated at |
 |---|---|---|
-| `assert c; e` | `if c { e } else { crash }` | L-61 (the inventory) |
-| `a ?? b` | `match` on unit | L-126 |
-| binary operators | stdlib calls | L-38 to L-45 |
-| `===` / `!==` | kernel `%same` | L-106 |
-| `and` / `or` | nested `%if` (short-circuit) | L-61 |
-| `xor` / `not` | `%if` and stdlib rewrites | L-61 |
-| `%dot` (postfix `.`, non-limb receiver) | irrefutable match binding the receiver once | L-113 |
-| index family | `.at(i)` / `.slice(a, b)` / `.put(i, v)` | L-46 to L-51 |
-| lark | head/tail by axis | L-100 to L-105 |
-| Unicode glyph aliases | `∈`→`in`, `×`→`*`, `÷`→`/` | L-115 |
-| `print e; k` | `%slog` dynamic hint | L-33 to L-37 |
-| string interpolation | `.show()` per head | L-26 to L-32 |
-| collection literals | constructor calls / raw nouns | L-79 |
+| `assert c; e` | `if c { e } else { crash }` | [L-61](/spec/language/#l-61) (the inventory) |
+| `a ?? b` | `match` on unit | [L-126](/spec/language/#l-126) |
+| binary operators | stdlib calls | [L-38](/spec/language/#l-38) to [L-45](/spec/language/#l-45) |
+| `===` / `!==` | kernel `%same` | [L-106](/spec/language/#l-106) |
+| `and` / `or` | nested `%if` (short-circuit) | [L-61](/spec/language/#l-61) |
+| `xor` / `not` | `%if` and stdlib rewrites | [L-61](/spec/language/#l-61) |
+| `%dot` (postfix `.`, non-limb receiver) | irrefutable match binding the receiver once | [L-113](/spec/language/#l-113) |
+| index family | `.at(i)` / `.slice(a, b)` / `.put(i, v)` | [L-46](/spec/language/#l-46) to [L-51](/spec/language/#l-51) |
+| lark | head/tail by axis | [L-100](/spec/language/#l-100) to [L-105](/spec/language/#l-105) |
+| Unicode glyph aliases | `∈`→`in`, `×`→`*`, `÷`→`/` | [L-115](/spec/language/#l-115) |
+| `print e; k` | `%slog` dynamic hint | [L-33](/spec/language/#l-33) to [L-37](/spec/language/#l-37) |
+| string interpolation | `.show()` per head | [L-26](/spec/language/#l-26) to [L-32](/spec/language/#l-32) |
+| collection literals | constructor calls / raw nouns | [L-79](/spec/language/#l-79) |
 
 ## The formula
 

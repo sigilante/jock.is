@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>dd95321</code> (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>8b5492e</code> (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30</aside>
 <p>A refusal is counted here when its <code>~|</code> clue carries a <strong>prose sentence</strong>. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.</p>
 <p>Every message under <strong>The corrections</strong> is quoted from the compiler, not written here, so the words a reader sees are the words the terminal will use. The one section that is authored says so in its own heading, and even there the program and the value come from a vector.</p>
 <table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>refusals that correct you</td><td>23</td></tr><tr><td>…shown with the program that triggers one</td><td>23</td></tr><tr><td>…pinned only by an AST-level vector</td><td>0</td></tr><tr><td>…pinned by no vector at all</td><td>0</td></tr></tbody></table>
@@ -62,15 +62,15 @@
 <h3 id="decl-fond"><code>%decl-fond</code></h3>
 <pre class="code jock" data-refuses="decl-fond">enum Rec { mk(Rec) }; 0</pre>
 <blockquote>this type contains itself with no base case, so it has no smallest value</blockquote>
-<p>pinned by <code>t-decl-fond-only</code> · spec: docs/spec/language.md L-164</p>
+<p>pinned by <code>t-decl-fond-only</code> · spec: docs/spec/language.md <a href="/spec/language/#l-164">L-164</a></p>
 <h3 id="decl-fond-deep"><code>%decl-fond-deep</code></h3>
 <pre class="code jock" data-refuses="decl-fond-deep">struct S0 { x: @ }; struct S1 { x: S0 }; struct S2 { x: S1 }; struct S3 { x: S2 }; struct S4 { x: S3 }; struct S5 { x: S4 }; struct S6 { x: S5 }; struct S7 { x: S6 }; struct S8 { x: S7 }; struct S9 { x: S8 }; struct S10 { x: S9 }; struct S11 { x: S10 }; struct S12 { x: S11 }; struct S13 { x: S12 }; struct S14 { x: S13 }; struct S15 { x: S14 }; struct S16 { x: S15 }; struct S17 { x: S16 }; struct S18 { x: S17 }; struct S19 { x: S18 }; struct S20 { x: S19 }; struct S21 { x: S20 }; struct S22 { x: S21 }; struct S23 { x: S22 }; struct S24 { x: S23 }; struct S25 { x: S24 }; struct S26 { x: S25 }; struct S27 { x: S26 }; struct S28 { x: S27 }; struct S29 { x: S28 }; struct S30 { x: S29 }; struct S31 { x: S30 }; struct S32 { x: S31 }; struct S33 { x: S32 }; struct S34 { x: S33 }; struct S35 { x: S34 }; struct S36 { x: S35 }; struct S37 { x: S36 }; struct S38 { x: S37 }; struct S39 { x: S38 }; struct S40 { x: S39 }; struct S41 { x: S40 }; struct S42 { x: S41 }; struct S43 { x: S42 }; struct S44 { x: S43 }; struct S45 { x: S44 }; struct S46 { x: S45 }; struct S47 { x: S46 }; struct S48 { x: S47 }; struct S49 { x: S48 }; struct S50 { x: S49 }; struct S51 { x: S50 }; struct S52 { x: S51 }; struct S53 { x: S52 }; struct S54 { x: S53 }; struct S55 { x: S54 }; struct S56 { x: S55 }; struct S57 { x: S56 }; struct S58 { x: S57 }; struct S59 { x: S58 }; struct S60 { x: S59 }; struct S61 { x: S60 }; struct S62 { x: S61 }; struct S63 { x: S62 }; struct S64 { x: S63 }; struct S65 { x: S64 }; struct S66 { x: S65 }; struct S67 { x: S66 }; struct S68 { x: S67 }; struct S69 { x: S68 }; struct S70 { x: S69 }; 1</pre>
 <blockquote>this type nests deeper than the checker unrolls (64); it may be well-founded</blockquote>
-<p>pinned by <code>t-decl-fond-deep</code> · spec: docs/spec/language.md L-164</p>
+<p>pinned by <code>t-decl-fond-deep</code> · spec: docs/spec/language.md <a href="/spec/language/#l-164">L-164</a></p>
 <h3 id="decl-fond-order"><code>%decl-fond-order</code></h3>
 <pre class="code jock" data-refuses="decl-fond-order">enum Rec { cell(Rec, Rec), leaf }; 0</pre>
 <blockquote>the FIRST case of this union contains it, so the bunt diverges;  a non-recursive case must come first --- reorder the cases</blockquote>
-<p>pinned by <code>t-decl-fond-cycl</code> · spec: docs/spec/language.md L-164</p>
+<p>pinned by <code>t-decl-fond-cycl</code> · spec: docs/spec/language.md <a href="/spec/language/#l-164">L-164</a></p>
 <h3 id="decl-indiscriminable"><code>%decl-indiscriminable</code></h3>
 <pre class="code jock" data-refuses="decl-indiscriminable">struct P { a: @, b: @ }; struct Q { c: @, d: @ }; alias C is P | Q; 0</pre>
 <blockquote>this declaration holds a union whose members are not told apart by their nouns</blockquote>
@@ -82,17 +82,17 @@
 <h3 id="kernel-trait"><code>%kernel-trait</code></h3>
 <pre class="code jock" data-refuses="kernel-trait">struct KS { n: @ }; class Counter(KS) { load(self: Counter, old: *) -&gt; Counter { old as! Counter }; peek(self: Counter, p: *) -&gt; * { self.n }; poke(self: Counter, e: *) -&gt; (List&lt;*&gt;, Counter) { (~, self) }; }; Counter( n: 0 )</pre>
 <blockquote>the class must impl Kernel&lt;E&gt; or FullKernel&lt;E&gt;, naming its effect type</blockquote>
-<p>pinned by <code>t-rch-kern-tr</code> · spec: docs/spec/runtime.md R-70</p>
+<p>pinned by <code>t-rch-kern-tr</code> · spec: docs/spec/runtime.md <a href="/spec/runtime/#r-70">R-70</a></p>
 <h3 id="lex-connective"><code>%lex-connective</code></h3>
 <pre class="code jock" data-refuses="lex-connective">let a = true; let b = false; a &amp;&amp; b</pre>
 <blockquote>&amp;&amp; is not Jock; the connectives are words: a and b, a or b, not a (bitwise is hoon.dis/con/mix)</blockquote>
 <blockquote>|| is not Jock; the connectives are words: a and b, a or b, not a (| joins types: A | B)</blockquote>
-<p>pinned by <code>t-hint-amp</code> · spec: docs/spec/language.md L-91, docs/spec/language.md L-178</p>
+<p>pinned by <code>t-hint-amp</code> · spec: docs/spec/language.md <a href="/spec/language/#l-91">L-91</a>, docs/spec/language.md <a href="/spec/language/#l-178">L-178</a></p>
 <h3 id="mint-call-arity"><code>%mint-call-arity</code></h3>
 <pre class="code jock" data-refuses="mint-call-arity">func f(a: @, b: @) -&gt; @ { a }; f(1)</pre>
 <blockquote>call supplies no arguments;  this one takes some</blockquote>
 <blockquote>no arguments minted for a call that supplied some</blockquote>
-<p>pinned by <code>t-rch-arity</code> · spec: docs/spec/language.md L-171</p>
+<p>pinned by <code>t-rch-arity</code> · spec: docs/spec/language.md <a href="/spec/language/#l-171">L-171</a></p>
 <h3 id="mint-cast-sealed"><code>%mint-cast-sealed</code></h3>
 <p class="label">module</p>
 <pre class="code jock" data-refuses="mint-cast-sealed">struct CS { n: @ }; class Counter(CS) impl Add { add(self: Self, p: Self) -&gt; Self { Counter( n: self.n + p.n ) }; bump(self: Self) -&gt; Self { Counter( n: self.n + 1 ) }; twice(self: Self) -&gt; Self { self.bump().bump() }; }; func mk(n: @) -&gt; Counter { Counter( n: n ) }; </pre>
@@ -106,7 +106,7 @@
 <blockquote>a cast reinterprets bits; sint(n) converts @ to Int</blockquote>
 <blockquote>a cast reinterprets bits; sint(n) converts @ to Int (an untyped noun may still be molded: it is ZigZag by provenance)</blockquote>
 <blockquote>a type test reinterprets bits; sint(n) converts @ to Int (an untyped noun may still be molded: it is ZigZag by provenance)</blockquote>
-<p>pinned by <code>t-cast-sint-deep</code> · spec: docs/imports.md I-5, docs/spec/language.md L-12, docs/spec/language.md L-127</p>
+<p>pinned by <code>t-cast-sint-deep</code> · spec: docs/imports.md I-5, docs/spec/language.md <a href="/spec/language/#l-12">L-12</a>, docs/spec/language.md <a href="/spec/language/#l-127">L-127</a></p>
 <h3 id="mint-edit-sealed"><code>%mint-edit-sealed</code></h3>
 <p class="label">module</p>
 <pre class="code jock" data-refuses="mint-edit-sealed">struct CS { n: @ }; class Counter(CS) impl Add { add(self: Self, p: Self) -&gt; Self { Counter( n: self.n + p.n ) }; bump(self: Self) -&gt; Self { Counter( n: self.n + 1 ) }; twice(self: Self) -&gt; Self { self.bump().bump() }; }; func mk(n: @) -&gt; Counter { Counter( n: n ) }; </pre>
@@ -117,7 +117,7 @@
 <h3 id="mint-patt-bare"><code>%mint-patt-bare</code></h3>
 <pre class="code jock" data-refuses="mint-patt-bare">enum C { red, green } let c = C.green; match c { red =&gt; 1, green =&gt; 2, }</pre>
 <blockquote>a bare name is a binding, never a case; write .name or Type.name to match the case</blockquote>
-<p>pinned by <code>t-arc-patt-bare</code> · spec: docs/spec/language.md L-149</p>
+<p>pinned by <code>t-arc-patt-bare</code> · spec: docs/spec/language.md <a href="/spec/language/#l-149">L-149</a></p>
 <h3 id="mint-slit-sealed"><code>%mint-slit-sealed</code></h3>
 <p class="label">module</p>
 <pre class="code jock" data-refuses="mint-slit-sealed">struct BS&lt;T&gt; { v: T }; class Box&lt;T&gt;(BS&lt;T&gt;) { get(self: Self) -&gt; T { self.v } }; func mk(x: @) -&gt; Box&lt;@&gt; { Box( v: x ) }; </pre>
@@ -140,11 +140,11 @@
 <h3 id="parse-lark-cmp"><code>%parse-lark-cmp</code></h3>
 <pre class="code jock" data-refuses="parse-lark-cmp">var p = (7, 9); p.&gt;= 3; p</pre>
 <blockquote>p.&gt;= is the lark p.&gt; then =; write p.&gt; &gt;= 3 to compare, or p.&gt; = 3 to assign</blockquote>
-<p>pinned by <code>t-lark-eq-glued</code> · spec: docs/spec/language.md L-105</p>
+<p>pinned by <code>t-lark-eq-glued</code> · spec: docs/spec/language.md <a href="/spec/language/#l-105">L-105</a></p>
 <h3 id="parse-minus-glue"><code>%parse-minus-glue</code></h3>
 <pre class="code jock" data-refuses="parse-minus-glue">let a = 5; a- 1</pre>
 <blockquote>write a - 1 to subtract; the glued and half-glued spellings are reserved</blockquote>
-<p>pinned by <code>t-minus-glued-l</code> · spec: docs/spec/language.md L-10, docs/spec/language.md L-109</p>
+<p>pinned by <code>t-minus-glued-l</code> · spec: docs/spec/language.md <a href="/spec/language/#l-10">L-10</a>, docs/spec/language.md <a href="/spec/language/#l-109">L-109</a></p>
 <h3 id="parse-no-result"><code>%parse-no-result</code></h3>
 <pre class="code jock" data-refuses="parse-no-result">let a = 1; let b = 2; let c = 3;</pre>
 <blockquote>a program ends in an EXPRESSION; this one ends after its last statement</blockquote>
@@ -156,11 +156,11 @@
 <h3 id="parse-private"><code>%parse-private</code></h3>
 <pre class="code jock" data-refuses="parse-private">private let x = 1; x</pre>
 <blockquote>private marks a declaration or a func; nothing else exports</blockquote>
-<p>pinned by <code>t-err-private-let</code> · spec: docs/spec/language.md L-20</p>
+<p>pinned by <code>t-err-private-let</code> · spec: docs/spec/language.md <a href="/spec/language/#l-20">L-20</a></p>
 <h3 id="parse-private-impl"><code>%parse-private-impl</code></h3>
 <pre class="code jock" data-refuses="parse-private-impl">private impl Meas for @ { len(self: @) -&gt; @ { 1 } }; 0</pre>
 <blockquote>an impl is a global fact scoped by reachability; it cannot be private</blockquote>
-<p>pinned by <code>t-err-private-impl</code> · spec: docs/spec/language.md L-20</p>
+<p>pinned by <code>t-err-private-impl</code> · spec: docs/spec/language.md <a href="/spec/language/#l-20">L-20</a></p>
 <h3 id="parse-ternary"><code>%parse-ternary</code></h3>
 <pre class="code jock" data-refuses="parse-ternary">true ? 1 : 2</pre>
 <blockquote>no ternary ?: in Jock; if c { a } else { b } is an expression</blockquote>
@@ -169,7 +169,7 @@
 <pre class="code jock" data-refuses="parse-unglued">f (3)</pre>
 <blockquote>f (x) does not call f; write f(x) to call, or ; to sequence</blockquote>
 <blockquote>xs [0] does not index xs; write xs[0] to index, or ; to sequence</blockquote>
-<p>pinned by <code>t-parse-unglued</code> · spec: docs/spec/language.md L-85</p>
+<p>pinned by <code>t-parse-unglued</code> · spec: docs/spec/language.md <a href="/spec/language/#l-85">L-85</a></p>
 <h2 id="divergences-that-do-not-refuse-authored">Divergences that do not refuse (authored)</h2>
 <p>Everything above is a refusal, which means the compiler already tells the reader they are wrong. This section is the other class: the same characters are legal in Jock and in the language the reader came from, and they mean different things. Nothing warns, in either direction.</p>
 <aside class="marginal"><span class="n">2.</span> <strong>The contrast sentences here are written, not quoted</strong> — a divergence with no refusal has no compiler message to quote. The program and the value under each heading are a corpus vector’s own claim, and <code>refgen</code> fails if the vector stops pinning one.</aside>

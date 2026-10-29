@@ -5,7 +5,7 @@ The 23 refusals that exist to catch a habit from another language, each with the
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `dd95321` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+> channel `%rc` · commit `8b5492e` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
 
 A refusal is counted here when its `~|` clue carries a **prose sentence**. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.
 
@@ -28,7 +28,7 @@ enum Rec { mk(Rec) }; 0
 
 > this type contains itself with no base case, so it has no smallest value
 
-pinned by `t-decl-fond-only` · spec: docs/spec/language.md L-164
+pinned by `t-decl-fond-only` · spec: docs/spec/language.md [L-164](/spec/language/#l-164)
 
 ### `%decl-fond-deep`
 
@@ -38,7 +38,7 @@ struct S0 { x: @ }; struct S1 { x: S0 }; struct S2 { x: S1 }; struct S3 { x: S2 
 
 > this type nests deeper than the checker unrolls (64); it may be well-founded
 
-pinned by `t-decl-fond-deep` · spec: docs/spec/language.md L-164
+pinned by `t-decl-fond-deep` · spec: docs/spec/language.md [L-164](/spec/language/#l-164)
 
 ### `%decl-fond-order`
 
@@ -48,7 +48,7 @@ enum Rec { cell(Rec, Rec), leaf }; 0
 
 > the FIRST case of this union contains it, so the bunt diverges;  a non-recursive case must come first --- reorder the cases
 
-pinned by `t-decl-fond-cycl` · spec: docs/spec/language.md L-164
+pinned by `t-decl-fond-cycl` · spec: docs/spec/language.md [L-164](/spec/language/#l-164)
 
 ### `%decl-indiscriminable`
 
@@ -78,7 +78,7 @@ struct KS { n: @ }; class Counter(KS) { load(self: Counter, old: *) -> Counter {
 
 > the class must impl Kernel<E> or FullKernel<E>, naming its effect type
 
-pinned by `t-rch-kern-tr` · spec: docs/spec/runtime.md R-70
+pinned by `t-rch-kern-tr` · spec: docs/spec/runtime.md [R-70](/spec/runtime/#r-70)
 
 ### `%lex-connective`
 
@@ -90,7 +90,7 @@ let a = true; let b = false; a && b
 
 > || is not Jock; the connectives are words: a and b, a or b, not a (| joins types: A | B)
 
-pinned by `t-hint-amp` · spec: docs/spec/language.md L-91, docs/spec/language.md L-178
+pinned by `t-hint-amp` · spec: docs/spec/language.md [L-91](/spec/language/#l-91), docs/spec/language.md [L-178](/spec/language/#l-178)
 
 ### `%mint-call-arity`
 
@@ -102,7 +102,7 @@ func f(a: @, b: @) -> @ { a }; f(1)
 
 > no arguments minted for a call that supplied some
 
-pinned by `t-rch-arity` · spec: docs/spec/language.md L-171
+pinned by `t-rch-arity` · spec: docs/spec/language.md [L-171](/spec/language/#l-171)
 
 ### `%mint-cast-sealed`
 
@@ -136,7 +136,7 @@ struct SB { a: Int, k: @ }; let s = (5, 4) as SB; if s.a == -3 { 111 } else { 22
 
 > a type test reinterprets bits; sint(n) converts @ to Int (an untyped noun may still be molded: it is ZigZag by provenance)
 
-pinned by `t-cast-sint-deep` · spec: docs/imports.md I-5, docs/spec/language.md L-12, docs/spec/language.md L-127
+pinned by `t-cast-sint-deep` · spec: docs/imports.md I-5, docs/spec/language.md [L-12](/spec/language/#l-12), docs/spec/language.md [L-127](/spec/language/#l-127)
 
 ### `%mint-edit-sealed`
 
@@ -164,7 +164,7 @@ enum C { red, green } let c = C.green; match c { red => 1, green => 2, }
 
 > a bare name is a binding, never a case; write .name or Type.name to match the case
 
-pinned by `t-arc-patt-bare` · spec: docs/spec/language.md L-149
+pinned by `t-arc-patt-bare` · spec: docs/spec/language.md [L-149](/spec/language/#l-149)
 
 ### `%mint-slit-sealed`
 
@@ -222,7 +222,7 @@ var p = (7, 9); p.>= 3; p
 
 > p.>= is the lark p.> then =; write p.> >= 3 to compare, or p.> = 3 to assign
 
-pinned by `t-lark-eq-glued` · spec: docs/spec/language.md L-105
+pinned by `t-lark-eq-glued` · spec: docs/spec/language.md [L-105](/spec/language/#l-105)
 
 ### `%parse-minus-glue`
 
@@ -232,7 +232,7 @@ let a = 5; a- 1
 
 > write a - 1 to subtract; the glued and half-glued spellings are reserved
 
-pinned by `t-minus-glued-l` · spec: docs/spec/language.md L-10, docs/spec/language.md L-109
+pinned by `t-minus-glued-l` · spec: docs/spec/language.md [L-10](/spec/language/#l-10), docs/spec/language.md [L-109](/spec/language/#l-109)
 
 ### `%parse-no-result`
 
@@ -262,7 +262,7 @@ private let x = 1; x
 
 > private marks a declaration or a func; nothing else exports
 
-pinned by `t-err-private-let` · spec: docs/spec/language.md L-20
+pinned by `t-err-private-let` · spec: docs/spec/language.md [L-20](/spec/language/#l-20)
 
 ### `%parse-private-impl`
 
@@ -272,7 +272,7 @@ private impl Meas for @ { len(self: @) -> @ { 1 } }; 0
 
 > an impl is a global fact scoped by reachability; it cannot be private
 
-pinned by `t-err-private-impl` · spec: docs/spec/language.md L-20
+pinned by `t-err-private-impl` · spec: docs/spec/language.md [L-20](/spec/language/#l-20)
 
 ### `%parse-ternary`
 
@@ -294,7 +294,7 @@ f (3)
 
 > xs [0] does not index xs; write xs[0] to index, or ; to sequence
 
-pinned by `t-parse-unglued` · spec: docs/spec/language.md L-85
+pinned by `t-parse-unglued` · spec: docs/spec/language.md [L-85](/spec/language/#l-85)
 
 ## Divergences that do not refuse (authored)
 

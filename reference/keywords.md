@@ -5,7 +5,9 @@ All 30 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `dd95321` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+> channel `%rc` · commit `8b5492e` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+
+Each keyword below carries its **class** — kernel or sugar, one of the language’s four design principles — and **what it does**, both projected from the keyword inventory at [L-61](/spec/language/#l-61), whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.
 
 The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexer’s own authority, which `tools/hilite.py` holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.
 
@@ -15,7 +17,8 @@ The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexe
 | usable, with a demonstrating program | 29 |
 | usable, demonstrated by nothing | 0 |
 | deliberately not usable | 1 |
-| defined by at least one `language.md` rule | 30 |
+| with a rule that states what it does | 11 |
+| specified only by their inventory row | 19 |
 
 ## Syntactic slots
 
@@ -29,16 +32,16 @@ There is deliberately **no BNF here.** Jock’s parser is recursive descent (`pa
 
 ## Precedence
 
-13 levels, tightest first — `language.md` L-107, which says the table *is* the rule. Projected from it verbatim.
+13 levels, tightest first — `language.md` [L-107](/spec/language/#l-107), which says the table *is* the rule. Projected from it verbatim.
 
 | Level | Operators | Associativity |
 |---|---|---|
-| 1 | postfix: glued call `(`, glued index `[`, field `.`, lark `.<` `.>`, axis `.+n` (L-46 to L-51, L-98 to L-105) | left |
+| 1 | postfix: glued call `(`, glued index `[`, field `.`, lark `.<` `.>`, axis `.+n` ([L-46](/spec/language/#l-46) to [L-51](/spec/language/#l-51), [L-98](/spec/language/#l-98) to [L-105](/spec/language/#l-105)) | left |
 | 2 | `as`, `as?`, `as!` | left |
-| 3 | `**` *(reserved — L-112)* | right |
-| 4 | unary `-` *(reserved — L-112)* | — |
+| 3 | `**` *(reserved — [L-112](/spec/language/#l-112))* | right |
+| 4 | unary `-` *(reserved — [L-112](/spec/language/#l-112))* | — |
 | 5 | `*` `/` `%` `×` `÷` `⊛` `∩` `⊗` `∘` `·` | left |
-| 6 | `+` `-` (binary `-` is spaced — L-109) `∪` `⊕` `⊖` `±` | left |
+| 6 | `+` `-` (binary `-` is spaced — [L-109](/spec/language/#l-109)) `∪` `⊕` `⊖` `±` | left |
 | 7 | `??` | right |
 | 8 | `<` `>` `<=` `>=` `in` `∈` `⊂` `⊃` | none |
 | 9 | `==` `!=` `===` `!==` | none |
@@ -47,7 +50,7 @@ There is deliberately **no BNF here.** Jock’s parser is recursive descent (`pa
 | 12 | `xor` | left |
 | 13 | `or` | left |
 
-The comparisons at 8 and 9 are **non-associative** and must be parenthesized: `a < b < c` refuses `%parse-nonassoc` rather than returning a boolean surprise (L-108).
+The comparisons at 8 and 9 are **non-associative** and must be parenthesized: `a < b < c` refuses `%parse-nonassoc` rather than returning a boolean surprise ([L-108](/spec/language/#l-108)).
 
 ## Keywords
 
@@ -55,17 +58,23 @@ The comparisons at 8 and 9 are **non-associative** and must be parenthesized: `a
 
 **declaration keyword.**
 
+**Kernel (declaration).** `alias New is Old`. Rules [L-67](/spec/language/#l-67) to [L-69](/spec/language/#l-69) below
+
+**No rule in `language.md` states what `alias` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61), [L-66](/spec/language/#l-66), [L-81](/spec/language/#l-81).
+
 ```jock
 alias Foo is @; let x: Foo = 1; x
 ```
 
 pinned by `t-arc-alias-is` · 7 vectors use this keyword
 
-defined by: `language.md` L-22, `language.md` L-45, `language.md` L-61, `language.md` L-66, `language.md` L-81
-
 ### `and`
 
 **operator keyword.** Precedence level 11 of 13 (left-associative), sharing it with nothing.
+
+**Sugar.** word connectives (OPEN-13): `and`/`or` → nested `%if` (short-circuit); `xor`/`not` → `%if`/stdlib rewrites
+
+**No rule in `language.md` states what `and` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61), [L-107](/spec/language/#l-107), [L-173](/spec/language/#l-173), [L-178](/spec/language/#l-178).
 
 ```jock
 true and true
@@ -73,11 +82,17 @@ true and true
 
 pinned by `t-logic-and-tt` · 8 vectors use this keyword
 
-defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `language.md` L-178
-
 ### `as`
 
 **operator keyword.** Precedence level 2 of 13 (left-associative), sharing it with `as?`, `as!`.
+
+**Kernel.** cast: `%cast` (particle of expression grammar, not a standalone form)
+
+Specified by [L-120](/spec/language/#l-120):
+
+> [L-120](/spec/language/#l-120) · `as` is STATIC.
+
+Also named by [L-12](/spec/language/#l-12), [L-24](/spec/language/#l-24), [L-61](/spec/language/#l-61), [L-107](/spec/language/#l-107).
 
 ```jock
 +42 as @
@@ -85,11 +100,13 @@ defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `langu
 
 pinned by `t-sint-lit` · 52 vectors use this keyword
 
-defined by: `language.md` L-12, `language.md` L-24, `language.md` L-61, `language.md` L-107, `language.md` L-120
-
 ### `assert`
 
 **control keyword.**
+
+**Sugar.** → `if cond { next } else { crash }`
+
+**No rule in `language.md` states what `assert` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61), [L-185](/spec/language/#l-185).
 
 *module*
 
@@ -105,11 +122,17 @@ import m; m.inc(41)
 
 pinned by `t-jimp-assert` · 1 vector use this keyword
 
-defined by: `language.md` L-61, `language.md` L-185
-
 ### `class`
 
 **declaration keyword.**
+
+**Kernel (declaration).** `%decl`: registration + method minting; standalone instances are `impl Trait for Type { … };` (types.md [S9.4](/spec/types/#s9.4)/S9.5)
+
+Specified by [L-146](/spec/language/#l-146):
+
+> [L-146](/spec/language/#l-146) · `class` keeps PARENTHESES for its state struct
+
+Also named by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61).
 
 ```jock
 struct BS<T> { v: T }; class Box<T>(BS<T>) { get(self: Self) -> T { self.v } }; Box( v: 5 ).get()
@@ -117,11 +140,13 @@ struct BS<T> { v: T }; class Box<T>(BS<T>) { get(self: Self) -> T { self.v } }; 
 
 pinned by `t-text-class-gen` · 25 vectors use this keyword
 
-defined by: `language.md` L-22, `language.md` L-45, `language.md` L-61, `language.md` L-146
-
 ### `crash`
 
 **control keyword.**
+
+**Kernel.** `%crash` (Nock `[0 0]`)
+
+**No rule in `language.md` states what `crash` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61), [L-178](/spec/language/#l-178), [L-182](/spec/language/#l-182).
 
 ```jock
 enum Nope {}; func f(x: @) -> Nope { crash }; 1
@@ -129,19 +154,23 @@ enum Nope {}; func f(x: @) -> Nope { crash }; 1
 
 pinned by `t-text-never` · 4 vectors use this keyword
 
-defined by: `language.md` L-61, `language.md` L-178, `language.md` L-182
-
 ### `defer`
 
 **control keyword.**
 
-**RESERVED.** Reserved in the lexer’s mold so that the parser recognises it and refuses with a diagnosis rather than an unbound name. Refuses `%parse-todo %defer` — parsed and refused;  not implemented for 1.0.
+****reserved, unimplemented**.** the keyword lexes and the parser then refuses `%parse-todo %defer` unconditionally (`parse.hoon`); `sugar.hoon` carries a `%defer` arm no program can reach. Reserved on the same footing as `$(…)` re-entry, so the meaning can land without reinterpreting any legal program.
 
-defined by: `language.md` L-61
+**No rule in `language.md` states what `defer` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61).
+
+**RESERVED.** Reserved in the lexer’s mold so that the parser recognises it and refuses with a diagnosis rather than an unbound name. Refuses `%parse-todo %defer` — parsed and refused;  not implemented for 1.0.
 
 ### `else`
 
 **control keyword.**
+
+**Kernel.** `%if`; `else if` chains flatten to nested `%if` at parse
+
+**No rule in `language.md` states what `else` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61).
 
 ```jock
 if 3 != 4 { 7 } else { 9 }
@@ -149,11 +178,13 @@ if 3 != 4 { 7 } else { 9 }
 
 pinned by `t-eq-ne` · 33 vectors use this keyword
 
-defined by: `language.md` L-61
-
 ### `enum`
 
 **declaration keyword.**
+
+**Kernel (declaration).** `%decl`: tagged sum. Rules [L-70](/spec/language/#l-70) to [L-73](/spec/language/#l-73) below
+
+**No rule in `language.md` states what `enum` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61), [L-69](/spec/language/#l-69), [L-149](/spec/language/#l-149), [L-170](/spec/language/#l-170).
 
 ```jock
 enum Rec { leaf, cell(Rec, Rec) }; 0
@@ -161,11 +192,17 @@ enum Rec { leaf, cell(Rec, Rec) }; 0
 
 pinned by `t-decl-fond-reorder` · 15 vectors use this keyword
 
-defined by: `language.md` L-22, `language.md` L-45, `language.md` L-61, `language.md` L-69, `language.md` L-149, `language.md` L-170
-
 ### `eval`
 
 **control keyword.**
+
+**Kernel.** Nock evaluation: `%eval` (Nock 2)
+
+Specified by [L-129](/spec/language/#l-129):
+
+> [L-129](/spec/language/#l-129) · `eval` is CALL-SHAPED
+
+Also named by [L-13](/spec/language/#l-13), [L-61](/spec/language/#l-61), [L-183](/spec/language/#l-183).
 
 ```jock
 (eval(42, (0, 1)) as? @) ?? 99
@@ -173,11 +210,13 @@ defined by: `language.md` L-22, `language.md` L-45, `language.md` L-61, `languag
 
 pinned by `t-text-qq` · 3 vectors use this keyword
 
-defined by: `language.md` L-13, `language.md` L-61, `language.md` L-129, `language.md` L-183
-
 ### `for`
 
 **declaration keyword.**
+
+**Kernel (declaration).** separates trait from target in `impl Area for Shape`; with a parameterized trait the arguments ride on the trait name, `impl<T> Idx<@, T> for List<T>`
+
+**No rule in `language.md` states what `for` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61).
 
 ```jock
 struct P { v: @ }; impl Show for P { show(self: P) -> String { "P!" }; }; let p = P( v: 1 ); "{p}"
@@ -185,11 +224,27 @@ struct P { v: @ }; impl Show for P { show(self: P) -> String { "P!" }; }; let p 
 
 pinned by `t-text-interp-user` · 20 vectors use this keyword
 
-defined by: `language.md` L-61
-
 ### `func`
 
 **declaration keyword.**
+
+**Kernel.** named (recursive) function: `%func` — kernel by decision (OPEN-10 resolved): one lowering rule owns self-name binding, recursion, and the generics binders
+
+Specified by [L-17](/spec/language/#l-17), [L-20](/spec/language/#l-20), [L-135](/spec/language/#l-135), [L-136](/spec/language/#l-136), [L-137](/spec/language/#l-137), [L-140](/spec/language/#l-140):
+
+> [L-17](/spec/language/#l-17) · `private` marks the next declaration or `func` unexported.
+
+> [L-20](/spec/language/#l-20) · It takes only a declaration or a `func`.
+
+> [L-135](/spec/language/#l-135) · A named `func` is recursive by construction
+
+> [L-136](/spec/language/#l-136) · A `func` requires an ANNOTATED return
+
+> [L-137](/spec/language/#l-137) · Adjacent `func`s form a MUTUAL-RECURSION GROUP.
+
+> [L-140](/spec/language/#l-140) · `recur` re-enters only the innermost enclosing `func` or `loop`.
+
+Also named by [L-61](/spec/language/#l-61), [L-87](/spec/language/#l-87), [L-139](/spec/language/#l-139), [L-143](/spec/language/#l-143), [L-185](/spec/language/#l-185).
 
 ```jock
 func<T> id(x: T) -> T { x }; id(42)
@@ -197,11 +252,13 @@ func<T> id(x: T) -> T { x }; id(42)
 
 pinned by `t-text-gen` · 78 vectors use this keyword
 
-defined by: `language.md` L-17, `language.md` L-20, `language.md` L-61, `language.md` L-87, `language.md` L-135, `language.md` L-136, `language.md` L-137, `language.md` L-139, `language.md` L-140, `language.md` L-143, `language.md` L-185
-
 ### `if`
 
 **control keyword.**
+
+**Kernel.** `%if`; `else if` chains flatten to nested `%if` at parse
+
+**No rule in `language.md` states what `if` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61), [L-185](/spec/language/#l-185).
 
 ```jock
 if 3 != 4 { 7 } else { 9 }
@@ -209,11 +266,13 @@ if 3 != 4 { 7 } else { 9 }
 
 pinned by `t-eq-ne` · 34 vectors use this keyword
 
-defined by: `language.md` L-61, `language.md` L-185
-
 ### `impl`
 
 **declaration keyword.**
+
+**Kernel (declaration).** `%decl`: registration + method minting; standalone instances are `impl Trait for Type { … };` (types.md [S9.4](/spec/types/#s9.4)/S9.5)
+
+**No rule in `language.md` states what `impl` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-20](/spec/language/#l-20), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61).
 
 ```jock
 struct P { v: @ }; impl Show for P { show(self: P) -> String { "P!" }; }; let p = P( v: 1 ); "{p}"
@@ -221,11 +280,13 @@ struct P { v: @ }; impl Show for P { show(self: P) -> String { "P!" }; }; let p 
 
 pinned by `t-text-interp-user` · 35 vectors use this keyword
 
-defined by: `language.md` L-20, `language.md` L-45, `language.md` L-61
-
 ### `import`
 
 **declaration keyword.**
+
+**Kernel.** `%import`; resolution happens at environment construction, not parse
+
+**No rule in `language.md` states what `import` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61), [L-185](/spec/language/#l-185).
 
 ```jock
 import hoon; 20 + 22
@@ -233,11 +294,13 @@ import hoon; 20 + 22
 
 pinned by `t-text-arith` · 72 vectors use this keyword
 
-defined by: `language.md` L-61, `language.md` L-185
-
 ### `in`
 
 **operator keyword.** Precedence level 8 of 13 (non-associative), sharing it with `<` `>` `<=` `>=`  `∈` `⊂` `⊃`.
+
+**Sugar.** **membership**. Rules [L-74](/spec/language/#l-74) to [L-76](/spec/language/#l-76) below
+
+**No rule in `language.md` states what `in` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61), [L-73](/spec/language/#l-73), [L-107](/spec/language/#l-107), [L-108](/spec/language/#l-108), [L-115](/spec/language/#l-115), [L-173](/spec/language/#l-173), [L-183](/spec/language/#l-183).
 
 ```jock
 let s = "in"; "[{s}]"
@@ -245,11 +308,17 @@ let s = "in"; "[{s}]"
 
 pinned by `t-text-interp-str` · 6 vectors use this keyword
 
-defined by: `language.md` L-61, `language.md` L-73, `language.md` L-107, `language.md` L-108, `language.md` L-115, `language.md` L-173, `language.md` L-183
-
 ### `is`
 
 **declaration keyword.**
+
+**Kernel (declaration).** `alias New is Old`. Rules [L-67](/spec/language/#l-67) to [L-69](/spec/language/#l-69) below
+
+Specified by [L-69](/spec/language/#l-69):
+
+> [L-69](/spec/language/#l-69) · The `is` is load-bearing.
+
+Also named by [L-61](/spec/language/#l-61).
 
 ```jock
 alias Foo is @; let x: Foo = 1; x
@@ -257,11 +326,13 @@ alias Foo is @; let x: Foo = 1; x
 
 pinned by `t-arc-alias-is` · 7 vectors use this keyword
 
-defined by: `language.md` L-61, `language.md` L-69
-
 ### `lambda`
 
 **declaration keyword.**
+
+**Kernel.** anonymous function value: `%lambda`
+
+**No rule in `language.md` states what `lambda` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61).
 
 ```jock
 peekUnder(lambda (r: *, p: *) -> * { (0, 0) }, 0)
@@ -269,11 +340,17 @@ peekUnder(lambda (r: *, p: *) -> * { (0, 0) }, 0)
 
 pinned by `t-roof-lift-absent` · 17 vectors use this keyword
 
-defined by: `language.md` L-61
-
 ### `let`
 
 **declaration keyword.**
+
+**Kernel.** immutable binding: `%let`
+
+Specified by [L-134](/spec/language/#l-134):
+
+> [L-134](/spec/language/#l-134) · Destructuring `let` is admitted
+
+Also named by [L-20](/spec/language/#l-20), [L-61](/spec/language/#l-61), [L-129](/spec/language/#l-129), [L-130](/spec/language/#l-130), [L-131](/spec/language/#l-131), [L-171](/spec/language/#l-171), [L-185](/spec/language/#l-185).
 
 ```jock
 let x = 1; x;
@@ -281,11 +358,17 @@ let x = 1; x;
 
 pinned by `t-arc-term-semi` · 187 vectors use this keyword
 
-defined by: `language.md` L-20, `language.md` L-61, `language.md` L-129, `language.md` L-130, `language.md` L-131, `language.md` L-134, `language.md` L-171, `language.md` L-185
-
 ### `loop`
 
 **control keyword.**
+
+**Kernel.** recursion point / re-entry: `%loop` / `%recur`, both optionally labeled (`loop outer { … recur outer }`) — note no `;` before the closing brace; a trailing separator there refuses `%parse-expected %'}'`
+
+Specified by [L-140](/spec/language/#l-140):
+
+> [L-140](/spec/language/#l-140) · `recur` re-enters only the innermost enclosing `func` or `loop`.
+
+Also named by [L-61](/spec/language/#l-61), [L-87](/spec/language/#l-87), [L-185](/spec/language/#l-185).
 
 ```jock
 import hoon; var b = 0; loop { if b == 5 { b } else { b = b + 1; recur } }
@@ -293,11 +376,19 @@ import hoon; var b = 0; loop { if b == 5 { b } else { b = b + 1; recur } }
 
 pinned by `t-text-loop` · 4 vectors use this keyword
 
-defined by: `language.md` L-61, `language.md` L-87, `language.md` L-140, `language.md` L-185
-
 ### `match`
 
 **control keyword.**
+
+**Kernel.** pattern/type discrimination: `%match`
+
+Specified by [L-84](/spec/language/#l-84), [L-148](/spec/language/#l-148):
+
+> [L-84](/spec/language/#l-84) · `match` arms are comma-separated
+
+> [L-148](/spec/language/#l-148) · `match` is the eliminator, and `$patt` is closed
+
+Also named by [L-61](/spec/language/#l-61), [L-101](/spec/language/#l-101), [L-126](/spec/language/#l-126), [L-150](/spec/language/#l-150), [L-151](/spec/language/#l-151), [L-173](/spec/language/#l-173), [L-185](/spec/language/#l-185).
 
 ```jock
 let a: @ = 3; match a { 1 => 0, _ => 84, }
@@ -305,11 +396,13 @@ let a: @ = 3; match a { 1 => 0, _ => 84, }
 
 pinned by `t-arc-arm-comma` · 20 vectors use this keyword
 
-defined by: `language.md` L-61, `language.md` L-84, `language.md` L-101, `language.md` L-126, `language.md` L-148, `language.md` L-150, `language.md` L-151, `language.md` L-173, `language.md` L-185
-
 ### `not`
 
 **operator keyword.** Precedence level 10 of 13 (nothing to associate, being prefix), sharing it with nothing.
+
+**Sugar.** word connectives (OPEN-13): `and`/`or` → nested `%if` (short-circuit); `xor`/`not` → `%if`/stdlib rewrites
+
+**No rule in `language.md` states what `not` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61), [L-107](/spec/language/#l-107), [L-173](/spec/language/#l-173), [L-178](/spec/language/#l-178).
 
 ```jock
 not true
@@ -317,11 +410,13 @@ not true
 
 pinned by `t-logic-not-t` · 4 vectors use this keyword
 
-defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `language.md` L-178
-
 ### `or`
 
 **operator keyword.** Precedence level 13 of 13 (left-associative), sharing it with nothing.
+
+**Sugar.** word connectives (OPEN-13): `and`/`or` → nested `%if` (short-circuit); `xor`/`not` → `%if`/stdlib rewrites
+
+**No rule in `language.md` states what `or` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61), [L-107](/spec/language/#l-107), [L-173](/spec/language/#l-173), [L-178](/spec/language/#l-178).
 
 ```jock
 true or true
@@ -329,11 +424,13 @@ true or true
 
 pinned by `t-logic-or-tt` · 6 vectors use this keyword
 
-defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `language.md` L-178
-
 ### `print`
 
 **control keyword.**
+
+**Kernel.** `print e; k` / `print(e, N); k`. Rules [L-33](/spec/language/#l-33) to [L-37](/spec/language/#l-37) below
+
+**No rule in `language.md` states what `print` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-35](/spec/language/#l-35), [L-61](/spec/language/#l-61), [L-76](/spec/language/#l-76).
 
 ```jock
 print("hi"); 42
@@ -341,11 +438,17 @@ print("hi"); 42
 
 pinned by `t-text-print` · 10 vectors use this keyword
 
-defined by: `language.md` L-35, `language.md` L-61, `language.md` L-76
-
 ### `private`
 
 **declaration keyword.**
+
+**Kernel (declaration).** marks the next declaration or `func` unexported. Rules [L-17](/spec/language/#l-17) to [L-25](/spec/language/#l-25) below
+
+Specified by [L-17](/spec/language/#l-17):
+
+> [L-17](/spec/language/#l-17) · `private` marks the next declaration or `func` unexported.
+
+Also named by [L-25](/spec/language/#l-25), [L-37](/spec/language/#l-37), [L-61](/spec/language/#l-61).
 
 ```jock
 private func dbl(n: @) -> @ { n + n }; dbl(21)
@@ -353,11 +456,17 @@ private func dbl(n: @) -> @ { n + n }; dbl(21)
 
 pinned by `t-text-private-func` · 5 vectors use this keyword
 
-defined by: `language.md` L-17, `language.md` L-25, `language.md` L-37, `language.md` L-61
-
 ### `recur`
 
 **control keyword.**
+
+**Kernel.** recursion point / re-entry: `%loop` / `%recur`, both optionally labeled (`loop outer { … recur outer }`) — note no `;` before the closing brace; a trailing separator there refuses `%parse-expected %'}'`
+
+Specified by [L-140](/spec/language/#l-140):
+
+> [L-140](/spec/language/#l-140) · `recur` re-enters only the innermost enclosing `func` or `loop`.
+
+Also named by [L-61](/spec/language/#l-61), [L-152](/spec/language/#l-152).
 
 ```jock
 import hoon; var b = 0; loop { if b == 5 { b } else { b = b + 1; recur } }
@@ -365,11 +474,13 @@ import hoon; var b = 0; loop { if b == 5 { b } else { b = b + 1; recur } }
 
 pinned by `t-text-loop` · 4 vectors use this keyword
 
-defined by: `language.md` L-61, `language.md` L-140, `language.md` L-152
-
 ### `struct`
 
 **declaration keyword.**
+
+**Kernel (declaration).** `%decl`: def-registration in `+mint` (types.md [S9.1](/spec/types/#s9.1) — desugar has no environment, so declarations are one kernel form the parser emits directly)
+
+**No rule in `language.md` states what `struct` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61).
 
 ```jock
 struct Q { w: @ }; Q( w: 9 ).w
@@ -377,11 +488,13 @@ struct Q { w: @ }; Q( w: 9 ).w
 
 pinned by `t-text-dot-slit` · 70 vectors use this keyword
 
-defined by: `language.md` L-45, `language.md` L-61
-
 ### `trait`
 
 **declaration keyword.**
+
+**Kernel (declaration).** `%decl`. Rules [L-62](/spec/language/#l-62) to [L-66](/spec/language/#l-66) below
+
+**No rule in `language.md` states what `trait` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61).
 
 ```jock
 trait Tw { tw(self: Self) -> @; } struct B { v: @ } impl Tw for B { tw(self: B) -> @ { self.v } } let b = B(v: 7); b.tw()
@@ -389,11 +502,17 @@ trait Tw { tw(self: Self) -> @; } struct B { v: @ } impl Tw for B { tw(self: B) 
 
 pinned by `t-arc-impl-for` · 15 vectors use this keyword
 
-defined by: `language.md` L-22, `language.md` L-45, `language.md` L-61
-
 ### `var`
 
 **declaration keyword.**
+
+**Kernel.** mutable binding: `%let` with `mut=%.y`; `%edit` targets only `var` bindings (OPEN-14)
+
+Specified by [L-132](/spec/language/#l-132):
+
+> [L-132](/spec/language/#l-132) · `var` widening is SHALLOW.
+
+Also named by [L-61](/spec/language/#l-61), [L-129](/spec/language/#l-129), [L-130](/spec/language/#l-130), [L-131](/spec/language/#l-131), [L-134](/spec/language/#l-134).
 
 ```jock
 var b = 1; b = 3; b
@@ -401,19 +520,19 @@ var b = 1; b = 3; b
 
 pinned by `t-var-widen` · 12 vectors use this keyword
 
-defined by: `language.md` L-61, `language.md` L-129, `language.md` L-130, `language.md` L-131, `language.md` L-132, `language.md` L-134
-
 ### `xor`
 
 **operator keyword.** Precedence level 12 of 13 (left-associative), sharing it with nothing.
+
+**Sugar.** word connectives (OPEN-13): `and`/`or` → nested `%if` (short-circuit); `xor`/`not` → `%if`/stdlib rewrites
+
+**No rule in `language.md` states what `xor` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61), [L-107](/spec/language/#l-107), [L-173](/spec/language/#l-173), [L-178](/spec/language/#l-178).
 
 ```jock
 true xor true
 ```
 
 pinned by `t-logic-xor-tt` · 6 vectors use this keyword
-
-defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `language.md` L-178
 
 ## Punctuators
 
@@ -448,4 +567,4 @@ The 14 multi-byte punctuators, decoded from the LSB-first UTF-8 byte sequences i
 
 So a glyph with no ASCII column is not a typographic alternative to anything. It is an operator name that happens to be spelled with one non-ASCII character, and reaching for it commits you to an `impl` that binds it.
 
-`language.md` L-115 (the three aliases), L-116 (the eleven trait-only operators) and L-107a (their precedence: multiplicative glyphs parse at station 5, additive at 6, relational at 8 — fixed at parse, so a library may give a glyph meaning but cannot move it).
+`language.md` [L-115](/spec/language/#l-115) (the three aliases), [L-116](/spec/language/#l-116) (the eleven trait-only operators) and L-107a (their precedence: multiplicative glyphs parse at station 5, additive at 6, relational at 8 — fixed at parse, so a library may give a glyph meaning but cannot move it).

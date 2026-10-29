@@ -5,7 +5,7 @@ Jock compiles to Nock. This is the whole of Nock 4K, quoted from `nock.is`, whic
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` emits this page from `vendor/nock-4k.txt`.
 >
-> channel `%rc` · commit `dd95321`
+> channel `%rc` · commit `8b5492e`
 
 ## Nock 4K
 
@@ -71,9 +71,9 @@ It is **vendored rather than transcribed**. `vendor/nock-4k.txt` holds the block
 
 ## What Jock actually emits
 
-Jock does not emit Nock directly. It emits `nockasm`, an IR whose opcode set is closed, and `nockasm.md` N-19 states the set:
+Jock does not emit Nock directly. It emits `nockasm`, an IR whose opcode set is closed, and `nockasm.md` [N-19](/spec/nockasm/#n-19) states the set:
 
-> N-19 · Twenty-one is the count because `%scry` joined.
+> [N-19](/spec/nockasm/#n-19) · Twenty-one is the count because `%scry` joined.
 
 `+expa-op` refines against that set, so an unknown opcode is a crash at expansion time rather than an unknown formula at runtime.
 

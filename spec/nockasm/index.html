@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>nockasm.md — Jock spec</title>
+<meta name="description" content="The normative nockasm.md, mirrored from the compiler repo with an anchor on every rule.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!--  ABSOLUTE, not relative.  These were `../jock-highlight.css`,
+      which from /reference/tags/ resolves to
+      /reference/jock-highlight.css --- a 404 on every generated
+      page, so the highlighter never loaded and the listings were
+      marked `class="code jock"` for a script that was not there.
+      The site is served at an apex root, so an absolute path is
+      correct and is immune to however deep a page is nested.  -->
+<link rel="stylesheet" href="/jock-highlight.css">
+<script src="/jock-highlight.js" defer></script>
+<!--
+  HAND-MAINTAINED.  This is the only file in the reference that a
+  person edits:  tools/refgen.py in the compiler repo fills
+  the four placeholders below and writes the pages beside it.
+  Naming them here in their own spelling would be a bug:  the
+  substitution is a plain string replace, so a comment mentioning a
+  placeholder gets the substitution too --- which silently injected
+  the whole document into this comment, doubling every page, until
+  2026-10-27.  Nor may this comment contain a close-comment
+  sequence;  the sentence that said so, spelling it out, closed the
+  comment early and spilled the rest of this text onto the page.  Design lives here, content is generated, and
+  neither needs the other to change.
+
+  Styling is /jock.css, authored from design/style-guide.html ---
+  the design system's own document, which is a visual specimen of
+  inline styles rather than a stylesheet.  This page carries NO copy
+  of it:  that was the whole point of extracting it.
+
+  Jekyll ignores a file whose name starts with `_`, so this template
+  is never served.
+-->
+<link rel="stylesheet" href="/jock.css">
+</head>
+<body>
+<div class="page">
+<header class="bar">
+  <nav><a href="/">jock</a> <span>reference</span></nav>
+  <span>25 rules</span>
+</header>
+<main class="prose">
+<h1 class="ruled">nockasm.md</h1>
+<p class="sub">Normative. Mirrored from <code>docs/spec/nockasm.md</code> in the compiler repo; every rule id is an anchor.</p>
+<!--  §3:  text column beside the 186px margin rail.  A marginal
+      floats into the rail where it was written, so it sits beside
+      its referent;  the rail is empty wherever nothing was said,
+      which §7 calls correct.  -->
+<h1 id="nockasm-in-jock-specification">Nockasm in Jock — Specification</h1>
+<p><strong>Status: NORMATIVE.</strong> This document specifies Jock's <em>instantiation</em> of the Nockasm IR: the positioned emitter type, the projection and conformance contract, the emitter obligations <code>+mint</code> assumes, and the conformance vector set. It deliberately does <strong>not</strong> restate the IR itself — the vocabulary, lowering equations, canonical rendering, schemas and the lift are owned by the compiler-target specification, <a href="nockasm-target.md"><code>nockasm-target.md</code></a>, whose spec surface is the vendored <code>/sur/nockasm</code>.</p>
+<p>Rules carry flat <code>N-n</code> ids, append-only. Each names what pins it — a corpus vector, or the lane that checks it where the claim is about agreement with a vendored artifact. A rule with neither says <code>⟨none — UNPINNED⟩</code>.</p>
+<p>Both documents live here; neither is vendored. <code>nockasm-target.md</code> moved out of sigilante/nockasm into this repository, and that repo's README now cites this one as authoritative. What <strong>is</strong> vendored is the Hoon pair below.</p>
+<h2 id="1-the-pin">1. The pin</h2>
+<p id="n-1"><strong><a href="/spec/nockasm/#n-1">N-1</a> · The vendored pair is <code>sur/nockasm.hoon</code> and <code>lib/nockasm.hoon</code>, bit-identical to the reference</strong> — verified against both the <code>desk/</code> and <code>nasmc/hoon/</code> copies upstream.</p>
+<table><thead><tr><th>what</th><th>value</th></tr></thead><tbody><tr><td>reference</td><td><strong>sigilante/nockasm @ <code>6b3d812</code></strong> ("Add Nock 12 scry support", PR #11)</td></tr><tr><td>spec</td><td>v0.5, <code>+nasm-version</code> <strong>3</strong></td></tr><tr><td><code>crates/jockc/hoon/sur/nockasm.hoon</code></td><td><code>39e6b205…79e2a0</code></td></tr><tr><td><code>crates/jockc/hoon/lib/nockasm.hoon</code></td><td><code>a5c49e9c…29cb57e3</code></td></tr></tbody></table>
+<p>⟨lane <code>ci:pins</code>⟩</p>
+<blockquote><strong>The authority for those hashes is <code>vendor/SNAPSHOT.txt</code></strong>, which the <code>pins</code> lane reads and this table does not. The table is a convenience copy, truncated deliberately so it cannot be mistaken for the checked record — it carried the full PR #9 hashes for three months after the tree moved to PR #11, which is what an unchecked second copy of a hash is for.</blockquote>
+<p id="n-2"><strong><a href="/spec/nockasm/#n-2">N-2</a> · The pair is FROZEN except bugfixes.</strong> The vendored files are never edited here; adaptation happens in our own files, <code>sur/nasm</code> and <code>lib/expand</code>. The IR version is append-only upstream, so adopting a version bump is a deliberate re-pin — new hashes, new conformance run — and never a drift. ⟨lane <code>ci:pins</code>⟩</p>
+<p id="n-3"><strong><a href="/spec/nockasm/#n-3">N-3</a> · The sur is the type contract and the lib is the reference implementation</strong> (<code>parse</code>/<code>lower</code>/<code>render</code>/<code>lift</code>/<code>jam</code>/<code>cue</code>). Jock vendors both: the lib because we render <code>.nasm</code> build artifacts and use the reference expander in the conformance harness. Our own expander is <code>+expand:expand</code>. ⟨<code>t-nx-law-fallback-p</code>, <code>t-nx-conf-axis-p</code>⟩</p>
+<h2 id="2-the-positioned-knot-sur-nasm">2. The positioned knot (<code>sur/nasm</code>)</h2>
+<p>The vocabulary is a self-parameterized builder (<code>+nasm-of</code>), designed so that annotated instantiations are first-class rather than forks. Jock's emitter IR is the provenance-carrying instantiation:</p>
+<pre class="code">+$  nasm
+  $~  [~ [%atom 0]]                    ::  explicit bunt: load-bearing
+  [pos=(unit hair) node=(nasm-of:nockasm nasm)]</pre>
+<p id="n-4"><strong><a href="/spec/nockasm/#n-4">N-4</a> · The explicit <code>$~</code> bunt is required by the builder pattern</strong> — without it, bunt derivation recurses forever. The reference pins the pattern with <code>test-vocabulary-instantiation</code>. ⟨lane <code>ci:pins</code>⟩</p>
+<p id="n-5"><strong><a href="/spec/nockasm/#n-5">N-5</a> · Drift between our IR and the reference is UNREPRESENTABLE.</strong> Every vocabulary case, including any appended in a future IR version, is inherited by construction, both sides instantiating the same builder. <code>$mcas</code> (positioned match case), <code>$sema</code>, <code>$opco</code> and <code>$bare</code> (the pure instantiation) re-export per <code>sur/nasm</code>. ⟨<code>t-nx-strip-p</code>, <code>t-nx-strip-match-p</code>⟩</p>
+<p id="n-6"><strong><a href="/spec/nockasm/#n-6">N-6</a> · PROVENANCE TOTALITY</strong> (ROADMAP invariant 2): no <code>$nasm</code> node with a source ancestor may carry <code>pos=~</code>. <code>pos=~</code> is legal only for compiler-fabricated nodes with no source correlate — bunt bodies, injected defaults, ABI scaffolding. This is an emitter obligation on <code>+mint</code>/<code>+mill</code>, and a corpus-checkable property that lands with <code>+mint</code>'s own vectors. ⟨none — UNPINNED⟩</p>
+<h2 id="3-projection-and-the-conformance-contract">3. Projection and the conformance contract</h2>
+<p id="n-7"><strong><a href="/spec/nockasm/#n-7">N-7</a> · <code>+strip:expand : nasm → bare</code> drops <code>pos</code> and recurses</strong> — nothing else. ⟨<code>t-nx-strip-p</code>, <code>t-nx-strip-match-p</code>⟩</p>
+<p id="n-8"><strong><a href="/spec/nockasm/#n-8">N-8</a> · The conformance contract is bit-identity with the reference</strong>, for every emitted <code>n</code>, with <code>sch</code> the schema in force (§4):</p>
+<pre class="code">(expand:expand n)  ===  (lower:nockasm sch (strip n))</pre>
+<p>⟨<code>t-nx-conf-axis-p</code>, <code>t-nx-conf-let-p</code>, <code>t-nx-conf-match-p</code>, <code>t-nx-conf-nock-p</code>⟩</p>
+<p id="n-9"><strong><a href="/spec/nockasm/#n-9">N-9</a> · Two corollaries are INHERITED from the reference laws rather than re-proved here</strong>: render/parse round-trip (<code>expand (render x) === lower x</code>) and lift soundness (<code>lower ~ (lift f) === f</code>). ⟨<code>t-nx-law-atom-p</code>, <code>t-nx-law-cons-p</code>, <code>t-nx-law-inc-p</code>, <code>t-nx-law-scry-p</code>, <code>t-nx-law-fallback-p</code>⟩</p>
+<p id="n-10"><strong><a href="/spec/nockasm/#n-10">N-10</a> · <code>+lift</code> with the <code>%nock</code> fallback is TOTAL</strong> (v3): every noun reads as a formula or is explicitly marked opaque. ⟨<code>t-nx-lift-p</code>, <code>t-nx-lift-const-p</code>, <code>t-nx-law-fallback-p</code>⟩</p>
+<p id="n-11"><strong><a href="/spec/nockasm/#n-11">N-11</a> · <code>%nock</code> embeds are for the BOUNDARY, never a general escape hatch.</strong> Jock uses them for foreign-produced formulas — FFI glue via <code>$hlib</code>, precompiled fragments, wilt payloads — and the expander treats payloads as opaque, which is what lets hint-laden formulas survive untouched. ⟨<code>t-nx-nock-p</code>, <code>t-nx-conf-nock-p</code>⟩</p>
+<blockquote><strong>Honesty note, and it is a real exception to <a href="/spec/nockasm/#n-11">N-11</a>.</strong> Beyond the boundary uses the emitter also rides <code>%nock</code> for a handful of <strong>compiler-authored</strong> formulas: the <code>as!</code>/<code>as?</code> wrappers, the <code>%type-test</code> predicate, and everything <code>lib/mold.hoon</code> produces. The mold checks are the largest generated code in the compiler and are consequently invisible in <code>.nasm</code> artifacts. Re-expressing the mold compiler in the vocabulary is the named fix — mechanical, and unscheduled.</blockquote>
+<h2 id="4-emitter-obligations-mint-is-the-producer">4. Emitter obligations (<code>+mint</code> is the producer)</h2>
+<p>The target stays strict and the compiler adapts. These are <code>+mint</code>/<code>+mill</code> obligations, normative here.</p>
+<p id="n-12"><strong><a href="/spec/nockasm/#n-12">N-12</a> · SCHEMAS ARE GENERATED, never written.</strong> <code>$sema</code> is projected mechanically from <code>lay</code>/<code>nam.env</code> — names, structure and axes only, <code>%hole</code> for unnamed positions — and never constructed via text. Type information never enters a schema; <code>lay</code> projects by dropping types. ⟨<code>t-nx-axis-p</code>, <code>t-nx-conf-axis-p</code>⟩</p>
+<p id="n-13"><strong><a href="/spec/nockasm/#n-13">N-13</a> · UNIQUENESS IS OURS.</strong> A name appears at most once per schema and the emitter α-renames before construction, so the expander's <code>%duplicate-schema-name</code> crash is a <strong>compiler bug</strong> if ever reached from Jock source. Compiler temporaries use the reserved <code>.t0</code>, <code>.t1</code>, … convention. There is no shadowing: a <code>#let</code> of a bound name is likewise α-renamed at emission, surface shadowing having been resolved by <code>nam</code> long before. ⟨<code>t-nx-shadow-n</code>, <code>t-nx-let-p</code>⟩</p>
+<p id="n-14"><strong><a href="/spec/nockasm/#n-14">N-14</a> · Emitted names match <code>[a-z][a-z0-9-]*</code></strong> — Hoon-term discipline, for portable artifacts. ⟨none — UNPINNED⟩</p>
+<p id="n-15"><strong><a href="/spec/nockasm/#n-15">N-15</a> · Every <code>#match</code> carries a default.</strong> A source match proven exhaustive (types.md <a href="/spec/types/#s12.3">S12.3</a>) still lowers with <code>_ =&gt; (%crash)</code>: the checker's proof does not relax the target's contract. This is <strong>currently vacuous</strong> — <code>+mint</code> does not yet emit <code>#match</code> (<a href="/spec/nockasm/#n-21">N-21</a>) — and binds the moment it does. ⟨<code>t-nx-match-p</code>, <code>t-nx-conf-match-p</code>⟩</p>
+<p id="n-16"><strong><a href="/spec/nockasm/#n-16">N-16</a> · SYMBOLIC AXES ONLY.</strong> Anything with a source-level name goes through <code>.name</code>; a literal axis appears only for ABI-fabricated structure — dictionary arms, closure internals. The library's peg-shift machinery owns axis bookkeeping. ⟨<code>t-nx-axis-p</code>, <code>t-nx-axarg-n</code>, <code>t-nx-unbound-n</code>⟩</p>
+<p id="n-17"><strong><a href="/spec/nockasm/#n-17">N-17</a> · DETERMINISM</strong> (ROADMAP invariant 1): emitted <code>$nasm</code> is a pure function of source plus pinned inputs. Formula-keyed jets (§6) and the bootstrap fixed point both depend on it. ⟨lane <code>tools/vex.sh</code>; <code>t-nx-conf-axis-p</code>⟩</p>
+<h2 id="5-conformance-vector-set">5. Conformance vector set</h2>
+<p id="n-18"><strong><a href="/spec/nockasm/#n-18">N-18</a> · One mold, one runner.</strong> Expander-track vectors are ordinary <code>$tvec</code> rows (types.md S13, <code>tests/hoon/sur/vec.hoon</code>), distinguished by judgment tag, living at <code>tests/hoon/lib/vex-nasm.hoon</code> and run by <code>tools/vex.sh</code> like every other vector. Five judgments, 44 rows:</p>
+<table><thead><tr><th>judgment</th><th>in → out</th><th>what it asserts</th></tr></thead><tbody><tr><td><code>%strip</code></td><td>positioned → bare</td><td>the projection is exact, and junk positions in the input prove it ignores them</td></tr><tr><td><code>%expand</code></td><td><code>[sch positioned]</code> → Nock noun</td><td>the lowering equations value by value — <strong>all twenty-one</strong> opcodes, schema axes, raw cells, the <code>%nock</code> identity embed, <code>#let</code> pegging, <code>#match</code> chain compilation; negatives for unbound axes, unknown opcodes, empty raw cells, non-atom axis arguments and <code>#let</code> shadowing</td></tr><tr><td><code>%conform</code></td><td><code>[sch positioned]</code></td><td>the <a href="/spec/nockasm/#n-8">N-8</a> contract computed both ways in the harness, <code>expand</code> against <code>lower</code>∘<code>strip</code>, asserted equal per input</td></tr><tr><td><code>%lift</code></td><td>structured formula → positioned IR</td><td>op recovery and structural (<code>+noun-ast</code>) constants, <code>pos=~</code> throughout</td></tr><tr><td><code>%liftlaw</code></td><td>raw noun</td><td>the reference soundness law, including <code>%nock</code>-fallback nouns our <code>+lift</code>'s structured <code>$nock</code> argument cannot express — a malformed formula is unrepresentable in the typed view, so the fallback is reachable only from raw nouns</td></tr></tbody></table>
+<p>⟨<code>t-nx-strip-p</code>, <code>t-nx-slot-p</code>, <code>t-nx-const-p</code>, <code>t-nx-conf-axis-p</code>, <code>t-nx-lift-p</code>, <code>t-nx-law-atom-p</code>⟩ — one per judgment; the <code>%expand</code> rows are the per-opcode family, <code>t-nx-slot-p</code> through <code>t-nx-scry-p</code>.</p>
+<p id="n-19"><strong><a href="/spec/nockasm/#n-19">N-19</a> · Twenty-one is the count because <code>%scry</code> joined.</strong> <code>$opco</code> is a closed term set — <code>%self %battery %payload %sample %context %crash %slot %const %arm %eval %isa %inc %eq %if %comp %push %call %edit %hint %hintd %scry</code> — and <code>+expa-op</code> refines against it, so an unknown opcode is a crash at expansion time. This section read "twenty" while the set was at v0.4. ⟨<code>t-nx-scry-p</code>, <code>t-nx-law-scry-p</code>, <code>t-nx-unkop-n</code>⟩</p>
+<p id="n-20"><strong><a href="/spec/nockasm/#n-20">N-20</a> · Vectors are blessed per-vector with rationale</strong> (ROADMAP invariant 3); wholesale regeneration is forbidden. ⟨lane <code>tools/vex.sh</code>⟩</p>
+<h2 id="6-interactions-fixed-elsewhere">6. Interactions fixed elsewhere</h2>
+<p id="n-21"><strong><a href="/spec/nockasm/#n-21">N-21</a> · <code>#match</code> emission is PLANNED, NOT CURRENT.</strong> The vocabulary and its lowering exist and are conformance-tested on hand-built IR, but the match compiler emits <code>%if</code> chains everywhere, so an n-arm tag match renders as n nested <code>(%if …)</code> forms in the artifact. Until then <code>+mint</code> lowers pattern matches (types.md S12) to discriminant tests (D1–D4) plus <code>#let</code> binding plus short-circuit <code>%if</code>/<code>%eq</code> chains. Lowering through <code>#match</code> where every case is a bare tag is the legibility fix, semantically equivalent. ⟨<code>t-nx-match-p</code>, <code>t-nx-if-p</code>, <code>t-nx-eq-p</code>⟩</p>
+<p id="n-22"><strong><a href="/spec/nockasm/#n-22">N-22</a> · Wilts ride <code>%hintd</code></strong> (POSSIBLES P-4, OPEN-22): there is no <code>%jet</code> node, and <strong>Jock will not request one</strong> — the IR leaves the door open (<code>nockasm-target.md</code> §9.2 revisits a <code>#jet</code> convenience if artifacts get noisy), and this is Jock declining to walk through it, not the IR refusing to build it. When wilt emission lands — nothing emits wilts today — <code>+mint</code> will emit <code>%wild</code> jet registration as <code>%hintd</code> with a <code>%const</code> clue. The wilt's structure is checked in compiler molds, not in the IR. ⟨<code>t-nx-hintd-p</code>⟩</p>
+<p id="n-23"><strong><a href="/spec/nockasm/#n-23">N-23</a> · Crash provenance rides the same op.</strong> A debug build may wrap positioned forms in <code>%spot</code>-style dynamic hints (<code>nockasm-target.md</code> §8 tier 2), emitted through the existing <code>%hintd</code> op and derived from <code>pos</code>, off in release builds and off in the differential suite. Comment provenance (tier 1) is a <code>render</code>-side channel and never enters the IR. ⟨<code>t-nx-hintd-p</code>, <code>t-nx-hint-p</code>⟩</p>
+<p id="n-24"><strong><a href="/spec/nockasm/#n-24">N-24</a> · L2 macros are CONDITIONAL</strong> (<code>nockasm-target.md</code> §7). Jock emits L1 scaffolding; the L2 decision is made by reading real artifacts, per that section's own gate, and nothing in this spec presumes them. ⟨none — UNPINNED⟩</p>
+<p id="n-25"><strong><a href="/spec/nockasm/#n-25">N-25</a> · Structural match patterns are an OPEN EXTENSION of the IR</strong> (<code>nockasm-target.md</code> §9.1), which is why <a href="/spec/nockasm/#n-21">N-21</a>'s discriminant lowering is what exists. ⟨none — UNPINNED⟩</p>
+<h2 id="7-what-is-open">7. What is open</h2>
+<ol><li>Whether the conformance harness also runs the reference's Python implementation as a second oracle in CI. The reference repo already proves Hoon↔Python parity, so running one of them is probably sufficient.</li><li>The <code>%spot</code> hint payload shape for Jock positions — <code>hair</code> versus <code>[path hair hair]</code> — to be decided with the provenance demo.</li></ol>
+</main>
+</div>
+</body>
+</html>

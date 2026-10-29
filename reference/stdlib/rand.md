@@ -5,7 +5,7 @@ deterministic pseudo-random numbers.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/rand.jock` and the examples that import it.
 >
-> 12 public declarations — 1 type, 11 arms. 10 pinned by a lane, 2 not. channel `%rc` · commit `dd95321`
+> 12 public declarations — 1 type, 11 arms. 10 pinned by a lane, 2 not. channel `%rc` · commit `8b5492e`
 
 ## Import
 

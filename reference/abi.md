@@ -5,15 +5,15 @@ What a Jock program can call: the arms the runtime pins, the traits the prelude 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `dd95321` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+> channel `%rc` · commit `8b5492e` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
 
-`docs/spec/runtime.md` is the authority for everything here. R-9 freezes the ABI through 1.0 with **append** as the one sanctioned change shape — a new arm enters at the END so every prior arm keeps its index, and a modification in place is not available because it would move an index that emitted code already depends on. R-10: the freeze rests on two pins, and only one is a mug.
+`docs/spec/runtime.md` is the authority for everything here. [R-9](/spec/runtime/#r-9) freezes the ABI through 1.0 with **append** as the one sanctioned change shape — a new arm enters at the END so every prior arm keeps its index, and a modification in place is not available because it would move an index that emitted code already depends on. [R-10](/spec/runtime/#r-10): the freeze rests on two pins, and only one is a mug.
 
 ## The pinned arms
 
-37 rows, projected from `runtime.md` §4.1. Each names its signature and the corpus vectors that exercise it through Jock source — R-11 pins the pairing **behaviourally**, so a reorder in either table breaks a vector rather than passing quietly.
+37 rows, projected from `runtime.md` §4.1. Each names its signature and the corpus vectors that exercise it through Jock source — [R-11](/spec/runtime/#r-11) pins the pairing **behaviourally**, so a reorder in either table breaks a vector rather than passing quietly.
 
-R-12 is the one to read twice: nineteen arms return `Nat`, not `@`. `Nat` sits *below* `Atom` in the aura order, so a declared `@` return would not flow into a `Nat` annotation and these do.
+[R-12](/spec/runtime/#r-12) is the one to read twice: nineteen arms return `Nat`, not `@`. `Nat` sits *below* `Atom` in the aura order, so a declared `@` return would not flow into a `Nat` annotation and these do.
 
 | label | signature | vectors | notes |
 |---|---|---|---|
@@ -24,7 +24,7 @@ R-12 is the one to read twice: nineteen arms return `Nat`, not `@`. `Nat` sits *
 | `hoon.trip` | `Str -> LC` | ⟨`t-jimp-print`, `t-spot-print`, `t-text-glyph`⟩ | cord → tape (bytes); every `print` row rides it, the `%slog` clue being a tape |
 | `hoon.cat` | `(Str, Str) -> Str` | ⟨`t-repl-str`, `t-text-op-cat`, `t-text-strif-let`⟩ | byte concat (curated `cat`-3 wrapper) |
 | `hoon.met` | `@ -> Nat` | ⟨`t-text-len`, `t-text-bytes`⟩ | byte length (curated `met`-3 wrapper); reached through `impl Str for String`, so `Str.len` converts and the caller writes `hoon.met(self as! @)` |
-| `hoon.mug` | `* -> Nat` | ⟨`t-text-mug`, `t-abi-mug-canon`⟩ | the collection hash (Map/Set, S10.1). `t-abi-mug-canon` is the treap-canonicity row: insertion order cannot show through a mug-placed treap |
+| `hoon.mug` | `* -> Nat` | ⟨`t-text-mug`, `t-abi-mug-canon`⟩ | the collection hash (Map/Set, [S10.1](/spec/types/#s10.1)). `t-abi-mug-canon` is the treap-canonicity row: insertion order cannot show through a mug-placed treap |
 | `hoon.radd` `rdiv` | `(Float64, Float64) -> Float64` | ⟨`t-text-radd`, `t-text-rdiv`, `t-text-radd-op`, `t-text-rdiv-op`⟩ | `~(op rd %n)` — the **`%n` rounding mode is pinned in the wrapper**, with no mode surface |
 | `hoon.rsub` `rmul` | `(Float64, Float64) -> Float64` | ⟨none — UNPINNED⟩ | the other half of the same family, and the gap is real: no corpus row multiplies or subtracts two Float64s |
 | `hoon.rlth` `rlte` `rgth` `rgte` | `(Float64, Float64) -> Bool` | ⟨`t-text-rlth`, `t-text-rlt-op`, `t-text-rlte-op`, `t-text-rgte-op`, `t-eq-nan-ieee`, `t-eq-zero-ieee`⟩ | IEEE-correct on NaN and signed zero, which is why `Eq(Float64)` composes from `rlte` |
@@ -38,8 +38,8 @@ R-12 is the one to read twice: nineteen arms return `Nat`, not `@`. `Nat` sits *
 | `hoon.sdel` | `forall T. (Set<T>, T) -> Set<T>` | ⟨`t-text-sdel`⟩ | `+del:in` |
 | `hoon.mtap` | `forall K V. Map<K->V> -> List<(K, V)>` | ⟨`t-map-tap`, `t-map-tap-method`⟩ | `+tap:by` |
 | `hoon.stap` | `forall T. Set<T> -> List<T>` | ⟨`t-set-tap`, `t-set-tap-method`⟩ | `+tap:in` — **treap order, not sorted order** |
-| `hoon.lturn` | `forall A B. (List<A>, A -> B) -> List<B>` | ⟨`t-list-turn`, `t-list-turn-lambda`, `t-list-turn-retype`⟩ | `+turn` — slams only, so no wrapper (R-14) |
-| `hoon.lreel` | `forall A B. (List<A>, (A, B) -> B, B) -> B` | ⟨`t-list-reel`, `t-list-reel-empty`⟩ | `+reel` — **seeds the sample, so the wrapper builds its own gate** (R-14) |
+| `hoon.lturn` | `forall A B. (List<A>, A -> B) -> List<B>` | ⟨`t-list-turn`, `t-list-turn-lambda`, `t-list-turn-retype`⟩ | `+turn` — slams only, so no wrapper ([R-14](/spec/runtime/#r-14)) |
+| `hoon.lreel` | `forall A B. (List<A>, (A, B) -> B, B) -> B` | ⟨`t-list-reel`, `t-list-reel-empty`⟩ | `+reel` — **seeds the sample, so the wrapper builds its own gate** ([R-14](/spec/runtime/#r-14)) |
 | `hoon.lroll` | `forall A B. (List<A>, (A, B) -> B, B) -> B` | ⟨`t-list-roll`, `t-list-roll-empty`⟩ | `+roll` — same wrapper shape as `lreel` |
 | `hoon.mix` `con` `dis` | `(@, @) -> Nat` | ⟨`t-bit-mix`, `t-bit-con`, `t-bit-dis`⟩ | xor / or / and; the `@p` differential rides them (`examples/patp.jock`, `lib/urbit.jock`) |
 | `hoon.rsh` `lsh` `end` | `(@, @) -> Nat` | ⟨`t-bit-rsh`, `t-bit-lsh`, `t-bit-end`⟩ | (bit-count, atom) |
@@ -84,11 +84,11 @@ R-12 is the one to read twice: nineteen arms return `Nat`, not `@`. `Nat` sits *
 | `Eq` | — | `eq(==)` | `Float64` |
 | `Show` | — | `show(self: Self) -> String` | `Bool` `Byte` `Float64` `Int` `String` |
 
-3 declare no prelude impl: `Kernel` `FullKernel` `Roof`. `Add`, `Sub` and friends are not orphans by accident — the numeric column is a DIRECT arm call that never reaches a trait (R-51), so the prelude binds them only where dispatch is needed, which is `Float64`, `Int`, `String` and `Byte`.
+3 declare no prelude impl: `Kernel` `FullKernel` `Roof`. `Add`, `Sub` and friends are not orphans by accident — the numeric column is a DIRECT arm call that never reaches a trait ([R-51](/spec/runtime/#r-51)), so the prelude binds them only where dispatch is needed, which is `Float64`, `Int`, `String` and `Byte`.
 
 ## How an operator resolves
 
-`runtime.md` R-51. `%operator` and ordered `%compare` are KERNEL forms, and mint routes on the **left** operand's widened bar-type.
+`runtime.md` [R-51](/spec/runtime/#r-51). `%operator` and ordered `%compare` are KERNEL forms, and mint routes on the **left** operand's widened bar-type.
 
 | left operand | resolution |
 |---|---|
@@ -97,7 +97,7 @@ R-12 is the one to read twice: nineteen arms return `Nat`, not `@`. `Nat` sits *
 | nominal head (struct/union/class/data) or NON-numeric aura (`%chars`, `%logical`, …) | the ops registry → trait-method dispatch (`+mmet`: class-inherent, impl-dictionary, generic-head). An impl gives the operator meaning; its absence refuses `%mint-op-impl` |
 | bounded `%var` | the same synthesized method call; the `$bnd` dictionary route resolves it |
 
-## Jet status (R-5’s sixth field)
+## Jet status ([R-5](/spec/runtime/#r-5)’s sixth field)
 
 Not per arm, and it cannot be. Every arm above lives in `hoon`, the one library that is hot **by construction**: `+hoonlib` builds it by evaluating in-process, so its arms are the substrate’s own kernel gates and the NockVM hot state matches them by formula identity. What varies is whether anything **registers**, and that is a property of the artifact you ship, not of the arm you call.
 
@@ -112,6 +112,6 @@ Call sites are attributed individually — `hoon.add(20, 22)` reports `hoon`/`ad
 
 ## What this page does not yet carry
 
-The per-arm record format (R-5) asks for six fields — label, formula hash, mask, signature, vectors, jet status. The §4.1 table carries **three** of them: label, signature and vectors. Its fourth column, `notes`, is not an R-5 field, and this page counted it as one and claimed four of six until 2026-10-27. Jet status is the section above, which makes it four for real.
+The per-arm record format ([R-5](/spec/runtime/#r-5)) asks for six fields — label, formula hash, mask, signature, vectors, jet status. The §4.1 table carries **three** of them: label, signature and vectors. Its fourth column, `notes`, is not an [R-5](/spec/runtime/#r-5) field, and this page counted it as one and claimed four of six until 2026-10-27. Jet status is the section above, which makes it four for real.
 
-The two that remain are **formula hash** and **mask**, and neither is withheld for want of a table. A formula hash needs the R-6 hash-diff protocol to pin a hash *per arm* — `tools/jets-lane.sh` diffs the stdlib’s hashes in bulk, which catches drift without ever naming which arm moved. The `%wild` mask needs the `$sock` cape, whose emission is the paused half of UIP-0122: the molds and the builder exist and pass, and the `%hintd` emission waits on runtime co-design. Both are tool work, not documentation work, and this page will carry them when the tools answer.
+The two that remain are **formula hash** and **mask**, and neither is withheld for want of a table. A formula hash needs the [R-6](/spec/runtime/#r-6) hash-diff protocol to pin a hash *per arm* — `tools/jets-lane.sh` diffs the stdlib’s hashes in bulk, which catches drift without ever naming which arm moved. The `%wild` mask needs the `$sock` cape, whose emission is the paused half of UIP-0122: the molds and the builder exist and pass, and the `%hintd` emission waits on runtime co-design. Both are tool work, not documentation work, and this page will carry them when the tools answer.

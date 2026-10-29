@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>dd95321</code> (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>8b5492e</code> (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30</aside>
 <table><thead><tr><th></th><th>count</th><th></th></tr></thead><tbody><tr><td>tags the compiler can raise</td><td>202</td><td>197 <code>~|</code> heads + 7 <code>$diag</code> members</td></tr><tr><td><strong>with a runnable program</strong></td><td><strong>162</strong></td><td>the vector carries source, and the page shows it</td></tr><tr><td>no input can reach the guard</td><td>36</td><td>registered with the reason, and the registry is checked</td></tr><tr><td>…of those, still pinned by a vector</td><td>30</td><td>an AST- or judgment-level row reaches the arm directly</td></tr><tr><td>…and pinned by nothing</td><td>6</td><td>nothing to point an input at</td></tr><tr><td>compiler invariant with a tripwire</td><td>2</td><td>a vector green only while the invariant holds</td></tr><tr><td><strong>reachable, and pinned by nothing</strong></td><td><strong>2</strong></td><td>the gap list</td></tr><tr><td>AST-level only, with no reason recorded</td><td>0</td><td>the other gap: pinned, but never watched from a program</td></tr></tbody></table>
 <p>A <code>%neg</code> vector refuses <em>without</em> naming a tag, so it pins that a program is rejected and never in what words. 38 rows are <code>%neg</code>; none of them pins a tag here.</p>
 <p><strong>The two gap rows are the ones to read.</strong> Every other row is a refusal the corpus pins and this page can explain. A count of unpinned tags on its own cannot tell a missing test from a guard the compiler holds against itself, and this page published 82 of them as one list until the difference was worked out tag by tag.</p>
@@ -66,54 +66,54 @@
 <p>pinned by <code>t-rch-nx-axarg</code> · also <code>t-nx-axarg-n</code> (AST-level)</p>
 <h3 id="decl-class-state"><code>%decl-class-state</code></h3>
 <pre class="code jock" data-refuses="decl-class-state">class C(@) { m(self: C) -&gt; @ { 1 }; }; 1</pre>
-<p>pinned by <code>t-rch-cls-state</code> · also <code>t-mint-class-state</code> (AST-level) · spec: docs/spec/language.md L-159</p>
+<p>pinned by <code>t-rch-cls-state</code> · also <code>t-mint-class-state</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-159">L-159</a></p>
 <h3 id="decl-dup"><code>%decl-dup</code></h3>
 <pre class="code jock" data-refuses="decl-dup">struct S { x: @ }; struct S { y: @ }; 1</pre>
-<p>pinned by <code>t-rch-decl-dup</code> · also <code>t-mint-decl-dup</code>, <code>t-mint-decl-redecl</code> (AST-level) · spec: docs/spec/language.md L-73, docs/spec/language.md L-157</p>
+<p>pinned by <code>t-rch-decl-dup</code> · also <code>t-mint-decl-dup</code>, <code>t-mint-decl-redecl</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-73">L-73</a>, docs/spec/language.md <a href="/spec/language/#l-157">L-157</a></p>
 <h3 id="decl-dup-field"><code>%decl-dup-field</code></h3>
 <pre class="code jock" data-refuses="decl-dup-field">struct S { x: @, x: @ }; 1</pre>
-<p>pinned by <code>t-decl-dup-field</code> · spec: docs/spec/language.md L-157</p>
+<p>pinned by <code>t-decl-dup-field</code> · spec: docs/spec/language.md <a href="/spec/language/#l-157">L-157</a></p>
 <h3 id="decl-dup-method"><code>%decl-dup-method</code></h3>
 <pre class="code jock" data-refuses="decl-dup-method">struct S { x: @ }; class C(S) { m(self: C) -&gt; @ { 1 }; m(self: C) -&gt; @ { 2 }; }; 1</pre>
-<p>pinned by <code>t-decl-dup-method</code> · spec: docs/spec/language.md L-157</p>
+<p>pinned by <code>t-decl-dup-method</code> · spec: docs/spec/language.md <a href="/spec/language/#l-157">L-157</a></p>
 <h3 id="decl-dup-tag"><code>%decl-dup-tag</code></h3>
 <pre class="code jock" data-refuses="decl-dup-tag">enum E { a, a }; 1</pre>
-<p>pinned by <code>t-decl-dup-tag</code> · spec: docs/spec/language.md L-157</p>
+<p>pinned by <code>t-decl-dup-tag</code> · spec: docs/spec/language.md <a href="/spec/language/#l-157">L-157</a></p>
 <h3 id="decl-empty-struct"><code>%decl-empty-struct</code></h3>
 <pre class="code jock" data-refuses="decl-empty-struct">struct S { }; 1</pre>
 <p>pinned by <code>t-rch-decl-mt</code> · also <code>t-mint-decl-empty</code> (AST-level)</p>
 <h3 id="decl-fond"><code>%decl-fond</code></h3>
 <pre class="code jock" data-refuses="decl-fond">enum Rec { mk(Rec) }; 0</pre>
-<p>pinned by <code>t-decl-fond-only</code> · also <code>t-mint-decl-fond</code> (AST-level) · spec: docs/spec/language.md L-164</p>
+<p>pinned by <code>t-decl-fond-only</code> · also <code>t-mint-decl-fond</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-164">L-164</a></p>
 <h3 id="decl-fond-deep"><code>%decl-fond-deep</code></h3>
 <pre class="code jock" data-refuses="decl-fond-deep">struct S0 { x: @ }; struct S1 { x: S0 }; struct S2 { x: S1 }; struct S3 { x: S2 }; struct S4 { x: S3 }; struct S5 { x: S4 }; struct S6 { x: S5 }; struct S7 { x: S6 }; struct S8 { x: S7 }; struct S9 { x: S8 }; struct S10 { x: S9 }; struct S11 { x: S10 }; struct S12 { x: S11 }; struct S13 { x: S12 }; struct S14 { x: S13 }; struct S15 { x: S14 }; struct S16 { x: S15 }; struct S17 { x: S16 }; struct S18 { x: S17 }; struct S19 { x: S18 }; struct S20 { x: S19 }; struct S21 { x: S20 }; struct S22 { x: S21 }; struct S23 { x: S22 }; struct S24 { x: S23 }; struct S25 { x: S24 }; struct S26 { x: S25 }; struct S27 { x: S26 }; struct S28 { x: S27 }; struct S29 { x: S28 }; struct S30 { x: S29 }; struct S31 { x: S30 }; struct S32 { x: S31 }; struct S33 { x: S32 }; struct S34 { x: S33 }; struct S35 { x: S34 }; struct S36 { x: S35 }; struct S37 { x: S36 }; struct S38 { x: S37 }; struct S39 { x: S38 }; struct S40 { x: S39 }; struct S41 { x: S40 }; struct S42 { x: S41 }; struct S43 { x: S42 }; struct S44 { x: S43 }; struct S45 { x: S44 }; struct S46 { x: S45 }; struct S47 { x: S46 }; struct S48 { x: S47 }; struct S49 { x: S48 }; struct S50 { x: S49 }; struct S51 { x: S50 }; struct S52 { x: S51 }; struct S53 { x: S52 }; struct S54 { x: S53 }; struct S55 { x: S54 }; struct S56 { x: S55 }; struct S57 { x: S56 }; struct S58 { x: S57 }; struct S59 { x: S58 }; struct S60 { x: S59 }; struct S61 { x: S60 }; struct S62 { x: S61 }; struct S63 { x: S62 }; struct S64 { x: S63 }; struct S65 { x: S64 }; struct S66 { x: S65 }; struct S67 { x: S66 }; struct S68 { x: S67 }; struct S69 { x: S68 }; struct S70 { x: S69 }; 1</pre>
-<p>pinned by <code>t-decl-fond-deep</code> · spec: docs/spec/language.md L-164</p>
+<p>pinned by <code>t-decl-fond-deep</code> · spec: docs/spec/language.md <a href="/spec/language/#l-164">L-164</a></p>
 <h3 id="decl-fond-order"><code>%decl-fond-order</code></h3>
 <pre class="code jock" data-refuses="decl-fond-order">enum Rec { cell(Rec, Rec), leaf }; 0</pre>
-<p>pinned by <code>t-decl-fond-cycl</code> · spec: docs/spec/language.md L-164</p>
+<p>pinned by <code>t-decl-fond-cycl</code> · spec: docs/spec/language.md <a href="/spec/language/#l-164">L-164</a></p>
 <h3 id="decl-indiscriminable"><code>%decl-indiscriminable</code></h3>
 <pre class="code jock" data-refuses="decl-indiscriminable">struct P { a: @, b: @ }; struct Q { c: @, d: @ }; alias C is P | Q; 0</pre>
 <p>pinned by <code>t-decl-dish-stub-still</code>, <code>t-err-decl-indiscrim</code>, <code>t-err-or-arg-cell</code>, <code>t-err-or-arg-stub</code>, <code>t-err-or-headshape-both</code>, <code>t-err-or-headshape-onefield</code></p>
 <h3 id="decl-op-eq"><code>%decl-op-eq</code></h3>
 <pre class="code jock" data-refuses="decl-op-eq">trait E { ne(!=); }; 0</pre>
-<p>pinned by <code>t-err-op-ne</code> · spec: docs/spec/language.md L-43</p>
+<p>pinned by <code>t-err-op-ne</code> · spec: docs/spec/language.md <a href="/spec/language/#l-43">L-43</a></p>
 <h3 id="decl-op-gen"><code>%decl-op-gen</code></h3>
 <pre class="code jock" data-refuses="decl-op-gen">trait T&lt;X&gt; { add(+); }; 1</pre>
 <p>pinned by <code>t-decl-op-gen</code></p>
 <h3 id="decl-op-rebind"><code>%decl-op-rebind</code></h3>
 <pre class="code jock" data-refuses="decl-op-rebind">trait MyAdd { add(+); }; 0</pre>
-<p>pinned by <code>t-err-op-rebind</code> · spec: docs/spec/language.md L-43, docs/spec/runtime.md R-62</p>
+<p>pinned by <code>t-err-op-rebind</code> · spec: docs/spec/language.md <a href="/spec/language/#l-43">L-43</a>, docs/spec/runtime.md <a href="/spec/runtime/#r-62">R-62</a></p>
 <h3 id="decl-trait-annot"><code>%decl-trait-annot</code></h3>
 <pre class="code jock" data-refuses="decl-trait-annot">trait T { m(self: Self, a) -&gt; @; }; 1</pre>
 <p>pinned by <code>t-decl-trait-annot</code></p>
 <h3 id="decl-trait-self"><code>%decl-trait-self</code></h3>
 <pre class="code jock" data-refuses="decl-trait-self">trait Zero { zero() -&gt; Self; }; 1</pre>
-<p>pinned by <code>t-trait-nullary</code> · also <code>t-mint-trait-self</code> (AST-level) · spec: docs/spec/language.md L-44</p>
+<p>pinned by <code>t-trait-nullary</code> · also <code>t-mint-trait-self</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-44">L-44</a></p>
 <h3 id="duplicate-schema-name"><code>%duplicate-schema-name</code></h3>
 <p>A <strong>Nock Assembly</strong> program, not a Jock one — <code>nexpand</code> is the judgment, and <code>lib/nockasm</code> the language.</p>
 <pre class="code" data-refuses="duplicate-schema-name">:subject {.a .a}
 (%self)</pre>
-<p>pinned by <code>t-rch-nx-schdup</code> · also <code>t-nx-schdup-n</code> (AST-level) · spec: docs/spec/nockasm-target.md N-39, docs/spec/nockasm-target.md N-40, docs/spec/nockasm.md N-13</p>
+<p>pinned by <code>t-rch-nx-schdup</code> · also <code>t-nx-schdup-n</code> (AST-level) · spec: docs/spec/nockasm-target.md <a href="/spec/nockasm-target/#n-39">N-39</a>, docs/spec/nockasm-target.md <a href="/spec/nockasm-target/#n-40">N-40</a>, docs/spec/nockasm.md <a href="/spec/nockasm/#n-13">N-13</a></p>
 <h3 id="elab-arity"><code>%elab-arity</code></h3>
 <pre class="code jock" data-refuses="elab-arity">struct BS&lt;T&gt; { v: T }; func f(b: BS) -&gt; @ { 1 }; 1</pre>
 <p>pinned by <code>t-rch-el-arity</code> · also <code>t-elab-arity-n</code> (AST-level)</p>
@@ -131,7 +131,7 @@
 <pre class="code jock" data-refuses="elab-unbound">private struct Hidden { h: @ }; struct Shown { s: @ };</pre>
 <p class="label">program</p>
 <pre class="code jock" data-refuses="elab-unbound">import m; let h: m.Hidden = m.Hidden( h: 1 ); h.h</pre>
-<p>pinned by <code>t-jimp-private-type</code>, <code>t-timp-type-unbound</code> · also <code>t-elab-unbound-err</code>, <code>t-elab-unbound-n</code> (AST-level) · spec: docs/imports.md I-5, docs/spec/runtime.md R-83</p>
+<p>pinned by <code>t-jimp-private-type</code>, <code>t-timp-type-unbound</code> · also <code>t-elab-unbound-err</code>, <code>t-elab-unbound-n</code> (AST-level) · spec: docs/imports.md I-5, docs/spec/runtime.md <a href="/spec/runtime/#r-83">R-83</a></p>
 <h3 id="elab-unimported"><code>%elab-unimported</code></h3>
 <pre class="code jock" data-refuses="elab-unimported">import b; let p: a.P = b.getp(42); p.v</pre>
 <p>pinned by <code>t-jdag-layer-spell</code> · spec: docs/imports.md I-3</p>
@@ -140,7 +140,7 @@
 <pre class="code jock" data-refuses="export-private">private struct Key { k: @ }; func mkKey(n: @) -&gt; Key { Key( k: n ) };</pre>
 <p class="label">program</p>
 <pre class="code jock" data-refuses="export-private">import m; m.mkKey(3).k</pre>
-<p>pinned by <code>t-jimp-export-private</code>, <code>t-jimp-export-private-alias</code>, <code>t-jimp-export-private-field</code> · spec: docs/imports.md I-5, docs/spec/language.md L-21</p>
+<p>pinned by <code>t-jimp-export-private</code>, <code>t-jimp-export-private-alias</code>, <code>t-jimp-export-private-field</code> · spec: docs/imports.md I-5, docs/spec/language.md <a href="/spec/language/#l-21">L-21</a></p>
 <h3 id="import-cycle"><code>%import-cycle</code></h3>
 <pre class="code jock" data-refuses="import-cycle">import a; a.fa(1)</pre>
 <p>pinned by <code>t-jdag-cycle</code></p>
@@ -149,7 +149,7 @@
 <pre class="code jock" data-refuses="import-unknown">import bar; func f(n: @) -&gt; @ { n };</pre>
 <p class="label">program</p>
 <pre class="code jock" data-refuses="import-unknown">import m; m.f(1)</pre>
-<p>pinned by <code>t-jimp-mimp</code> · spec: docs/imports.md I-6, docs/spec/language.md L-171</p>
+<p>pinned by <code>t-jimp-mimp</code> · spec: docs/imports.md I-6, docs/spec/language.md <a href="/spec/language/#l-171">L-171</a></p>
 <h3 id="in-module"><code>%in-module</code></h3>
 <p class="label">module</p>
 <pre class="code jock" data-refuses="in-module">func f(n: @) -&gt; @ { n + 1 };
@@ -162,13 +162,13 @@ let z = nosuchname;</pre>
 <p>pinned by <code>t-err-join-if</code>, <code>t-err-join-list</code> · also <code>t-join-aura-chars-e</code>, <code>t-join-aura-loob-e</code>, <code>t-join-aura-real-e</code> (AST-level)</p>
 <h3 id="join-fail"><code>%join-fail</code></h3>
 <pre class="code jock" data-refuses="join-fail">let xs = [1, "a"]; xs</pre>
-<p>pinned by <code>t-dtags-list-join</code>, <code>t-rch-dtags-if</code>, <code>t-rch-join</code> · also <code>t-join-fail-n</code>, <code>t-join-ref-n</code>, <code>t-join-sub-miss-n</code>, <code>t-mint-join-err</code> (AST-level) · spec: docs/spec/chain.md C-48</p>
+<p>pinned by <code>t-dtags-list-join</code>, <code>t-rch-dtags-if</code>, <code>t-rch-join</code> · also <code>t-join-fail-n</code>, <code>t-join-ref-n</code>, <code>t-join-sub-miss-n</code>, <code>t-mint-join-err</code> (AST-level) · spec: docs/spec/chain.md <a href="/spec/chain/#c-48">C-48</a></p>
 <h3 id="kernel-shape"><code>%kernel-shape</code></h3>
 <pre class="code jock" data-refuses="kernel-shape">42</pre>
 <p>pinned by <code>t-kern-shape</code></p>
 <h3 id="kernel-trait"><code>%kernel-trait</code></h3>
 <pre class="code jock" data-refuses="kernel-trait">struct KS { n: @ }; class Counter(KS) { load(self: Counter, old: *) -&gt; Counter { old as! Counter }; peek(self: Counter, p: *) -&gt; * { self.n }; poke(self: Counter, e: *) -&gt; (List&lt;*&gt;, Counter) { (~, self) }; }; Counter( n: 0 )</pre>
-<p>pinned by <code>t-rch-kern-tr</code> · spec: docs/spec/runtime.md R-70</p>
+<p>pinned by <code>t-rch-kern-tr</code> · spec: docs/spec/runtime.md <a href="/spec/runtime/#r-70">R-70</a></p>
 <h3 id="let-shadows"><code>%let-shadows</code></h3>
 <p>A <strong>Nock Assembly</strong> program, not a Jock one — <code>nexpand</code> is the judgment, and <code>lib/nockasm</code> the language.</p>
 <pre class="code" data-refuses="let-shadows">#let .a = (%const 1) in #let .a = (%const 2) in (%self)</pre>
@@ -178,7 +178,7 @@ let z = nosuchname;</pre>
 <p>pinned by <code>t-lex-blokop-n</code></p>
 <h3 id="lex-connective"><code>%lex-connective</code></h3>
 <pre class="code jock" data-refuses="lex-connective">let a = true; let b = false; a &amp;&amp; b</pre>
-<p>pinned by <code>t-hint-amp</code>, <code>t-hint-amp-mid</code>, <code>t-hint-bar</code> · spec: docs/spec/language.md L-91, docs/spec/language.md L-178</p>
+<p>pinned by <code>t-hint-amp</code>, <code>t-hint-amp-mid</code>, <code>t-hint-bar</code> · spec: docs/spec/language.md <a href="/spec/language/#l-91">L-91</a>, docs/spec/language.md <a href="/spec/language/#l-178">L-178</a></p>
 <h3 id="lex-hex"><code>%lex-hex</code></h3>
 <pre class="code jock" data-refuses="lex-hex">0x</pre>
 <p>pinned by <code>t-lex-hex-n</code></p>
@@ -190,7 +190,7 @@ let z = nosuchname;</pre>
 <p>pinned by <code>t-err-interp-open</code></p>
 <h3 id="lex-interp-str"><code>%lex-interp-str</code></h3>
 <pre class="code jock" data-refuses="lex-interp-str">"a{"b"}c"</pre>
-<p>pinned by <code>t-err-interp-str</code> · spec: docs/spec/language.md L-31</p>
+<p>pinned by <code>t-err-interp-str</code> · spec: docs/spec/language.md <a href="/spec/language/#l-31">L-31</a></p>
 <h3 id="lex-number"><code>%lex-number</code></h3>
 <pre class="code jock" data-refuses="lex-number">1_</pre>
 <p>pinned by <code>t-lex-num-n</code></p>
@@ -209,7 +209,7 @@ cd"; s</pre>
 <p>pinned by <code>t-lex-stray-n</code> · also <code>t-lex-uni-n</code> (AST-level)</p>
 <h3 id="lex-string-escape"><code>%lex-string-escape</code></h3>
 <pre class="code jock" data-refuses="lex-string-escape">"a\zzb"</pre>
-<p>pinned by <code>t-str-esc-bad</code>, <code>t-str-esc-short</code> · spec: docs/spec/language.md L-29</p>
+<p>pinned by <code>t-str-esc-bad</code>, <code>t-str-esc-short</code> · spec: docs/spec/language.md <a href="/spec/language/#l-29">L-29</a></p>
 <h3 id="lex-term"><code>%lex-term</code></h3>
 <pre class="code jock" data-refuses="lex-term">%aB</pre>
 <p>pinned by <code>t-lex-term</code></p>
@@ -229,16 +229,16 @@ cd"; s</pre>
 <p>pinned by <code>t-mill-lambda</code></p>
 <h3 id="mill-lambda-arity"><code>%mill-lambda-arity</code></h3>
 <pre class="code jock" data-refuses="mill-lambda-arity">let f: (@) -&gt; @ = lambda (x: @, y: @) -&gt; @ { x }; f(1)</pre>
-<p>pinned by <code>t-mill-lambda-arity</code> · spec: docs/spec/language.md L-141</p>
+<p>pinned by <code>t-mill-lambda-arity</code> · spec: docs/spec/language.md <a href="/spec/language/#l-141">L-141</a></p>
 <h3 id="mill-nest"><code>%mill-nest</code></h3>
 <pre class="code jock" data-refuses="mill-nest">let u: UniChar = 0x1f600 as! UniChar; let b: Byte = u; b</pre>
-<p>pinned by <code>t-arc-unichar-narrow</code>, <code>t-err-class-gen-arg</code>, <code>t-err-map-annot-real</code>, <code>t-err-print-num</code>, <code>t-gen-rigid-arg</code>, <code>t-gen-rigid-unit</code>, <code>t-rigid-mcon</code>, <code>t-rigid-slit</code>, <code>t-roof-named-func</code>, <code>t-text-char-no</code>, <code>t-var-widen-shallow</code> · also <code>t-mint-annot</code>, <code>t-mint-cond</code>, <code>t-mint-guard</code>, <code>t-mint-inc-cell</code> (AST-level) · spec: docs/spec/language.md L-132, docs/spec/runtime.md R-102, docs/spec/runtime.md R-59</p>
+<p>pinned by <code>t-arc-unichar-narrow</code>, <code>t-err-class-gen-arg</code>, <code>t-err-map-annot-real</code>, <code>t-err-print-num</code>, <code>t-gen-rigid-arg</code>, <code>t-gen-rigid-unit</code>, <code>t-rigid-mcon</code>, <code>t-rigid-slit</code>, <code>t-roof-named-func</code>, <code>t-text-char-no</code>, <code>t-var-widen-shallow</code> · also <code>t-mint-annot</code>, <code>t-mint-cond</code>, <code>t-mint-guard</code>, <code>t-mint-inc-cell</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-132">L-132</a>, docs/spec/runtime.md <a href="/spec/runtime/#r-102">R-102</a>, docs/spec/runtime.md <a href="/spec/runtime/#r-59">R-59</a></p>
 <h3 id="mint-call"><code>%mint-call</code></h3>
 <pre class="code jock" data-refuses="mint-call">1(2)</pre>
 <p>pinned by <code>t-rch-call</code> · also <code>t-mint-call-gate</code> (AST-level)</p>
 <h3 id="mint-call-arity"><code>%mint-call-arity</code></h3>
 <pre class="code jock" data-refuses="mint-call-arity">func f(a: @, b: @) -&gt; @ { a }; f(1)</pre>
-<p>pinned by <code>t-rch-arity</code> · also <code>t-mint-call-arity</code>, <code>t-mint-import-arity</code> (AST-level) · spec: docs/spec/language.md L-171</p>
+<p>pinned by <code>t-rch-arity</code> · also <code>t-mint-call-arity</code>, <code>t-mint-import-arity</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-171">L-171</a></p>
 <h3 id="mint-call-bound"><code>%mint-call-bound</code></h3>
 <pre class="code jock" data-refuses="mint-call-bound">func&lt;T&gt; f(x: T) -&gt; T { g(x) }; func&lt;T: Lt&gt; g(x: T) -&gt; T { x }; f(1)</pre>
 <p>pinned by <code>t-err-ggroup-unbound</code> · also <code>t-mint-gen-nobound</code> (AST-level)</p>
@@ -247,7 +247,7 @@ cd"; s</pre>
 <p>pinned by <code>t-rch-case</code></p>
 <h3 id="mint-cast"><code>%mint-cast</code></h3>
 <pre class="code jock" data-refuses="mint-cast">let n = 42; let b: Bool = n as Bool; b</pre>
-<p>pinned by <code>t-as-grd-bool</code>, <code>t-as-grd-char</code>, <code>t-err-chars-cast</code> · also <code>t-mint-cast</code> (AST-level) · spec: docs/spec/language.md L-24, docs/spec/language.md L-120, docs/spec/runtime.md R-44</p>
+<p>pinned by <code>t-as-grd-bool</code>, <code>t-as-grd-char</code>, <code>t-err-chars-cast</code> · also <code>t-mint-cast</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-24">L-24</a>, docs/spec/language.md <a href="/spec/language/#l-120">L-120</a>, docs/spec/runtime.md <a href="/spec/runtime/#r-44">R-44</a></p>
 <h3 id="mint-cast-sealed"><code>%mint-cast-sealed</code></h3>
 <p class="label">module</p>
 <pre class="code jock" data-refuses="mint-cast-sealed">struct CS { n: @ }; class Counter(CS) impl Add { add(self: Self, p: Self) -&gt; Self { Counter( n: self.n + p.n ) }; bump(self: Self) -&gt; Self { Counter( n: self.n + 1 ) }; twice(self: Self) -&gt; Self { self.bump().bump() }; }; func mk(n: @) -&gt; Counter { Counter( n: n ) }; </pre>
@@ -256,28 +256,28 @@ cd"; s</pre>
 <p>pinned by <code>t-jimp-seal-cast</code>, <code>t-jimp-seal-deep-arg</code>, <code>t-jimp-seal-deep-cast</code>, <code>t-jimp-seal-deep-soft</code>, <code>t-jimp-seal-soft</code>, <code>t-jimp-seal-test</code> · spec: docs/imports.md I-5</p>
 <h3 id="mint-cast-sint"><code>%mint-cast-sint</code></h3>
 <pre class="code jock" data-refuses="mint-cast-sint">struct SB { a: Int, k: @ }; let s = (5, 4) as SB; if s.a == -3 { 111 } else { 222 }</pre>
-<p>pinned by <code>t-cast-sint-deep</code>, <code>t-cast-sint-deep-nom</code>, <code>t-cast-sint-deep-nom-test</code>, <code>t-cast-sint-deep-soft</code>, <code>t-cast-sint-deep-test</code>, <code>t-cast-sint-deep-tuple</code>, <code>t-sint-cast</code>, <code>t-sint-castp</code>, <code>t-sint-castq</code>, <code>t-sint-castx</code> · spec: docs/imports.md I-5, docs/spec/language.md L-12, docs/spec/language.md L-127</p>
+<p>pinned by <code>t-cast-sint-deep</code>, <code>t-cast-sint-deep-nom</code>, <code>t-cast-sint-deep-nom-test</code>, <code>t-cast-sint-deep-soft</code>, <code>t-cast-sint-deep-test</code>, <code>t-cast-sint-deep-tuple</code>, <code>t-sint-cast</code>, <code>t-sint-castp</code>, <code>t-sint-castq</code>, <code>t-sint-castx</code> · spec: docs/imports.md I-5, docs/spec/language.md <a href="/spec/language/#l-12">L-12</a>, docs/spec/language.md <a href="/spec/language/#l-127">L-127</a></p>
 <h3 id="mint-ctor"><code>%mint-ctor</code></h3>
 <pre class="code jock" data-refuses="mint-ctor">E.a(1)</pre>
 <p>pinned by <code>t-mint-ctor</code></p>
 <h3 id="mint-ctor-applied"><code>%mint-ctor-applied</code></h3>
 <pre class="code jock" data-refuses="mint-ctor-applied">enum E { a(@) }; let f = E.a; 1</pre>
-<p>pinned by <code>t-text-ctor-applied</code> · also <code>t-mint-ctor-applied</code> (AST-level) · spec: docs/spec/language.md L-166</p>
+<p>pinned by <code>t-text-ctor-applied</code> · also <code>t-mint-ctor-applied</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-166">L-166</a></p>
 <h3 id="mint-ctor-arity"><code>%mint-ctor-arity</code></h3>
 <pre class="code jock" data-refuses="mint-ctor-arity">enum E { a(@) }; E.a()</pre>
-<p>pinned by <code>t-mint-ctor-arity</code> · spec: docs/spec/language.md L-165</p>
+<p>pinned by <code>t-mint-ctor-arity</code> · spec: docs/spec/language.md <a href="/spec/language/#l-165">L-165</a></p>
 <h3 id="mint-ctor-nullary"><code>%mint-ctor-nullary</code></h3>
 <pre class="code jock" data-refuses="mint-ctor-nullary">enum E { a }; E.a(1)</pre>
-<p>pinned by <code>t-mint-ctor-nullary</code> · spec: docs/spec/language.md L-165</p>
+<p>pinned by <code>t-mint-ctor-nullary</code> · spec: docs/spec/language.md <a href="/spec/language/#l-165">L-165</a></p>
 <h3 id="mint-ctor-tag"><code>%mint-ctor-tag</code></h3>
 <pre class="code jock" data-refuses="mint-ctor-tag">enum E { a(@) }; E.b(1)</pre>
-<p>pinned by <code>t-mint-ctor-tag</code> · spec: docs/spec/language.md L-166</p>
+<p>pinned by <code>t-mint-ctor-tag</code> · spec: docs/spec/language.md <a href="/spec/language/#l-166">L-166</a></p>
 <h3 id="mint-edit"><code>%mint-edit</code></h3>
 <pre class="code jock" data-refuses="mint-edit">let a = 1; a.x = 2; a</pre>
 <p>pinned by <code>t-mint-edit</code></p>
 <h3 id="mint-edit-immutable"><code>%mint-edit-immutable</code></h3>
 <pre class="code jock" data-refuses="mint-edit-immutable">let b = 1; b = 3; b</pre>
-<p>pinned by <code>t-let-no-edit</code> · also <code>t-mint-edit-let</code> (AST-level) · spec: docs/spec/language.md L-130</p>
+<p>pinned by <code>t-let-no-edit</code> · also <code>t-mint-edit-let</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-130">L-130</a></p>
 <h3 id="mint-edit-sealed"><code>%mint-edit-sealed</code></h3>
 <p class="label">module</p>
 <pre class="code jock" data-refuses="mint-edit-sealed">struct CS { n: @ }; class Counter(CS) impl Add { add(self: Self, p: Self) -&gt; Self { Counter( n: self.n + p.n ) }; bump(self: Self) -&gt; Self { Counter( n: self.n + 1 ) }; twice(self: Self) -&gt; Self { self.bump().bump() }; }; func mk(n: @) -&gt; Counter { Counter( n: n ) }; </pre>
@@ -286,13 +286,13 @@ cd"; s</pre>
 <p>pinned by <code>t-jimp-seal-edit</code> · spec: docs/imports.md I-5</p>
 <h3 id="mint-field"><code>%mint-field</code></h3>
 <pre class="code jock" data-refuses="mint-field">struct S { x: @, y: @ }; trait T { dist(self: Self) -&gt; @; } impl T for S { dist(self: Self) -&gt; @ { self.x } } let v = S( x: 4, y: 5 ); let g = v.dist; 0</pre>
-<p>pinned by <code>t-dimb-meth-value</code>, <code>t-jimp-arm-value-deep</code>, <code>t-rch-field</code> · spec: docs/spec/language.md L-171</p>
+<p>pinned by <code>t-dimb-meth-value</code>, <code>t-jimp-arm-value-deep</code>, <code>t-rch-field</code> · spec: docs/spec/language.md <a href="/spec/language/#l-171">L-171</a></p>
 <h3 id="mint-func-annot"><code>%mint-func-annot</code></h3>
 <pre class="code jock" data-refuses="mint-func-annot">func f(a) -&gt; @ { 1 }; f(1)</pre>
-<p>pinned by <code>t-mint-func-annot</code> · spec: docs/spec/language.md L-136</p>
+<p>pinned by <code>t-mint-func-annot</code> · spec: docs/spec/language.md <a href="/spec/language/#l-136">L-136</a></p>
 <h3 id="mint-func-dup"><code>%mint-func-dup</code></h3>
 <pre class="code jock" data-refuses="mint-func-dup">func f(a: @) -&gt; @ { a }; func f(b: @) -&gt; @ { b }; 1</pre>
-<p>pinned by <code>t-rch-fn-dup</code> · also <code>t-mint-grp-dup</code> (AST-level) · spec: docs/spec/language.md L-137</p>
+<p>pinned by <code>t-rch-fn-dup</code> · also <code>t-mint-grp-dup</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-137">L-137</a></p>
 <h3 id="mint-func-ret"><code>%mint-func-ret</code></h3>
 <pre class="code jock" data-refuses="mint-func-ret">func f(a: @) { a }; 1</pre>
 <p>pinned by <code>t-rch-fn-ret</code> · also <code>t-mint-func-ret</code> (AST-level)</p>
@@ -328,22 +328,22 @@ cd"; s</pre>
 <p>pinned by <code>t-mint-impl-trait</code></p>
 <h3 id="mint-import"><code>%mint-import</code></h3>
 <pre class="code jock" data-refuses="mint-import">import my-lib; 1</pre>
-<p>pinned by <code>t-dtags-user-name</code>, <code>t-timp-absent</code> · also <code>t-mint-import-unknown</code> (AST-level) · spec: docs/imports.md I-6, docs/spec/language.md L-171</p>
+<p>pinned by <code>t-dtags-user-name</code>, <code>t-timp-absent</code> · also <code>t-mint-import-unknown</code> (AST-level) · spec: docs/imports.md I-6, docs/spec/language.md <a href="/spec/language/#l-171">L-171</a></p>
 <h3 id="mint-import-arm"><code>%mint-import-arm</code></h3>
 <p class="label">module</p>
 <pre class="code jock" data-refuses="mint-import-arm">func dbl(n: @) -&gt; @ { n + n };</pre>
 <p class="label">program</p>
 <pre class="code jock" data-refuses="mint-import-arm">import m; m.nope(1)</pre>
-<p>pinned by <code>t-jimp-absent</code>, <code>t-jimp-arm-value-absent</code>, <code>t-jimp-private-arm</code> · spec: docs/spec/language.md L-171</p>
+<p>pinned by <code>t-jimp-absent</code>, <code>t-jimp-arm-value-absent</code>, <code>t-jimp-private-arm</code> · spec: docs/spec/language.md <a href="/spec/language/#l-171">L-171</a></p>
 <h3 id="mint-inexhaustive"><code>%mint-inexhaustive</code></h3>
 <pre class="code jock" data-refuses="mint-inexhaustive">let o: @? = 5; match o { ~ =&gt; 0, }</pre>
 <p>pinned by <code>t-text-opt-no-cell</code>, <code>t-text-opt-no-null</code> · also <code>t-mint-match-inex</code>, <code>t-mint-witness</code> (AST-level)</p>
 <h3 id="mint-inst"><code>%mint-inst</code></h3>
 <pre class="code jock" data-refuses="mint-inst">struct BS&lt;T&gt; { v: @ }; BS( v: 1 )</pre>
-<p>pinned by <code>t-rch-inst</code> · also <code>t-mint-import-gen</code> (AST-level) · spec: docs/spec/language.md L-171</p>
+<p>pinned by <code>t-rch-inst</code> · also <code>t-mint-import-gen</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-171">L-171</a></p>
 <h3 id="mint-inst-annot"><code>%mint-inst-annot</code></h3>
 <pre class="code jock" data-refuses="mint-inst-annot">enum E&lt;T&gt; { a }; E.a</pre>
-<p>pinned by <code>t-mint-inst-annot</code> · spec: docs/spec/language.md L-147</p>
+<p>pinned by <code>t-mint-inst-annot</code> · spec: docs/spec/language.md <a href="/spec/language/#l-147">L-147</a></p>
 <h3 id="mint-join"><code>%mint-join</code></h3>
 <pre class="code jock" data-refuses="mint-join">if 1 == 1 { 1 } else { (1, 2) }</pre>
 <p>pinned by <code>t-rch-dtags-if</code></p>
@@ -352,7 +352,7 @@ cd"; s</pre>
 <p>pinned by <code>t-rch-lam</code> · also <code>t-mint-lam-annot</code> (AST-level)</p>
 <h3 id="mint-limb"><code>%mint-limb</code></h3>
 <pre class="code jock" data-refuses="mint-limb">nope</pre>
-<p>pinned by <code>t-chkj-refuse</code>, <code>t-chkjm-coord</code>, <code>t-dtags-one</code>, <code>t-repl-pos</code>, <code>t-text-grp-split-decl</code>, <code>t-text-grp-split-let</code> · also <code>t-mint-unbound</code> (AST-level) · spec: docs/spec/language.md L-139</p>
+<p>pinned by <code>t-chkj-refuse</code>, <code>t-chkjm-coord</code>, <code>t-dtags-one</code>, <code>t-repl-pos</code>, <code>t-text-grp-split-decl</code>, <code>t-text-grp-split-let</code> · also <code>t-mint-unbound</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-139">L-139</a></p>
 <h3 id="mint-list-join"><code>%mint-list-join</code></h3>
 <pre class="code jock" data-refuses="mint-list-join">let xs = [1, "a"]; xs</pre>
 <p>pinned by <code>t-dtags-list-join</code></p>
@@ -367,31 +367,31 @@ cd"; s</pre>
 <p>pinned by <code>t-mint-meth-arity</code></p>
 <h3 id="mint-meth-self"><code>%mint-meth-self</code></h3>
 <pre class="code jock" data-refuses="mint-meth-self">struct S { x: @ }; class C(S) { m(self: @) -&gt; @ { 1 }; }; let c = C( x: 1 ); c.m()</pre>
-<p>pinned by <code>t-mint-meth-self</code> · spec: docs/spec/language.md L-158</p>
+<p>pinned by <code>t-mint-meth-self</code> · spec: docs/spec/language.md <a href="/spec/language/#l-158">L-158</a></p>
 <h3 id="mint-method"><code>%mint-method</code></h3>
 <pre class="code jock" data-refuses="mint-method">struct S { x: @ }; let s = S( x: 1 ); s.nope()</pre>
 <p>pinned by <code>t-rch-meth</code></p>
 <h3 id="mint-mold"><code>%mint-mold</code></h3>
 <pre class="code jock" data-refuses="mint-mold">let x: @ = 1; x as! Never</pre>
-<p>pinned by <code>t-rch-mold</code> · also <code>t-mint-asx-gate</code>, <code>t-mint-tt-gate</code> (AST-level) · spec: docs/spec/language.md L-124</p>
+<p>pinned by <code>t-rch-mold</code> · also <code>t-mint-asx-gate</code>, <code>t-mint-tt-gate</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-124">L-124</a></p>
 <h3 id="mint-naxis"><code>%mint-naxis</code></h3>
 <pre class="code jock" data-refuses="mint-naxis">import chain; func f(m: chain.ZMap&lt;@, @&gt;) -&gt; @ { m.&lt; }; 1</pre>
 <p>pinned by <code>t-cimp-seal</code>, <code>t-lark-atom-n</code>, <code>t-lark-seal-n</code>, <code>t-naxis-seal-n</code></p>
 <h3 id="mint-op"><code>%mint-op</code></h3>
 <pre class="code jock" data-refuses="mint-op">1.5 % 2.0</pre>
-<p>pinned by <code>t-err-op-rmod</code> · spec: docs/spec/language.md L-116</p>
+<p>pinned by <code>t-err-op-rmod</code> · spec: docs/spec/language.md <a href="/spec/language/#l-116">L-116</a></p>
 <h3 id="mint-op-aura"><code>%mint-op-aura</code></h3>
 <pre class="code jock" data-refuses="mint-op-aura">1 + 'a'</pre>
-<p>pinned by <code>t-err-op-aura-char</code>, <code>t-err-op-aura-real</code> · spec: docs/spec/language.md L-39, docs/spec/runtime.md R-51</p>
+<p>pinned by <code>t-err-op-aura-char</code>, <code>t-err-op-aura-real</code> · spec: docs/spec/language.md <a href="/spec/language/#l-39">L-39</a>, docs/spec/runtime.md <a href="/spec/runtime/#r-51">R-51</a></p>
 <h3 id="mint-op-impl"><code>%mint-op-impl</code></h3>
 <pre class="code jock" data-refuses="mint-op-impl">struct P { v: @ }; let a = P( v: 1 ); let b = P( v: 2 ); let c = a + b; 0</pre>
-<p>pinned by <code>t-err-op-impl</code>, <code>t-err-op-impl-bool</code>, <code>t-err-op-impl-char</code> · spec: docs/spec/runtime.md R-51</p>
+<p>pinned by <code>t-err-op-impl</code>, <code>t-err-op-impl-bool</code>, <code>t-err-op-impl-char</code> · spec: docs/spec/runtime.md <a href="/spec/runtime/#r-51">R-51</a></p>
 <h3 id="mint-patt"><code>%mint-patt</code></h3>
 <pre class="code jock" data-refuses="mint-patt">enum E { a, b }; let s = E.a; match s { 7 =&gt; 1, _ =&gt; 0 }</pre>
 <p>pinned by <code>t-rch-patt</code> · also <code>t-mint-match-patt</code>, <code>t-mint-match-sing</code> (AST-level)</p>
 <h3 id="mint-patt-bare"><code>%mint-patt-bare</code></h3>
 <pre class="code jock" data-refuses="mint-patt-bare">enum C { red, green } let c = C.green; match c { red =&gt; 1, green =&gt; 2, }</pre>
-<p>pinned by <code>t-arc-patt-bare</code> · spec: docs/spec/language.md L-149</p>
+<p>pinned by <code>t-arc-patt-bare</code> · spec: docs/spec/language.md <a href="/spec/language/#l-149">L-149</a></p>
 <h3 id="mint-patt-tag"><code>%mint-patt-tag</code></h3>
 <pre class="code jock" data-refuses="mint-patt-tag">enum E { a(@) }; let e = E.a(1); match e { .b(x) =&gt; x, _ =&gt; 0 }</pre>
 <p>pinned by <code>t-mint-patt-tag</code></p>
@@ -400,7 +400,7 @@ cd"; s</pre>
 <p>pinned by <code>t-mint-peek-arity</code></p>
 <h3 id="mint-recur"><code>%mint-recur</code></h3>
 <pre class="code jock" data-refuses="mint-recur">var b: @ = 0; loop outer { if b == 3 { b } else { b = b + 1; recur inner } }</pre>
-<p>pinned by <code>t-loop-label-bad</code> · also <code>t-mint-recur-naked</code> (AST-level) · spec: docs/spec/language.md L-140, docs/spec/language.md L-153</p>
+<p>pinned by <code>t-loop-label-bad</code> · also <code>t-mint-recur-naked</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-140">L-140</a>, docs/spec/language.md <a href="/spec/language/#l-153">L-153</a></p>
 <h3 id="mint-slit"><code>%mint-slit</code></h3>
 <p class="label">module</p>
 <pre class="code jock" data-refuses="mint-slit">private struct St { v: @ }; class C(St) { get(self: Self) -&gt; @ { self.v } }; func mk(n: @) -&gt; C { C( v: n ) }; </pre>
@@ -421,7 +421,7 @@ cd"; s</pre>
 <p>pinned by <code>t-jimp-class-gen-seal</code>, <code>t-jimp-seal-lit</code> · spec: docs/imports.md I-5</p>
 <h3 id="mint-todo"><code>%mint-todo</code></h3>
 <pre class="code jock" data-refuses="mint-todo">trait G&lt;A&gt; { g(self: Self) -&gt; A; }; func&lt;T: G&gt; f(x: T) -&gt; @ { 1 }; f(2)</pre>
-<p>pinned by <code>t-err-bound-ptrait</code>, <code>t-err-class-gen-bound</code>, <code>t-jdag-arm-generic-n</code>, <code>t-jimp-arm-gen</code>, <code>t-jimp-bound-qual-ptrait</code>, <code>t-mint-gimpl-bound</code> · spec: docs/spec/language.md L-171</p>
+<p>pinned by <code>t-err-bound-ptrait</code>, <code>t-err-class-gen-bound</code>, <code>t-jdag-arm-generic-n</code>, <code>t-jimp-arm-gen</code>, <code>t-jimp-bound-qual-ptrait</code>, <code>t-mint-gimpl-bound</code> · spec: docs/spec/language.md <a href="/spec/language/#l-171">L-171</a></p>
 <h3 id="mint-unblessed"><code>%mint-unblessed</code></h3>
 <p class="label">module</p>
 <pre class="code jock" data-refuses="mint-unblessed">func g() -&gt; @ { 2 };</pre>
@@ -438,7 +438,7 @@ cd"; s</pre>
 <p>pinned by <code>t-halo-scry-peek</code>, <code>t-halo-scry-try</code>, <code>t-halo-scry-under</code></p>
 <h3 id="mint-unimported"><code>%mint-unimported</code></h3>
 <pre class="code jock" data-refuses="mint-unimported">import b; a.mkp(1).v</pre>
-<p>pinned by <code>t-jdag-unimported</code> · spec: docs/spec/language.md L-172</p>
+<p>pinned by <code>t-jdag-unimported</code> · spec: docs/spec/language.md <a href="/spec/language/#l-172">L-172</a></p>
 <h3 id="mint-unreachable"><code>%mint-unreachable</code></h3>
 <pre class="code jock" data-refuses="mint-unreachable">match 1 { _ =&gt; 0, 1 =&gt; 2 }</pre>
 <p>pinned by <code>t-rch-unrch</code> · also <code>t-mint-match-unreach</code> (AST-level)</p>
@@ -466,19 +466,19 @@ cd"; s</pre>
 <p>pinned by <code>t-parse-empty</code>, <code>t-rch-empty</code></p>
 <h3 id="parse-empty-brace"><code>%parse-empty-brace</code></h3>
 <pre class="code jock" data-refuses="parse-empty-brace">let a = 1; { }</pre>
-<p>pinned by <code>t-parse-empty-brace</code> · spec: docs/spec/language.md L-85</p>
+<p>pinned by <code>t-parse-empty-brace</code> · spec: docs/spec/language.md <a href="/spec/language/#l-85">L-85</a></p>
 <h3 id="parse-enum-casing"><code>%parse-enum-casing</code></h3>
 <pre class="code jock" data-refuses="parse-enum-casing">enum S { Point }; 1</pre>
-<p>pinned by <code>t-parse-casing</code> · spec: docs/spec/language.md L-163</p>
+<p>pinned by <code>t-parse-casing</code> · spec: docs/spec/language.md <a href="/spec/language/#l-163">L-163</a></p>
 <h3 id="parse-eof"><code>%parse-eof</code></h3>
 <pre class="code jock" data-refuses="parse-eof">not</pre>
 <p>pinned by <code>t-rch-eof</code></p>
 <h3 id="parse-eval"><code>%parse-eval</code></h3>
 <pre class="code jock" data-refuses="parse-eval">eval 5</pre>
-<p>pinned by <code>t-parse-eval</code> · spec: docs/spec/language.md L-129</p>
+<p>pinned by <code>t-parse-eval</code> · spec: docs/spec/language.md <a href="/spec/language/#l-129">L-129</a></p>
 <h3 id="parse-expected"><code>%parse-expected</code></h3>
 <pre class="code jock" data-refuses="parse-expected">let a: @ = 3; match a { 1 =&gt; 0; _ =&gt; 84; }</pre>
-<p>pinned by <code>t-arc-arm-semi</code>, <code>t-arc-ctor-brace</code>, <code>t-chkjm-parse</code>, <code>t-eq-bind-raw</code>, <code>t-hint-index-q</code>, <code>t-index-gone-has</code>, <code>t-index-gone-slice</code>, <code>t-parse-match-nosep</code>, <code>t-parse-method-nosep</code> · spec: docs/spec/language.md L-84, docs/spec/language.md L-85</p>
+<p>pinned by <code>t-arc-arm-semi</code>, <code>t-arc-ctor-brace</code>, <code>t-chkjm-parse</code>, <code>t-eq-bind-raw</code>, <code>t-hint-index-q</code>, <code>t-index-gone-has</code>, <code>t-index-gone-slice</code>, <code>t-parse-match-nosep</code>, <code>t-parse-method-nosep</code> · spec: docs/spec/language.md <a href="/spec/language/#l-84">L-84</a>, docs/spec/language.md <a href="/spec/language/#l-85">L-85</a></p>
 <h3 id="parse-func-parens"><code>%parse-func-parens</code></h3>
 <pre class="code jock" data-refuses="parse-func-parens">func f () -&gt; @ { 1 }; f()</pre>
 <p>pinned by <code>t-parse-func-parens</code></p>
@@ -490,16 +490,16 @@ cd"; s</pre>
 <p>pinned by <code>t-parse-interp</code></p>
 <h3 id="parse-lambda"><code>%parse-lambda</code></h3>
 <pre class="code jock" data-refuses="parse-lambda">lambda 5</pre>
-<p>pinned by <code>t-parse-lambda</code> · spec: docs/spec/language.md L-129</p>
+<p>pinned by <code>t-parse-lambda</code> · spec: docs/spec/language.md <a href="/spec/language/#l-129">L-129</a></p>
 <h3 id="parse-lark-cmp"><code>%parse-lark-cmp</code></h3>
 <pre class="code jock" data-refuses="parse-lark-cmp">var p = (7, 9); p.&gt;= 3; p</pre>
-<p>pinned by <code>t-lark-eq-glued</code>, <code>t-lark-eq-glued-lt</code> · spec: docs/spec/language.md L-105</p>
+<p>pinned by <code>t-lark-eq-glued</code>, <code>t-lark-eq-glued-lt</code> · spec: docs/spec/language.md <a href="/spec/language/#l-105">L-105</a></p>
 <h3 id="parse-method"><code>%parse-method</code></h3>
 <pre class="code jock" data-refuses="parse-method">struct S { x: @ }; class C(S) { m () -&gt; @ { 1 }; }; 1</pre>
 <p>pinned by <code>t-parse-method</code></p>
 <h3 id="parse-minus-glue"><code>%parse-minus-glue</code></h3>
 <pre class="code jock" data-refuses="parse-minus-glue">let a = 5; a- 1</pre>
-<p>pinned by <code>t-minus-glued-l</code>, <code>t-minus-glued-r</code> · spec: docs/spec/language.md L-10, docs/spec/language.md L-109</p>
+<p>pinned by <code>t-minus-glued-l</code>, <code>t-minus-glued-r</code> · spec: docs/spec/language.md <a href="/spec/language/#l-10">L-10</a>, docs/spec/language.md <a href="/spec/language/#l-109">L-109</a></p>
 <h3 id="parse-name"><code>%parse-name</code></h3>
 <pre class="code jock" data-refuses="parse-name">let 5 = 3; 5</pre>
 <p>pinned by <code>t-parse-name</code></p>
@@ -508,13 +508,13 @@ cd"; s</pre>
 <p>pinned by <code>t-parse-no-result</code></p>
 <h3 id="parse-nonassoc"><code>%parse-nonassoc</code></h3>
 <pre class="code jock" data-refuses="parse-nonassoc">let s = Set&lt;@&gt;([1, 2]); if 1 in s in s { 7 } else { 9 }</pre>
-<p>pinned by <code>t-in-nonassoc</code>, <code>t-parse-nonassoc</code> · also <code>t-parse-subset-nonassoc</code>, <code>t-parse-supset-nonassoc</code> (AST-level) · spec: docs/spec/language.md L-108</p>
+<p>pinned by <code>t-in-nonassoc</code>, <code>t-parse-nonassoc</code> · also <code>t-parse-subset-nonassoc</code>, <code>t-parse-supset-nonassoc</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-108">L-108</a></p>
 <h3 id="parse-not"><code>%parse-not</code></h3>
 <pre class="code jock" data-refuses="parse-not">let a = true; !a</pre>
 <p>pinned by <code>t-hint-not</code>, <code>t-index-gone-pop</code></p>
 <h3 id="parse-or-face"><code>%parse-or-face</code></h3>
 <pre class="code jock" data-refuses="parse-or-face">enum Shape { point, circle(r: Float64) }; 1</pre>
-<p>pinned by <code>t-parse-or-face</code> · spec: docs/spec/language.md L-165</p>
+<p>pinned by <code>t-parse-or-face</code> · spec: docs/spec/language.md <a href="/spec/language/#l-165">L-165</a></p>
 <h3 id="parse-path"><code>%parse-path</code></h3>
 <pre class="code jock" data-refuses="parse-path">let p = /; p</pre>
 <p>pinned by <code>t-parse-path</code></p>
@@ -532,22 +532,22 @@ cd"; s</pre>
 <p>pinned by <code>t-parse-patt-case</code></p>
 <h3 id="parse-place"><code>%parse-place</code></h3>
 <pre class="code jock" data-refuses="parse-place">struct T { z: @ }; func mt() -&gt; T { T( z: 1 ) }; mt().z = 5; 0</pre>
-<p>pinned by <code>t-err-dot-place</code>, <code>t-err-slice-place</code> · spec: docs/spec/language.md L-114</p>
+<p>pinned by <code>t-err-dot-place</code>, <code>t-err-slice-place</code> · spec: docs/spec/language.md <a href="/spec/language/#l-114">L-114</a></p>
 <h3 id="parse-print-pri"><code>%parse-print-pri</code></h3>
 <pre class="code jock" data-refuses="parse-print-pri">let n = 2; print("x", n); 0</pre>
-<p>pinned by <code>t-err-print-pri-expr</code> · spec: docs/spec/language.md L-34</p>
+<p>pinned by <code>t-err-print-pri-expr</code> · spec: docs/spec/language.md <a href="/spec/language/#l-34">L-34</a></p>
 <h3 id="parse-private"><code>%parse-private</code></h3>
 <pre class="code jock" data-refuses="parse-private">private let x = 1; x</pre>
-<p>pinned by <code>t-err-private-let</code> · spec: docs/spec/language.md L-20</p>
+<p>pinned by <code>t-err-private-let</code> · spec: docs/spec/language.md <a href="/spec/language/#l-20">L-20</a></p>
 <h3 id="parse-private-impl"><code>%parse-private-impl</code></h3>
 <pre class="code jock" data-refuses="parse-private-impl">private impl Meas for @ { len(self: @) -&gt; @ { 1 } }; 0</pre>
-<p>pinned by <code>t-err-private-impl</code> · spec: docs/spec/language.md L-20</p>
+<p>pinned by <code>t-err-private-impl</code> · spec: docs/spec/language.md <a href="/spec/language/#l-20">L-20</a></p>
 <h3 id="parse-set-ctor"><code>%parse-set-ctor</code></h3>
 <pre class="code jock" data-refuses="parse-set-ctor">let s = Set&lt;@&gt; [1]; s</pre>
 <p>pinned by <code>t-parse-set-ctor</code></p>
 <h3 id="parse-stray"><code>%parse-stray</code></h3>
 <pre class="code jock" data-refuses="parse-stray">let xs = [1]; xs[]</pre>
-<p>pinned by <code>t-index-gone-peek</code>, <code>t-index-gone-push</code> · spec: docs/spec/language.md L-10, docs/spec/language.md L-88</p>
+<p>pinned by <code>t-index-gone-peek</code>, <code>t-index-gone-push</code> · spec: docs/spec/language.md <a href="/spec/language/#l-10">L-10</a>, docs/spec/language.md <a href="/spec/language/#l-88">L-88</a></p>
 <h3 id="parse-ternary"><code>%parse-ternary</code></h3>
 <pre class="code jock" data-refuses="parse-ternary">true ? 1 : 2</pre>
 <p>pinned by <code>t-hint-ternary</code>, <code>t-hint-ternary-mid</code></p>
@@ -559,13 +559,13 @@ cd"; s</pre>
 <p>pinned by <code>t-parse-tex-qual</code></p>
 <h3 id="parse-todo"><code>%parse-todo</code></h3>
 <pre class="code jock" data-refuses="parse-todo">func fib(n: @) -&gt; @ { if n == 0 { 1 } else { $(n - 1) } }; fib(3)</pre>
-<p>pinned by <code>t-recur-edits</code> · spec: docs/spec/language.md L-154</p>
+<p>pinned by <code>t-recur-edits</code> · spec: docs/spec/language.md <a href="/spec/language/#l-154">L-154</a></p>
 <h3 id="parse-trailing"><code>%parse-trailing</code></h3>
 <pre class="code jock" data-refuses="parse-trailing">union C { red, green } C.red</pre>
-<p>pinned by <code>t-arc-union-gone</code> · spec: docs/spec/language.md L-151, docs/spec/language.md L-174</p>
+<p>pinned by <code>t-arc-union-gone</code> · spec: docs/spec/language.md <a href="/spec/language/#l-151">L-151</a>, docs/spec/language.md <a href="/spec/language/#l-174">L-174</a></p>
 <h3 id="parse-trait-op"><code>%parse-trait-op</code></h3>
 <pre class="code jock" data-refuses="parse-trait-op">trait Bad { go(~); }; 1</pre>
-<p>pinned by <code>t-trait-op-junk</code> · spec: docs/spec/language.md L-42</p>
+<p>pinned by <code>t-trait-op-junk</code> · spec: docs/spec/language.md <a href="/spec/language/#l-42">L-42</a></p>
 <h3 id="parse-trait-sig"><code>%parse-trait-sig</code></h3>
 <pre class="code jock" data-refuses="parse-trait-sig">trait T { m () -&gt; @; }; 1</pre>
 <p>pinned by <code>t-parse-trait-sig</code></p>
@@ -574,17 +574,17 @@ cd"; s</pre>
 <p>pinned by <code>t-rch-ty-decl</code>, <code>t-rch-ty-impl</code> · also <code>t-parse-type-eof</code>, <code>t-parse-type-lower</code> (AST-level)</p>
 <h3 id="parse-unglued"><code>%parse-unglued</code></h3>
 <pre class="code jock" data-refuses="parse-unglued">f (3)</pre>
-<p>pinned by <code>t-parse-unglued</code> · spec: docs/spec/language.md L-85</p>
+<p>pinned by <code>t-parse-unglued</code> · spec: docs/spec/language.md <a href="/spec/language/#l-85">L-85</a></p>
 <h3 id="parse-var-patt"><code>%parse-var-patt</code></h3>
 <pre class="code jock" data-refuses="parse-var-patt">var (a, b) = (1, 2); a</pre>
-<p>pinned by <code>t-parse-var-patt</code> · spec: docs/spec/language.md L-134</p>
+<p>pinned by <code>t-parse-var-patt</code> · spec: docs/spec/language.md <a href="/spec/language/#l-134">L-134</a></p>
 <h3 id="raw-cell-needs-two-elements"><code>%raw-cell-needs-two-elements</code></h3>
 <p>A <strong>Nock Assembly</strong> program, not a Jock one — <code>nparse</code> is the judgment, and <code>lib/nockasm</code> the language.</p>
 <pre class="code" data-refuses="raw-cell-needs-two-elements">[1]</pre>
 <p>pinned by <code>t-rch-nasm-cell</code></p>
 <h3 id="uint-neg"><code>%uint-neg</code></h3>
 <pre class="code jock" data-refuses="uint-neg">import hoon; hoon.uint(-3)</pre>
-<p>pinned by <code>t-sint-uint-neg</code> · spec: docs/spec/language.md L-14, docs/spec/runtime.md R-15</p>
+<p>pinned by <code>t-sint-uint-neg</code> · spec: docs/spec/language.md <a href="/spec/language/#l-14">L-14</a>, docs/spec/runtime.md <a href="/spec/runtime/#r-15">R-15</a></p>
 <h3 id="unbound-axis"><code>%unbound-axis</code></h3>
 <p>A <strong>Nock Assembly</strong> program, not a Jock one — <code>nexpand</code> is the judgment, and <code>lib/nockasm</code> the language.</p>
 <pre class="code" data-refuses="unbound-axis">.z</pre>

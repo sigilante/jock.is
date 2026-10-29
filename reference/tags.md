@@ -5,7 +5,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `dd95321` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+> channel `%rc` · commit `8b5492e` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
 
 |  | count |  |
 |---|---:|---|
@@ -42,7 +42,7 @@ pinned by `t-rch-nx-axarg` · also `t-nx-axarg-n` (AST-level)
 class C(@) { m(self: C) -> @ { 1 }; }; 1
 ```
 
-pinned by `t-rch-cls-state` · also `t-mint-class-state` (AST-level) · spec: docs/spec/language.md L-159
+pinned by `t-rch-cls-state` · also `t-mint-class-state` (AST-level) · spec: docs/spec/language.md [L-159](/spec/language/#l-159)
 
 ### `%decl-dup`
 
@@ -50,7 +50,7 @@ pinned by `t-rch-cls-state` · also `t-mint-class-state` (AST-level) · spec: do
 struct S { x: @ }; struct S { y: @ }; 1
 ```
 
-pinned by `t-rch-decl-dup` · also `t-mint-decl-dup`, `t-mint-decl-redecl` (AST-level) · spec: docs/spec/language.md L-73, docs/spec/language.md L-157
+pinned by `t-rch-decl-dup` · also `t-mint-decl-dup`, `t-mint-decl-redecl` (AST-level) · spec: docs/spec/language.md [L-73](/spec/language/#l-73), docs/spec/language.md [L-157](/spec/language/#l-157)
 
 ### `%decl-dup-field`
 
@@ -58,7 +58,7 @@ pinned by `t-rch-decl-dup` · also `t-mint-decl-dup`, `t-mint-decl-redecl` (AST-
 struct S { x: @, x: @ }; 1
 ```
 
-pinned by `t-decl-dup-field` · spec: docs/spec/language.md L-157
+pinned by `t-decl-dup-field` · spec: docs/spec/language.md [L-157](/spec/language/#l-157)
 
 ### `%decl-dup-method`
 
@@ -66,7 +66,7 @@ pinned by `t-decl-dup-field` · spec: docs/spec/language.md L-157
 struct S { x: @ }; class C(S) { m(self: C) -> @ { 1 }; m(self: C) -> @ { 2 }; }; 1
 ```
 
-pinned by `t-decl-dup-method` · spec: docs/spec/language.md L-157
+pinned by `t-decl-dup-method` · spec: docs/spec/language.md [L-157](/spec/language/#l-157)
 
 ### `%decl-dup-tag`
 
@@ -74,7 +74,7 @@ pinned by `t-decl-dup-method` · spec: docs/spec/language.md L-157
 enum E { a, a }; 1
 ```
 
-pinned by `t-decl-dup-tag` · spec: docs/spec/language.md L-157
+pinned by `t-decl-dup-tag` · spec: docs/spec/language.md [L-157](/spec/language/#l-157)
 
 ### `%decl-empty-struct`
 
@@ -90,7 +90,7 @@ pinned by `t-rch-decl-mt` · also `t-mint-decl-empty` (AST-level)
 enum Rec { mk(Rec) }; 0
 ```
 
-pinned by `t-decl-fond-only` · also `t-mint-decl-fond` (AST-level) · spec: docs/spec/language.md L-164
+pinned by `t-decl-fond-only` · also `t-mint-decl-fond` (AST-level) · spec: docs/spec/language.md [L-164](/spec/language/#l-164)
 
 ### `%decl-fond-deep`
 
@@ -98,7 +98,7 @@ pinned by `t-decl-fond-only` · also `t-mint-decl-fond` (AST-level) · spec: doc
 struct S0 { x: @ }; struct S1 { x: S0 }; struct S2 { x: S1 }; struct S3 { x: S2 }; struct S4 { x: S3 }; struct S5 { x: S4 }; struct S6 { x: S5 }; struct S7 { x: S6 }; struct S8 { x: S7 }; struct S9 { x: S8 }; struct S10 { x: S9 }; struct S11 { x: S10 }; struct S12 { x: S11 }; struct S13 { x: S12 }; struct S14 { x: S13 }; struct S15 { x: S14 }; struct S16 { x: S15 }; struct S17 { x: S16 }; struct S18 { x: S17 }; struct S19 { x: S18 }; struct S20 { x: S19 }; struct S21 { x: S20 }; struct S22 { x: S21 }; struct S23 { x: S22 }; struct S24 { x: S23 }; struct S25 { x: S24 }; struct S26 { x: S25 }; struct S27 { x: S26 }; struct S28 { x: S27 }; struct S29 { x: S28 }; struct S30 { x: S29 }; struct S31 { x: S30 }; struct S32 { x: S31 }; struct S33 { x: S32 }; struct S34 { x: S33 }; struct S35 { x: S34 }; struct S36 { x: S35 }; struct S37 { x: S36 }; struct S38 { x: S37 }; struct S39 { x: S38 }; struct S40 { x: S39 }; struct S41 { x: S40 }; struct S42 { x: S41 }; struct S43 { x: S42 }; struct S44 { x: S43 }; struct S45 { x: S44 }; struct S46 { x: S45 }; struct S47 { x: S46 }; struct S48 { x: S47 }; struct S49 { x: S48 }; struct S50 { x: S49 }; struct S51 { x: S50 }; struct S52 { x: S51 }; struct S53 { x: S52 }; struct S54 { x: S53 }; struct S55 { x: S54 }; struct S56 { x: S55 }; struct S57 { x: S56 }; struct S58 { x: S57 }; struct S59 { x: S58 }; struct S60 { x: S59 }; struct S61 { x: S60 }; struct S62 { x: S61 }; struct S63 { x: S62 }; struct S64 { x: S63 }; struct S65 { x: S64 }; struct S66 { x: S65 }; struct S67 { x: S66 }; struct S68 { x: S67 }; struct S69 { x: S68 }; struct S70 { x: S69 }; 1
 ```
 
-pinned by `t-decl-fond-deep` · spec: docs/spec/language.md L-164
+pinned by `t-decl-fond-deep` · spec: docs/spec/language.md [L-164](/spec/language/#l-164)
 
 ### `%decl-fond-order`
 
@@ -106,7 +106,7 @@ pinned by `t-decl-fond-deep` · spec: docs/spec/language.md L-164
 enum Rec { cell(Rec, Rec), leaf }; 0
 ```
 
-pinned by `t-decl-fond-cycl` · spec: docs/spec/language.md L-164
+pinned by `t-decl-fond-cycl` · spec: docs/spec/language.md [L-164](/spec/language/#l-164)
 
 ### `%decl-indiscriminable`
 
@@ -122,7 +122,7 @@ pinned by `t-decl-dish-stub-still`, `t-err-decl-indiscrim`, `t-err-or-arg-cell`,
 trait E { ne(!=); }; 0
 ```
 
-pinned by `t-err-op-ne` · spec: docs/spec/language.md L-43
+pinned by `t-err-op-ne` · spec: docs/spec/language.md [L-43](/spec/language/#l-43)
 
 ### `%decl-op-gen`
 
@@ -138,7 +138,7 @@ pinned by `t-decl-op-gen`
 trait MyAdd { add(+); }; 0
 ```
 
-pinned by `t-err-op-rebind` · spec: docs/spec/language.md L-43, docs/spec/runtime.md R-62
+pinned by `t-err-op-rebind` · spec: docs/spec/language.md [L-43](/spec/language/#l-43), docs/spec/runtime.md [R-62](/spec/runtime/#r-62)
 
 ### `%decl-trait-annot`
 
@@ -154,7 +154,7 @@ pinned by `t-decl-trait-annot`
 trait Zero { zero() -> Self; }; 1
 ```
 
-pinned by `t-trait-nullary` · also `t-mint-trait-self` (AST-level) · spec: docs/spec/language.md L-44
+pinned by `t-trait-nullary` · also `t-mint-trait-self` (AST-level) · spec: docs/spec/language.md [L-44](/spec/language/#l-44)
 
 ### `%duplicate-schema-name`
 
@@ -165,7 +165,7 @@ A **Nock Assembly** program, not a Jock one — `nexpand` is the judgment, and `
 (%self)
 ```
 
-pinned by `t-rch-nx-schdup` · also `t-nx-schdup-n` (AST-level) · spec: docs/spec/nockasm-target.md N-39, docs/spec/nockasm-target.md N-40, docs/spec/nockasm.md N-13
+pinned by `t-rch-nx-schdup` · also `t-nx-schdup-n` (AST-level) · spec: docs/spec/nockasm-target.md [N-39](/spec/nockasm-target/#n-39), docs/spec/nockasm-target.md [N-40](/spec/nockasm-target/#n-40), docs/spec/nockasm.md [N-13](/spec/nockasm/#n-13)
 
 ### `%elab-arity`
 
@@ -213,7 +213,7 @@ private struct Hidden { h: @ }; struct Shown { s: @ };
 import m; let h: m.Hidden = m.Hidden( h: 1 ); h.h
 ```
 
-pinned by `t-jimp-private-type`, `t-timp-type-unbound` · also `t-elab-unbound-err`, `t-elab-unbound-n` (AST-level) · spec: docs/imports.md I-5, docs/spec/runtime.md R-83
+pinned by `t-jimp-private-type`, `t-timp-type-unbound` · also `t-elab-unbound-err`, `t-elab-unbound-n` (AST-level) · spec: docs/imports.md I-5, docs/spec/runtime.md [R-83](/spec/runtime/#r-83)
 
 ### `%elab-unimported`
 
@@ -237,7 +237,7 @@ private struct Key { k: @ }; func mkKey(n: @) -> Key { Key( k: n ) };
 import m; m.mkKey(3).k
 ```
 
-pinned by `t-jimp-export-private`, `t-jimp-export-private-alias`, `t-jimp-export-private-field` · spec: docs/imports.md I-5, docs/spec/language.md L-21
+pinned by `t-jimp-export-private`, `t-jimp-export-private-alias`, `t-jimp-export-private-field` · spec: docs/imports.md I-5, docs/spec/language.md [L-21](/spec/language/#l-21)
 
 ### `%import-cycle`
 
@@ -261,7 +261,7 @@ import bar; func f(n: @) -> @ { n };
 import m; m.f(1)
 ```
 
-pinned by `t-jimp-mimp` · spec: docs/imports.md I-6, docs/spec/language.md L-171
+pinned by `t-jimp-mimp` · spec: docs/imports.md I-6, docs/spec/language.md [L-171](/spec/language/#l-171)
 
 ### `%in-module`
 
@@ -294,7 +294,7 @@ pinned by `t-err-join-if`, `t-err-join-list` · also `t-join-aura-chars-e`, `t-j
 let xs = [1, "a"]; xs
 ```
 
-pinned by `t-dtags-list-join`, `t-rch-dtags-if`, `t-rch-join` · also `t-join-fail-n`, `t-join-ref-n`, `t-join-sub-miss-n`, `t-mint-join-err` (AST-level) · spec: docs/spec/chain.md C-48
+pinned by `t-dtags-list-join`, `t-rch-dtags-if`, `t-rch-join` · also `t-join-fail-n`, `t-join-ref-n`, `t-join-sub-miss-n`, `t-mint-join-err` (AST-level) · spec: docs/spec/chain.md [C-48](/spec/chain/#c-48)
 
 ### `%kernel-shape`
 
@@ -310,7 +310,7 @@ pinned by `t-kern-shape`
 struct KS { n: @ }; class Counter(KS) { load(self: Counter, old: *) -> Counter { old as! Counter }; peek(self: Counter, p: *) -> * { self.n }; poke(self: Counter, e: *) -> (List<*>, Counter) { (~, self) }; }; Counter( n: 0 )
 ```
 
-pinned by `t-rch-kern-tr` · spec: docs/spec/runtime.md R-70
+pinned by `t-rch-kern-tr` · spec: docs/spec/runtime.md [R-70](/spec/runtime/#r-70)
 
 ### `%let-shadows`
 
@@ -336,7 +336,7 @@ pinned by `t-lex-blokop-n`
 let a = true; let b = false; a && b
 ```
 
-pinned by `t-hint-amp`, `t-hint-amp-mid`, `t-hint-bar` · spec: docs/spec/language.md L-91, docs/spec/language.md L-178
+pinned by `t-hint-amp`, `t-hint-amp-mid`, `t-hint-bar` · spec: docs/spec/language.md [L-91](/spec/language/#l-91), docs/spec/language.md [L-178](/spec/language/#l-178)
 
 ### `%lex-hex`
 
@@ -368,7 +368,7 @@ pinned by `t-err-interp-open`
 "a{"b"}c"
 ```
 
-pinned by `t-err-interp-str` · spec: docs/spec/language.md L-31
+pinned by `t-err-interp-str` · spec: docs/spec/language.md [L-31](/spec/language/#l-31)
 
 ### `%lex-number`
 
@@ -417,7 +417,7 @@ pinned by `t-lex-stray-n` · also `t-lex-uni-n` (AST-level)
 "a\zzb"
 ```
 
-pinned by `t-str-esc-bad`, `t-str-esc-short` · spec: docs/spec/language.md L-29
+pinned by `t-str-esc-bad`, `t-str-esc-short` · spec: docs/spec/language.md [L-29](/spec/language/#l-29)
 
 ### `%lex-term`
 
@@ -469,7 +469,7 @@ pinned by `t-mill-lambda`
 let f: (@) -> @ = lambda (x: @, y: @) -> @ { x }; f(1)
 ```
 
-pinned by `t-mill-lambda-arity` · spec: docs/spec/language.md L-141
+pinned by `t-mill-lambda-arity` · spec: docs/spec/language.md [L-141](/spec/language/#l-141)
 
 ### `%mill-nest`
 
@@ -477,7 +477,7 @@ pinned by `t-mill-lambda-arity` · spec: docs/spec/language.md L-141
 let u: UniChar = 0x1f600 as! UniChar; let b: Byte = u; b
 ```
 
-pinned by `t-arc-unichar-narrow`, `t-err-class-gen-arg`, `t-err-map-annot-real`, `t-err-print-num`, `t-gen-rigid-arg`, `t-gen-rigid-unit`, `t-rigid-mcon`, `t-rigid-slit`, `t-roof-named-func`, `t-text-char-no`, `t-var-widen-shallow` · also `t-mint-annot`, `t-mint-cond`, `t-mint-guard`, `t-mint-inc-cell` (AST-level) · spec: docs/spec/language.md L-132, docs/spec/runtime.md R-102, docs/spec/runtime.md R-59
+pinned by `t-arc-unichar-narrow`, `t-err-class-gen-arg`, `t-err-map-annot-real`, `t-err-print-num`, `t-gen-rigid-arg`, `t-gen-rigid-unit`, `t-rigid-mcon`, `t-rigid-slit`, `t-roof-named-func`, `t-text-char-no`, `t-var-widen-shallow` · also `t-mint-annot`, `t-mint-cond`, `t-mint-guard`, `t-mint-inc-cell` (AST-level) · spec: docs/spec/language.md [L-132](/spec/language/#l-132), docs/spec/runtime.md [R-102](/spec/runtime/#r-102), docs/spec/runtime.md [R-59](/spec/runtime/#r-59)
 
 ### `%mint-call`
 
@@ -493,7 +493,7 @@ pinned by `t-rch-call` · also `t-mint-call-gate` (AST-level)
 func f(a: @, b: @) -> @ { a }; f(1)
 ```
 
-pinned by `t-rch-arity` · also `t-mint-call-arity`, `t-mint-import-arity` (AST-level) · spec: docs/spec/language.md L-171
+pinned by `t-rch-arity` · also `t-mint-call-arity`, `t-mint-import-arity` (AST-level) · spec: docs/spec/language.md [L-171](/spec/language/#l-171)
 
 ### `%mint-call-bound`
 
@@ -517,7 +517,7 @@ pinned by `t-rch-case`
 let n = 42; let b: Bool = n as Bool; b
 ```
 
-pinned by `t-as-grd-bool`, `t-as-grd-char`, `t-err-chars-cast` · also `t-mint-cast` (AST-level) · spec: docs/spec/language.md L-24, docs/spec/language.md L-120, docs/spec/runtime.md R-44
+pinned by `t-as-grd-bool`, `t-as-grd-char`, `t-err-chars-cast` · also `t-mint-cast` (AST-level) · spec: docs/spec/language.md [L-24](/spec/language/#l-24), docs/spec/language.md [L-120](/spec/language/#l-120), docs/spec/runtime.md [R-44](/spec/runtime/#r-44)
 
 ### `%mint-cast-sealed`
 
@@ -541,7 +541,7 @@ pinned by `t-jimp-seal-cast`, `t-jimp-seal-deep-arg`, `t-jimp-seal-deep-cast`, `
 struct SB { a: Int, k: @ }; let s = (5, 4) as SB; if s.a == -3 { 111 } else { 222 }
 ```
 
-pinned by `t-cast-sint-deep`, `t-cast-sint-deep-nom`, `t-cast-sint-deep-nom-test`, `t-cast-sint-deep-soft`, `t-cast-sint-deep-test`, `t-cast-sint-deep-tuple`, `t-sint-cast`, `t-sint-castp`, `t-sint-castq`, `t-sint-castx` · spec: docs/imports.md I-5, docs/spec/language.md L-12, docs/spec/language.md L-127
+pinned by `t-cast-sint-deep`, `t-cast-sint-deep-nom`, `t-cast-sint-deep-nom-test`, `t-cast-sint-deep-soft`, `t-cast-sint-deep-test`, `t-cast-sint-deep-tuple`, `t-sint-cast`, `t-sint-castp`, `t-sint-castq`, `t-sint-castx` · spec: docs/imports.md I-5, docs/spec/language.md [L-12](/spec/language/#l-12), docs/spec/language.md [L-127](/spec/language/#l-127)
 
 ### `%mint-ctor`
 
@@ -557,7 +557,7 @@ pinned by `t-mint-ctor`
 enum E { a(@) }; let f = E.a; 1
 ```
 
-pinned by `t-text-ctor-applied` · also `t-mint-ctor-applied` (AST-level) · spec: docs/spec/language.md L-166
+pinned by `t-text-ctor-applied` · also `t-mint-ctor-applied` (AST-level) · spec: docs/spec/language.md [L-166](/spec/language/#l-166)
 
 ### `%mint-ctor-arity`
 
@@ -565,7 +565,7 @@ pinned by `t-text-ctor-applied` · also `t-mint-ctor-applied` (AST-level) · spe
 enum E { a(@) }; E.a()
 ```
 
-pinned by `t-mint-ctor-arity` · spec: docs/spec/language.md L-165
+pinned by `t-mint-ctor-arity` · spec: docs/spec/language.md [L-165](/spec/language/#l-165)
 
 ### `%mint-ctor-nullary`
 
@@ -573,7 +573,7 @@ pinned by `t-mint-ctor-arity` · spec: docs/spec/language.md L-165
 enum E { a }; E.a(1)
 ```
 
-pinned by `t-mint-ctor-nullary` · spec: docs/spec/language.md L-165
+pinned by `t-mint-ctor-nullary` · spec: docs/spec/language.md [L-165](/spec/language/#l-165)
 
 ### `%mint-ctor-tag`
 
@@ -581,7 +581,7 @@ pinned by `t-mint-ctor-nullary` · spec: docs/spec/language.md L-165
 enum E { a(@) }; E.b(1)
 ```
 
-pinned by `t-mint-ctor-tag` · spec: docs/spec/language.md L-166
+pinned by `t-mint-ctor-tag` · spec: docs/spec/language.md [L-166](/spec/language/#l-166)
 
 ### `%mint-edit`
 
@@ -597,7 +597,7 @@ pinned by `t-mint-edit`
 let b = 1; b = 3; b
 ```
 
-pinned by `t-let-no-edit` · also `t-mint-edit-let` (AST-level) · spec: docs/spec/language.md L-130
+pinned by `t-let-no-edit` · also `t-mint-edit-let` (AST-level) · spec: docs/spec/language.md [L-130](/spec/language/#l-130)
 
 ### `%mint-edit-sealed`
 
@@ -621,7 +621,7 @@ pinned by `t-jimp-seal-edit` · spec: docs/imports.md I-5
 struct S { x: @, y: @ }; trait T { dist(self: Self) -> @; } impl T for S { dist(self: Self) -> @ { self.x } } let v = S( x: 4, y: 5 ); let g = v.dist; 0
 ```
 
-pinned by `t-dimb-meth-value`, `t-jimp-arm-value-deep`, `t-rch-field` · spec: docs/spec/language.md L-171
+pinned by `t-dimb-meth-value`, `t-jimp-arm-value-deep`, `t-rch-field` · spec: docs/spec/language.md [L-171](/spec/language/#l-171)
 
 ### `%mint-func-annot`
 
@@ -629,7 +629,7 @@ pinned by `t-dimb-meth-value`, `t-jimp-arm-value-deep`, `t-rch-field` · spec: d
 func f(a) -> @ { 1 }; f(1)
 ```
 
-pinned by `t-mint-func-annot` · spec: docs/spec/language.md L-136
+pinned by `t-mint-func-annot` · spec: docs/spec/language.md [L-136](/spec/language/#l-136)
 
 ### `%mint-func-dup`
 
@@ -637,7 +637,7 @@ pinned by `t-mint-func-annot` · spec: docs/spec/language.md L-136
 func f(a: @) -> @ { a }; func f(b: @) -> @ { b }; 1
 ```
 
-pinned by `t-rch-fn-dup` · also `t-mint-grp-dup` (AST-level) · spec: docs/spec/language.md L-137
+pinned by `t-rch-fn-dup` · also `t-mint-grp-dup` (AST-level) · spec: docs/spec/language.md [L-137](/spec/language/#l-137)
 
 ### `%mint-func-ret`
 
@@ -733,7 +733,7 @@ pinned by `t-mint-impl-trait`
 import my-lib; 1
 ```
 
-pinned by `t-dtags-user-name`, `t-timp-absent` · also `t-mint-import-unknown` (AST-level) · spec: docs/imports.md I-6, docs/spec/language.md L-171
+pinned by `t-dtags-user-name`, `t-timp-absent` · also `t-mint-import-unknown` (AST-level) · spec: docs/imports.md I-6, docs/spec/language.md [L-171](/spec/language/#l-171)
 
 ### `%mint-import-arm`
 
@@ -749,7 +749,7 @@ func dbl(n: @) -> @ { n + n };
 import m; m.nope(1)
 ```
 
-pinned by `t-jimp-absent`, `t-jimp-arm-value-absent`, `t-jimp-private-arm` · spec: docs/spec/language.md L-171
+pinned by `t-jimp-absent`, `t-jimp-arm-value-absent`, `t-jimp-private-arm` · spec: docs/spec/language.md [L-171](/spec/language/#l-171)
 
 ### `%mint-inexhaustive`
 
@@ -765,7 +765,7 @@ pinned by `t-text-opt-no-cell`, `t-text-opt-no-null` · also `t-mint-match-inex`
 struct BS<T> { v: @ }; BS( v: 1 )
 ```
 
-pinned by `t-rch-inst` · also `t-mint-import-gen` (AST-level) · spec: docs/spec/language.md L-171
+pinned by `t-rch-inst` · also `t-mint-import-gen` (AST-level) · spec: docs/spec/language.md [L-171](/spec/language/#l-171)
 
 ### `%mint-inst-annot`
 
@@ -773,7 +773,7 @@ pinned by `t-rch-inst` · also `t-mint-import-gen` (AST-level) · spec: docs/spe
 enum E<T> { a }; E.a
 ```
 
-pinned by `t-mint-inst-annot` · spec: docs/spec/language.md L-147
+pinned by `t-mint-inst-annot` · spec: docs/spec/language.md [L-147](/spec/language/#l-147)
 
 ### `%mint-join`
 
@@ -797,7 +797,7 @@ pinned by `t-rch-lam` · also `t-mint-lam-annot` (AST-level)
 nope
 ```
 
-pinned by `t-chkj-refuse`, `t-chkjm-coord`, `t-dtags-one`, `t-repl-pos`, `t-text-grp-split-decl`, `t-text-grp-split-let` · also `t-mint-unbound` (AST-level) · spec: docs/spec/language.md L-139
+pinned by `t-chkj-refuse`, `t-chkjm-coord`, `t-dtags-one`, `t-repl-pos`, `t-text-grp-split-decl`, `t-text-grp-split-let` · also `t-mint-unbound` (AST-level) · spec: docs/spec/language.md [L-139](/spec/language/#l-139)
 
 ### `%mint-list-join`
 
@@ -837,7 +837,7 @@ pinned by `t-mint-meth-arity`
 struct S { x: @ }; class C(S) { m(self: @) -> @ { 1 }; }; let c = C( x: 1 ); c.m()
 ```
 
-pinned by `t-mint-meth-self` · spec: docs/spec/language.md L-158
+pinned by `t-mint-meth-self` · spec: docs/spec/language.md [L-158](/spec/language/#l-158)
 
 ### `%mint-method`
 
@@ -853,7 +853,7 @@ pinned by `t-rch-meth`
 let x: @ = 1; x as! Never
 ```
 
-pinned by `t-rch-mold` · also `t-mint-asx-gate`, `t-mint-tt-gate` (AST-level) · spec: docs/spec/language.md L-124
+pinned by `t-rch-mold` · also `t-mint-asx-gate`, `t-mint-tt-gate` (AST-level) · spec: docs/spec/language.md [L-124](/spec/language/#l-124)
 
 ### `%mint-naxis`
 
@@ -869,7 +869,7 @@ pinned by `t-cimp-seal`, `t-lark-atom-n`, `t-lark-seal-n`, `t-naxis-seal-n`
 1.5 % 2.0
 ```
 
-pinned by `t-err-op-rmod` · spec: docs/spec/language.md L-116
+pinned by `t-err-op-rmod` · spec: docs/spec/language.md [L-116](/spec/language/#l-116)
 
 ### `%mint-op-aura`
 
@@ -877,7 +877,7 @@ pinned by `t-err-op-rmod` · spec: docs/spec/language.md L-116
 1 + 'a'
 ```
 
-pinned by `t-err-op-aura-char`, `t-err-op-aura-real` · spec: docs/spec/language.md L-39, docs/spec/runtime.md R-51
+pinned by `t-err-op-aura-char`, `t-err-op-aura-real` · spec: docs/spec/language.md [L-39](/spec/language/#l-39), docs/spec/runtime.md [R-51](/spec/runtime/#r-51)
 
 ### `%mint-op-impl`
 
@@ -885,7 +885,7 @@ pinned by `t-err-op-aura-char`, `t-err-op-aura-real` · spec: docs/spec/language
 struct P { v: @ }; let a = P( v: 1 ); let b = P( v: 2 ); let c = a + b; 0
 ```
 
-pinned by `t-err-op-impl`, `t-err-op-impl-bool`, `t-err-op-impl-char` · spec: docs/spec/runtime.md R-51
+pinned by `t-err-op-impl`, `t-err-op-impl-bool`, `t-err-op-impl-char` · spec: docs/spec/runtime.md [R-51](/spec/runtime/#r-51)
 
 ### `%mint-patt`
 
@@ -901,7 +901,7 @@ pinned by `t-rch-patt` · also `t-mint-match-patt`, `t-mint-match-sing` (AST-lev
 enum C { red, green } let c = C.green; match c { red => 1, green => 2, }
 ```
 
-pinned by `t-arc-patt-bare` · spec: docs/spec/language.md L-149
+pinned by `t-arc-patt-bare` · spec: docs/spec/language.md [L-149](/spec/language/#l-149)
 
 ### `%mint-patt-tag`
 
@@ -925,7 +925,7 @@ pinned by `t-mint-peek-arity`
 var b: @ = 0; loop outer { if b == 3 { b } else { b = b + 1; recur inner } }
 ```
 
-pinned by `t-loop-label-bad` · also `t-mint-recur-naked` (AST-level) · spec: docs/spec/language.md L-140, docs/spec/language.md L-153
+pinned by `t-loop-label-bad` · also `t-mint-recur-naked` (AST-level) · spec: docs/spec/language.md [L-140](/spec/language/#l-140), docs/spec/language.md [L-153](/spec/language/#l-153)
 
 ### `%mint-slit`
 
@@ -981,7 +981,7 @@ pinned by `t-jimp-class-gen-seal`, `t-jimp-seal-lit` · spec: docs/imports.md I-
 trait G<A> { g(self: Self) -> A; }; func<T: G> f(x: T) -> @ { 1 }; f(2)
 ```
 
-pinned by `t-err-bound-ptrait`, `t-err-class-gen-bound`, `t-jdag-arm-generic-n`, `t-jimp-arm-gen`, `t-jimp-bound-qual-ptrait`, `t-mint-gimpl-bound` · spec: docs/spec/language.md L-171
+pinned by `t-err-bound-ptrait`, `t-err-class-gen-bound`, `t-jdag-arm-generic-n`, `t-jimp-arm-gen`, `t-jimp-bound-qual-ptrait`, `t-mint-gimpl-bound` · spec: docs/spec/language.md [L-171](/spec/language/#l-171)
 
 ### `%mint-unblessed`
 
@@ -1025,7 +1025,7 @@ pinned by `t-halo-scry-peek`, `t-halo-scry-try`, `t-halo-scry-under`
 import b; a.mkp(1).v
 ```
 
-pinned by `t-jdag-unimported` · spec: docs/spec/language.md L-172
+pinned by `t-jdag-unimported` · spec: docs/spec/language.md [L-172](/spec/language/#l-172)
 
 ### `%mint-unreachable`
 
@@ -1097,7 +1097,7 @@ pinned by `t-parse-empty`, `t-rch-empty`
 let a = 1; { }
 ```
 
-pinned by `t-parse-empty-brace` · spec: docs/spec/language.md L-85
+pinned by `t-parse-empty-brace` · spec: docs/spec/language.md [L-85](/spec/language/#l-85)
 
 ### `%parse-enum-casing`
 
@@ -1105,7 +1105,7 @@ pinned by `t-parse-empty-brace` · spec: docs/spec/language.md L-85
 enum S { Point }; 1
 ```
 
-pinned by `t-parse-casing` · spec: docs/spec/language.md L-163
+pinned by `t-parse-casing` · spec: docs/spec/language.md [L-163](/spec/language/#l-163)
 
 ### `%parse-eof`
 
@@ -1121,7 +1121,7 @@ pinned by `t-rch-eof`
 eval 5
 ```
 
-pinned by `t-parse-eval` · spec: docs/spec/language.md L-129
+pinned by `t-parse-eval` · spec: docs/spec/language.md [L-129](/spec/language/#l-129)
 
 ### `%parse-expected`
 
@@ -1129,7 +1129,7 @@ pinned by `t-parse-eval` · spec: docs/spec/language.md L-129
 let a: @ = 3; match a { 1 => 0; _ => 84; }
 ```
 
-pinned by `t-arc-arm-semi`, `t-arc-ctor-brace`, `t-chkjm-parse`, `t-eq-bind-raw`, `t-hint-index-q`, `t-index-gone-has`, `t-index-gone-slice`, `t-parse-match-nosep`, `t-parse-method-nosep` · spec: docs/spec/language.md L-84, docs/spec/language.md L-85
+pinned by `t-arc-arm-semi`, `t-arc-ctor-brace`, `t-chkjm-parse`, `t-eq-bind-raw`, `t-hint-index-q`, `t-index-gone-has`, `t-index-gone-slice`, `t-parse-match-nosep`, `t-parse-method-nosep` · spec: docs/spec/language.md [L-84](/spec/language/#l-84), docs/spec/language.md [L-85](/spec/language/#l-85)
 
 ### `%parse-func-parens`
 
@@ -1161,7 +1161,7 @@ pinned by `t-parse-interp`
 lambda 5
 ```
 
-pinned by `t-parse-lambda` · spec: docs/spec/language.md L-129
+pinned by `t-parse-lambda` · spec: docs/spec/language.md [L-129](/spec/language/#l-129)
 
 ### `%parse-lark-cmp`
 
@@ -1169,7 +1169,7 @@ pinned by `t-parse-lambda` · spec: docs/spec/language.md L-129
 var p = (7, 9); p.>= 3; p
 ```
 
-pinned by `t-lark-eq-glued`, `t-lark-eq-glued-lt` · spec: docs/spec/language.md L-105
+pinned by `t-lark-eq-glued`, `t-lark-eq-glued-lt` · spec: docs/spec/language.md [L-105](/spec/language/#l-105)
 
 ### `%parse-method`
 
@@ -1185,7 +1185,7 @@ pinned by `t-parse-method`
 let a = 5; a- 1
 ```
 
-pinned by `t-minus-glued-l`, `t-minus-glued-r` · spec: docs/spec/language.md L-10, docs/spec/language.md L-109
+pinned by `t-minus-glued-l`, `t-minus-glued-r` · spec: docs/spec/language.md [L-10](/spec/language/#l-10), docs/spec/language.md [L-109](/spec/language/#l-109)
 
 ### `%parse-name`
 
@@ -1209,7 +1209,7 @@ pinned by `t-parse-no-result`
 let s = Set<@>([1, 2]); if 1 in s in s { 7 } else { 9 }
 ```
 
-pinned by `t-in-nonassoc`, `t-parse-nonassoc` · also `t-parse-subset-nonassoc`, `t-parse-supset-nonassoc` (AST-level) · spec: docs/spec/language.md L-108
+pinned by `t-in-nonassoc`, `t-parse-nonassoc` · also `t-parse-subset-nonassoc`, `t-parse-supset-nonassoc` (AST-level) · spec: docs/spec/language.md [L-108](/spec/language/#l-108)
 
 ### `%parse-not`
 
@@ -1225,7 +1225,7 @@ pinned by `t-hint-not`, `t-index-gone-pop`
 enum Shape { point, circle(r: Float64) }; 1
 ```
 
-pinned by `t-parse-or-face` · spec: docs/spec/language.md L-165
+pinned by `t-parse-or-face` · spec: docs/spec/language.md [L-165](/spec/language/#l-165)
 
 ### `%parse-path`
 
@@ -1273,7 +1273,7 @@ pinned by `t-parse-patt-case`
 struct T { z: @ }; func mt() -> T { T( z: 1 ) }; mt().z = 5; 0
 ```
 
-pinned by `t-err-dot-place`, `t-err-slice-place` · spec: docs/spec/language.md L-114
+pinned by `t-err-dot-place`, `t-err-slice-place` · spec: docs/spec/language.md [L-114](/spec/language/#l-114)
 
 ### `%parse-print-pri`
 
@@ -1281,7 +1281,7 @@ pinned by `t-err-dot-place`, `t-err-slice-place` · spec: docs/spec/language.md 
 let n = 2; print("x", n); 0
 ```
 
-pinned by `t-err-print-pri-expr` · spec: docs/spec/language.md L-34
+pinned by `t-err-print-pri-expr` · spec: docs/spec/language.md [L-34](/spec/language/#l-34)
 
 ### `%parse-private`
 
@@ -1289,7 +1289,7 @@ pinned by `t-err-print-pri-expr` · spec: docs/spec/language.md L-34
 private let x = 1; x
 ```
 
-pinned by `t-err-private-let` · spec: docs/spec/language.md L-20
+pinned by `t-err-private-let` · spec: docs/spec/language.md [L-20](/spec/language/#l-20)
 
 ### `%parse-private-impl`
 
@@ -1297,7 +1297,7 @@ pinned by `t-err-private-let` · spec: docs/spec/language.md L-20
 private impl Meas for @ { len(self: @) -> @ { 1 } }; 0
 ```
 
-pinned by `t-err-private-impl` · spec: docs/spec/language.md L-20
+pinned by `t-err-private-impl` · spec: docs/spec/language.md [L-20](/spec/language/#l-20)
 
 ### `%parse-set-ctor`
 
@@ -1313,7 +1313,7 @@ pinned by `t-parse-set-ctor`
 let xs = [1]; xs[]
 ```
 
-pinned by `t-index-gone-peek`, `t-index-gone-push` · spec: docs/spec/language.md L-10, docs/spec/language.md L-88
+pinned by `t-index-gone-peek`, `t-index-gone-push` · spec: docs/spec/language.md [L-10](/spec/language/#l-10), docs/spec/language.md [L-88](/spec/language/#l-88)
 
 ### `%parse-ternary`
 
@@ -1345,7 +1345,7 @@ pinned by `t-parse-tex-qual`
 func fib(n: @) -> @ { if n == 0 { 1 } else { $(n - 1) } }; fib(3)
 ```
 
-pinned by `t-recur-edits` · spec: docs/spec/language.md L-154
+pinned by `t-recur-edits` · spec: docs/spec/language.md [L-154](/spec/language/#l-154)
 
 ### `%parse-trailing`
 
@@ -1353,7 +1353,7 @@ pinned by `t-recur-edits` · spec: docs/spec/language.md L-154
 union C { red, green } C.red
 ```
 
-pinned by `t-arc-union-gone` · spec: docs/spec/language.md L-151, docs/spec/language.md L-174
+pinned by `t-arc-union-gone` · spec: docs/spec/language.md [L-151](/spec/language/#l-151), docs/spec/language.md [L-174](/spec/language/#l-174)
 
 ### `%parse-trait-op`
 
@@ -1361,7 +1361,7 @@ pinned by `t-arc-union-gone` · spec: docs/spec/language.md L-151, docs/spec/lan
 trait Bad { go(~); }; 1
 ```
 
-pinned by `t-trait-op-junk` · spec: docs/spec/language.md L-42
+pinned by `t-trait-op-junk` · spec: docs/spec/language.md [L-42](/spec/language/#l-42)
 
 ### `%parse-trait-sig`
 
@@ -1385,7 +1385,7 @@ pinned by `t-rch-ty-decl`, `t-rch-ty-impl` · also `t-parse-type-eof`, `t-parse-
 f (3)
 ```
 
-pinned by `t-parse-unglued` · spec: docs/spec/language.md L-85
+pinned by `t-parse-unglued` · spec: docs/spec/language.md [L-85](/spec/language/#l-85)
 
 ### `%parse-var-patt`
 
@@ -1393,7 +1393,7 @@ pinned by `t-parse-unglued` · spec: docs/spec/language.md L-85
 var (a, b) = (1, 2); a
 ```
 
-pinned by `t-parse-var-patt` · spec: docs/spec/language.md L-134
+pinned by `t-parse-var-patt` · spec: docs/spec/language.md [L-134](/spec/language/#l-134)
 
 ### `%raw-cell-needs-two-elements`
 
@@ -1411,7 +1411,7 @@ pinned by `t-rch-nasm-cell`
 import hoon; hoon.uint(-3)
 ```
 
-pinned by `t-sint-uint-neg` · spec: docs/spec/language.md L-14, docs/spec/runtime.md R-15
+pinned by `t-sint-uint-neg` · spec: docs/spec/language.md [L-14](/spec/language/#l-14), docs/spec/runtime.md [R-15](/spec/runtime/#r-15)
 
 ### `%unbound-axis`
 
