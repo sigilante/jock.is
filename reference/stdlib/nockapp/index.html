@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/nockapp.jock</code> and the examples that import it. 1 public declaration — 1 type, 0 arms. 1 pinned by a lane, 0 not. channel <code>%rc</code> · commit <code>dda291b</code></aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/nockapp.jock</code> and the examples that import it. 1 public declaration — 1 type, 0 arms. 1 pinned by a lane, 0 not. channel <code>%rc</code> · commit <code>1ee40c8</code></aside>
 <h2 id="import">Import</h2>
 <p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>nockapp.&lt;name&gt;</code>.</p>
 <pre class="code jock">import nockapp;</pre>
@@ -68,13 +68,13 @@
 <h3 id="effect"><code>Effect</code></h3>
 <pre class="code jock">enum Effect { exit(@), markdown(String) };</pre>
 <p>No comment in the source. The signature above is the whole of what <code>Effect</code> states about itself.</p>
-<p class="label">used by examples/chainkernel.jock</p>
-<pre class="code jock">class Chainwatch(KS) impl Kernel&lt;nockapp.Effect&gt; {</pre>
+<p class="label">used by examples/counter-v2.jock</p>
+<pre class="code jock">class CounterV2(KS2) impl Kernel&lt;nockapp.Effect&gt; {</pre>
 <h2 id="what-no-lane-pins">What no lane pins</h2>
 <p>Nothing. All 1 public declaration is named by an example that runs on every push.</p>
 <h2 id="where-it-is-used">Where it is used</h2>
-<p>7 examples import <code>nockapp</code>. Each is a complete program whose value <code>tools/examples.sh</code> pins on every push.</p>
-<ul><li><code>examples/chainkernel.jock</code> — a use</li><li><code>examples/chainwatcher.jock</code> — a use</li><li><code>examples/counter-v2.jock</code> — a use</li><li><code>examples/counter.jock</code> — a use</li><li><code>examples/stoplight.jock</code> — a use</li><li><code>examples/walletkernel.jock</code> — a use</li><li><code>examples/watcher.jock</code> — a use</li></ul>
+<p>4 examples import <code>nockapp</code>. Each is a complete program whose value <code>tools/examples.sh</code> pins on every push.</p>
+<ul><li><code>examples/counter-v2.jock</code> — a use</li><li><code>examples/counter.jock</code> — a use</li><li><code>examples/stoplight.jock</code> — a use</li><li><code>examples/watcher.jock</code> — a use</li></ul>
 <p>The <a href="../../examples/">worked examples</a> page shows the shortest of these in full.</p>
 </main>
 </div>

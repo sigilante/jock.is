@@ -1,23 +1,23 @@
 # Worked examples
 
-45 complete Jock programs, each with the value it produces. `tools/examples.sh` compiles and runs every one under NockVM on every push, so none of them can silently rot.
+38 complete Jock programs, each with the value it produces. `tools/examples.sh` compiles and runs every one under NockVM on every push, so none of them can silently rot.
 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `dda291b` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+> channel `%rc` · commit `1ee40c8` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
 
-The descriptions are the authors’ own header comments, not written here: `examples/README.md` calls each example "executable documentation — the header comments are the prose, and a `// expect: <noun>` trailer pins the program’s value". 10 of them are **kernels**, carrying `// kernel: N` — built, poked N times, then peeked.
+The descriptions are the authors’ own header comments, not written here: `examples/README.md` calls each example "executable documentation — the header comments are the prose, and a `// expect: <noun>` trailer pins the program’s value". 8 of them are **kernels**, carrying `// kernel: N` — built, poked N times, then peeked.
 
 Ordering is by **size**, shortest first. That is a proxy a reader can check, not a difficulty grading, which would be a judgement this page has no basis to make.
 
 |  | count |
 |---|---:|
-| worked examples | 45 |
-| …with a pinned value | 45 |
-| …that are kernels | 10 |
+| worked examples | 38 |
+| …with a pinned value | 38 |
+| …that are kernels | 8 |
 | …shown in full on this page | 14 |
-| total lines of Jock | 4124 |
+| total lines of Jock | 2917 |
 
 ## Every example
 
@@ -43,35 +43,28 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 | `molds` | 50 | `'atom 42, byte A, rejected x, cmd op 3, kind 2'` | molds.jock — checking foreign nouns: as?, as!, and guards. |
 | `parser` | 53 | `'1234|abc|x|2'` | parser.jock---using the parser combinator library. |
 | `webserver` | 54 | `0` | **kernel (2 pokes).** webserver.jock — a NockApp that serves HTTP, on lib/http. |
-| `chainkey-arms` | 56 | `8` | chainkey-arms.jock |
-| `chainwatcher` | 59 | `[1 1 1]` | The PHASE-1 TYPED WATCHER (chain.md §6.1) — the first program over the live chain package: `import chain;` supplies the tys-registered ZMap/ZSet/Hash  |
 | `interval` | 60 | `'[5/2, 4]|[1, 3]|[1/2, 3]|1/2|yes|[0, 1]'` | interval.jock — modules that STACK. |
 | `rational-arms` | 64 | `19` | rational-arms.jock |
-| `chaintx-arms` | 68 | `6` | chaintx-arms.jock |
 | `http-counter` | 68 | `0` | **kernel (2 pokes).** http-counter.jock — a NockApp whose counter PERSISTS across restarts, ported from nockd's examples/http-counter. |
 | `parser-combinators` | 70 | `'aaa|ab|<x>|x|123|Q7 |zz|ok|9|2|a b|~'` | parser-combinators.jock --- coverage for lib/parser.jock. |
-| `chainrand-arms` | 74 | `9` | chainrand-arms.jock |
 | `matmul` | 74 | `[[58 64 0] [139 154 0] 0]` | matmul.jock — matrix multiplication over unsigned integers. |
 | `twoc-arms` | 77 | `29` | twoc-arms.jock |
 | `units` | 77 | `.~24.0` | units.jock — dimensioned quantities: magnitude and dimension. |
 | `hof-arms` | 79 | `18` | hof-arms.jock |
 | `interval-arms` | 80 | `23` | interval-arms.jock |
-| `txbuild` | 83 | `[1 1 1]` | TX construction over the LIVE chain package (chain.md §4). |
 | `generic-class` | 84 | `14` | generic-class.jock |
 | `rand-arms` | 90 | `11` | rand-arms.jock |
 | `parser-arms` | 100 | `33` | parser-arms.jock |
 | `watcher` | 121 | `[2 2 1 1]` | Chain watcher — the TWO-MAP STORE (chain.md §6.1's state shape, unblocked by %mold-gen: class state can hold containers, so load's `old as! Watch` mol |
 | `string-views` | 126 | `45` | string-views.jock |
-| `chainkernel` | 127 | `[0 0 0]` | **kernel (2 pokes).** The gRPC chain kernel — phase 1 of chain.md §6: the kernel the chainwatch driver boots (tools/watch.sh emits out/watch.jam). |
 | `poker` | 167 | `%first` | poker.jock — score and compare two 5-card poker hands. |
 | `conway` | 237 | `0` | **kernel (2 pokes).** conway.jock — Life on a bounded 25x25 grid. Ported from nockd's examples/conway. |
 | `minesweeper` | 335 | `0` | **kernel (2 pokes).** minesweeper.jock — 9x9, 10 mines, all game logic in the kernel. Ported from nockd's examples/minesweeper. |
 | `wordle` | 364 | `0` | **kernel (2 pokes).** wordle.jock — six guesses at a five-letter word. Ported from nockd's examples/wordle. |
-| `walletkernel` | 740 | `0` | **kernel (2 pokes).** The WALLET SIGNER kernel — phase 3 of chain.md §6.2.  It is the kernel that goes where assets/wal.jam goes, and it serves the SIGNING slice of the wal |
 
 ## The short ones, in full
 
-Every example of 40 lines or fewer, verbatim. The 31 longer ones are listed in the table on this page with their values; their sources live in `examples/` in the compiler repo.
+Every example of 40 lines or fewer, verbatim. The 24 longer ones are listed in the table on this page with their values; their sources live in `examples/` in the compiler repo.
 
 ### `counter`
 
@@ -555,3 +548,19 @@ add(hof.foldl(0, hof.turn(m.tap(), val), add), hof.foldl(0, s.tap(), add))
 ```
 
 value `616` · imports `hof` · run by `tools/examples.sh`
+
+## What this page leaves out
+
+7 programs in `examples/` are not listed above. Each reaches the nockchain line — the `chain` package or one of the modules [the library page](../stdlib/) names as undocumented — and that line is off the site for the reason given there: its interface is half of a contract with a driver this project does not own.
+
+| program | lines | imports |
+|---|---:|---|
+| `chainkey-arms` | 56 | `chainkey` |
+| `chainwatcher` | 59 | `chain`, `nockapp` |
+| `chaintx-arms` | 68 | `chain`, `chaintx` |
+| `chainrand-arms` | 74 | `chain`, `chainrand` |
+| `txbuild` | 83 | `chain` |
+| `chainkernel` | 127 | `chain`, `nockapp` |
+| `walletkernel` | 740 | `chain`, `chainkey`, `chaintx`, `nockapp`, `wallet` |
+
+They are NOT excluded from the lane. `tools/examples.sh` compiles and runs all 45 programs on every push, these included, which is what keeps the chain modules compiling. The boundary here is what the site documents, not what the repo tests.

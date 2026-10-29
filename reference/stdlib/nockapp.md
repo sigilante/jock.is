@@ -5,7 +5,7 @@ the NockApp host's own effect vocabulary.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/nockapp.jock` and the examples that import it.
 >
-> 1 public declaration — 1 type, 0 arms. 1 pinned by a lane, 0 not. channel `%rc` · commit `dda291b`
+> 1 public declaration — 1 type, 0 arms. 1 pinned by a lane, 0 not. channel `%rc` · commit `1ee40c8`
 
 ## Import
 
@@ -37,10 +37,10 @@ enum Effect { exit(@), markdown(String) };
 
 No comment in the source. The signature above is the whole of what `Effect` states about itself.
 
-*used by examples/chainkernel.jock*
+*used by examples/counter-v2.jock*
 
 ```jock
-class Chainwatch(KS) impl Kernel<nockapp.Effect> {
+class CounterV2(KS2) impl Kernel<nockapp.Effect> {
 ```
 
 ## What no lane pins
@@ -49,14 +49,11 @@ Nothing. All 1 public declaration is named by an example that runs on every push
 
 ## Where it is used
 
-7 examples import `nockapp`. Each is a complete program whose value `tools/examples.sh` pins on every push.
+4 examples import `nockapp`. Each is a complete program whose value `tools/examples.sh` pins on every push.
 
-- `examples/chainkernel.jock` — a use
-- `examples/chainwatcher.jock` — a use
 - `examples/counter-v2.jock` — a use
 - `examples/counter.jock` — a use
 - `examples/stoplight.jock` — a use
-- `examples/walletkernel.jock` — a use
 - `examples/watcher.jock` — a use
 
 The [worked examples](../../examples/) page shows the shortest of these in full.
