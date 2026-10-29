@@ -5,11 +5,11 @@ Jock’s vocabulary, each term pointing at the normative rule that introduces it
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> 25 terms · channel `%rc` · commit `0ea53e5`
+> 25 terms · channel `%rc` · commit `7b85ef8`
 
 ## Why this is an index and not prose
 
-`OUTLINE.md` R9 asks for a glossary with prose definitions. The specs do not define these terms — they **use** them, normatively and precisely, which is a different thing. A regex for definitional sentences over all 447 normative rules was tried and returned `chain.md` rules about merkle proofs for "bunt" and about signers for "kernel".
+`OUTLINE.md` R9 asks for a glossary with prose definitions. The specs do not define these terms — they **use** them, normatively and precisely, which is a different thing. A regex for definitional sentences over all 448 normative rules was tried and returned `chain.md` rules about merkle proofs for "bunt" and about signers for "kernel".
 
 So each entry below is the rule that introduces the term, quoted. A reader gets "aura: [L-97](/spec/language/#l-97) says the table below is the utterable aura set" rather than a definition this generator wrote. Writing one would make the generator a second author of the language’s vocabulary, which is the failure mode this whole reference exists to avoid.
 

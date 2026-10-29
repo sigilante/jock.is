@@ -5,7 +5,7 @@ Every literal form Jock can spell, the aura each carries, and the names the lang
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `0ea53e5` (sigilante/pre-rc-sweep) · corpus 1155 vectors · 2026-10-30
+> channel `%rc` · commit `7b85ef8` (sigilante/pre-rc-sweep) · corpus 1156 vectors · 2026-10-30
 
 ## The literal inventory
 
@@ -21,8 +21,8 @@ Every literal form Jock can spell, the aura each carries, and the names the lang
 | char/cord | chars | `'a'` |
 | string | String | `"hello"` |
 | term constant | (constant atom) | `%foo` — tag spellings match `[a-z][a-z0-9]*`; `%1` is the numeric constant 1 |
-| date / span | Date / Span | unspecified — [L-78](/spec/language/#l-78) |
-| path | Path | indicative `/a/b/c` — [L-78](/spec/language/#l-78) |
+| date / span | Date / Span | NONE — [L-189](/spec/language/#l-189). The types are reachable by cast: `0 as Date` |
+| path | Path | `/a/b/c` — [L-78](/spec/language/#l-78), normative; runtime.md [R-49](/spec/runtime/#r-49) |
 | interpolated string | String | `"x = {x}"`. Rules [L-26](/spec/language/#l-26) to [L-32](/spec/language/#l-32) below |
 | list | List<T> | `[1, 2, 3]`, `[]` empty — KERNEL form, typed nominally: `List<join of widened elements>` (heterogeneous elements are a join error); `[]` stays sing-null, nesting into every `List<T>` by N13; against a wanted `List<T>` the elements check against `T` directly (at parameterized traits) |
 | map | Map<K->V> | `[1 -> 100, 2 -> 200]` — brackets, told from a list by the arrow; `[->]` is the empty map |
@@ -43,9 +43,21 @@ Each rule as `language.md` states it, followed by a program from one of the vect
 
 from `t-lex-str-p` (`%lex`, `%pos`) · also cites `t-sint-lit`
 
-### [L-78](/spec/language/#l-78) · Date, span and path literals have no settled surface spelling.
+### [L-78](/spec/language/#l-78) · A path literal is `/`-separated segments.
 
-⟨none — UNPINNED⟩ — the spec states this rule and no corpus vector pins it.
+```jock
+let p = /; p
+```
+
+from `t-parse-path` (`%parse`, `%err`) · also cites `t-des-path`, `t-text-path`
+
+### [L-189](/spec/language/#l-189) · Date and span literals do not exist.
+
+```jock
+~2026.10.30
+```
+
+from `t-parse-tilde-glued` (`%text`, `%err`)
 
 ### [L-26](/spec/language/#l-26) · `{expr}` renders through `.show()`
 
@@ -227,7 +239,7 @@ from `t-parse-match-nocomma` (`%parse`, `%pos`) · also cites `t-parse-match-nos
 
 ⟨none — UNPINNED⟩ — the spec states this rule and no corpus vector pins it.
 
-Of 27 rules in this section, 21 cite at least one vector and 6 are marked `⟨none — UNPINNED⟩`.
+Of 28 rules in this section, 23 cite at least one vector and 5 are marked `⟨none — UNPINNED⟩`.
 
 ## Aura names
 

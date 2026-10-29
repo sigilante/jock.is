@@ -313,11 +313,30 @@ hygiene layered over it.
 `$jatom` in `crates/jockc/hoon/sur/jock.hoon` must match it.
 ⟨`t-lex-str-p`, `t-sint-lit`⟩
 
-**L-78 · Date, span and path literals have no settled surface
-spelling.** `Date`, `Span` and `Path` exist as types; what a
-*literal* of one looks like is **unspecified**, and the `/a/b/c`
-below is indicative rather than normative. A program needing one
-constructs it. ⟨none — UNPINNED⟩
+**L-78 · A path literal is `/`-separated segments.** `/a/b/c` is
+NORMATIVE, not indicative: it desugars to the `%null`-terminated
+chain of its segments, cast to `Path`, and runtime.md R-49 is the
+authority — `Path` is a data nominal over list-of-`String` with no
+knots. A bare `/` refuses `%parse-path`.
+⟨`t-des-path`, `t-parse-path`, `t-text-path`⟩
+
+**L-189 · Date and span literals do not exist.** There is no
+spelling, and this is an exclusion rather than a gap being filled:
+nothing in the ABI produces a `Date` or consumes a `Span`, so a
+literal would be a surface onto nothing. The *types* are live and
+reachable — `Date` and `Span` are the `%date` and `%span` auras,
+and `0 as Date` is how a program that needs one gets it.
+
+What the spelling would have to clear, recorded here because it is
+the actual obstacle and was nowhere: **`~` is the null literal**
+(L-89), so Hoon's `~2026.10.30` and `~d1.h2` lex as `~` followed by
+a numeric run and refuse `%parse-trailing`. A glued postfix on `~`
+is the mechanism that would settle it — `~` followed by an un-spaced
+alphanumeric run, read as one literal, with the bare `~` unchanged —
+and that surface is free: `~a` and `~1` are parse errors today. It
+is the same shape the language already uses for a glued `-` before a
+decimal, which is an `Int` literal rather than an operator. Until it
+is decided, `docs/ROADMAP.md` holds it. ⟨`t-parse-tilde-glued`⟩
 
 | Form | Aura | Example |
 |---|---|---|
@@ -329,8 +348,8 @@ constructs it. ⟨none — UNPINNED⟩
 | char/cord | chars | `'a'` |
 | string | String | `"hello"` |
 | term constant | (constant atom) | `%foo` — tag spellings match `[a-z][a-z0-9]*`; `%1` is the numeric constant 1 |
-| date / span | Date / Span | unspecified — L-78 |
-| path | Path | indicative `/a/b/c` — L-78 |
+| date / span | Date / Span | NONE — L-189. The types are reachable by cast: `0 as Date` |
+| path | Path | `/a/b/c` — L-78, normative; runtime.md R-49 |
 | interpolated string | String | `"x = {x}"`. Rules L-26 to L-32 below |
 | list | List<T> | `[1, 2, 3]`, `[]` empty — KERNEL form, typed nominally: `List<join of widened elements>` (heterogeneous elements are a join error); `[]` stays sing-null, nesting into every `List<T>` by N13; against a wanted `List<T>` the elements check against `T` directly (at parameterized traits) |
 | map | Map<K->V> | `[1 -> 100, 2 -> 200]` — brackets, told from a list by the arrow; `[->]` is the empty map |

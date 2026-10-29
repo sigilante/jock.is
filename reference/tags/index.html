@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>0ea53e5</code> (sigilante/pre-rc-sweep) · corpus 1155 vectors · 2026-10-30</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>7b85ef8</code> (sigilante/pre-rc-sweep) · corpus 1156 vectors · 2026-10-30</aside>
 <table><thead><tr><th></th><th>count</th><th></th></tr></thead><tbody><tr><td>tags the compiler can raise</td><td>202</td><td>197 <code>~|</code> heads + 7 <code>$diag</code> members</td></tr><tr><td><strong>with a runnable program</strong></td><td><strong>162</strong></td><td>the vector carries source, and the page shows it</td></tr><tr><td>no input can reach the guard</td><td>36</td><td>registered with the reason, and the registry is checked</td></tr><tr><td>…of those, still pinned by a vector</td><td>30</td><td>an AST- or judgment-level row reaches the arm directly</td></tr><tr><td>…and pinned by nothing</td><td>6</td><td>nothing to point an input at</td></tr><tr><td>compiler invariant with a tripwire</td><td>2</td><td>a vector green only while the invariant holds</td></tr><tr><td><strong>reachable, and pinned by nothing</strong></td><td><strong>2</strong></td><td>the gap list</td></tr><tr><td>AST-level only, with no reason recorded</td><td>0</td><td>the other gap: pinned, but never watched from a program</td></tr></tbody></table>
 <p>A <code>%neg</code> vector refuses <em>without</em> naming a tag, so it pins that a program is rejected and never in what words. 38 rows are <code>%neg</code>; none of them pins a tag here.</p>
 <p><strong>The two gap rows are the ones to read.</strong> Every other row is a refusal the corpus pins and this page can explain. A count of unpinned tags on its own cannot tell a missing test from a guard the compiler holds against itself, and this page published 82 of them as one list until the difference was worked out tag by tag.</p>
@@ -517,7 +517,7 @@ cd"; s</pre>
 <p>pinned by <code>t-parse-or-face</code> · spec: docs/spec/language.md <a href="/spec/language/#l-165">L-165</a></p>
 <h3 id="parse-path"><code>%parse-path</code></h3>
 <pre class="code jock" data-refuses="parse-path">let p = /; p</pre>
-<p>pinned by <code>t-parse-path</code></p>
+<p>pinned by <code>t-parse-path</code> · spec: docs/spec/language.md <a href="/spec/language/#l-78">L-78</a></p>
 <h3 id="parse-patt"><code>%parse-patt</code></h3>
 <pre class="code jock" data-refuses="parse-patt">match 1 { , =&gt; 1; }</pre>
 <p>pinned by <code>t-parse-patt</code></p>
@@ -562,7 +562,7 @@ cd"; s</pre>
 <p>pinned by <code>t-parse-defer</code>, <code>t-recur-edits</code> · spec: docs/spec/language.md <a href="/spec/language/#l-154">L-154</a>, docs/spec/language.md <a href="/spec/language/#l-188">L-188</a></p>
 <h3 id="parse-trailing"><code>%parse-trailing</code></h3>
 <pre class="code jock" data-refuses="parse-trailing">union C { red, green } C.red</pre>
-<p>pinned by <code>t-arc-union-gone</code> · spec: docs/spec/language.md <a href="/spec/language/#l-151">L-151</a></p>
+<p>pinned by <code>t-arc-union-gone</code>, <code>t-parse-tilde-glued</code> · spec: docs/spec/language.md <a href="/spec/language/#l-189">L-189</a>, docs/spec/language.md <a href="/spec/language/#l-151">L-151</a></p>
 <h3 id="parse-trait-op"><code>%parse-trait-op</code></h3>
 <pre class="code jock" data-refuses="parse-trait-op">trait Bad { go(~); }; 1</pre>
 <p>pinned by <code>t-trait-op-junk</code> · spec: docs/spec/language.md <a href="/spec/language/#l-42">L-42</a></p>
