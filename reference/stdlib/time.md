@@ -5,7 +5,7 @@ civil dates, ISO 8601, and the Urbit `@da`.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/time.jock` and the examples that import it.
 >
-> 21 public declarations — 1 type, 20 arms. 21 pinned by a lane, 0 not. channel `%rc` · commit `076324d`
+> 21 public declarations — 1 type, 20 arms. 21 pinned by a lane, 0 not. channel `%rc` · commit `f1c3be4`
 
 ## Import
 

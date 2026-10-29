@@ -5,7 +5,7 @@ A guard is a value refinement carried by a type. There are five, the set is clos
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page from `docs/spec/types.md` [S3.4](/spec/types/#s3.4).
 >
-> channel `%rc` · commit `076324d`
+> channel `%rc` · commit `f1c3be4`
 
 ## The set
 
