@@ -5,7 +5,7 @@ Every literal form Jock can spell, the aura each carries, and the names the lang
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `a1f9572` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+> channel `%rc` · commit `0ea53e5` (sigilante/pre-rc-sweep) · corpus 1155 vectors · 2026-10-30
 
 ## The literal inventory
 
@@ -185,7 +185,7 @@ from `t-sint-div` (`%text`, `%pos`) · also cites `t-sint-rem`, `t-sint-dul`
 struct P { x: @, y: @ } let p = P(x: 1, y: 2); p.x
 ```
 
-from `t-arc-ctor` (`%text`, `%pos`)
+from `t-arc-ctor` (`%text`, `%pos`) · also cites `t-arc-map-bracket`, `t-arc-set-ctor`
 
 ### [L-80](/spec/language/#l-80) · A trailing comma is permitted
 

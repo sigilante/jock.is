@@ -5,7 +5,7 @@ Every keyword by the slot it occupies, and for the sugar forms, what each one re
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> 30 keywords · channel `%rc` · commit `a1f9572`
+> 30 keywords · channel `%rc` · commit `0ea53e5`
 
 ## No railroad diagrams, and that is a ruling
 
@@ -42,9 +42,9 @@ That ruling binds this page. It also says what would lift it — a formal gramma
 |---|---|
 | `assert` | `L-185`, `L-61` |
 | `crash` | `L-61`, `L-178`, `L-182` |
-| `defer` | `L-61` |
+| `defer` | `L-61`, `L-188` |
 | `else` | `L-61` |
-| `eval` | `L-61`, `L-13`, `L-129`, `L-183` |
+| `eval` | `L-61`, `L-13`, `L-129`, `L-188` |
 | `if` | `L-185`, `L-61` |
 | `loop` | `L-185`, `L-61`, `L-87`, `L-140` |
 | `match` | `L-185`, `L-61`, `L-84`, `L-101`, `L-126`, `L-148`, `L-150`, `L-151`, `L-173` |
@@ -57,7 +57,7 @@ That ruling binds this page. It also says what would lift it — a formal gramma
 |---|---|
 | `and` | `L-61`, `L-107`, `L-173`, `L-178` |
 | `as` | `L-61`, `L-24`, `L-12`, `L-107`, `L-120` |
-| `in` | `L-61`, `L-73`, `L-107`, `L-108`, `L-115`, `L-173`, `L-183` |
+| `in` | `L-61`, `L-73`, `L-107`, `L-108`, `L-115`, `L-173`, `L-188` |
 | `not` | `L-61`, `L-107`, `L-173`, `L-178` |
 | `or` | `L-61`, `L-107`, `L-173`, `L-178` |
 | `xor` | `L-61`, `L-107`, `L-173`, `L-178` |

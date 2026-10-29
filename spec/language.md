@@ -52,12 +52,12 @@ declaration needs none at all (L-81).
 ⟨`t-arc-decl-nosemi`, `t-arc-term-semi`⟩
 
 **L-186 · Sequencing is EXPLICIT.** Adjacent expressions never
-silently compose: the beta's implicit compose is removed, and with
-P-3's promotion the `compose` keyword went with it. Sequencing uses
-`;`, and names enter scope through bindings, declarations and imports
-only. Juxtaposition does not exist anywhere in the grammar —
-collections and tuples are comma-separated (L-79) — so two adjacent
-expressions are either separated by `;` or a parse error (L-174).
+silently compose. Sequencing uses `;`, and names enter scope through
+bindings, declarations and imports only. Juxtaposition does not
+exist anywhere in the grammar — collections and tuples are
+comma-separated (L-79) — so two adjacent expressions are either
+separated by `;` or a parse error, which is what lets L-1 read
+whitespace as the only adjacency signal.
 ⟨`t-arc-ctor`, `t-parse-unglued`⟩
 
 ## 2. Lexical structure
@@ -487,8 +487,9 @@ the dividend; `sdul` is the curated Euclidean modulus.
 
 **L-79 · Separators are commas everywhere** — tuples, lists, sets,
 arguments and type arguments all agree with the map syntax that
-already used them. The beta's space-separated forms (`(a b)`,
-`[1 2 3]`, `{1 2}`) do not parse. ⟨`t-arc-ctor`⟩
+already used them. The space-separated forms `(a b)`, `[1 2 3]` and
+`{1 2}` do not parse: `[1 2 3]` refuses `%parse-expected %\']\'`.
+⟨`t-arc-ctor`, `t-arc-map-bracket`, `t-arc-set-ctor`⟩
 
 **L-80 · A trailing comma is permitted** before every closing
 delimiter of a comma-separated body — diff-friendly, following Rust
@@ -604,8 +605,8 @@ punctuator is reserved so the meaning can land later without
 reinterpreting any legal program; writing it refuses
 `%parse-todo %recur-edits`. ⟨`t-recur-edits`⟩
 
-**L-88 · The beta's `+(e)` and `?(e)` are cut.** Increment is the
-stdlib `inc(e)`; the cell test is `hoon.iscell` (`* -> Bool`), Nock
+**L-88 · The opcode surface forms `+(e)` and `?(e)` are absent.**
+Increment is the stdlib `inc(e)`; the cell test is `hoon.iscell` (`* -> Bool`), Nock
 3 through the substrate — the same arm the compiler uses, not a
 second mechanism. The cut spellings now refuse `%parse-stray`, which
 is unvectored. ⟨`t-nx-inc-p`, `t-abi-iscell-cell`,
@@ -1622,27 +1623,17 @@ Declarations (`struct`/`enum`/`trait`/`impl`/`alias`/`class`) and struct literal
 ## 9. What is deliberately absent
 
 An absence is a rule like any other: something was asked for, ruled
-out, and now refuses. Each row says what refuses and where the
-positive rule lives.
+out, and now refuses or fails to parse. Each row says what the
+language does instead, and where the positive rule lives.
 
-**L-174 · Implicit composition of adjacent expressions is removed.**
-The beta composed them; sequencing is now explicit with `;`, and
-`a b` refuses `%parse-trailing`. Nothing in the grammar is
-juxtaposition, which is what lets L-1 read whitespace as the only
-adjacency signal. ⟨`t-arc-union-gone`, `t-parse-unglued`⟩
-
-**L-175 · Juxtaposition collections are removed.** The beta's
-`(a b)`, `[1 2 3]` and `{1 2}` do not parse — separators are commas
-everywhere (L-79) — and `[1 2 3]` refuses `%parse-expected %']'`.
-⟨`t-arc-ctor`, `t-arc-map-bracket`, `t-arc-set-ctor`⟩
-
-**L-176 · The `((` pseudo-token is gone**, replaced by the lexer's
-glued flag and the adjacency law (L-1, L-2).
-⟨`t-lex-glue-p`, `t-lex-unglue-p`⟩
-
-**L-177 · Whitespace-blind postfix binding is rejected.** C and
-Swift read `f (x)` as a call; Jock does not (L-1, L-2).
-⟨`t-parse-unglued`⟩
+**These are PERMANENT exclusions.** Nothing here is waiting for a
+version number, and this section does not track what the language
+has not got round to. A feature under consideration is roadmap
+material — [`docs/ROADMAP.md`](../ROADMAP.md) for what is planned,
+[`POSSIBLES.md`](../POSSIBLES.md) for what is merely arguable — and
+it does not appear in a normative section until it is decided. One
+word is reserved against a form that does not exist yet; L-188
+names it, and it is the only one.
 
 **L-178 · The glyph connectives `&&`, `||` and `!` are absent**, the
 word operators `and`/`or`/`xor`/`not` taking their place. `&&` and
@@ -1663,17 +1654,15 @@ the reader at four words no vector in the corpus had ever executed
 (jock#129), which also made it the standing exception to L-61's own
 entry requirement of a positive and a negative row per keyword.
 
-**L-179 · The opcode surface forms `+()` and `?()` are cut** — L-88
-is the rule and names the stdlib spellings that replaced them
-(rationale in POSSIBLES P-5). ⟨`t-nx-inc-p`, `t-abi-iscell-cell`⟩
-
 **L-180 · The core algebra is not in the language.** `compose`,
-`object`, and batteries and payloads as *user* concepts went with
-P-3's promotion; cores are calling convention only (types.md S9.8).
-Anonymous records may return later as ordinary products — POSSIBLES
-P-3 records the residue. ⟨none — UNPINNED⟩
+`object`, and batteries and payloads are not user concepts. A core
+is a calling convention (types.md S9.8), reached by writing a
+closure or a trait, and a program never names one. Anonymous
+records are not a product with the names left on: a product is
+positional, a struct is named, and nothing sits between them.
+⟨none — UNPINNED⟩
 
-**L-181 · There are no TRAIT OBJECTS or existentials.** `any Trait`
+**L-181 · There are no trait objects or existentials.** `any Trait`
 does not parse. Dictionaries exist at generic call boundaries only,
 never as storable values: closed heterogeneity is a declared union
 (`List<Shape>`, L-169) and open polymorphism is a generic bound
@@ -1681,12 +1670,23 @@ never as storable values: closed heterogeneity is a declared union
 
 **L-182 · There are no exceptions, nulls, inheritance or macros.**
 Failure is `crash` and the unit; optionality is `T?` (§3); reuse is
-traits and generics; and code generation is the compiler's business,
-not the program's. ⟨none — UNPINNED⟩
+traits and generics; and code generation is the compiler's
+business, not the program's. ⟨none — UNPINNED⟩
 
-**L-183 · Self-hosting constructs are post-1.0.** Nothing in the
-language is reserved for them, so adding them is a language change
-rather than a filling-in. ⟨none — UNPINNED⟩
+**L-183 · The language has no self-hosting constructs.** It cannot
+quote itself, stage its own evaluation, or reach its own AST. A
+Jock compiler written in Jock would use the same surface every
+other program uses, so adding a construct for it would be a
+language change and not a filling-in. ⟨none — UNPINNED⟩
+
+**L-188 · `defer` is the one reserved word.** It is a `$keyword`,
+so no program can bind the name, and it refuses `%parse-todo
+%defer` wherever a statement may stand — the squat is deliberate,
+and it is the only one in the language. Every other spelling that
+refuses `%parse-todo` is punctuation rather than a name: `$(...)`
+re-entry edits refuse `%parse-todo %recur-edits` (L-157), and `$`
+is a punctuator no program could have used for anything else.
+⟨`t-parse-defer`, `t-recur-edits`⟩
 
 ## 10. Decision ids
 

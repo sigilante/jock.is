@@ -5,7 +5,7 @@ All 30 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `a1f9572` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+> channel `%rc` · commit `0ea53e5` (sigilante/pre-rc-sweep) · corpus 1155 vectors · 2026-10-30
 
 Each keyword below carries its **class** — kernel or sugar, one of the language’s four design principles — and **what it does**, both projected from the keyword inventory at [L-61](/spec/language/#l-61), whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.
 
@@ -17,8 +17,8 @@ The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexe
 | usable, with a demonstrating program | 29 |
 | usable, demonstrated by nothing | 0 |
 | deliberately not usable | 1 |
-| with a rule that states what it does | 11 |
-| specified only by their inventory row | 19 |
+| with a rule that states what it does | 12 |
+| specified only by their inventory row | 18 |
 
 ## Syntactic slots
 
@@ -162,7 +162,11 @@ pinned by `t-text-never` · 4 vectors use this keyword
 
 ****reserved, unimplemented**.** the keyword lexes and the parser then refuses `%parse-todo %defer` unconditionally (`parse.hoon`); `sugar.hoon` carries a `%defer` arm no program can reach. Reserved on the same footing as `$(…)` re-entry, so the meaning can land without reinterpreting any legal program.
 
-**No rule in `language.md` states what `defer` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61).
+Specified by [L-188](/spec/language/#l-188):
+
+> [L-188](/spec/language/#l-188) · `defer` is the one reserved word.
+
+Also named by [L-61](/spec/language/#l-61).
 
 **RESERVED.** Reserved in the lexer’s mold so that the parser recognises it and refuses with a diagnosis rather than an unbound name. Refuses `%parse-todo %defer` — parsed and refused;  not implemented for 1.0.
 
@@ -204,7 +208,7 @@ Specified by [L-129](/spec/language/#l-129):
 
 > [L-129](/spec/language/#l-129) · `eval` is CALL-SHAPED
 
-Also named by [L-13](/spec/language/#l-13), [L-61](/spec/language/#l-61), [L-183](/spec/language/#l-183).
+Also named by [L-13](/spec/language/#l-13), [L-61](/spec/language/#l-61), [L-188](/spec/language/#l-188).
 
 ```jock
 (eval(42, (0, 1)) as? @) ?? 99
@@ -302,7 +306,7 @@ pinned by `t-text-arith` · 72 vectors use this keyword
 
 **Sugar.** **membership**. Rules [L-74](/spec/language/#l-74) to [L-76](/spec/language/#l-76) below
 
-**No rule in `language.md` states what `in` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61), [L-73](/spec/language/#l-73), [L-107](/spec/language/#l-107), [L-108](/spec/language/#l-108), [L-115](/spec/language/#l-115), [L-173](/spec/language/#l-173), [L-183](/spec/language/#l-183).
+**No rule in `language.md` states what `in` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61), [L-73](/spec/language/#l-73), [L-107](/spec/language/#l-107), [L-108](/spec/language/#l-108), [L-115](/spec/language/#l-115), [L-173](/spec/language/#l-173), [L-188](/spec/language/#l-188).
 
 ```jock
 let s = "in"; "[{s}]"

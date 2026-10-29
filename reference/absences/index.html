@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Deliberate absences — Jock reference</title>
-<meta name="description" content="What Jock does not have, and what you get instead. 10 rules, each one something that was asked for, ruled out, and now refuses — an absence is a rule like any other, and the only kind a reader cannot guess at.">
+<meta name="description" content="What Jock does not have, and what you get instead. 6 rules, each one something that was asked for, ruled out, and now refuses — an absence is a rule like any other, and the only kind a reader cannot guess at.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,40 +49,28 @@
 </header>
 <main class="prose">
 <h1 class="ruled">Deliberate absences</h1>
-<p class="sub">What Jock does not have, and what you get instead. 10 rules, each one something that was asked for, ruled out, and now refuses — an absence is a rule like any other, and the only kind a reader cannot guess at.</p>
+<p class="sub">What Jock does not have, and what you get instead. 6 rules, each one something that was asked for, ruled out, and now refuses — an absence is a rule like any other, and the only kind a reader cannot guess at.</p>
 <!--  §3:  text column beside the 186px margin rail.  A marginal
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>a1f9572</code> (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>0ea53e5</code> (sigilante/pre-rc-sweep) · corpus 1155 vectors · 2026-10-30</aside>
 <p>A missing feature is the one thing documentation cannot leave implicit: a reader who does not find <code>&amp;&amp;</code> will try it, and a model will write it confidently. Each rule below is stated as <code>language.md</code> states it, with the vectors that pin it or an honest <code>⟨none — UNPINNED⟩</code>.</p>
-<table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>absences stated as rules</td><td>10</td></tr><tr><td>…pinned by at least one vector</td><td>6</td></tr><tr><td>…marked <code>⟨none — UNPINNED⟩</code></td><td>4</td></tr></tbody></table>
-<h3 id="l-174-implicit-composition-of-adjacent-expressions-is-removed"><a href="/spec/language/#l-174">L-174</a> · Implicit composition of adjacent expressions is removed.</h3>
-<pre class="code jock" data-refuses="parse-trailing">union C { red, green } C.red</pre>
-<p>from <code>t-arc-union-gone</code> · also cites <code>t-parse-unglued</code></p>
-<h3 id="l-175-juxtaposition-collections-are-removed"><a href="/spec/language/#l-175">L-175</a> · Juxtaposition collections are removed.</h3>
-<pre class="code jock">struct P { x: @, y: @ } let p = P(x: 1, y: 2); p.x</pre>
-<p>from <code>t-arc-ctor</code> · also cites <code>t-arc-map-bracket</code>, <code>t-arc-set-ctor</code></p>
-<h3 id="l-176-the-pseudo-token-is-gone"><a href="/spec/language/#l-176">L-176</a> · The <code>((</code> pseudo-token is gone</h3>
-<pre class="code jock">fib(n)</pre>
-<p>from <code>t-lex-glue-p</code> · also cites <code>t-lex-unglue-p</code></p>
-<h3 id="l-177-whitespace-blind-postfix-binding-is-rejected"><a href="/spec/language/#l-177">L-177</a> · Whitespace-blind postfix binding is rejected.</h3>
-<pre class="code jock" data-refuses="parse-unglued">f (3)</pre>
-<p>from <code>t-parse-unglued</code></p>
+<table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>absences stated as rules</td><td>6</td></tr><tr><td>…pinned by at least one vector</td><td>2</td></tr><tr><td>…marked <code>⟨none — UNPINNED⟩</code></td><td>4</td></tr></tbody></table>
 <h3 id="l-178-the-glyph-connectives-and-are-absent"><a href="/spec/language/#l-178">L-178</a> · The glyph connectives <code>&amp;&amp;</code>, <code>||</code> and <code>!</code> are absent</h3>
 <pre class="code jock" data-refuses="lex-connective">let a = true; let b = false; a &amp;&amp; b</pre>
 <p>from <code>t-hint-amp</code> · also cites <code>t-hint-amp-mid</code>, <code>t-hint-bar</code>, <code>t-logic-and-tt</code>, <code>t-logic-and-tf</code>, <code>t-logic-and-ft</code>, <code>t-logic-and-ff</code>, <code>t-logic-or-tt</code>, <code>t-logic-or-tf</code>, <code>t-logic-or-ft</code>, <code>t-logic-or-ff</code>, <code>t-logic-xor-tt</code>, <code>t-logic-xor-tf</code>, <code>t-logic-xor-ft</code>, <code>t-logic-xor-ff</code>, <code>t-logic-not-t</code>, <code>t-logic-not-f</code>, <code>t-logic-short</code>, <code>t-logic-short</code></p>
-<h3 id="l-179-the-opcode-surface-forms-and-are-cut"><a href="/spec/language/#l-179">L-179</a> · The opcode surface forms <code>+()</code> and <code>?()</code> are cut</h3>
-<pre class="code jock">if hoon.iscell([1, 2]) { 11 } else { 22 }</pre>
-<p>from <code>t-abi-iscell-cell</code> · also cites <code>t-nx-inc-p</code></p>
 <h3 id="l-180-the-core-algebra-is-not-in-the-language"><a href="/spec/language/#l-180">L-180</a> · The core algebra is not in the language.</h3>
 <p>⟨none — UNPINNED⟩ — <code>language.md</code> states this rule and no corpus vector pins it.</p>
-<h3 id="l-181-there-are-no-trait-objects-or-existentials"><a href="/spec/language/#l-181">L-181</a> · There are no TRAIT OBJECTS or existentials.</h3>
+<h3 id="l-181-there-are-no-trait-objects-or-existentials"><a href="/spec/language/#l-181">L-181</a> · There are no trait objects or existentials.</h3>
 <p>⟨none — UNPINNED⟩ — <code>language.md</code> states this rule and no corpus vector pins it.</p>
 <h3 id="l-182-there-are-no-exceptions-nulls-inheritance-or-macros"><a href="/spec/language/#l-182">L-182</a> · There are no exceptions, nulls, inheritance or macros.</h3>
 <p>⟨none — UNPINNED⟩ — <code>language.md</code> states this rule and no corpus vector pins it.</p>
-<h3 id="l-183-self-hosting-constructs-are-post-1-0"><a href="/spec/language/#l-183">L-183</a> · Self-hosting constructs are post-1.0.</h3>
+<h3 id="l-183-the-language-has-no-self-hosting-constructs"><a href="/spec/language/#l-183">L-183</a> · The language has no self-hosting constructs.</h3>
 <p>⟨none — UNPINNED⟩ — <code>language.md</code> states this rule and no corpus vector pins it.</p>
+<h3 id="l-188-defer-is-the-one-reserved-word"><a href="/spec/language/#l-188">L-188</a> · <code>defer</code> is the one reserved word.</h3>
+<pre class="code jock" data-refuses="parse-todo">let a = 1; defer { a }; a</pre>
+<p>from <code>t-parse-defer</code> · also cites <code>t-recur-edits</code></p>
 </main>
 </div>
 </body>

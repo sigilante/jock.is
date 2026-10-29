@@ -54,10 +54,10 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>a1f9572</code> (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>0ea53e5</code> (sigilante/pre-rc-sweep) · corpus 1155 vectors · 2026-10-30</aside>
 <p>Each keyword below carries its <strong>class</strong> — kernel or sugar, one of the language’s four design principles — and <strong>what it does</strong>, both projected from the keyword inventory at <a href="/spec/language/#l-61">L-61</a>, whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.</p>
 <p>The keyword set is read from the <code>$keyword</code> mold in <code>sur/jock.hoon</code> — the lexer’s own authority, which <code>tools/hilite.py</code> holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.</p>
-<table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>keywords in the mold</td><td>30</td></tr><tr><td>usable, with a demonstrating program</td><td>29</td></tr><tr><td>usable, demonstrated by nothing</td><td>0</td></tr><tr><td>deliberately not usable</td><td>1</td></tr><tr><td>with a rule that states what it does</td><td>11</td></tr><tr><td>specified only by their inventory row</td><td>19</td></tr></tbody></table>
+<table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>keywords in the mold</td><td>30</td></tr><tr><td>usable, with a demonstrating program</td><td>29</td></tr><tr><td>usable, demonstrated by nothing</td><td>0</td></tr><tr><td>deliberately not usable</td><td>1</td></tr><tr><td>with a rule that states what it does</td><td>12</td></tr><tr><td>specified only by their inventory row</td><td>18</td></tr></tbody></table>
 <h2 id="syntactic-slots">Syntactic slots</h2>
 <p>Which slot each keyword occupies, from the tmLanguage grammar’s three keyword groups — the only machine-readable statement of this in the tree. <code>tools/hilite.py</code> checks that the three <strong>partition</strong> the <code>$keyword</code> mold: disjoint, and summing to it.</p>
 <ul><li><strong>declaration</strong> (14): <code>alias</code> <code>class</code> <code>enum</code> <code>for</code> <code>func</code> <code>impl</code> <code>import</code> <code>is</code> <code>lambda</code> <code>let</code> <code>private</code> <code>struct</code> <code>trait</code> <code>var</code></li><li><strong>control</strong> (10): <code>assert</code> <code>crash</code> <code>defer</code> <code>else</code> <code>eval</code> <code>if</code> <code>loop</code> <code>match</code> <code>print</code> <code>recur</code></li><li><strong>operator</strong> (6): <code>and</code> <code>as</code> <code>in</code> <code>not</code> <code>or</code> <code>xor</code></li></ul>
@@ -114,7 +114,9 @@
 <h3 id="defer"><code>defer</code></h3>
 <p><strong>control keyword.</strong></p>
 <p>**<strong>reserved, unimplemented</strong>.** the keyword lexes and the parser then refuses <code>%parse-todo %defer</code> unconditionally (<code>parse.hoon</code>); <code>sugar.hoon</code> carries a <code>%defer</code> arm no program can reach. Reserved on the same footing as <code>$(…)</code> re-entry, so the meaning can land without reinterpreting any legal program.</p>
-<p><strong>No rule in <code>language.md</code> states what <code>defer</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-61">L-61</a>.</p>
+<p>Specified by <a href="/spec/language/#l-188">L-188</a>:</p>
+<blockquote><a href="/spec/language/#l-188">L-188</a> · <code>defer</code> is the one reserved word.</blockquote>
+<p>Also named by <a href="/spec/language/#l-61">L-61</a>.</p>
 <p><strong>RESERVED.</strong> Reserved in the lexer’s mold so that the parser recognises it and refuses with a diagnosis rather than an unbound name. Refuses <code>%parse-todo %defer</code> — parsed and refused;  not implemented for 1.0.</p>
 <h3 id="else"><code>else</code></h3>
 <p><strong>control keyword.</strong></p>
@@ -133,7 +135,7 @@
 <p><strong>Kernel.</strong> Nock evaluation: <code>%eval</code> (Nock 2)</p>
 <p>Specified by <a href="/spec/language/#l-129">L-129</a>:</p>
 <blockquote><a href="/spec/language/#l-129">L-129</a> · <code>eval</code> is CALL-SHAPED</blockquote>
-<p>Also named by <a href="/spec/language/#l-13">L-13</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-183">L-183</a>.</p>
+<p>Also named by <a href="/spec/language/#l-13">L-13</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-188">L-188</a>.</p>
 <pre class="code jock">(eval(42, (0, 1)) as? @) ?? 99</pre>
 <p>pinned by <code>t-text-qq</code> · 3 vectors use this keyword</p>
 <h3 id="for"><code>for</code></h3>
@@ -176,7 +178,7 @@
 <h3 id="in"><code>in</code></h3>
 <p><strong>operator keyword.</strong> Precedence level 8 of 13 (non-associative), sharing it with <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code>  <code>∈</code> <code>⊂</code> <code>⊃</code>.</p>
 <p><strong>Sugar.</strong> <strong>membership</strong>. Rules <a href="/spec/language/#l-74">L-74</a> to <a href="/spec/language/#l-76">L-76</a> below</p>
-<p><strong>No rule in <code>language.md</code> states what <code>in</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-73">L-73</a>, <a href="/spec/language/#l-107">L-107</a>, <a href="/spec/language/#l-108">L-108</a>, <a href="/spec/language/#l-115">L-115</a>, <a href="/spec/language/#l-173">L-173</a>, <a href="/spec/language/#l-183">L-183</a>.</p>
+<p><strong>No rule in <code>language.md</code> states what <code>in</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-73">L-73</a>, <a href="/spec/language/#l-107">L-107</a>, <a href="/spec/language/#l-108">L-108</a>, <a href="/spec/language/#l-115">L-115</a>, <a href="/spec/language/#l-173">L-173</a>, <a href="/spec/language/#l-188">L-188</a>.</p>
 <pre class="code jock">let s = "in"; "[{s}]"</pre>
 <p>pinned by <code>t-text-interp-str</code> · 6 vectors use this keyword</p>
 <h3 id="is"><code>is</code></h3>

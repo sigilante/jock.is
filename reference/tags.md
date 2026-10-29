@@ -5,7 +5,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `a1f9572` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+> channel `%rc` · commit `0ea53e5` (sigilante/pre-rc-sweep) · corpus 1155 vectors · 2026-10-30
 
 |  | count |  |
 |---|---:|---|
@@ -1342,10 +1342,10 @@ pinned by `t-parse-tex-qual`
 ### `%parse-todo`
 
 ```jock
-func fib(n: @) -> @ { if n == 0 { 1 } else { $(n - 1) } }; fib(3)
+let a = 1; defer { a }; a
 ```
 
-pinned by `t-recur-edits` · spec: docs/spec/language.md [L-154](/spec/language/#l-154)
+pinned by `t-parse-defer`, `t-recur-edits` · spec: docs/spec/language.md [L-154](/spec/language/#l-154), docs/spec/language.md [L-188](/spec/language/#l-188)
 
 ### `%parse-trailing`
 
@@ -1353,7 +1353,7 @@ pinned by `t-recur-edits` · spec: docs/spec/language.md [L-154](/spec/language/
 union C { red, green } C.red
 ```
 
-pinned by `t-arc-union-gone` · spec: docs/spec/language.md [L-151](/spec/language/#l-151), docs/spec/language.md [L-174](/spec/language/#l-174)
+pinned by `t-arc-union-gone` · spec: docs/spec/language.md [L-151](/spec/language/#l-151)
 
 ### `%parse-trait-op`
 
