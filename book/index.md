@@ -5,7 +5,7 @@ R1–R11, the book’s reference sections. The same checked facts as [the agent 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes these pages.
 >
-> channel `%rc` · commit `080874d` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+> channel `%rc` · commit `dd95321` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
 
 The narrative chapters are hand-written and are not here. Only the back matter is generated, which is what makes it checkable: `refgen --check` regenerates these pages and fails on a diff.
 
@@ -13,7 +13,7 @@ The narrative chapters are hand-written and are not here. Only the back matter i
 
 |  | section | where |
 |---|---|---|
-| R1 | The Nock specification | [partial](nock/) |
+| R1 | The Nock specification | [nock/](nock/) |
 | R2 | Keyword reference, with lowerings | [partial](keywords/) |
 | R3 | Precedence table | [reference/keywords/#precedence](/reference/keywords/#precedence) |
 | R4 | The erasure table | [reference/erasure/](/reference/erasure/) |
@@ -29,9 +29,10 @@ The narrative chapters are hand-written and are not here. Only the back matter i
 
 ## Where this back matter stops
 
-Two sections cannot be generated as the outline describes them, and say so on their own pages rather than looking finished.
+One section cannot be generated as the outline describes it, and says so on its own page rather than looking finished.
 
-- **R1** wants the Nock 4K reduction rules verbatim and this repo has no copy of them. The page links `nock.is` and carries the IR’s closed opcode set instead.
 - **R2** wants railroad diagrams. A diagram is a rendering of a grammar, and there is no grammar artifact to render — the parser is recursive descent. The page carries the sugar rewrite index, which is the lowering half of what R2 asks for, and quotes the ruling that would have to be lifted first.
+
+**R1 was the other one, and is now complete.** It wanted the Nock 4K reduction rules verbatim and this repo had no copy; the specification is vendored now, hashed in `vendor/SNAPSHOT.txt`, and emitted from that file — so *verbatim* is a claim the `pins` lane checks rather than one this page makes.
 
 Two more are generated in a weaker form than the outline asks: the glossary is an **index to defining rules** rather than prose, because the specs use their terms without defining them; and the exercises carry the outline’s six named landmarks rather than a grading of all of them, because nothing grades the rest.
