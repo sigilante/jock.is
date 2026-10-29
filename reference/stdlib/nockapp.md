@@ -5,7 +5,7 @@ the NockApp host's own effect vocabulary.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/nockapp.jock` and the examples that import it.
 >
-> 1 public declaration — 1 type, 0 arms. 1 pinned by a lane, 0 not. channel `%rc` · commit `15d64f3`
+> 1 public declaration — 1 type, 0 arms. 1 pinned by a lane, 0 not. channel `%rc` · commit `dda291b`
 
 ## Import
 

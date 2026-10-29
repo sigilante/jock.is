@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/rational.jock</code> and the examples that import it. 9 public declarations — 0 types, 9 arms. 9 pinned by a lane, 0 not. channel <code>%rc</code> · commit <code>15d64f3</code></aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/rational.jock</code> and the examples that import it. 9 public declarations — 0 types, 9 arms. 9 pinned by a lane, 0 not. channel <code>%rc</code> · commit <code>dda291b</code></aside>
 <h2 id="import">Import</h2>
 <p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>rational.&lt;name&gt;</code>.</p>
 <pre class="code jock">import rational;</pre>
@@ -117,7 +117,7 @@
 <pre class="code jock">assert rational.max(third, half) == half;</pre>
 <h2 id="what-no-lane-pins">What no lane pins</h2>
 <p>Nothing. All 9 public declarations are named by an example that runs on every push.</p>
-<p>1 declaration further is <code>private</code> and therefore not reachable by an importer at all: <code>RatState</code>.</p>
+<p>1 further declaration is <code>private</code> and therefore not reachable by an importer at all: <code>RatState</code>.</p>
 <h2 id="where-it-is-used">Where it is used</h2>
 <p>4 examples import <code>rational</code>. Each is a complete program whose value <code>tools/examples.sh</code> pins on every push.</p>
 <ul><li><code>examples/interval-arms.jock</code> — a use</li><li><code>examples/interval.jock</code> — a use</li><li><code>examples/rational-arms.jock</code> — the arms sheet: one assertion per arm</li><li><code>examples/sort-imported.jock</code> — a use</li></ul>

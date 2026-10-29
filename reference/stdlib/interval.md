@@ -5,7 +5,7 @@ interval arithmetic over exact rationals.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/interval.jock` and the examples that import it.
 >
-> 4 public declarations — 1 type, 3 arms. 3 pinned by a lane, 1 not. channel `%rc` · commit `15d64f3`
+> 4 public declarations — 1 type, 3 arms. 3 pinned by a lane, 1 not. channel `%rc` · commit `dda291b`
 
 ## Import
 
@@ -113,7 +113,7 @@ That count is of DIRECT mentions. An arm an assertion reaches only through a cal
 
 - `Hull` — `trait Hull { hull(⊛); };`
 
-1 declaration further is `private` and therefore not reachable by an importer at all: `IvState`.
+1 further declaration is `private` and therefore not reachable by an importer at all: `IvState`.
 
 ## Where it is used
 

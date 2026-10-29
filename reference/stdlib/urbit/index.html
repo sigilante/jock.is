@@ -45,7 +45,7 @@
 <div class="page">
 <header class="bar">
   <nav><a href="/">jock</a> <span>reference</span></nav>
-  <span>26 declarations · 2 pinned</span>
+  <span>2 declarations · 2 pinned</span>
 </header>
 <main class="prose">
 <h1 class="ruled">lib/urbit</h1>
@@ -54,102 +54,30 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/urbit.jock</code> and the examples that import it. 26 public declarations — 0 types, 26 arms. 2 pinned by a lane, 24 not. channel <code>%rc</code> · commit <code>15d64f3</code></aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/urbit.jock</code> and the examples that import it. 2 public declarations — 0 types, 2 arms. 2 pinned by a lane, 0 not. channel <code>%rc</code> · commit <code>dda291b</code></aside>
 <h2 id="import">Import</h2>
 <p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>urbit.&lt;name&gt;</code>.</p>
 <pre class="code jock">import urbit;</pre>
 <p>The name is the file name minus <code>.jock</code>: <code>urbit</code> is <code>crates/jockc/hoon/lib/urbit.jock</code>, and it is found because the directory holding it was passed as a <code>--data-dir</code>. There is no search path and no implicit import; <code>tools/libs.py</code> holds the whole discovery rule, and the compiler itself is a pure function of source and libraries.</p>
 <h2 id="about">About</h2>
 <p>First module: @p (ship names) — the +po syllable tables and the +ob obfuscation + render, translated from hoon.  Module boundary notes: string cat is hoon.cat (no prelude Add(String) impl in a module); @ arithmetic/comparison ride the numeric column; the +ob prf is INLINED (eff) since HOF is post-1.0. Verified differentially against hoon (scot %p) across ranks.</p>
+<p>THE EXPORTED SURFACE IS TWO ARMS: topatp and frompatp.  The other twenty-four are the Feistel and the syllable tables, and they are <code>private</code> — an importer that could call <code>fein</code> or <code>tail</code> would be holding half a cipher, and <code>tail</code> in particular is a name no library should be putting in an importer's reach.  They were public only because nothing had asked the question; the generated reference asked it by reporting 2 of 26 arms pinned.</p>
 <h2 id="arms">Arms</h2>
-<p>26 arms, in source order. The signature is reproduced exactly; the prose is the comment above the arm in <code>crates/jockc/hoon/lib/urbit.jock</code>.</p>
-<table><thead><tr><th>arm</th><th>signature</th><th>pinned by</th></tr></thead><tbody><tr><td><code>sisTab</code></td><td><code>func sisTab() -&gt; String</code></td><td>—</td></tr><tr><td><code>dexTab</code></td><td><code>func dexTab() -&gt; String</code></td><td>—</td></tr><tr><td><code>tos</code></td><td><code>func tos(a: @) -&gt; String</code></td><td>—</td></tr><tr><td><code>tod</code></td><td><code>func tod(a: @) -&gt; String</code></td><td>—</td></tr><tr><td><code>raku</code></td><td><code>func raku(j: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>eff</code></td><td><code>func eff(j: @, r: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>feLoop</code></td><td><code>func feLoop(a: @, b: @, r: @, j: @, ell: @, arr: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>fe</code></td><td><code>func fe(a: @, b: @, r: @, m: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>fee</code></td><td><code>func fee(a: @, b: @, k: @, r: @, m: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>feis</code></td><td><code>func feis(m: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>fein</code></td><td><code>func fein(pyn: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>wsyl</code></td><td><code>func wsyl(w: @) -&gt; String</code></td><td>—</td></tr><tr><td><code>ploop</code></td><td><code>func ploop(sxz: @, imp: @, words: @, rep: String) -&gt; String</code></td><td>—</td></tr><tr><td><code>topatp</code></td><td><code>func topatp(n: @) -&gt; String</code></td><td><code>patp</code> (use)</td></tr><tr><td><code>fenLoop</code></td><td><code>func fenLoop(a: @, b: @, j: @, ell: @, arr: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>fen</code></td><td><code>func fen(a: @, b: @, r: @, m: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>feen</code></td><td><code>func feen(a: @, b: @, k: @, r: @, m: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>tail</code></td><td><code>func tail(m: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>fynd</code></td><td><code>func fynd(cry: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>sylAt</code></td><td><code>func sylAt(tab: @, k: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>strip</code></td><td><code>func strip(s: @, acc: @, sh: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>find</code></td><td><code>func find(tab: @, b: @, i: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>ins</code></td><td><code>func ins(b: @, i: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>ind</code></td><td><code>func ind(b: @, i: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>rebuild</code></td><td><code>func rebuild(dense: @, wi: @, words: @, acc: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>frompatp</code></td><td><code>func frompatp(name: String) -&gt; @</code></td><td><code>patp</code> (use)</td></tr></tbody></table>
-<h3 id="sistab"><code>sisTab</code></h3>
-<pre class="code jock">func sisTab() -&gt; String { ... }</pre>
-<p>No comment in the source. The signature above is the whole of what <code>sisTab</code> states about itself.</p>
-<h3 id="dextab"><code>dexTab</code></h3>
-<pre class="code jock">func dexTab() -&gt; String { ... }</pre>
-<p>No comment in the source. The signature above is the whole of what <code>dexTab</code> states about itself.</p>
-<h3 id="tos"><code>tos</code></h3>
-<pre class="code jock">func tos(a: @) -&gt; String { ... }</pre>
-<p>syllable a: 3 bytes at byte-offset 3a = low 24 bits after a 24a-bit right shift.</p>
-<h3 id="tod"><code>tod</code></h3>
-<pre class="code jock">func tod(a: @) -&gt; String { ... }</pre>
-<p>No comment in the source. The signature above is the whole of what <code>tod</code> states about itself.</p>
-<h3 id="raku"><code>raku</code></h3>
-<pre class="code jock">func raku(j: @) -&gt; @ { ... }</pre>
-<p>+ob: the four-round Feistel that conceals planet structure.</p>
-<h3 id="eff"><code>eff</code></h3>
-<pre class="code jock">func eff(j: @, r: @) -&gt; @ { ... }</pre>
-<p>No comment in the source. The signature above is the whole of what <code>eff</code> states about itself.</p>
-<h3 id="feloop"><code>feLoop</code></h3>
-<pre class="code jock">func feLoop(a: @, b: @, r: @, j: @, ell: @, arr: @) -&gt; @ { ... }</pre>
-<p>No comment in the source. The signature above is the whole of what <code>feLoop</code> states about itself.</p>
-<h3 id="fe"><code>fe</code></h3>
-<pre class="code jock">func fe(a: @, b: @, r: @, m: @) -&gt; @ { ... }</pre>
-<p>No comment in the source. The signature above is the whole of what <code>fe</code> states about itself.</p>
-<h3 id="fee"><code>fee</code></h3>
-<pre class="code jock">func fee(a: @, b: @, k: @, r: @, m: @) -&gt; @ { ... }</pre>
-<p>No comment in the source. The signature above is the whole of what <code>fee</code> states about itself.</p>
-<h3 id="feis"><code>feis</code></h3>
-<pre class="code jock">func feis(m: @) -&gt; @ { ... }</pre>
-<p>No comment in the source. The signature above is the whole of what <code>feis</code> states about itself.</p>
-<h3 id="fein"><code>fein</code></h3>
-<pre class="code jock">func fein(pyn: @) -&gt; @ { ... }</pre>
-<p>No comment in the source. The signature above is the whole of what <code>fein</code> states about itself.</p>
-<h3 id="wsyl"><code>wsyl</code></h3>
-<pre class="code jock">func wsyl(w: @) -&gt; String { ... }</pre>
-<p>one 16-bit word -&gt; prefix(hi byte) ++ suffix(lo byte)</p>
-<h3 id="ploop"><code>ploop</code></h3>
-<pre class="code jock">func ploop(sxz: @, imp: @, words: @, rep: String) -&gt; String { ... }</pre>
-<p>render words most-significant-first, prepending; single dash within a group of 4, double dash between groups.</p>
+<p>2 arms, in source order. The signature is reproduced exactly; the prose is the comment above the arm in <code>crates/jockc/hoon/lib/urbit.jock</code>.</p>
+<table><thead><tr><th>arm</th><th>signature</th><th>pinned by</th></tr></thead><tbody><tr><td><code>topatp</code></td><td><code>func topatp(n: @) -&gt; String</code></td><td><code>patp</code> (use)</td></tr><tr><td><code>frompatp</code></td><td><code>func frompatp(name: String) -&gt; @</code></td><td><code>patp</code> (use)</td></tr></tbody></table>
 <h3 id="topatp"><code>topatp</code></h3>
 <pre class="code jock">func topatp(n: @) -&gt; String { ... }</pre>
 <p>No comment in the source. The signature above is the whole of what <code>topatp</code> states about itself.</p>
 <p class="label">used by examples/patp.jock</p>
 <pre class="code jock">func chk(n: @, want: String) -&gt; @ { if urbit.topatp(n) === want { 1 } else { 0 } };</pre>
-<h3 id="fenloop"><code>fenLoop</code></h3>
-<pre class="code jock">func fenLoop(a: @, b: @, j: @, ell: @, arr: @) -&gt; @ { ... }</pre>
-<p>---- the inverse road:  @p text -&gt; atom ---- +fen: the inverse round of +fe.  Same shape, but the swap keys on ale (not arr), the prf feeds on ell, and the residues add a (or b) before subtracting f to stay non-negative.  hoon.mod is used for the outer reductions so precedence can't bite.</p>
-<h3 id="fen"><code>fen</code></h3>
-<pre class="code jock">func fen(a: @, b: @, r: @, m: @) -&gt; @ { ... }</pre>
-<p>No comment in the source. The signature above is the whole of what <code>fen</code> states about itself.</p>
-<h3 id="feen"><code>feen</code></h3>
-<pre class="code jock">func feen(a: @, b: @, k: @, r: @, m: @) -&gt; @ { ... }</pre>
-<p>No comment in the source. The signature above is the whole of what <code>feen</code> states about itself.</p>
-<h3 id="tail"><code>tail</code></h3>
-<pre class="code jock">func tail(m: @) -&gt; @ { ... }</pre>
-<p>No comment in the source. The signature above is the whole of what <code>tail</code> states about itself.</p>
-<h3 id="fynd"><code>fynd</code></h3>
-<pre class="code jock">func fynd(cry: @) -&gt; @ { ... }</pre>
-<p>No comment in the source. The signature above is the whole of what <code>fynd</code> states about itself.</p>
-<h3 id="sylat"><code>sylAt</code></h3>
-<pre class="code jock">func sylAt(tab: @, k: @) -&gt; @ { ... }</pre>
-<p>syllable k of a table atom: 3 bytes at bit-offset 24k</p>
-<h3 id="strip"><code>strip</code></h3>
-<pre class="code jock">func strip(s: @, acc: @, sh: @) -&gt; @ { ... }</pre>
-<p>strip '~' (126) and '-' (45), packing the surviving bytes into a dense cord in their original (little-endian) order.</p>
-<h3 id="find"><code>find</code></h3>
-<pre class="code jock">func find(tab: @, b: @, i: @) -&gt; @ { ... }</pre>
-<p>+ins / +ind:  syllable atom -&gt; table index (linear search). The table atom is threaded, not rebuilt per step (the search is 256-wide; re-parsing the 768-byte table each iteration is a 256x tax).  ins keys on sis, ind on dex; the walk is shared.</p>
-<h3 id="ins"><code>ins</code></h3>
-<pre class="code jock">func ins(b: @, i: @) -&gt; @ { ... }</pre>
-<p>No comment in the source. The signature above is the whole of what <code>ins</code> states about itself.</p>
-<h3 id="ind"><code>ind</code></h3>
-<pre class="code jock">func ind(b: @, i: @) -&gt; @ { ... }</pre>
-<p>No comment in the source. The signature above is the whole of what <code>ind</code> states about itself.</p>
-<h3 id="rebuild"><code>rebuild</code></h3>
-<pre class="code jock">func rebuild(dense: @, wi: @, words: @, acc: @) -&gt; @ { ... }</pre>
-<p>reassemble words most-significant-first: word wi lives at syllables (2wi, 2wi+1) = (prefix, suffix), shifted to its place.</p>
 <h3 id="frompatp"><code>frompatp</code></h3>
 <pre class="code jock">func frompatp(name: String) -&gt; @ { ... }</pre>
 <p>No comment in the source. The signature above is the whole of what <code>frompatp</code> states about itself.</p>
 <p class="label">used by examples/patp.jock</p>
 <pre class="code jock">func rt(n: @) -&gt; @ { if urbit.frompatp(urbit.topatp(n)) == n { 1 } else { 0 } };</pre>
 <h2 id="what-no-lane-pins">What no lane pins</h2>
-<p>24 of 26 public declarations are named by no example in <code>examples/</code>. They compile — the module is built by <code>tools/modules.sh</code> on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.</p>
-<p>That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.</p>
-<ul><li><code>sisTab</code> — <code>func sisTab() -&gt; String</code></li><li><code>dexTab</code> — <code>func dexTab() -&gt; String</code></li><li><code>tos</code> — <code>func tos(a: @) -&gt; String</code></li><li><code>tod</code> — <code>func tod(a: @) -&gt; String</code></li><li><code>raku</code> — <code>func raku(j: @) -&gt; @</code></li><li><code>eff</code> — <code>func eff(j: @, r: @) -&gt; @</code></li><li><code>feLoop</code> — <code>func feLoop(a: @, b: @, r: @, j: @, ell: @, arr: @) -&gt; @</code></li><li><code>fe</code> — <code>func fe(a: @, b: @, r: @, m: @) -&gt; @</code></li><li><code>fee</code> — <code>func fee(a: @, b: @, k: @, r: @, m: @) -&gt; @</code></li><li><code>feis</code> — <code>func feis(m: @) -&gt; @</code></li><li><code>fein</code> — <code>func fein(pyn: @) -&gt; @</code></li><li><code>wsyl</code> — <code>func wsyl(w: @) -&gt; String</code></li><li><code>ploop</code> — <code>func ploop(sxz: @, imp: @, words: @, rep: String) -&gt; String</code></li><li><code>fenLoop</code> — <code>func fenLoop(a: @, b: @, j: @, ell: @, arr: @) -&gt; @</code></li><li><code>fen</code> — <code>func fen(a: @, b: @, r: @, m: @) -&gt; @</code></li><li><code>feen</code> — <code>func feen(a: @, b: @, k: @, r: @, m: @) -&gt; @</code></li><li><code>tail</code> — <code>func tail(m: @) -&gt; @</code></li><li><code>fynd</code> — <code>func fynd(cry: @) -&gt; @</code></li><li><code>sylAt</code> — <code>func sylAt(tab: @, k: @) -&gt; @</code></li><li><code>strip</code> — <code>func strip(s: @, acc: @, sh: @) -&gt; @</code></li><li><code>find</code> — <code>func find(tab: @, b: @, i: @) -&gt; @</code></li><li><code>ins</code> — <code>func ins(b: @, i: @) -&gt; @</code></li><li><code>ind</code> — <code>func ind(b: @, i: @) -&gt; @</code></li><li><code>rebuild</code> — <code>func rebuild(dense: @, wi: @, words: @, acc: @) -&gt; @</code></li></ul>
+<p>Nothing. All 2 public declarations are named by an example that runs on every push.</p>
+<p>24 further declarations are <code>private</code> and therefore not reachable by an importer at all: <code>sisTab</code>, <code>dexTab</code>, <code>tos</code>, <code>tod</code>, <code>raku</code>, <code>eff</code>, <code>feLoop</code>, <code>fe</code>, <code>fee</code>, <code>feis</code>, <code>fein</code>, <code>wsyl</code>, <code>ploop</code>, <code>fenLoop</code>, <code>fen</code>, <code>feen</code>, <code>tail</code>, <code>fynd</code>, <code>sylAt</code>, <code>strip</code>, <code>find</code>, <code>ins</code>, <code>ind</code>, <code>rebuild</code>.</p>
 <h2 id="where-it-is-used">Where it is used</h2>
 <p>1 example imports <code>urbit</code>. Each is a complete program whose value <code>tools/examples.sh</code> pins on every push.</p>
 <ul><li><code>examples/patp.jock</code> — a use</li></ul>

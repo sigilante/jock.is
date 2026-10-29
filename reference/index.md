@@ -5,7 +5,7 @@ Generated from the compiler and its corpus. Every table is projected from a norm
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes these pages.
 >
-> channel `%rc` · commit `15d64f3` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+> channel `%rc` · commit `dda291b` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
 
 ## Writing Jock
 
@@ -67,7 +67,7 @@ The library, and where its boundary is.
 
 ### [The standard library](stdlib/)
 
-13 modules under `lib/`, 222 public declarations, 135 of them pinned by an example that runs on every push. One page per module, one section per arm, and the three-tier ruling that says where new code goes.
+9 modules under `lib/`, 114 public declarations, 96 of them pinned by an example that runs on every push. One page per module, one section per arm, and the three-tier ruling that says where new code goes.
 
 [`stdlib/`](stdlib/) — the page · [`stdlib.md`](stdlib.md) — the same content as raw Markdown
 

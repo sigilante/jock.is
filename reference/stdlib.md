@@ -1,11 +1,11 @@
 # The standard library
 
-13 modules under `lib/`, 222 public declarations between them. A module arrives by name through `import`; nothing in it is ambient, and nothing is in scope that was not imported.
+9 modules under `lib/`, 114 public declarations between them. A module arrives by name through `import`; nothing in it is ambient, and nothing is in scope that was not imported.
 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` reads the module sources and the examples that import them.
 >
-> 135 of 222 declarations pinned by a lane · channel `%rc` · commit `15d64f3` (sigilante/pre-rc-sweep) · 2026-10-30
+> 96 of 114 declarations pinned by a lane · channel `%rc` · commit `dda291b` (sigilante/pre-rc-sweep) · 2026-10-30
 
 ## What counts as the standard library
 
@@ -23,9 +23,6 @@ Tier 1 is what a program cannot reasonably be written without, and an addition t
 
 | module | what it is | types | arms | pinned |
 |---|---|---:|---:|---:|
-| [`chainkey`](chainkey/) | the wallet key family (chain.md §6.2, phase 4) | 3 | 8 | 10/11 |
-| [`chainrand`](chainrand/) | the chain's own generator | 1 | 7 | 5/8 |
-| [`chaintx`](chaintx/) | the transaction mold family and its hashes (chain.md §4/S5) | 20 | 44 | 23/64 |
 | [`hof`](hof/) | higher-order functions over closures and List | 0 | 18 | 18/18 |
 | [`http`](http/) | the NockApp http driver, from the Jock side | 3 | 19 | 13/22 |
 | [`interval`](interval/) | interval arithmetic over exact rationals | 1 | 3 | 3/4 |
@@ -34,12 +31,11 @@ Tier 1 is what a program cannot reasonably be written without, and an addition t
 | [`rand`](rand/) | deterministic pseudo-random numbers | 1 | 11 | 10/12 |
 | [`rational`](rational/) | exact rational arithmetic over Int | 0 | 9 | 9/9 |
 | [`twoc`](twoc/) | two's-complement signed integers at arbitrary bit width | 1 | 7 | 7/8 |
-| [`urbit`](urbit/) | Urbit-native conversions, in Jock | 0 | 26 | 2/26 |
-| [`wallet`](wallet/) | the wallet driver's effect vocabulary | 1 | 0 | 1/1 |
+| [`urbit`](urbit/) | Urbit-native conversions, in Jock | 0 | 2 | 2/2 |
 
 ## How an arm is pinned
 
-An arm is pinned when an example in `examples/` names it. 9 modules have an `examples/<name>-arms.jock` — a sheet whose every line asserts one arm, which fails the lane if the arm stops doing what the line says. That is the strongest pin a reference can cite, and each arm page quotes the line.
+An arm is pinned when an example in `examples/` names it. 6 modules have an `examples/<name>-arms.jock` — a sheet whose every line asserts one arm, which fails the lane if the arm stops doing what the line says. That is the strongest pin a reference can cite, and each arm page quotes the line.
 
 *one line of examples/hof-arms.jock*
 
@@ -51,17 +47,24 @@ An arm named only by an ordinary program is marked a `use`: the call shape is de
 
 ## What no lane pins
 
-87 of 222 public declarations are named by no example — DIRECTLY; an arm reached only through a pinned caller is not counted. The gap is not spread evenly: 9 modules have an arms sheet and `http`, `nockapp`, `urbit`, `wallet` do not.
+18 of 114 public declarations are named by no example — DIRECTLY; an arm reached only through a pinned caller is not counted. The gap is not spread evenly: 6 modules have an arms sheet and `http`, `nockapp`, `urbit` do not.
 
-- `chainkey` — 10 of 11 pinned
-- `chainrand` — 5 of 8 pinned
-- `chaintx` — 23 of 64 pinned
 - `http` — 13 of 22 pinned, no arms sheet
 - `interval` — 3 of 4 pinned
 - `parser` — 33 of 38 pinned
 - `rand` — 10 of 12 pinned
 - `twoc` — 7 of 8 pinned
-- `urbit` — 2 of 26 pinned, no arms sheet
+
+## What is in the library and not on this site
+
+4 modules are not documented here, and they are left out on purpose rather than pending. Each targets nockchain, and each one’s interface is half of a contract with a driver this project does not own — documenting an arm publishes a surface, and a surface nobody upstream has committed to is one these pages would be promising on someone else’s behalf.
+
+- `chainkey` — the nockchain key family (11 declarations)
+- `chainrand` — the nockchain generator (8 declarations)
+- `chaintx` — the nockchain transaction molds and hashes (64 declarations)
+- `wallet` — the wallet driver effects, which only the signer kernel emits (1 declaration)
+
+They compile and they are built by `tools/modules.sh` on every push, so this is a documentation boundary and not a support one. A reader who needs them has the source.
 
 ## What generates this
 
