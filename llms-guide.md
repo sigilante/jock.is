@@ -92,6 +92,30 @@ juxtaposition anywhere in the grammar.
   expressions; as the final expression they take no trailing `;`.
 - **Assignment edits an existing `var`.** `let` is immutable; assigning a
   `let`-bound or unbound name is an error. Assignment is not a declaration.
+- **A recursive type needs a BASE CASE.** `enum E { a, b(E) };` declares
+  fine, generics included (`enum W<A> { done(A), hurl(W<A>) };`). What
+  refuses is a type with no smallest value: `enum E { b(E) };` and
+  `struct T { next: T };` both give `%decl-fond` ("this type contains
+  itself with no base case, so it has no smallest value"). A struct
+  recurses through an optional — `struct T { v: @, next: T? };`. An
+  **untagged** union cannot be recursive at all (`alias U is @ | (U, U)`
+  refuses `%elab-unbound`, the alias being unable to name itself); use a
+  tagged `enum`.
+- **A class's helpers go BEFORE it and cannot name it.** A free `func`
+  declared before a `class` is callable from the class's arms; one
+  declared after is invisible to them (`%mint-limb`, the adjacency rule).
+  But a func declared before the class cannot name the class's type
+  (`%elab-unbound`). So a helper that takes or returns the class — which
+  is the usual shape for a loop threading the class's own state — must be
+  a **method**, not a free function. Two reasonable scoping rules whose
+  intersection excludes that one program shape; as methods, `self` is the
+  state and the threading becomes dispatch.
+- **There is no ambient context.** Nothing is implicitly in scope for a
+  callee: no environment, no reader, no `this` beyond a method's `self`,
+  and no way to make a dependency implicit when you want to. Whatever a
+  function needs travels as a parameter, so shared context becomes a
+  named type passed explicitly and signatures get wide. The dependency is
+  visible in the signature, which is the compensation.
 
 ## Types (surface)
 

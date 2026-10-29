@@ -5,7 +5,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `974956f` (sigilante/pre-rc-sweep) · corpus 1147 vectors · 2026-10-29
+> channel `%rc` · commit `67e8d62` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-29
 
 |  | count |  |
 |---|---:|---|
@@ -477,7 +477,7 @@ pinned by `t-mill-lambda-arity` · spec: docs/spec/language.md L-141
 let u: UniChar = 0x1f600 as! UniChar; let b: Byte = u; b
 ```
 
-pinned by `t-arc-unichar-narrow`, `t-err-class-gen-arg`, `t-err-map-annot-real`, `t-err-print-num`, `t-gen-rigid-arg`, `t-gen-rigid-unit`, `t-rigid-mcon`, `t-rigid-slit`, `t-text-char-no`, `t-var-widen-shallow` · also `t-mint-annot`, `t-mint-cond`, `t-mint-guard`, `t-mint-inc-cell` (AST-level) · spec: docs/spec/language.md L-132, docs/spec/runtime.md R-59
+pinned by `t-arc-unichar-narrow`, `t-err-class-gen-arg`, `t-err-map-annot-real`, `t-err-print-num`, `t-gen-rigid-arg`, `t-gen-rigid-unit`, `t-rigid-mcon`, `t-rigid-slit`, `t-roof-named-func`, `t-text-char-no`, `t-var-widen-shallow` · also `t-mint-annot`, `t-mint-cond`, `t-mint-guard`, `t-mint-inc-cell` (AST-level) · spec: docs/spec/language.md L-132, docs/spec/runtime.md R-102, docs/spec/runtime.md R-59
 
 ### `%mint-call`
 

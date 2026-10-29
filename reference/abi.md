@@ -5,7 +5,7 @@ What a Jock program can call: the arms the runtime pins, the traits the prelude 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `974956f` (sigilante/pre-rc-sweep) · corpus 1147 vectors · 2026-10-29
+> channel `%rc` · commit `67e8d62` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-29
 
 `docs/spec/runtime.md` is the authority for everything here. R-9 freezes the ABI through 1.0 with **append** as the one sanctioned change shape — a new arm enters at the END so every prior arm keeps its index, and a modification in place is not available because it would move an index that emitted code already depends on. R-10: the freeze rests on two pins, and only one is a mug.
 
@@ -64,7 +64,7 @@ R-12 is the one to read twice: nineteen arms return `Nat`, not `@`. `Nat` sits *
 | `Str` | — | `len(self: Self) -> @` · `cat(self: Self, t: String) -> String` · `bytes(self: Self) -> List<Byte>` · `chars(self: Self) -> List<UniChar>` · `starts-with(self: Self, pre: String) -> Bool` · `ends-with(self: Self, suf: String) -> Bool` · `contains(self: Self, t: String) -> Bool` · `find(self: Self, t: String) -> @?` · `split(self: Self, sep: String) -> List<String>` · `replace(self: Self, from: String, to: String) -> Self` · `trim(self: Self) -> Self` | `String` |
 | `Kernel` | `<E>` | `load(self: Self, old: *) -> Self` · `peek(self: Self, p: *) -> *` · `poke(self: Self, e: *) -> (List<E>, Self)` | — *(nothing in the prelude)* |
 | `FullKernel` | `<E>` | `load(self: Self, old: *) -> Self` · `peek(self: Self, p: *) -> *` · `poke(self: Self, e: *) -> (List<E>, Self)` · `wish(self: Self, txt: *) -> *` | — *(nothing in the prelude)* |
-| `Roof` | — | `answer(self: Self, r: *, p: *) -> *` | — *(nothing in the prelude)* |
+| `Roof` | — | `answer(self: Self, r: *, p: *) -> *??` | — *(nothing in the prelude)* |
 | `Meas` | — | `len(self: Self) -> @` | `List<T>` |
 | `Has` | `<T>` | `has(self: Self, p: T) -> Bool` | `Map<K->V>` `Set<T>` |
 | `Idx` | `<I, A>` | `at(self: Self, i: I) -> A` | `List<T>` `Map<K->V>` |

@@ -5,7 +5,7 @@ All 30 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `974956f` (sigilante/pre-rc-sweep) · corpus 1147 vectors · 2026-10-29
+> channel `%rc` · commit `67e8d62` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-29
 
 The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexer’s own authority, which `tools/hilite.py` holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.
 
@@ -83,7 +83,7 @@ defined by: `language.md` L-61, `language.md` L-107, `language.md` L-173, `langu
 +42 as @
 ```
 
-pinned by `t-sint-lit` · 49 vectors use this keyword
+pinned by `t-sint-lit` · 52 vectors use this keyword
 
 defined by: `language.md` L-12, `language.md` L-24, `language.md` L-61, `language.md` L-107, `language.md` L-120
 
@@ -195,7 +195,7 @@ defined by: `language.md` L-61
 func<T> id(x: T) -> T { x }; id(42)
 ```
 
-pinned by `t-text-gen` · 77 vectors use this keyword
+pinned by `t-text-gen` · 78 vectors use this keyword
 
 defined by: `language.md` L-17, `language.md` L-20, `language.md` L-61, `language.md` L-87, `language.md` L-135, `language.md` L-136, `language.md` L-137, `language.md` L-139, `language.md` L-140, `language.md` L-143, `language.md` L-185
 
@@ -264,10 +264,10 @@ defined by: `language.md` L-61, `language.md` L-69
 **declaration keyword.**
 
 ```jock
-let f = lambda (x: @) -> @ { x * 10 }; hoon.lturn([1, 2, 3], f)
+peekUnder(lambda (r: *, p: *) -> * { (0, 0) }, 0)
 ```
 
-pinned by `t-list-turn-lambda` · 12 vectors use this keyword
+pinned by `t-roof-lift-absent` · 17 vectors use this keyword
 
 defined by: `language.md` L-61
 

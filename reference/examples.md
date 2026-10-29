@@ -5,7 +5,7 @@
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `974956f` (sigilante/pre-rc-sweep) · corpus 1147 vectors · 2026-10-29
+> channel `%rc` · commit `67e8d62` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-29
 
 The descriptions are the authors’ own header comments, not written here: `examples/README.md` calls each example "executable documentation — the header comments are the prose, and a `// expect: <noun>` trailer pins the program’s value". 10 of them are **kernels**, carrying `// kernel: N` — built, poked N times, then peeked.
 
@@ -16,8 +16,8 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 | worked examples | 45 |
 | …with a pinned value | 45 |
 | …that are kernels | 10 |
-| …shown in full on this page | 15 |
-| total lines of Jock | 4079 |
+| …shown in full on this page | 14 |
+| total lines of Jock | 4124 |
 
 ## Every example
 
@@ -26,19 +26,19 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 | `counter` | 13 | `3` | **kernel (3 pokes).** The zero-ceremony counter kernel (runtime.md sections 5 and 8). The program ends at its initial state; the compiler finds the class, checks impl Kerne |
 | `counter-v2` | 14 | `[2 102]` | **kernel (2 pokes).** The upgrade target: a NEW state shape whose load MIGRATES the old kernel's exported state (a bare atom) into it. Boot fresh, slam load (axis 4) with t |
 | `cons` | 15 | `[3 2 1 0]` | cons.jock — the prelude's list constructor. |
-| `peektry` | 15 | `[42 7]` | peekTry(roof, path): the GRACEFUL namespace read --- the .^-vs-peekTry partner.  peekUnder reads a value and crashes on a bad read (like .^);  peekTry |
-| `scry` | 16 | `[1 1]` | peekUnder(roof, path): read a path under an in-code roof --- the mink-based namespace primitive (pure-Urbit, no gall).  peekUnder installs the roof, e |
-| `roof` | 22 | `[1 1]` | Roof — the namespace-answering protocol, the read-only analogue of Kernel.  A class `impl Roof` carries served state plus an `answer` arm;  peekUnder( |
 | `hof` | 23 | `72` | hof.jock — higher-order functions from lib/hof. |
+| `peektry` | 24 | `[42 7 9]` | peekTry(roof, path): the GRACEFUL namespace read --- the .^-vs-peekTry partner.  peekUnder reads a value and crashes on a bad read (like .^);  peekTry |
 | `point` | 26 | `.~143.0` | point.jock — the operator-trait user story. |
 | `patp` | 28 | `[1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]` | @p ship names (lib/urbit), both directions, the whole rank ladder — the +po syllable tables and the +ob Feistel (and its inverse) translated to Jock,  |
 | `collections` | 29 | `601` | collections.jock — Map and Set. |
 | `errol` | 30 | `'3.14 0.1 100.0 1e+23 1.7976931348623157e+308 5e-324 -0.0 0.3333333333333333'` | errol.jock --- Float64 rendering, end to end. |
+| `scry` | 30 | `[1 1 1]` | peekUnder(roof, path): read a path under an in-code roof --- the mink-based namespace primitive (pure-Urbit, no gall).  peekUnder installs the roof, e |
 | `sort` | 30 | `[1 2 3 5 8 9 0]` | sort.jock — generic insertion sort: bounded generics meet operator traits. |
 | `strings` | 31 | `'hello, world (12 bytes) - top suit hearts, a < b true'` | strings.jock — text: concatenation, methods, interpolation. |
 | `twoc` | 31 | `16.235.262` | twoc.jock — two's-complement arithmetic at a chosen bit width. |
 | `tap` | 33 | `616` | tap.jock |
 | `sort-imported` | 41 | `'1/3|1/2|2/3|3/4|'` | sort-imported.jock --- the sort of sort.jock, over a type this program did not declare. |
+| `roof` | 44 | `[1 1 1 1]` | Roof — the namespace-answering protocol, the read-only analogue of Kernel.  A class `impl Roof` carries served state plus an `answer` arm;  peekUnder( |
 | `stoplight` | 45 | `%green` | **kernel (4 pokes).** stoplight.jock — a state-machine kernel. |
 | `molds` | 50 | `'atom 42, byte A, rejected x, cmd op 3, kind 2'` | molds.jock — checking foreign nouns: as?, as!, and guards. |
 | `parser` | 53 | `'1234|abc|x|2'` | parser.jock---using the parser combinator library. |
@@ -71,7 +71,7 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 
 ## The short ones, in full
 
-Every example of 40 lines or fewer, verbatim. The 30 longer ones are listed in the table on this page with their values; their sources live in `examples/` in the compiler repo.
+Every example of 40 lines or fewer, verbatim. The 31 longer ones are listed in the table on this page with their values; their sources live in `examples/` in the compiler repo.
 
 ### `counter`
 
@@ -142,86 +142,6 @@ countdown(3)
 
 value `[3 2 1 0]` · run by `tools/examples.sh`
 
-### `peektry`
-
-peekTry(roof, path): the GRACEFUL namespace read --- the .^-vs-peekTry partner.  peekUnder reads a value and crashes on a bad read (like .^);  peekTry VIRTUALIZES the scry (mock, not mink), so a roof that crashes or a scry that blocks comes back as `none` instead of bringing the caller down.  The result is a unit --- exactly the option `as?` produces --- so `??` (default) and `match` consume it, and the some-payload molds out with as?/as! just like peekUnder's bare answer.
-
-```jock
-// peekTry(roof, path): the GRACEFUL namespace read --- the
-// .^-vs-peekTry partner.  peekUnder reads a value and crashes on a
-// bad read (like .^);  peekTry VIRTUALIZES the scry (mock, not
-// mink), so a roof that crashes or a scry that blocks comes back as
-// `none` instead of bringing the caller down.  The result is a unit
-// --- exactly the option `as?` produces --- so `??` (default) and
-// `match` consume it, and the some-payload molds out with as?/as!
-// just like peekUnder's bare answer.
-//
-// Two reads prove both arms:  a roof that answers 42 yields
-// some(42) (the ?? default is untaken), and a roof that crashes
-// yields none (the ?? default, 7, stands in).
-// expect: [42 7]
-(peekTry(lambda (r: *, p: *) -> * { 42 }, 0) ?? 0,
- peekTry(lambda (r: *, p: *) -> * { crash }, 0) ?? 7)
-```
-
-value `[42 7]` · run by `tools/examples.sh`
-
-### `scry`
-
-peekUnder(roof, path): read a path under an in-code roof --- the mink-based namespace primitive (pure-Urbit, no gall).  peekUnder installs the roof, emits the scry (Nock 12), and returns the answer; consume with as!/as? (the .^-vs-peekTry partner).
-
-```jock
-// peekUnder(roof, path): read a path under an in-code roof --- the
-// mink-based namespace primitive (pure-Urbit, no gall).  peekUnder
-// installs the roof, emits the scry (Nock 12), and returns the
-// answer; consume with as!/as? (the .^-vs-peekTry partner).
-//
-// INTERIM roof convention (bypass, pending an nockvm jet fix): the
-// runtime mink hands back the roof's return un-unwrapped, so a roof
-// returns the BARE value here.  When the jet is fixed to match hoon
-// +mink (u.u.result), roofs will return [~ [~ v]] instead --- and
-// peekUnder is unchanged, since the product is still v.
-//
-// Two different roofs prove the roof is actually consulted --- all
-// pure Jock, the caller supplies the namespace in-line.
-// expect: [1 1]
-(if peekUnder(lambda (r: *, p: *) -> * { 42 }, 0) === 42 { 1 } else { 0 },
- if peekUnder(lambda (r: *, p: *) -> * { 99 }, 0) === 99 { 1 } else { 0 })
-```
-
-value `[1 1]` · run by `tools/examples.sh`
-
-### `roof`
-
-Roof — the namespace-answering protocol, the read-only analogue of Kernel.  A class `impl Roof` carries served state plus an `answer` arm;  peekUnder(roofInstance, path) auto-wraps the instance into the gate mink slams (the peekUnder builtin turns a non-gate roof argument into `let roof-inst = <arg>; lambda (r,p) -> * { roof-inst.answer(r, p) }`), emits the scry (Nock 12), and hands back the answer.  Two instances prove the served state (and the path) reach the scry:  the namespace answers `base + path`, so ns/hi return 100+5 and 200+5 respectively.
-
-```jock
-// Roof — the namespace-answering protocol, the read-only analogue
-// of Kernel.  A class `impl Roof` carries served state plus an
-// `answer` arm;  peekUnder(roofInstance, path) auto-wraps the
-// instance into the gate mink slams (the peekUnder builtin turns a
-// non-gate roof argument into `let roof-inst = <arg>; lambda (r,p)
-// -> * { roof-inst.answer(r, p) }`), emits the scry (Nock 12), and
-// hands back the answer.  Two instances prove the served state
-// (and the path) reach the scry:  the namespace answers `base +
-// path`, so ns/hi return 100+5 and 200+5 respectively.
-//
-// Class methods are `;`-separated (like match arms); the terminator
-// on the LAST method is optional, so `answer(...) { ... }` needs no
-// closing `;` --- it is kept here only for symmetry.
-// expect: [1 1]
-struct NsS { base: @ };
-class Ns(NsS) impl Roof {
-  answer(self: Ns, r: *, p: *) -> * { self.base + (p as! @) };
-};
-let ns = Ns( base: 100 );
-let hi = Ns( base: 200 );
-(if peekUnder(ns, 5) === 105 { 1 } else { 0 },
- if peekUnder(hi, 5) === 205 { 1 } else { 0 })
-```
-
-value `[1 1]` · run by `tools/examples.sh`
-
 ### `hof`
 
 hof.jock — higher-order functions from lib/hof.
@@ -253,6 +173,39 @@ hof.foldl(0, hof.turn([1, 2, 3], f), add)
 ```
 
 value `72` · imports `hof` · run by `tools/examples.sh`
+
+### `peektry`
+
+peekTry(roof, path): the GRACEFUL namespace read --- the .^-vs-peekTry partner.  peekUnder reads a value and crashes on a bad read (like .^);  peekTry VIRTUALIZES the scry (mock, not mink), so a roof that crashes or a scry that blocks comes back as `none` instead of bringing the caller down.  The result is a unit --- exactly the option `as?` produces --- so `??` (default) and `match` consume it, and the some-payload molds out with as?/as! just like peekUnder's bare answer.
+
+```jock
+// peekTry(roof, path): the GRACEFUL namespace read --- the
+// .^-vs-peekTry partner.  peekUnder reads a value and crashes on a
+// bad read (like .^);  peekTry VIRTUALIZES the scry (mock, not
+// mink), so a roof that crashes or a scry that blocks comes back as
+// `none` instead of bringing the caller down.  The result is a unit
+// --- exactly the option `as?` produces --- so `??` (default) and
+// `match` consume it, and the some-payload molds out with as?/as!
+// just like peekUnder's bare answer.
+//
+// Three reads prove the arms.  A roof that answers 42 yields
+// some(42) (the ?? default is untaken);  a roof that CRASHES yields
+// none (the default, 7, stands in);  and a roof that reports
+// absence --- some(none), spelled `~ as? *?` --- yields none too,
+// so the default 9 stands in.
+//
+// Those last two are the same outcome on purpose.  peekTry's
+// contract is "a value, or nothing you can use", and a roof that
+// crashed and a path that holds nothing are both nothing you can
+// use.  A caller that must tell them apart wants peekUnder, which
+// crashes on the first and traces on the second.
+// expect: [42 7 9]
+(peekTry(lambda (r: *, p: *) -> * { 42 }, 0) ?? 0,
+ peekTry(lambda (r: *, p: *) -> * { crash }, 0) ?? 7,
+ peekTry(lambda (r: *, p: *) -> *?? { ~ as? *? }, 0) ?? 9)
+```
+
+value `[42 7 9]` · run by `tools/examples.sh`
 
 ### `point`
 
@@ -402,6 +355,45 @@ let third = hoon.rdiv(1.0, 3.0);
 ```
 
 value `'3.14 0.1 100.0 1e+23 1.7976931348623157e+308 5e-324 -0.0 0.3333333333333333'` · run by `tools/examples.sh`
+
+### `scry`
+
+peekUnder(roof, path): read a path under an in-code roof --- the mink-based namespace primitive (pure-Urbit, no gall).  peekUnder installs the roof, emits the scry (Nock 12), and returns the answer; consume with as!/as? (the .^-vs-peekTry partner).
+
+```jock
+// peekUnder(roof, path): read a path under an in-code roof --- the
+// mink-based namespace primitive (pure-Urbit, no gall).  peekUnder
+// installs the roof, emits the scry (Nock 12), and returns the
+// answer; consume with as!/as? (the .^-vs-peekTry partner).
+//
+// A roof answers `*??`, mink's own contract, so it can say all
+// three things a namespace has to say:
+//
+//     some(some(v))   here is the value
+//     some(none)      there is NO VALUE at this path
+//     none            block --- escapes the jet today (R-29)
+//
+// `as?` is the some-idiom, so `(42 as? @) as? @?` is some(some(42))
+// and `~ as? *?` is some(none).
+//
+// A bare `lambda (r, p) -> * { v }` is ALSO accepted, and answers
+// v: its body is checked against the contract and optional
+// injection lifts it twice.  Convenient, and the reason absence was
+// unsayable until 2026-10-29 --- a lifted body can only ever
+// answer.  Prefer the explicit shape;  the lifted one is shown in
+// the second row below so both are exercised.
+//
+// Three roofs prove the roof is consulted and that both spellings
+// work --- all pure Jock, the caller supplies the namespace in-line.
+// expect: [1 1 1]
+(if peekUnder(lambda (r: *, p: *) -> *?? { (42 as? @) as? @? }, 0) === 42 { 1 } else { 0 },
+ // the lifted spelling, answering a bare value
+ if peekUnder(lambda (r: *, p: *) -> * { 99 }, 0) === 99 { 1 } else { 0 },
+ // absence reaches peekTry as none, so the ?? default stands in
+ if (peekTry(lambda (r: *, p: *) -> *?? { ~ as? *? }, 0) ?? 7) === 7 { 1 } else { 0 })
+```
+
+value `[1 1 1]` · run by `tools/examples.sh`
 
 ### `sort`
 
