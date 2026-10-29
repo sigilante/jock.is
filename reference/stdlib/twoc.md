@@ -5,7 +5,7 @@ two's-complement signed integers at arbitrary bit width
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/twoc.jock` and the examples that import it.
 >
-> 8 public declarations — 1 type, 7 arms. 7 pinned by a lane, 1 not. channel `%rc` · commit `1ee40c8`
+> 8 public declarations — 1 type, 7 arms. 7 pinned by a lane, 1 not. channel `%rc` · commit `080874d`
 
 ## Import
 
@@ -168,4 +168,4 @@ That count is of DIRECT mentions. An arm an assertion reaches only through a cal
 - `examples/twoc-arms.jock` — the arms sheet: one assertion per arm
 - `examples/twoc.jock` — a use
 
-The [worked examples](../../examples/) page shows the shortest of these in full.
+The [worked examples](/reference/examples/) page shows the shortest of these in full.

@@ -5,7 +5,7 @@
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `1ee40c8` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+> channel `%rc` · commit `080874d` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
 
 The descriptions are the authors’ own header comments, not written here: `examples/README.md` calls each example "executable documentation — the header comments are the prose, and a `// expect: <noun>` trailer pins the program’s value". 8 of them are **kernels**, carrying `// kernel: N` — built, poked N times, then peeked.
 
@@ -551,7 +551,7 @@ value `616` · imports `hof` · run by `tools/examples.sh`
 
 ## What this page leaves out
 
-7 programs in `examples/` are not listed above. Each reaches the nockchain line — the `chain` package or one of the modules [the library page](../stdlib/) names as undocumented — and that line is off the site for the reason given there: its interface is half of a contract with a driver this project does not own.
+7 programs in `examples/` are not listed above. Each reaches the nockchain line — the `chain` package or one of the modules [the library page](/reference/stdlib/) names as undocumented — and that line is off the site for the reason given there: its interface is half of a contract with a driver this project does not own.
 
 | program | lines | imports |
 |---|---:|---|

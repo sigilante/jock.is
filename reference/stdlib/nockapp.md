@@ -5,7 +5,7 @@ the NockApp host's own effect vocabulary.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/nockapp.jock` and the examples that import it.
 >
-> 1 public declaration — 1 type, 0 arms. 1 pinned by a lane, 0 not. channel `%rc` · commit `1ee40c8`
+> 1 public declaration — 1 type, 0 arms. 1 pinned by a lane, 0 not. channel `%rc` · commit `080874d`
 
 ## Import
 
@@ -56,4 +56,4 @@ Nothing. All 1 public declaration is named by an example that runs on every push
 - `examples/stoplight.jock` — a use
 - `examples/watcher.jock` — a use
 
-The [worked examples](../../examples/) page shows the shortest of these in full.
+The [worked examples](/reference/examples/) page shows the shortest of these in full.

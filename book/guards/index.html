@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R5 · The guard set — Jock reference</title>
+<meta name="description" content="A guard is a value refinement carried by a type. There are five, the set is closed, and it is not a general refinement mechanism.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!--  ABSOLUTE, not relative.  These were `../jock-highlight.css`,
+      which from /reference/tags/ resolves to
+      /reference/jock-highlight.css --- a 404 on every generated
+      page, so the highlighter never loaded and the listings were
+      marked `class="code jock"` for a script that was not there.
+      The site is served at an apex root, so an absolute path is
+      correct and is immune to however deep a page is nested.  -->
+<link rel="stylesheet" href="/jock-highlight.css">
+<script src="/jock-highlight.js" defer></script>
+<!--
+  HAND-MAINTAINED.  This is the only file in the reference that a
+  person edits:  tools/refgen.py in the compiler repo fills
+  the four placeholders below and writes the pages beside it.
+  Naming them here in their own spelling would be a bug:  the
+  substitution is a plain string replace, so a comment mentioning a
+  placeholder gets the substitution too --- which silently injected
+  the whole document into this comment, doubling every page, until
+  2026-10-27.  Nor may this comment contain a close-comment
+  sequence;  the sentence that said so, spelling it out, closed the
+  comment early and spilled the rest of this text onto the page.  Design lives here, content is generated, and
+  neither needs the other to change.
+
+  Styling is /jock.css, authored from design/style-guide.html ---
+  the design system's own document, which is a visual specimen of
+  inline styles rather than a stylesheet.  This page carries NO copy
+  of it:  that was the whole point of extracting it.
+
+  Jekyll ignores a file whose name starts with `_`, so this template
+  is never served.
+-->
+<link rel="stylesheet" href="/jock.css">
+</head>
+<body>
+<div class="page">
+<header class="bar">
+  <nav><a href="/">jock</a> <span>reference</span></nav>
+  <span>R5 · five guards</span>
+</header>
+<main class="prose">
+<h1 class="ruled">R5 · The guard set</h1>
+<p class="sub">A guard is a value refinement carried by a type. There are five, the set is closed, and it is not a general refinement mechanism.</p>
+<!--  §3:  text column beside the 186px margin rail.  A marginal
+      floats into the rail where it was written, so it sits beside
+      its referent;  the rail is empty wherever nothing was said,
+      which §7 calls correct.  -->
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this page from <code>docs/spec/types.md</code> S3.4. channel <code>%rc</code> · commit <code>080874d</code></aside>
+<h2 id="the-set">The set</h2>
+<blockquote>Guards are a <strong>closed, enumerated set</strong> — <code>%based</code> (value &lt; 2⁶⁴ − 2³² + 1, the Goldilocks prime), <code>%byte</code> (&lt; 256), <code>%unic</code> (a Unicode scalar, <code>0x0</code>–<code>0x10FFFF</code>), <code>%loob</code> (&lt; 2), <code>%term</code> (a valid Hoon term). <strong>Five.</strong> A guard is not a general refinement mechanism and never will be.</blockquote>
+<table><thead><tr><th>guard</th><th>admits (S3.4)</th><th>reached by</th></tr></thead><tbody><tr><td><code>%based</code></td><td>value &lt; 2⁶⁴ − 2³² + 1, the Goldilocks prime</td><td><code>Base</code> — the only guard utterable as a type expression; also the <code>%$</code>, <code>%number</code> and <code>%hex</code> auras</td></tr><tr><td><code>%byte</code></td><td>&lt; 256</td><td><code>Byte</code>, a boot-env alias carrying the guard</td></tr><tr><td><code>%unic</code></td><td>a Unicode scalar, <code>0x0</code>–<code>0x10FFFF</code></td><td><code>UniChar</code></td></tr><tr><td><code>%loob</code></td><td>&lt; 2</td><td><code>Bool</code>, a boot-env alias carrying the guard</td></tr><tr><td><code>%term</code></td><td>a valid Hoon term</td><td><code>Term</code>, a boot-env alias carrying the guard</td></tr></tbody></table>
+<p>Only <code>%based</code> is utterable as a type expression in its own right — it <em>is</em> a <code>tex</code> form, spelled <code>Base</code>. The other four reach the checker through a <strong>name</strong>, because a bare <code>[%atom %logical ~]</code> written anywhere in the compiler re-opens the every-atom-is-a-<code>Bool</code> hole.</p>
+<h2 id="the-order-is-partial">The order is PARTIAL</h2>
+<p>Four of the five form a chain by inclusion; <code>%term</code> is incomparable with all of them, which is the fact that makes this an order and not a ladder.</p>
+<pre class="code">%loob  ⊂  %byte  ⊂  %unic  ⊂  %based  ⊂  ~   (~ = unguarded, every atom)
+%term                                 ⊂  ~</pre>
+<p>Measured rather than assumed: <code>1</code> is not a term, <code>200</code> is not a term, <code>0x1f600</code> is not a term, and <code>'transaction'</code> is a term of 11 bytes, which exceeds the prime. They overlap without containment — <code>'a'</code> is both a byte and a term — which is why the order stopped being a chain when <code>Term</code> landed.</p>
+<p>Two judgments depend on the order, and the partiality shows in both. <strong>Nest</strong> subsumes along it, so a tighter guard stands wherever a looser one is demanded, and <code>%term</code> therefore stands only where <code>~</code> is demanded. <strong>Join</strong> synthesizes by AURA rather than by walking the order: each aura names the guard its values are refined by, and the guard applies only if both values satisfy it. <code>%real</code> deliberately names no guard — an IEEE double is a full 64-bit pattern, so <code>%based</code> would be wrong.</p>
+<h2 id="what-a-failing-guard-refuses">What a failing guard refuses</h2>
+<p>All three reachable guards refuse through <code>nest</code>, so the tag is <code>%mill-nest</code> with a position rather than a guard-specific one. For <code>Byte</code> and <code>Bool</code> the <strong>aura gate fires first</strong>: a decimal literal is <code>%number</code> and neither type is, so <code>let b: Byte = 255;</code> refuses on the aura and the range check is never reached from a decimal literal at all. The spellings that do reach these types are <code>'a'</code> for <code>Byte</code> and <code>true</code>/<code>false</code> for <code>Bool</code>.</p>
+<p>Pinned by <code>t-mint-guard</code>, <code>t-nest-sa-p</code>, <code>t-nest-guard-loob-p</code>, <code>t-nest-guard-loob-n</code>, <code>t-nest-sa-n</code>.</p>
+</main>
+</div>
+</body>
+</html>

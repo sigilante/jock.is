@@ -5,7 +5,7 @@ the NockApp http driver, from the Jock side.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/http.jock` and the examples that import it.
 >
-> 22 public declarations — 3 types, 19 arms. 13 pinned by a lane, 9 not. channel `%rc` · commit `1ee40c8`
+> 22 public declarations — 3 types, 19 arms. 13 pinned by a lane, 9 not. channel `%rc` · commit `080874d`
 
 ## Import
 
@@ -345,4 +345,4 @@ That count is of DIRECT mentions. An arm an assertion reaches only through a cal
 - `examples/webserver.jock` — a use
 - `examples/wordle.jock` — a use
 
-The [worked examples](../../examples/) page shows the shortest of these in full.
+The [worked examples](/reference/examples/) page shows the shortest of these in full.

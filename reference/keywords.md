@@ -1,11 +1,11 @@
 # Keywords
 
-All 30 keywords Jock reserves, what each one does, and a working program that uses it. The counterpart to [refusal tags](../tags/), which is the same corpus read for what it rejects.
+All 30 keywords Jock reserves, what each one does, and a working program that uses it. The counterpart to [refusal tags](/reference/tags/), which is the same corpus read for what it rejects.
 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `1ee40c8` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+> channel `%rc` · commit `080874d` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
 
 The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexer’s own authority, which `tools/hilite.py` holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.
 

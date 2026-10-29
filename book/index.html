@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The back of the book — Jock reference</title>
+<meta name="description" content="R1–R11, the book’s reference sections. The same checked facts as the agent reference, ordered by what motivates rather than by what is load-bearing — GENERATOR.md’s two renderings of one source of truth.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!--  ABSOLUTE, not relative.  These were `../jock-highlight.css`,
+      which from /reference/tags/ resolves to
+      /reference/jock-highlight.css --- a 404 on every generated
+      page, so the highlighter never loaded and the listings were
+      marked `class="code jock"` for a script that was not there.
+      The site is served at an apex root, so an absolute path is
+      correct and is immune to however deep a page is nested.  -->
+<link rel="stylesheet" href="/jock-highlight.css">
+<script src="/jock-highlight.js" defer></script>
+<!--
+  HAND-MAINTAINED.  This is the only file in the reference that a
+  person edits:  tools/refgen.py in the compiler repo fills
+  the four placeholders below and writes the pages beside it.
+  Naming them here in their own spelling would be a bug:  the
+  substitution is a plain string replace, so a comment mentioning a
+  placeholder gets the substitution too --- which silently injected
+  the whole document into this comment, doubling every page, until
+  2026-10-27.  Nor may this comment contain a close-comment
+  sequence;  the sentence that said so, spelling it out, closed the
+  comment early and spilled the rest of this text onto the page.  Design lives here, content is generated, and
+  neither needs the other to change.
+
+  Styling is /jock.css, authored from design/style-guide.html ---
+  the design system's own document, which is a visual specimen of
+  inline styles rather than a stylesheet.  This page carries NO copy
+  of it:  that was the whole point of extracting it.
+
+  Jekyll ignores a file whose name starts with `_`, so this template
+  is never served.
+-->
+<link rel="stylesheet" href="/jock.css">
+</head>
+<body>
+<div class="page">
+<header class="bar">
+  <nav><a href="/">jock</a> <span>reference</span></nav>
+  <span>R1–R11</span>
+</header>
+<main class="prose">
+<h1 class="ruled">The back of the book</h1>
+<p class="sub">R1–R11, the book’s reference sections. The same checked facts as <a href="/reference/">the agent reference</a>, ordered by what motivates rather than by what is load-bearing — <code>GENERATOR.md</code>’s two renderings of one source of truth.</p>
+<!--  §3:  text column beside the 186px margin rail.  A marginal
+      floats into the rail where it was written, so it sits beside
+      its referent;  the rail is empty wherever nothing was said,
+      which §7 calls correct.  -->
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes these pages. channel <code>%rc</code> · commit <code>080874d</code> (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30</aside>
+<p>The narrative chapters are hand-written and are not here. Only the back matter is generated, which is what makes it checkable: <code>refgen --check</code> regenerates these pages and fails on a diff.</p>
+<h2 id="the-sections">The sections</h2>
+<table><thead><tr><th></th><th>section</th><th>where</th></tr></thead><tbody><tr><td>R1</td><td>The Nock specification</td><td><a href="nock/">partial</a></td></tr><tr><td>R2</td><td>Keyword reference, with lowerings</td><td><a href="keywords/">partial</a></td></tr><tr><td>R3</td><td>Precedence table</td><td><a href="/reference/keywords/#precedence">reference/keywords/#precedence</a></td></tr><tr><td>R4</td><td>The erasure table</td><td><a href="/reference/erasure/">reference/erasure/</a></td></tr><tr><td>R5</td><td>The guard set</td><td><a href="guards/">guards/</a></td></tr><tr><td>R6</td><td>The operator table</td><td><a href="/reference/abi/">reference/abi/</a></td></tr><tr><td>R7</td><td>Literal forms</td><td><a href="/reference/literals/">reference/literals/</a></td></tr><tr><td>R8</td><td>The judgment table</td><td><a href="/reference/tags/">reference/tags/</a></td></tr><tr><td>R9</td><td>Glossary</td><td><a href="glossary/">glossary/</a></td></tr><tr><td>R10</td><td>The examples as exercises</td><td><a href="exercises/">exercises/</a></td></tr><tr><td>R11</td><td>For Hoon programmers</td><td><a href="hoon/">hoon/</a></td></tr></tbody></table>
+<p><strong>R3, R4, R6, R7 and R8 are linked, not copied.</strong> They are table-shaped facts projected verbatim from normative rules that say the table <em>is</em> the rule, so the agent rendering already carries them in the only form they have. Two renderings of one source of truth is the thesis; two copies of one rendering is a second place to go stale.</p>
+<h2 id="where-this-back-matter-stops">Where this back matter stops</h2>
+<p>Two sections cannot be generated as the outline describes them, and say so on their own pages rather than looking finished.</p>
+<ul><li><strong>R1</strong> wants the Nock 4K reduction rules verbatim and this repo has no copy of them. The page links <code>nock.is</code> and carries the IR’s closed opcode set instead.</li><li><strong>R2</strong> wants railroad diagrams. A diagram is a rendering of a grammar, and there is no grammar artifact to render — the parser is recursive descent. The page carries the sugar rewrite index, which is the lowering half of what R2 asks for, and quotes the ruling that would have to be lifted first.</li></ul>
+<p>Two more are generated in a weaker form than the outline asks: the glossary is an <strong>index to defining rules</strong> rather than prose, because the specs use their terms without defining them; and the exercises carry the outline’s six named landmarks rather than a grading of all of them, because nothing grades the rest.</p>
+</main>
+</div>
+</body>
+</html>

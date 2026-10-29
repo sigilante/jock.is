@@ -5,7 +5,7 @@ parser combinators.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/parser.jock` and the examples that import it.
 >
-> 38 public declarations — 7 types, 31 arms. 33 pinned by a lane, 5 not. channel `%rc` · commit `1ee40c8`
+> 38 public declarations — 7 types, 31 arms. 33 pinned by a lane, 5 not. channel `%rc` · commit `080874d`
 
 ## Import
 
@@ -601,4 +601,4 @@ That count is of DIRECT mentions. An arm an assertion reaches only through a cal
 - `examples/parser-combinators.jock` — a use
 - `examples/parser.jock` — a use
 
-The [worked examples](../../examples/) page shows the shortest of these in full.
+The [worked examples](/reference/examples/) page shows the shortest of these in full.

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R1 · The Nock specification — Jock reference</title>
+<meta name="description" content="Jock compiles to Nock. This page is NOT the 4K specification — see below — and carries instead the one thing this repo pins about the Nock it emits.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!--  ABSOLUTE, not relative.  These were `../jock-highlight.css`,
+      which from /reference/tags/ resolves to
+      /reference/jock-highlight.css --- a 404 on every generated
+      page, so the highlighter never loaded and the listings were
+      marked `class="code jock"` for a script that was not there.
+      The site is served at an apex root, so an absolute path is
+      correct and is immune to however deep a page is nested.  -->
+<link rel="stylesheet" href="/jock-highlight.css">
+<script src="/jock-highlight.js" defer></script>
+<!--
+  HAND-MAINTAINED.  This is the only file in the reference that a
+  person edits:  tools/refgen.py in the compiler repo fills
+  the four placeholders below and writes the pages beside it.
+  Naming them here in their own spelling would be a bug:  the
+  substitution is a plain string replace, so a comment mentioning a
+  placeholder gets the substitution too --- which silently injected
+  the whole document into this comment, doubling every page, until
+  2026-10-27.  Nor may this comment contain a close-comment
+  sequence;  the sentence that said so, spelling it out, closed the
+  comment early and spilled the rest of this text onto the page.  Design lives here, content is generated, and
+  neither needs the other to change.
+
+  Styling is /jock.css, authored from design/style-guide.html ---
+  the design system's own document, which is a visual specimen of
+  inline styles rather than a stylesheet.  This page carries NO copy
+  of it:  that was the whole point of extracting it.
+
+  Jekyll ignores a file whose name starts with `_`, so this template
+  is never served.
+-->
+<link rel="stylesheet" href="/jock.css">
+</head>
+<body>
+<div class="page">
+<header class="bar">
+  <nav><a href="/">jock</a> <span>reference</span></nav>
+  <span>R1 · partial</span>
+</header>
+<main class="prose">
+<h1 class="ruled">R1 · The Nock specification</h1>
+<p class="sub">Jock compiles to Nock. This page is NOT the 4K specification — see below — and carries instead the one thing this repo pins about the Nock it emits.</p>
+<!--  §3:  text column beside the 186px margin rail.  A marginal
+      floats into the rail where it was written, so it sits beside
+      its referent;  the rail is empty wherever nothing was said,
+      which §7 calls correct.  -->
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this page. channel <code>%rc</code> · commit <code>080874d</code></aside>
+<h2 id="what-the-outline-asks-for-and-why-it-is-not-here">What the outline asks for, and why it is not here</h2>
+<p><code>OUTLINE.md</code> R1 asks for "one page, the 4K reduction rules verbatim; everything else links to nock.is". <strong>There is no copy of the 4K rules in this repository.</strong> Writing them out from memory would not be verbatim, and a reference whose whole claim is that it invents nothing cannot start with the specification of its own target.</p>
+<p>The rules themselves are at &lt;https://nock.is&gt;, where they are normative. How many there are and what they say is not stated here either: this page declines to transcribe the specification, and a count recalled rather than read is the same failure one number smaller.</p>
+<h2 id="what-this-repo-does-pin">What this repo does pin</h2>
+<p>Jock does not emit Nock directly. It emits <code>nockasm</code>, an IR whose opcode set is closed, and <code>nockasm.md</code> N-19 states the set:</p>
+<blockquote>N-19 · Twenty-one is the count because <code>%scry</code> joined.</blockquote>
+<p><code>+expa-op</code> refines against that set, so an unknown opcode is a crash at expansion time rather than an unknown formula at runtime.</p>
+<p>Pinned by <code>t-nx-scry-p</code>, <code>t-nx-law-scry-p</code>, <code>t-nx-unkop-n</code>.</p>
+<p>What each opcode becomes is <code>docs/spec/nockasm-target.md</code>’s conformance law and deterministic lift. For the formula a given program compiles to, <code>tools/jockc.sh nock</code> prints it with the prelude’s push spine stripped.</p>
+</main>
+</div>
+</body>
+</html>

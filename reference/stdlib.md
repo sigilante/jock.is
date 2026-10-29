@@ -5,7 +5,7 @@
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` reads the module sources and the examples that import them.
 >
-> 96 of 114 declarations pinned by a lane · channel `%rc` · commit `1ee40c8` (sigilante/pre-rc-sweep) · 2026-10-30
+> 96 of 114 declarations pinned by a lane · channel `%rc` · commit `080874d` (sigilante/pre-rc-sweep) · 2026-10-30
 
 ## What counts as the standard library
 
@@ -13,7 +13,7 @@ Three tiers, distinguished by WHY a piece of code is where it is rather than by 
 
 | tier | what | where | how it arrives |
 |---|---|---|---|
-| 1 | the pinned prelude | `++prelude` in `lib/jock.hoon` | ambient — no import, frozen; see [the ABI](../abi/) |
+| 1 | the pinned prelude | `++prelude` in `lib/jock.hoon` | ambient — no import, frozen; see [the ABI](/reference/abi/) |
 | 2 | a library module written in Jock | `lib/*.jock` — this page | `import <name>;` with the directory on `--data-dir` |
 | 3 | a curated Hoon core, jammed | `pkgs/*.jam` via `tools/pkg.sh` | `import <name>;` against a built jam |
 

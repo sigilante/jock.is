@@ -5,7 +5,7 @@ exact rational arithmetic over Int.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/rational.jock` and the examples that import it.
 >
-> 9 public declarations — 0 types, 9 arms. 9 pinned by a lane, 0 not. channel `%rc` · commit `1ee40c8`
+> 9 public declarations — 0 types, 9 arms. 9 pinned by a lane, 0 not. channel `%rc` · commit `080874d`
 
 ## Import
 
@@ -190,4 +190,4 @@ Nothing. All 9 public declarations are named by an example that runs on every pu
 - `examples/rational-arms.jock` — the arms sheet: one assertion per arm
 - `examples/sort-imported.jock` — a use
 
-The [worked examples](../../examples/) page shows the shortest of these in full.
+The [worked examples](/reference/examples/) page shows the shortest of these in full.

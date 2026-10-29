@@ -1,11 +1,11 @@
 # Literals and names
 
-Every literal form Jock can spell, the aura each carries, and the names the language reserves for its own types. Companion to [keywords](../keywords/) and [refusal tags](../tags/).
+Every literal form Jock can spell, the aura each carries, and the names the language reserves for its own types. Companion to [keywords](/reference/keywords/) and [refusal tags](/reference/tags/).
 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `1ee40c8` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+> channel `%rc` · commit `080874d` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
 
 ## The literal inventory
 

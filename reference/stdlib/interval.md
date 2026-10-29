@@ -5,7 +5,7 @@ interval arithmetic over exact rationals.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/interval.jock` and the examples that import it.
 >
-> 4 public declarations — 1 type, 3 arms. 3 pinned by a lane, 1 not. channel `%rc` · commit `1ee40c8`
+> 4 public declarations — 1 type, 3 arms. 3 pinned by a lane, 1 not. channel `%rc` · commit `080874d`
 
 ## Import
 
@@ -122,4 +122,4 @@ That count is of DIRECT mentions. An arm an assertion reaches only through a cal
 - `examples/interval-arms.jock` — the arms sheet: one assertion per arm
 - `examples/interval.jock` — a use
 
-The [worked examples](../../examples/) page shows the shortest of these in full.
+The [worked examples](/reference/examples/) page shows the shortest of these in full.

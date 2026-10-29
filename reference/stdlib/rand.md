@@ -5,7 +5,7 @@ deterministic pseudo-random numbers.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/rand.jock` and the examples that import it.
 >
-> 12 public declarations — 1 type, 11 arms. 10 pinned by a lane, 2 not. channel `%rc` · commit `1ee40c8`
+> 12 public declarations — 1 type, 11 arms. 10 pinned by a lane, 2 not. channel `%rc` · commit `080874d`
 
 ## Import
 
@@ -224,4 +224,4 @@ That count is of DIRECT mentions. An arm an assertion reaches only through a cal
 
 - `examples/rand-arms.jock` — the arms sheet: one assertion per arm
 
-The [worked examples](../../examples/) page shows the shortest of these in full.
+The [worked examples](/reference/examples/) page shows the shortest of these in full.

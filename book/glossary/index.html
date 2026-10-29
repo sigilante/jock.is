@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R9 · Glossary — Jock reference</title>
+<meta name="description" content="Jock’s vocabulary, each term pointing at the normative rule that introduces it. The definitions are the rules’ own sentences.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!--  ABSOLUTE, not relative.  These were `../jock-highlight.css`,
+      which from /reference/tags/ resolves to
+      /reference/jock-highlight.css --- a 404 on every generated
+      page, so the highlighter never loaded and the listings were
+      marked `class="code jock"` for a script that was not there.
+      The site is served at an apex root, so an absolute path is
+      correct and is immune to however deep a page is nested.  -->
+<link rel="stylesheet" href="/jock-highlight.css">
+<script src="/jock-highlight.js" defer></script>
+<!--
+  HAND-MAINTAINED.  This is the only file in the reference that a
+  person edits:  tools/refgen.py in the compiler repo fills
+  the four placeholders below and writes the pages beside it.
+  Naming them here in their own spelling would be a bug:  the
+  substitution is a plain string replace, so a comment mentioning a
+  placeholder gets the substitution too --- which silently injected
+  the whole document into this comment, doubling every page, until
+  2026-10-27.  Nor may this comment contain a close-comment
+  sequence;  the sentence that said so, spelling it out, closed the
+  comment early and spilled the rest of this text onto the page.  Design lives here, content is generated, and
+  neither needs the other to change.
+
+  Styling is /jock.css, authored from design/style-guide.html ---
+  the design system's own document, which is a visual specimen of
+  inline styles rather than a stylesheet.  This page carries NO copy
+  of it:  that was the whole point of extracting it.
+
+  Jekyll ignores a file whose name starts with `_`, so this template
+  is never served.
+-->
+<link rel="stylesheet" href="/jock.css">
+</head>
+<body>
+<div class="page">
+<header class="bar">
+  <nav><a href="/">jock</a> <span>reference</span></nav>
+  <span>R9 · 25 terms</span>
+</header>
+<main class="prose">
+<h1 class="ruled">R9 · Glossary</h1>
+<p class="sub">Jock’s vocabulary, each term pointing at the normative rule that introduces it. The definitions are the rules’ own sentences.</p>
+<!--  §3:  text column beside the 186px margin rail.  A marginal
+      floats into the rail where it was written, so it sits beside
+      its referent;  the rail is empty wherever nothing was said,
+      which §7 calls correct.  -->
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this page. 25 terms · channel <code>%rc</code> · commit <code>080874d</code></aside>
+<h2 id="why-this-is-an-index-and-not-prose">Why this is an index and not prose</h2>
+<p><code>OUTLINE.md</code> R9 asks for a glossary with prose definitions. The specs do not define these terms — they <strong>use</strong> them, normatively and precisely, which is a different thing. A regex for definitional sentences over all 451 normative rules was tried and returned <code>chain.md</code> rules about merkle proofs for "bunt" and about signers for "kernel".</p>
+<p>So each entry below is the rule that introduces the term, quoted. A reader gets "aura: L-97 says the table below is the utterable aura set" rather than a definition this generator wrote. Writing one would make the generator a second author of the language’s vocabulary, which is the failure mode this whole reference exists to avoid.</p>
+<h2 id="terms">Terms</h2>
+<h3 id="adjacency-law">adjacency law</h3>
+<blockquote>L-1 · A postfix form binds only when glued</blockquote>
+<p><code>docs/spec/language.md</code> L-1 · pinned by <code>t-lex-glue-p</code>, <code>t-arc-ctor</code>, <code>t-lex-type-p</code></p>
+<h3 id="aura">aura</h3>
+<blockquote>S3.1 · Auras are flat: every named aura sits directly under bare <code>@</code> (aura <code>%$</code>). There is no Hoon-style prefix nesting; <code>@ud</code> vs <code>@u</code> subtlety does not exist. The initial semantic vocabulary (open-ended; surface-utterable set in language.md §3.1):</blockquote>
+<p><code>docs/spec/types.md</code> S3.1</p>
+<h3 id="bunt">bunt</h3>
+<blockquote>L-71 · Bunt is the FIRST case's bunt</blockquote>
+<p><code>docs/spec/language.md</code> L-71 · pinned by <code>t-arc-enum</code></p>
+<h3 id="guard">guard</h3>
+<blockquote>S3.4 · Guards are a <strong>closed, enumerated set</strong> — <code>%based</code> (value &lt; 2⁶⁴ − 2³² + 1, the Goldilocks prime), <code>%byte</code> (&lt; 256), <code>%unic</code> (a Unicode scalar, <code>0x0</code>–<code>0x10FFFF</code>), <code>%loob</code> (&lt; 2), <code>%term</code> (a valid Hoon term). <strong>Five.</strong> A guard is not a general refinement mechanism and never will be.</blockquote>
+<p><code>docs/spec/types.md</code> S3.4 · pinned by <code>t-mint-guard</code>, <code>t-nest-sa-p</code>, <code>t-nest-guard-loob-p</code>, <code>t-nest-guard-loob-n</code></p>
+<h3 id="option-t">option (<code>T?</code>)</h3>
+<blockquote>L-95 · <code>T?</code> is sugar for the <code>~</code>-form of that mechanism</blockquote>
+<p><code>docs/spec/language.md</code> L-95 · pinned by <code>t-elab-unit-p</code></p>
+<h3 id="discriminable-union">discriminable union</h3>
+<blockquote>L-94 · An untagged union's members must be erasure-disjoint</blockquote>
+<p><code>docs/spec/language.md</code> L-94 · pinned by <code>t-elab-union-p</code>, <code>t-elab-union-n</code></p>
+<h3 id="void-never">void / <code>Never</code></h3>
+<blockquote>L-72 · An empty enum is well-formed and uninhabited.</blockquote>
+<p><code>docs/spec/language.md</code> L-72 · pinned by <code>t-bunt-void-n</code>, <code>t-bunt-or-void</code></p>
+<h3 id="lark">lark</h3>
+<blockquote>L-101 · The lark is the only way into an ANONYMOUS product.</blockquote>
+<p><code>docs/spec/language.md</code> L-101 · pinned by <code>t-lark-expr</code></p>
+<h3 id="axis">axis</h3>
+<blockquote>L-103 · The general form is <code>p.+5</code></blockquote>
+<p><code>docs/spec/language.md</code> L-103 · pinned by <code>t-lark-atom-n</code></p>
+<h3 id="singleton">singleton</h3>
+<blockquote>L-133 · A singleton never survives a CALL boundary</blockquote>
+<p><code>docs/spec/language.md</code> L-133 · pinned by <code>t-nest-sa-p</code>, <code>t-nest-sing-p</code>, <code>t-nest-sing-n</code></p>
+<h3 id="spaced-minus">spaced minus</h3>
+<blockquote>L-109 · Binary <code>-</code> is SPACED ON BOTH SIDES.</blockquote>
+<p><code>docs/spec/language.md</code> L-109 · pinned by <code>t-minus-glued-l</code>, <code>t-minus-glued-r</code>, <code>t-minus-spaced</code></p>
+<h3 id="glued-hyphen">glued hyphen</h3>
+<blockquote>L-59 · Names admit glued hyphens, Hoon-Term-style.</blockquote>
+<p><code>docs/spec/language.md</code> L-59 · pinned by <code>t-term-hyphen</code></p>
+<h3 id="cast-as">cast (<code>as</code>)</h3>
+<blockquote>L-120 · <code>as</code> is STATIC.</blockquote>
+<p><code>docs/spec/language.md</code> L-120 · pinned by <code>t-mint-cast</code>, <code>t-run-cast</code>, <code>t-err-chars-cast</code></p>
+<h3 id="trait">trait</h3>
+<blockquote>L-62 · A trait's methods carry full signatures</blockquote>
+<p><code>docs/spec/language.md</code> L-62 · pinned by <code>t-decl-op-gen</code></p>
+<h3 id="impl">impl</h3>
+<blockquote>L-64 · An impl supplies the arguments as a first glued group</blockquote>
+<p><code>docs/spec/language.md</code> L-64 · pinned by <code>t-class-ptrait</code>, <code>t-err-class-ptrait</code></p>
+<h3 id="visibility">visibility</h3>
+<blockquote>L-19 · Visibility is module-scoped</blockquote>
+<p><code>docs/spec/language.md</code> L-19</p>
+<h3 id="import-ffi">import (FFI)</h3>
+<blockquote>L-171 · <code>import &lt;lib&gt;;</code> brings a Hoon-compiled library into scope as FFI.</blockquote>
+<p><code>docs/spec/language.md</code> L-171 · pinned by <code>t-run-import</code>, <code>t-run-import-dec</code>, <code>t-run-import-mix</code>, <code>t-mint-import-unknown</code></p>
+<h3 id="emission-order">emission order</h3>
+<blockquote>L-160 · EMISSION ORDER is a jet-correctness requirement</blockquote>
+<p><code>docs/spec/language.md</code> L-160 · pinned by <code>t-jdict-cross-multi</code>, <code>t-run-match-order</code></p>
+<h3 id="prelude">prelude</h3>
+<blockquote>R-81 · The prelude carries only what is TRUE IN EVERY WORLD Jock targets.</blockquote>
+<p><code>docs/spec/runtime.md</code> R-81 · pinned by <code>t-halo-blessed</code>, <code>t-halo-abi-moved</code></p>
+<h3 id="abi">ABI</h3>
+<blockquote>R-9 · The ABI is FROZEN through 1.0, and APPEND is the one sanctioned change shape.</blockquote>
+<p><code>docs/spec/runtime.md</code> R-9 · pinned by <code>t-fabi-frozen</code></p>
+<h3 id="wilt">wilt</h3>
+<blockquote>R-7 · Wilts are emitted UNCONDITIONALLY</blockquote>
+<p><code>docs/spec/runtime.md</code> R-7</p>
+<h3 id="jet-drift">jet drift</h3>
+<blockquote>R-6 · Jet drift is a CI diff, not a runtime mystery.</blockquote>
+<p><code>docs/spec/runtime.md</code> R-6 · pinned by <code>t-jres-transitive</code>, <code>t-jres-unimported</code></p>
+<h3 id="roof">roof</h3>
+<blockquote>R-25 · The roof answers <code>T??</code>, which is R-24's gate type with no glue.</blockquote>
+<p><code>docs/spec/runtime.md</code> R-25 · pinned by <code>t-roof-shape-answer</code>, <code>t-roof-shape-absent</code></p>
+<h3 id="scry-gate">scry gate</h3>
+<blockquote>R-24 · The normative scry gate is <code>(*, *) -&gt; T??</code></blockquote>
+<p><code>docs/spec/runtime.md</code> R-24 · pinned by <code>t-fabi-frozen</code></p>
+<h3 id="opcode">opcode</h3>
+<blockquote>N-19 · Twenty-one is the count because <code>%scry</code> joined.</blockquote>
+<p><code>docs/spec/nockasm.md</code> N-19 · pinned by <code>t-nx-scry-p</code>, <code>t-nx-law-scry-p</code>, <code>t-nx-unkop-n</code></p>
+</main>
+</div>
+</body>
+</html>
