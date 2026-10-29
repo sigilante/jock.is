@@ -5,7 +5,7 @@ What Jock does not have, and what you get instead. 6 rules, each one something t
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `7b85ef8` (sigilante/pre-rc-sweep) · corpus 1156 vectors · 2026-10-30
+> channel `%rc` · commit `076324d` (sigilante/pre-rc-sweep) · corpus 1156 vectors · 2026-10-30
 
 A missing feature is the one thing documentation cannot leave implicit: a reader who does not find `&&` will try it, and a model will write it confidently. Each rule below is stated as `language.md` states it, with the vectors that pin it or an honest `⟨none — UNPINNED⟩`.
 

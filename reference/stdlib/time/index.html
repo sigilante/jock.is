@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>lib/time — Jock reference</title>
+<meta name="description" content="civil dates, ISO 8601, and the Urbit @da.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!--  ABSOLUTE, not relative.  These were `../jock-highlight.css`,
+      which from /reference/tags/ resolves to
+      /reference/jock-highlight.css --- a 404 on every generated
+      page, so the highlighter never loaded and the listings were
+      marked `class="code jock"` for a script that was not there.
+      The site is served at an apex root, so an absolute path is
+      correct and is immune to however deep a page is nested.  -->
+<link rel="stylesheet" href="/jock-highlight.css">
+<script src="/jock-highlight.js" defer></script>
+<!--
+  HAND-MAINTAINED.  This is the only file in the reference that a
+  person edits:  tools/refgen.py in the compiler repo fills
+  the four placeholders below and writes the pages beside it.
+  Naming them here in their own spelling would be a bug:  the
+  substitution is a plain string replace, so a comment mentioning a
+  placeholder gets the substitution too --- which silently injected
+  the whole document into this comment, doubling every page, until
+  2026-10-27.  Nor may this comment contain a close-comment
+  sequence;  the sentence that said so, spelling it out, closed the
+  comment early and spilled the rest of this text onto the page.  Design lives here, content is generated, and
+  neither needs the other to change.
+
+  Styling is /jock.css, authored from design/style-guide.html ---
+  the design system's own document, which is a visual specimen of
+  inline styles rather than a stylesheet.  This page carries NO copy
+  of it:  that was the whole point of extracting it.
+
+  Jekyll ignores a file whose name starts with `_`, so this template
+  is never served.
+-->
+<link rel="stylesheet" href="/jock.css">
+</head>
+<body>
+<div class="page">
+<header class="bar">
+  <nav><a href="/">jock</a> <span>reference</span></nav>
+  <span>21 declarations · 21 pinned</span>
+</header>
+<main class="prose">
+<h1 class="ruled">lib/time</h1>
+<p class="sub">civil dates, ISO 8601, and the Urbit <code>@da</code>.</p>
+<!--  §3:  text column beside the 186px margin rail.  A marginal
+      floats into the rail where it was written, so it sits beside
+      its referent;  the rail is empty wherever nothing was said,
+      which §7 calls correct.  -->
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/time.jock</code> and the examples that import it. 21 public declarations — 1 type, 20 arms. 21 pinned by a lane, 0 not. channel <code>%rc</code> · commit <code>076324d</code></aside>
+<h2 id="import">Import</h2>
+<p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>time.&lt;name&gt;</code>.</p>
+<pre class="code jock">import time;</pre>
+<p>The name is the file name minus <code>.jock</code>: <code>time</code> is <code>crates/jockc/hoon/lib/time.jock</code>, and it is found because the directory holding it was passed as a <code>--data-dir</code>. There is no search path and no implicit import; <code>tools/libs.py</code> holds the whole discovery rule, and the compiler itself is a pure function of source and libraries.</p>
+<h2 id="about">About</h2>
+<p>Jock has <code>Date</code> and <code>Span</code> as TYPES — the <code>%date</code> and <code>%span</code> auras — and no literal for either (language.md <a href="/spec/language/#l-189">L-189</a>). Nothing in the ABI produces one, so until now a <code>Date</code> was a name with no way to make a value that meant anything. This module is the way: a broken-down <code>Stamp</code>, the conversions between it and an absolute instant, and ISO 8601 in both directions.</p>
+<p>THE ARITHMETIC IS NOT INVENTED HERE. Every calendar arm is a transliteration of the vendored Hoon's own date core — <code>+yawn</code>, <code>+yall</code>, <code>+yelp</code> and the <code>+yo</code> constants in <code>vendor/hoon-138.hoon</code>, which <code>vendor/SNAPSHOT.txt</code> pins. That is deliberate: a calendar written twice is a calendar that disagrees with itself at some leap year nobody tests, and <code>@da</code> round-tripping through Urbit is the whole reason to have <code>Date</code> at all. Where this file differs from the Hoon it says so.</p>
+<p>THE EPOCH. An Urbit <code>@da</code> counts seconds from the start of the Urbit epoch in its high 64 bits and a binary fraction of a second in its low 64. The epoch begins 292_277_024_400 years before 1 AD, so an ordinary year <code>y</code> is the internal year <code>y + EPOCH</code>. A Stamp carries the ORDINARY year; the conversion happens at the boundary.</p>
+<p>AD ONLY. <code>+year</code> takes a BC flag and this does not: a Stamp's year is AD, which is what ISO 8601's four-digit year means anyway. <code>fromDate</code> on an instant before 1 AD crashes rather than answering a wrong year, which is the honest failure for a thing this module does not model.</p>
+<p>import time;</p>
+<p>let t = time.parse("2026-10-30T12:00:00Z"); match t { ~ =&gt; "unparseable", (~, s) =&gt; time.show(s) } An instant, broken down. Fields are plain atoms and nothing validates them on construction — <code>show</code> of a nonsense Stamp is nonsense, and <code>valid</code> is how you ask.</p>
+<h2 id="types">Types</h2>
+<p>1 type. A type’s members ARE its interface, so each is shown whole rather than by name.</p>
+<h3 id="stamp"><code>Stamp</code></h3>
+<pre class="code jock">struct Stamp { year: @, month: @, day: @, hour: @, minute: @, second: @ } // EPOCH: years from the start of the Urbit epoch to 1 AD. // `+year:hoon` adds this to an AD year;</pre>
+<p>No comment in the source. The signature above is the whole of what <code>Stamp</code> states about itself.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert not time.valid(time.Stamp(year: 2026, month: 2, day: 30,</pre>
+<h2 id="arms">Arms</h2>
+<p>20 arms, in source order. The signature is reproduced exactly; the prose is the comment above the arm in <code>crates/jockc/hoon/lib/time.jock</code>.</p>
+<table><thead><tr><th>arm</th><th>signature</th><th>pinned by</th></tr></thead><tbody><tr><td><code>epoch</code></td><td><code>func epoch() -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>daySecs</code></td><td><code>func daySecs() -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>hourSecs</code></td><td><code>func hourSecs() -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>minuteSecs</code></td><td><code>func minuteSecs() -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>leap</code></td><td><code>func leap(y: @) -&gt; Bool</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>monthDays</code></td><td><code>func monthDays(y: @, m: @) -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>dayOf</code></td><td><code>func dayOf(y: @, m: @, d: @) -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>toSecs</code></td><td><code>func toSecs(t: Stamp) -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>fromSecs</code></td><td><code>func fromSecs(secs: @) -&gt; Stamp</code></td><td><code>time-arms</code> (use)</td></tr><tr><td><code>toDate</code></td><td><code>func toDate(t: Stamp) -&gt; Date</code></td><td><code>time-arms</code> (use)</td></tr><tr><td><code>fromDate</code></td><td><code>func fromDate(d: Date) -&gt; Stamp</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>span</code></td><td><code>func span(secs: @) -&gt; Span</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>spanSecs</code></td><td><code>func spanSecs(s: Span) -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>between</code></td><td><code>func between(a: Stamp, b: Stamp) -&gt; Span</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>unixEpoch</code></td><td><code>func unixEpoch() -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>toUnix</code></td><td><code>func toUnix(t: Stamp) -&gt; Int</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>fromUnix</code></td><td><code>func fromUnix(secs: Int) -&gt; Stamp</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>valid</code></td><td><code>func valid(t: Stamp) -&gt; Bool</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>parse</code></td><td><code>func parse(s: String) -&gt; Stamp?</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>show</code></td><td><code>func show(t: Stamp) -&gt; String</code></td><td><code>time-arms</code> (assert)</td></tr></tbody></table>
+<h3 id="epoch"><code>epoch</code></h3>
+<pre class="code jock">func epoch() -&gt; @ { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>epoch</code> states about itself.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.epoch() == 292277024400;</pre>
+<h3 id="daysecs"><code>daySecs</code></h3>
+<pre class="code jock">func daySecs() -&gt; @ { ... }</pre>
+<p>Seconds in a day, an hour, a minute — <code>+yo:hoon</code>.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.daySecs() == 86400;</pre>
+<h3 id="hoursecs"><code>hourSecs</code></h3>
+<pre class="code jock">func hourSecs() -&gt; @ { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>hourSecs</code> states about itself.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.hourSecs() == 3600;</pre>
+<h3 id="minutesecs"><code>minuteSecs</code></h3>
+<pre class="code jock">func minuteSecs() -&gt; @ { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>minuteSecs</code> states about itself.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.minuteSecs() == 60;</pre>
+<h3 id="leap"><code>leap</code></h3>
+<pre class="code jock">func leap(y: @) -&gt; Bool { ... }</pre>
+<p>+yelp:hoon. Note this is the FULL Gregorian test, and is right for the internal year as well as the ordinary one: both differ by a multiple of 400.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.leap(2024);</pre>
+<h3 id="monthdays"><code>monthDays</code></h3>
+<pre class="code jock">func monthDays(y: @, m: @) -&gt; @ { ... }</pre>
+<p>Length of month m (1-12) in year y. The <code>+moh</code>/<code>+moy</code> lists of <code>+yo</code>, as a test rather than a list, because Jock indexes a List in O(n) and this is a seven-way compare either way.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.monthDays(2024, 2) == 29;</pre>
+<h3 id="dayof"><code>dayOf</code></h3>
+<pre class="code jock">func dayOf(y: @, m: @, d: @) -&gt; @ { ... }</pre>
+<p>+yawn:hoon: the day number of an ordinary (AD) y-m-d.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.dayOf(2026, 10, 30) - time.dayOf(1970, 1, 1) == 20756;</pre>
+<h3 id="tosecs"><code>toSecs</code></h3>
+<pre class="code jock">func toSecs(t: Stamp) -&gt; @ { ... }</pre>
+<p>Seconds from the start of the Urbit epoch. This is the high half of a <code>@da</code>, and the quantity all the arithmetic happens in.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.toSecs(noon) - time.toSecs(time.fromUnix(+0)) == 1793363696;</pre>
+<h3 id="fromsecs"><code>fromSecs</code></h3>
+<pre class="code jock">func fromSecs(secs: @) -&gt; Stamp { ... }</pre>
+<p>The inverse. Crashes on an instant before 1 AD rather than answering a wrong year — see the AD ONLY note above.</p>
+<p class="label">used by examples/time-arms.jock</p>
+<pre class="code jock">let back = time.fromSecs(time.toSecs(noon));</pre>
+<h3 id="todate"><code>toDate</code></h3>
+<pre class="code jock">func toDate(t: Stamp) -&gt; Date { ... }</pre>
+<p>A <code>@da</code> is the second count in the high 64 bits and a binary fraction in the low 64. These two arms are the whole bridge to Urbit, and they drop the fraction: a Stamp has no sub-second field, so <code>fromDate</code> of an instant with one is the instant truncated to its second.</p>
+<p class="label">used by examples/time-arms.jock</p>
+<pre class="code jock">let d = time.toDate(noon);</pre>
+<h3 id="fromdate"><code>fromDate</code></h3>
+<pre class="code jock">func fromDate(d: Date) -&gt; Stamp { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>fromDate</code> states about itself.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.toUnix(time.fromDate(d)) == +1793363696;</pre>
+<h3 id="span"><code>span</code></h3>
+<pre class="code jock">func span(secs: @) -&gt; Span { ... }</pre>
+<p>A Span is a DURATION in the same fixed-point shape: whole seconds in the high 64 bits. The difference of two instants.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.spanSecs(time.span(90)) == 90;</pre>
+<h3 id="spansecs"><code>spanSecs</code></h3>
+<pre class="code jock">func spanSecs(s: Span) -&gt; @ { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>spanSecs</code> states about itself.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.spanSecs(time.span(90)) == 90;</pre>
+<h3 id="between"><code>between</code></h3>
+<pre class="code jock">func between(a: Stamp, b: Stamp) -&gt; Span { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>between</code> states about itself.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.spanSecs(time.between(newyear, newyear)) == 0;</pre>
+<h3 id="unixepoch"><code>unixEpoch</code></h3>
+<pre class="code jock">func unixEpoch() -&gt; @ { ... }</pre>
+<p>Unix time, which is what everything outside Urbit means by a timestamp. The constant is COMPUTED, not written down.</p>
+<p>SIGNED, and that is not fussiness: a Nat <code>toUnix</code> crashes on every instant before 1970, so <code>time.toUnix</code> of an 1900 date --- an ordinary thing to want --- would have been a crash rather than a negative number. The whole AD range answers.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.unixEpoch() == time.dayOf(1970, 1, 1) * 86400;</pre>
+<h3 id="tounix"><code>toUnix</code></h3>
+<pre class="code jock">func toUnix(t: Stamp) -&gt; Int { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>toUnix</code> states about itself.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.toUnix(noon) == +1793363696;</pre>
+<h3 id="fromunix"><code>fromUnix</code></h3>
+<pre class="code jock">func fromUnix(secs: Int) -&gt; Stamp { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>fromUnix</code> states about itself.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.toSecs(noon) - time.toSecs(time.fromUnix(+0)) == 1793363696;</pre>
+<h3 id="valid"><code>valid</code></h3>
+<pre class="code jock">func valid(t: Stamp) -&gt; Bool { ... }</pre>
+<p>Is this Stamp a real instant? Nothing validates on construction, so this is how you ask. <code>show</code> of an invalid Stamp is nonsense rather than a refusal.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.valid(noon);</pre>
+<h3 id="parse"><code>parse</code></h3>
+<pre class="code jock">func parse(s: String) -&gt; Stamp? { ... }</pre>
+<p>Parse <code>YYYY-MM-DD</code> or <code>YYYY-MM-DDTHH:MM:SS</code> with an optional trailing <code>Z</code>. Anything else is <code>~</code>, including a well-formed date that is not a real one — <code>parse("2026-02-30")</code> is <code>~</code>, because a Stamp that cannot happen is not a successful parse.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert match time.parse("2026-10-30") { ~ =&gt; 0, (~, s) =&gt; s.day } == 30;</pre>
+<h3 id="show"><code>show</code></h3>
+<pre class="code jock">func show(t: Stamp) -&gt; String { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>show</code> states about itself.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.show(time.fromDate(d)) === "2026-10-30T12:34:56Z";</pre>
+<h2 id="what-no-lane-pins">What no lane pins</h2>
+<p>Nothing. All 21 public declarations are named by an example that runs on every push.</p>
+<p>14 further declarations are <code>private</code> and therefore not reachable by an importer at all: <code>monthsBefore</code>, <code>yawnLoop</code>, <code>yallMonth</code>, <code>yallYear</code>, <code>yall</code>, <code>isDigit</code>, <code>digits</code>, <code>lit</code>, <code>some</code>, <code>none</code>, <code>parseTime</code>, <code>padLoop</code>, <code>pad</code>, <code>showFull</code>.</p>
+<h2 id="where-it-is-used">Where it is used</h2>
+<p>1 example imports <code>time</code>. Each is a complete program whose value <code>tools/examples.sh</code> pins on every push.</p>
+<ul><li><code>examples/time-arms.jock</code> — the arms sheet: one assertion per arm</li></ul>
+<p>The <a href="/reference/examples/">worked examples</a> page shows the shortest of these in full.</p>
+</main>
+</div>
+</body>
+</html>

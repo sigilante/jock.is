@@ -5,7 +5,7 @@ two's-complement signed integers at arbitrary bit width
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/twoc.jock` and the examples that import it.
 >
-> 8 public declarations — 1 type, 7 arms. 7 pinned by a lane, 1 not. channel `%rc` · commit `7b85ef8`
+> 8 public declarations — 1 type, 7 arms. 7 pinned by a lane, 1 not. channel `%rc` · commit `076324d`
 
 ## Import
 

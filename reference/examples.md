@@ -1,11 +1,11 @@
 # Worked examples
 
-38 complete Jock programs, each with the value it produces. `tools/examples.sh` compiles and runs every one under NockVM on every push, so none of them can silently rot.
+39 complete Jock programs, each with the value it produces. `tools/examples.sh` compiles and runs every one under NockVM on every push, so none of them can silently rot.
 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `7b85ef8` (sigilante/pre-rc-sweep) · corpus 1156 vectors · 2026-10-30
+> channel `%rc` · commit `076324d` (sigilante/pre-rc-sweep) · corpus 1156 vectors · 2026-10-30
 
 The descriptions are the authors’ own header comments, not written here: `examples/README.md` calls each example "executable documentation — the header comments are the prose, and a `// expect: <noun>` trailer pins the program’s value". 8 of them are **kernels**, carrying `// kernel: N` — built, poked N times, then peeked.
 
@@ -13,11 +13,11 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 
 |  | count |
 |---|---:|
-| worked examples | 38 |
-| …with a pinned value | 38 |
+| worked examples | 39 |
+| …with a pinned value | 39 |
 | …that are kernels | 8 |
 | …shown in full on this page | 14 |
-| total lines of Jock | 2917 |
+| total lines of Jock | 3045 |
 
 ## Every example
 
@@ -57,6 +57,7 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 | `parser-arms` | 100 | `33` | parser-arms.jock |
 | `watcher` | 121 | `[2 2 1 1]` | Chain watcher — the TWO-MAP STORE (chain.md §6.1's state shape, unblocked by %mold-gen: class state can hold containers, so load's `old as! Watch` mol |
 | `string-views` | 126 | `45` | string-views.jock |
+| `time-arms` | 128 | `20` | time-arms.jock |
 | `poker` | 167 | `%first` | poker.jock — score and compare two 5-card poker hands. |
 | `conway` | 237 | `0` | **kernel (2 pokes).** conway.jock — Life on a bounded 25x25 grid. Ported from nockd's examples/conway. |
 | `minesweeper` | 335 | `0` | **kernel (2 pokes).** minesweeper.jock — 9x9, 10 mines, all game logic in the kernel. Ported from nockd's examples/minesweeper. |
@@ -64,7 +65,7 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 
 ## The short ones, in full
 
-Every example of 40 lines or fewer, verbatim. The 24 longer ones are listed in the table on this page with their values; their sources live in `examples/` in the compiler repo.
+Every example of 40 lines or fewer, verbatim. The 25 longer ones are listed in the table on this page with their values; their sources live in `examples/` in the compiler repo.
 
 ### `counter`
 
@@ -563,4 +564,4 @@ value `616` · imports `hof` · run by `tools/examples.sh`
 | `chainkernel` | 127 | `chain`, `nockapp` |
 | `walletkernel` | 740 | `chain`, `chainkey`, `chaintx`, `nockapp`, `wallet` |
 
-They are NOT excluded from the lane. `tools/examples.sh` compiles and runs all 45 programs on every push, these included, which is what keeps the chain modules compiling. The boundary here is what the site documents, not what the repo tests.
+They are NOT excluded from the lane. `tools/examples.sh` compiles and runs all 46 programs on every push, these included, which is what keeps the chain modules compiling. The boundary here is what the site documents, not what the repo tests.

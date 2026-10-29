@@ -5,7 +5,7 @@ Where Jock deliberately differs from Hoon. The fast path for a reader who alread
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> 4 landmarks · 29 rules that name Hoon · channel `%rc` · commit `7b85ef8`
+> 4 landmarks · 29 rules that name Hoon · channel `%rc` · commit `076324d`
 
 ## The four the outline names
 
@@ -45,7 +45,7 @@ A mechanical set, and the page says so because the alternative would be a list s
 |---|---|
 | `language.md` [L-59](/spec/language/#l-59) | Names admit glued hyphens, Hoon-Term-style.** `a-1` and `foo-bar` are each ONE name token, never a subtraction. A trailing hyphen (`a-`) is not a name and refuses. Hyphens never appear in type names — a `-` after a type name is minus. The readings cannot collide because binary `-` is spaced on both  |
 | `language.md` [L-71](/spec/language/#l-71) | Bunt is the FIRST case's bunt**, by declaration order. This deliberately breaks Hoon's last-case `$%` convention, so a reader coming from Hoon should not assume. Well-foundedness is checked at registration (types.md [S10.3](/spec/types/#s10.3)). ⟨`t-arc-enum`⟩ |
-| `language.md` [L-189](/spec/language/#l-189) | Date and span literals do not exist.** There is no spelling, and this is an exclusion rather than a gap being filled: nothing in the ABI produces a `Date` or consumes a `Span`, so a literal would be a surface onto nothing. The *types* are live and reachable — `Date` and `Span` are the `%date` and `% |
+| `language.md` [L-189](/spec/language/#l-189) | Date and span literals do not exist.** There is no spelling, and this is an exclusion rather than a gap being filled. The *types* are live — `Date` and `Span` are the `%date` and `%span` auras — and `lib/time` is how a program gets one: it parses ISO 8601 into a `Stamp`, converts a `Stamp` to a `Dat |
 | `language.md` [L-6](/spec/language/#l-6) | Int is ZigZag `@s`.** `+n` encodes as `2n` and `-n` as `2n−1` — Hoon's own encoding, so small magnitudes stay small and the FFI arms mirror `+si`. ⟨`t-sint-lit`⟩ |
 | `language.md` [L-133](/spec/language/#l-133) | A singleton never survives a CALL boundary** — the signature governs, a singleton nesting into its own aura on the way in (types.md S4). This is the structural defense against Hoon-style TMI pain. Flow-sensitive narrowing is deferred (POSSIBLES P-7). ⟨`t-nest-sa-p`, `t-nest-sing-p`, `t-nest-sing-n`⟩ |
 | `language.md` [L-171](/spec/language/#l-171) | `import <lib>;` brings a Hoon-compiled library into scope as FFI.** An import parses to a plain AST node; binding happens at environment construction, governed by the runtime-library interface spec. An unknown library refuses `%mint-import`, a wrong arity `%mint-call-arity`, and a generic import `%m |

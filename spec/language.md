@@ -321,11 +321,14 @@ knots. A bare `/` refuses `%parse-path`.
 ⟨`t-des-path`, `t-parse-path`, `t-text-path`⟩
 
 **L-189 · Date and span literals do not exist.** There is no
-spelling, and this is an exclusion rather than a gap being filled:
-nothing in the ABI produces a `Date` or consumes a `Span`, so a
-literal would be a surface onto nothing. The *types* are live and
-reachable — `Date` and `Span` are the `%date` and `%span` auras,
-and `0 as Date` is how a program that needs one gets it.
+spelling, and this is an exclusion rather than a gap being filled.
+The *types* are live — `Date` and `Span` are the `%date` and
+`%span` auras — and `lib/time` is how a program gets one: it
+parses ISO 8601 into a `Stamp`, converts a `Stamp` to a `Date` and
+back, and transliterates the vendored Hoon's own calendar so the
+`@da` means to Urbit what it means here. A literal would be a
+shorter spelling of `time.parse("2026-10-30")`, not a capability
+the language is missing.
 
 What the spelling would have to clear, recorded here because it is
 the actual obstacle and was nowhere: **`~` is the null literal**
