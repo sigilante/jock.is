@@ -92,15 +92,20 @@ juxtaposition anywhere in the grammar.
   expressions; as the final expression they take no trailing `;`.
 - **Assignment edits an existing `var`.** `let` is immutable; assigning a
   `let`-bound or unbound name is an error. Assignment is not a declaration.
-- **A recursive type needs a BASE CASE.** `enum E { a, b(E) };` declares
-  fine, generics included (`enum W<A> { done(A), hurl(W<A>) };`). What
-  refuses is a type with no smallest value: `enum E { b(E) };` and
-  `struct T { next: T };` both give `%decl-fond` ("this type contains
-  itself with no base case, so it has no smallest value"). A struct
-  recurses through an optional — `struct T { v: @, next: T? };`. An
-  **untagged** union cannot be recursive at all (`alias U is @ | (U, U)`
-  refuses `%elab-unbound`, the alias being unable to name itself); use a
-  tagged `enum`.
+- **A recursive `enum` works, but a NON-RECURSIVE CASE MUST COME FIRST.**
+  `enum Wite { pass(@), give(@), hurl(Goof, Wite) };` declares,
+  constructs and matches. Put the recursive case first and it refuses
+  `%decl-fond-order` — "the FIRST case of this union contains it, so the
+  bunt diverges; a non-recursive case must come first — reorder the
+  cases" — because the type's default value is built from case one.
+  `%decl-fond` is the *other* refusal, for a type with no non-recursive
+  case at all: `enum E { b(E) };` and `struct T { next: T };` both give
+  it. A `struct` cannot name itself bare but recurses through an
+  optional: `struct T { v: @, next: T? };`. An **untagged** union cannot
+  recurse at all — `alias U is @ | (U, U)` refuses `%elab-unbound`, the
+  alias being unable to name itself — so use a tagged `enum`. Generics
+  change none of this: `enum W<A> { done(A), hurl(W<A>) };` declares,
+  constructs and matches like any other.
 - **A class's helpers go BEFORE it and cannot name it.** A free `func`
   declared before a `class` is callable from the class's arms; one
   declared after is invisible to them (`%mint-limb`, the adjacency rule).
