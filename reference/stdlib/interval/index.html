@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>lib/interval — Jock reference</title>
+<meta name="description" content="interval arithmetic over exact rationals.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!--  ABSOLUTE, not relative.  These were `../jock-highlight.css`,
+      which from /reference/tags/ resolves to
+      /reference/jock-highlight.css --- a 404 on every generated
+      page, so the highlighter never loaded and the listings were
+      marked `class="code jock"` for a script that was not there.
+      The site is served at an apex root, so an absolute path is
+      correct and is immune to however deep a page is nested.  -->
+<link rel="stylesheet" href="/jock-highlight.css">
+<script src="/jock-highlight.js" defer></script>
+<!--
+  HAND-MAINTAINED.  This is the only file in the reference that a
+  person edits:  tools/refgen.py in the compiler repo fills
+  the four placeholders below and writes the pages beside it.
+  Naming them here in their own spelling would be a bug:  the
+  substitution is a plain string replace, so a comment mentioning a
+  placeholder gets the substitution too --- which silently injected
+  the whole document into this comment, doubling every page, until
+  2026-10-27.  Nor may this comment contain a close-comment
+  sequence;  the sentence that said so, spelling it out, closed the
+  comment early and spilled the rest of this text onto the page.  Design lives here, content is generated, and
+  neither needs the other to change.
+
+  Styling is /jock.css, authored from design/style-guide.html ---
+  the design system's own document, which is a visual specimen of
+  inline styles rather than a stylesheet.  This page carries NO copy
+  of it:  that was the whole point of extracting it.
+
+  Jekyll ignores a file whose name starts with `_`, so this template
+  is never served.
+-->
+<link rel="stylesheet" href="/jock.css">
+</head>
+<body>
+<div class="page">
+<header class="bar">
+  <nav><a href="/">jock</a> <span>reference</span></nav>
+  <span>4 declarations · 3 pinned</span>
+</header>
+<main class="prose">
+<h1 class="ruled">lib/interval</h1>
+<p class="sub">interval arithmetic over exact rationals.</p>
+<!--  §3:  text column beside the 186px margin rail.  A marginal
+      floats into the rail where it was written, so it sits beside
+      its referent;  the rail is empty wherever nothing was said,
+      which §7 calls correct.  -->
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/interval.jock</code> and the examples that import it. 4 public declarations — 1 type, 3 arms. 3 pinned by a lane, 1 not. channel <code>%rc</code> · commit <code>15d64f3</code></aside>
+<h2 id="import">Import</h2>
+<p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>interval.&lt;name&gt;</code>.</p>
+<pre class="code jock">import interval;</pre>
+<p>The name is the file name minus <code>.jock</code>: <code>interval</code> is <code>crates/jockc/hoon/lib/interval.jock</code>, and it is found because the directory holding it was passed as a <code>--data-dir</code>. There is no search path and no implicit import; <code>tools/libs.py</code> holds the whole discovery rule, and the compiler itself is a pure function of source and libraries.</p>
+<h2 id="about">About</h2>
+<p>An Iv is a closed interval [lo, hi] of <code>rational.Rat</code>, and the contract is ENCLOSURE: if x is in a and y is in b, then x op y is in (a op b). Every arm here is written to keep that true.</p>
+<p>Enclosure is the whole product, and it is why this sits on <code>lib/rational</code> rather than on Float64. Sound interval arithmetic over floating point needs DIRECTED rounding — the low end toward -inf, the high end toward +inf — so an interval only ever widens. Jock pins rounding to round-nearest at every site and exposes no mode surface (runtime.md §7), so on Float64 the endpoints would creep INWARD by an ulp per operation and the guarantee would fail silently, which is the worst way for a numeric library to be wrong. Over exact rationals nothing rounds, so enclosure is exact.</p>
+<p>THE INVARIANT IS SEALED. Iv is a CLASS, so construction belongs to this module (imports.md ruling (e)): <code>interval.Iv( lo: 3, hi: 1 )</code> does not type-check, and no cast can forge one either. An inverted interval cannot enter the system, which is what makes the enclosure contract a guarantee rather than a hope. <code>Rat</code> is sealed the same way, so the endpoints cannot be un-canonical either — the two seals compose.</p>
+<p>SHAPE. Everything taking an interval is a METHOD; the three constructors are funcs after the class. That is not a style choice: a class fuses its type declaration and its method bodies, so an arm mentioning Iv can be declared neither before the class (the type is not registered yet) nor after it (the bodies have already minted). The operator impls are the class's own conformances, so each rule is still written exactly once.</p>
+<p>A consequence worth stating: the methods cannot call <code>iv()</code>, the checking constructor, because it is declared after them. They construct directly and preserve <code>lo &lt;= hi</code> by the arithmetic — sums and differences of ordered endpoints stay ordered, <code>mul</code> takes an explicit min and max, <code>hull</code> takes a min and a max, and <code>recip</code> is reached only through the zero test. <code>iv()</code> is where an untrusted pair is checked.</p>
+<p>NOT GENERIC, and not by choice. <code>Iv</code> over any ordered ring would need a binder bounded by Lt AND Add AND Sub AND Mul AND Div, and <code>$gbin</code> carries <code>bound=(unit cord)</code> — exactly one bound per binder (<code>T: Lt + Add</code> is a parse error; <code>T: Lt, Add</code> reads as two binders).</p>
+<p>TWO PLACES THE LANGUAGE SHAPES THE DESIGN.</p>
+<p>Order is PARTIAL — [1,3] and [2,4] are not ordered — but comparison op-traits answer Bool, so <code>&lt;</code> cannot report the third case. It therefore means CERTAINLY less than: every element of the left below every element of the right. The overlapping question is a separately named method, <code>possibly-lt</code>. The signature forces the ambiguity into two names rather than hiding it in one.</p>
+<p>Division is PARTIAL: a divisor spanning zero has no interval answer, and <code>/</code> is (Self, Self) -&gt; Self so it cannot answer <code>Iv?</code>. <code>try-div</code> is the total form and <code>/</code> is its crashing face — literally <code>try-div(...) ?? crash</code>, so there is one division rule and one zero test.</p>
+<p>EQUALITY needs no impl. <code>==</code> is Nock 5 on the erasure, and both seals hold, so two intervals are the same noun exactly when they are the same interval. Structural equality IS the right equality here — inherited, not implemented.</p>
+<p>import interval; (interval.unit() + interval.unit()).show()   // "[0, 2]" <code>private</code>, as lib/rational's state is: the non-empty invariant below is only an invariant if the pair cannot be built directly.</p>
+<h2 id="types">Types</h2>
+<p>1 type. A type’s members ARE its interface, so each is shown whole rather than by name.</p>
+<h3 id="hull"><code>Hull</code></h3>
+<pre class="code jock">trait Hull { hull(⊛); };</pre>
+<p>Hull binds <code>⊛</code>, the one operator the language lexes and leaves meaningless — no pinned arm, so a library gives it a meaning or it refuses. The hull is a fair claimant: it is total (any two intervals have a smallest enclosing one), closed, associative, and it is not any of the arithmetic operators. Declared before the class, which names it as a conformance.</p>
+<h2 id="arms">Arms</h2>
+<p>3 arms, in source order. The signature is reproduced exactly; the prose is the comment above the arm in <code>crates/jockc/hoon/lib/interval.jock</code>.</p>
+<table><thead><tr><th>arm</th><th>signature</th><th>pinned by</th></tr></thead><tbody><tr><td><code>iv</code></td><td><code>func iv(lo: rational.Rat, hi: rational.Rat) -&gt; Iv</code></td><td><code>interval-arms</code> (assert)</td></tr><tr><td><code>exact</code></td><td><code>func exact(x: rational.Rat) -&gt; Iv</code></td><td><code>interval-arms</code> (assert)</td></tr><tr><td><code>unit</code></td><td><code>func unit() -&gt; Iv</code></td><td><code>interval-arms</code> (use)</td></tr></tbody></table>
+<h3 id="iv"><code>iv</code></h3>
+<pre class="code jock">func iv(lo: rational.Rat, hi: rational.Rat) -&gt; Iv { ... }</pre>
+<p>The constructors, and the only way an importer gets an Iv. iv: the checking constructor, and the place an inverted interval is refused rather than silently swapped — [3, 1] is a caller bug, and an empty interval is not a value this library represents. Since Iv is sealed, this check cannot be bypassed.</p>
+<p class="label">asserted by examples/interval-arms.jock</p>
+<pre class="code jock">assert not a.overlaps(interval.iv(rational.whole(+5), rational.whole(+6)));</pre>
+<h3 id="exact"><code>exact</code></h3>
+<pre class="code jock">func exact(x: rational.Rat) -&gt; Iv { ... }</pre>
+<p>exact: the degenerate interval, a single point. Ordered by construction, so it needs no check.</p>
+<p class="label">asserted by examples/interval-arms.jock</p>
+<pre class="code jock">assert interval.exact(two).contains(two);</pre>
+<h3 id="unit"><code>unit</code></h3>
+<pre class="code jock">func unit() -&gt; Iv { ... }</pre>
+<p>unit: [0, 1]. Reachable without naming <code>rational</code> at all, which is the point of the resolution/spelling split — an importer can use this library, and hold the rationals it hands back, without importing <code>rational</code> to say their name.</p>
+<p class="label">used by examples/interval-arms.jock</p>
+<pre class="code jock">let u = interval.unit();                        //  [0, 1]</pre>
+<h2 id="what-no-lane-pins">What no lane pins</h2>
+<p>1 of 4 public declarations are named by no example in <code>examples/</code>. They compile — the module is built by <code>tools/modules.sh</code> on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.</p>
+<p>That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.</p>
+<ul><li><code>Hull</code> — <code>trait Hull { hull(⊛); };</code></li></ul>
+<p>1 declaration further is <code>private</code> and therefore not reachable by an importer at all: <code>IvState</code>.</p>
+<h2 id="where-it-is-used">Where it is used</h2>
+<p>2 examples import <code>interval</code>. Each is a complete program whose value <code>tools/examples.sh</code> pins on every push.</p>
+<ul><li><code>examples/interval-arms.jock</code> — the arms sheet: one assertion per arm</li><li><code>examples/interval.jock</code> — a use</li></ul>
+<p>The <a href="../../examples/">worked examples</a> page shows the shortest of these in full.</p>
+</main>
+</div>
+</body>
+</html>

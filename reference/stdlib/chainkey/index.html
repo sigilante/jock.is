@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>lib/chainkey — Jock reference</title>
+<meta name="description" content="the wallet key family (chain.md §6.2, phase 4).">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!--  ABSOLUTE, not relative.  These were `../jock-highlight.css`,
+      which from /reference/tags/ resolves to
+      /reference/jock-highlight.css --- a 404 on every generated
+      page, so the highlighter never loaded and the listings were
+      marked `class="code jock"` for a script that was not there.
+      The site is served at an apex root, so an absolute path is
+      correct and is immune to however deep a page is nested.  -->
+<link rel="stylesheet" href="/jock-highlight.css">
+<script src="/jock-highlight.js" defer></script>
+<!--
+  HAND-MAINTAINED.  This is the only file in the reference that a
+  person edits:  tools/refgen.py in the compiler repo fills
+  the four placeholders below and writes the pages beside it.
+  Naming them here in their own spelling would be a bug:  the
+  substitution is a plain string replace, so a comment mentioning a
+  placeholder gets the substitution too --- which silently injected
+  the whole document into this comment, doubling every page, until
+  2026-10-27.  Nor may this comment contain a close-comment
+  sequence;  the sentence that said so, spelling it out, closed the
+  comment early and spilled the rest of this text onto the page.  Design lives here, content is generated, and
+  neither needs the other to change.
+
+  Styling is /jock.css, authored from design/style-guide.html ---
+  the design system's own document, which is a visual specimen of
+  inline styles rather than a stylesheet.  This page carries NO copy
+  of it:  that was the whole point of extracting it.
+
+  Jekyll ignores a file whose name starts with `_`, so this template
+  is never served.
+-->
+<link rel="stylesheet" href="/jock.css">
+</head>
+<body>
+<div class="page">
+<header class="bar">
+  <nav><a href="/">jock</a> <span>reference</span></nav>
+  <span>11 declarations · 10 pinned</span>
+</header>
+<main class="prose">
+<h1 class="ruled">lib/chainkey</h1>
+<p class="sub">the wallet key family (chain.md §6.2, phase 4).</p>
+<!--  §3:  text column beside the 186px margin rail.  A marginal
+      floats into the rail where it was written, so it sits beside
+      its referent;  the rail is empty wherever nothing was said,
+      which §7 calls correct.  -->
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/chainkey.jock</code> and the examples that import it. 11 public declarations — 3 types, 8 arms. 10 pinned by a lane, 1 not. channel <code>%rc</code> · commit <code>15d64f3</code></aside>
+<h2 id="import">Import</h2>
+<p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>chainkey.&lt;name&gt;</code>.</p>
+<pre class="code jock">import chainkey;</pre>
+<p>The name is the file name minus <code>.jock</code>: <code>chainkey</code> is <code>crates/jockc/hoon/lib/chainkey.jock</code>, and it is found because the directory holding it was passed as a <code>--data-dir</code>. There is no search path and no implicit import; <code>tools/libs.py</code> holds the whole discovery rule, and the compiler itself is a pure function of source and libraries.</p>
+<h2 id="about">About</h2>
+<p>Derivation only.  SIGNING lives in chaintx, because a signature is transaction business; what is here is how a key comes to exist and how it travels on the wire.</p>
+<p>Every arm is a call into the package, which is a call into the vendored bip39 and slip10.  Nothing here computes any part of a key, and nothing should ever be added here that does.</p>
+<p>TYPES FIRST, then the funcs (+mdreg stubs only the leading run of declarations, and one scope frame is cheaper than two). slip10's own $keyc: a key, its chain code, and the protocol version.  The field ORDER is slip10's, not a convenience: the package hands back [prv cad ver] and this is what molds it.</p>
+<h2 id="types">Types</h2>
+<p>3 types. A type’s members ARE its interface, so each is shown whole rather than by name.</p>
+<h3 id="keyc"><code>Keyc</code></h3>
+<pre class="code jock">struct Keyc { key: @, cai: @, ver: @ };</pre>
+<p>No comment in the source. The signature above is the whole of what <code>Keyc</code> states about itself.</p>
+<p class="label">used by examples/walletkernel.jock</p>
+<pre class="code jock">master: chainkey.Keyc,</pre>
+<h3 id="coilkey"><code>CoilKey</code></h3>
+<pre class="code jock">struct CoilKey { kind: @, p: @ };</pre>
+<p>the wallet's $coil as it travels on the wire --- version, then a TAGGED key, then the chain code:</p>
+<p>[%0|%1 [[%prv|%pub p] cc]]</p>
+<p>The tag matters: only a %prv coil can sign or derive a private child, and a %pub one is a watch-only address.</p>
+<h3 id="coil"><code>Coil</code></h3>
+<pre class="code jock">struct Coil { version: @, key: CoilKey, cc: @ };</pre>
+<p>No comment in the source. The signature above is the whole of what <code>Coil</code> states about itself.</p>
+<p class="label">used by examples/walletkernel.jock</p>
+<pre class="code jock">let entries = c.rest as! List&lt;(*, chainkey.Coil)&gt;;</pre>
+<h2 id="arms">Arms</h2>
+<p>8 arms, in source order. The signature is reproduced exactly; the prose is the comment above the arm in <code>crates/jockc/hoon/lib/chainkey.jock</code>.</p>
+<table><thead><tr><th>arm</th><th>signature</th><th>pinned by</th></tr></thead><tbody><tr><td><code>fromPhrase</code></td><td><code>func fromPhrase(phrase: String, version: @) -&gt; Keyc</code></td><td><code>chainkey-arms</code> (use)</td></tr><tr><td><code>phraseOf</code></td><td><code>func phraseOf(entropy: @, elen: @, salt: @, slen: @) -&gt; String</code></td><td><code>chainkey-arms</code> (assert)</td></tr><tr><td><code>hardIndex</code></td><td><code>func hardIndex(i: @) -&gt; @</code></td><td><code>chainkey-arms</code> (assert)</td></tr><tr><td><code>deriveAt</code></td><td><code>func deriveAt(parent: Keyc, i: @) -&gt; Keyc</code></td><td><code>chainkey-arms</code> (assert)</td></tr><tr><td><code>deriveChild</code></td><td><code>func deriveChild(parent: Keyc, i: @, hardened: Bool) -&gt; Keyc</code></td><td><code>chainkey-arms</code> (assert)</td></tr><tr><td><code>coilOf</code></td><td><code>func coilOf(k: Keyc) -&gt; Coil</code></td><td><code>chainkey-arms</code> (use)</td></tr><tr><td><code>keycOf</code></td><td><code>func keycOf(c: Coil) -&gt; Keyc</code></td><td><code>chainkey-arms</code> (assert)</td></tr><tr><td><code>isPrivate</code></td><td><code>func isPrivate(c: Coil) -&gt; Bool</code></td><td><code>chainkey-arms</code> (assert)</td></tr></tbody></table>
+<h3 id="fromphrase"><code>fromPhrase</code></h3>
+<pre class="code jock">func fromPhrase(phrase: String, version: @) -&gt; Keyc { ... }</pre>
+<p>a seed phrase becomes a master key.  The empty passphrase is the wallet's own call (<code>(to-seed:bip39 memo "")</code>), not a default we chose; a wallet that took one would be a different wallet.</p>
+<p class="label">used by examples/chainkey-arms.jock</p>
+<pre class="code jock">let master = chainkey.fromPhrase(mn, 1);</pre>
+<h3 id="phraseof"><code>phraseOf</code></h3>
+<pre class="code jock">func phraseOf(entropy: @, elen: @, salt: @, slen: @) -&gt; String { ... }</pre>
+<p>entropy becomes a seed phrase, by way of argon2.  This is the first half of the wallet's +gen-master-key; +fromPhrase is the second, and keeping them apart means a caller can show the phrase before committing to the key it makes.</p>
+<p class="label">asserted by examples/chainkey-arms.jock</p>
+<pre class="code jock">assert chainkey.phraseOf(ent, 32, salt, 16) === chainkey.phraseOf(ent, 32, salt, 16);</pre>
+<h3 id="hardindex"><code>hardIndex</code></h3>
+<pre class="code jock">func hardIndex(i: @) -&gt; @ { ... }</pre>
+<p>HARDENING IS AN INDEX CONVENTION, not a flag the library takes: +derive-child:utils receives an index with 2^31 already added and infers hardening from its magnitude.  Spelling it out here keeps the convention where a reader can see it.</p>
+<p class="label">asserted by examples/chainkey-arms.jock</p>
+<pre class="code jock">assert chainkey.hardIndex(0) == 2_147_483_648;</pre>
+<h3 id="deriveat"><code>deriveAt</code></h3>
+<pre class="code jock">func deriveAt(parent: Keyc, i: @) -&gt; Keyc { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>deriveAt</code> states about itself.</p>
+<p class="label">asserted by examples/chainkey-arms.jock</p>
+<pre class="code jock">assert chainkey.deriveChild(master, 5, false) == chainkey.deriveAt(master, 5);</pre>
+<h3 id="derivechild"><code>deriveChild</code></h3>
+<pre class="code jock">func deriveChild(parent: Keyc, i: @, hardened: Bool) -&gt; Keyc { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>deriveChild</code> states about itself.</p>
+<p class="label">asserted by examples/chainkey-arms.jock</p>
+<pre class="code jock">assert chainkey.deriveChild(master, 5, false) == chainkey.deriveAt(master, 5);</pre>
+<h3 id="coilof"><code>coilOf</code></h3>
+<pre class="code jock">func coilOf(k: Keyc) -&gt; Coil { ... }</pre>
+<p>Coils.  A derived key is private by construction --- slip10's +derive-private is the only arm these wrappers call --- so the coil they build carries the %prv tag, and reading one back drops the tag because a Keyc has nowhere to put it.</p>
+<p class="label">used by examples/chainkey-arms.jock</p>
+<pre class="code jock">let c = chainkey.coilOf(master);</pre>
+<h3 id="keycof"><code>keycOf</code></h3>
+<pre class="code jock">func keycOf(c: Coil) -&gt; Keyc { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>keycOf</code> states about itself.</p>
+<p class="label">asserted by examples/chainkey-arms.jock</p>
+<pre class="code jock">assert chainkey.keycOf(c) == master;</pre>
+<h3 id="isprivate"><code>isPrivate</code></h3>
+<pre class="code jock">func isPrivate(c: Coil) -&gt; Bool { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>isPrivate</code> states about itself.</p>
+<p class="label">asserted by examples/chainkey-arms.jock</p>
+<pre class="code jock">assert chainkey.isPrivate(c);</pre>
+<h2 id="what-no-lane-pins">What no lane pins</h2>
+<p>1 of 11 public declarations are named by no example in <code>examples/</code>. They compile — the module is built by <code>tools/modules.sh</code> on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.</p>
+<p>That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.</p>
+<ul><li><code>CoilKey</code> — <code>struct CoilKey { kind: @, p: @ };</code></li></ul>
+<h2 id="where-it-is-used">Where it is used</h2>
+<p>2 examples import <code>chainkey</code>. Each is a complete program whose value <code>tools/examples.sh</code> pins on every push.</p>
+<ul><li><code>examples/chainkey-arms.jock</code> — the arms sheet: one assertion per arm</li><li><code>examples/walletkernel.jock</code> — a use</li></ul>
+<p>The <a href="../../examples/">worked examples</a> page shows the shortest of these in full.</p>
+</main>
+</div>
+</body>
+</html>

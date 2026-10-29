@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>lib/chaintx — Jock reference</title>
+<meta name="description" content="the transaction mold family and its hashes (chain.md §4/S5). Every mold is written so its erasure matches the vendored engine noun for noun, and every hash so it agrees with the engine&#x27;s own arm; tools/molds.sh checks both against the engine rather than against this comment.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!--  ABSOLUTE, not relative.  These were `../jock-highlight.css`,
+      which from /reference/tags/ resolves to
+      /reference/jock-highlight.css --- a 404 on every generated
+      page, so the highlighter never loaded and the listings were
+      marked `class="code jock"` for a script that was not there.
+      The site is served at an apex root, so an absolute path is
+      correct and is immune to however deep a page is nested.  -->
+<link rel="stylesheet" href="/jock-highlight.css">
+<script src="/jock-highlight.js" defer></script>
+<!--
+  HAND-MAINTAINED.  This is the only file in the reference that a
+  person edits:  tools/refgen.py in the compiler repo fills
+  the four placeholders below and writes the pages beside it.
+  Naming them here in their own spelling would be a bug:  the
+  substitution is a plain string replace, so a comment mentioning a
+  placeholder gets the substitution too --- which silently injected
+  the whole document into this comment, doubling every page, until
+  2026-10-27.  Nor may this comment contain a close-comment
+  sequence;  the sentence that said so, spelling it out, closed the
+  comment early and spilled the rest of this text onto the page.  Design lives here, content is generated, and
+  neither needs the other to change.
+
+  Styling is /jock.css, authored from design/style-guide.html ---
+  the design system's own document, which is a visual specimen of
+  inline styles rather than a stylesheet.  This page carries NO copy
+  of it:  that was the whole point of extracting it.
+
+  Jekyll ignores a file whose name starts with `_`, so this template
+  is never served.
+-->
+<link rel="stylesheet" href="/jock.css">
+</head>
+<body>
+<div class="page">
+<header class="bar">
+  <nav><a href="/">jock</a> <span>reference</span></nav>
+  <span>64 declarations · 23 pinned</span>
+</header>
+<main class="prose">
+<h1 class="ruled">lib/chaintx</h1>
+<p class="sub">the transaction mold family and its hashes (chain.md §4/S5).  Every mold is written so its erasure matches the vendored engine noun for noun, and every hash so it agrees with the engine's own arm;  tools/molds.sh checks both against the engine rather than against this comment.</p>
+<!--  §3:  text column beside the 186px margin rail.  A marginal
+      floats into the rail where it was written, so it sits beside
+      its referent;  the rail is empty wherever nothing was said,
+      which §7 calls correct.  -->
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/chaintx.jock</code> and the examples that import it. 64 public declarations — 20 types, 44 arms. 23 pinned by a lane, 41 not. channel <code>%rc</code> · commit <code>15d64f3</code></aside>
+<h2 id="import">Import</h2>
+<p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>chaintx.&lt;name&gt;</code>.</p>
+<pre class="code jock">import chaintx;</pre>
+<p>The name is the file name minus <code>.jock</code>: <code>chaintx</code> is <code>crates/jockc/hoon/lib/chaintx.jock</code>, and it is found because the directory holding it was passed as a <code>--data-dir</code>. There is no search path and no implicit import; <code>tools/libs.py</code> holds the whole discovery rule, and the compiler itself is a pure function of source and libraries.</p>
+<h2 id="about">About</h2>
+<p>TYPES FIRST, then the funcs, and that order is load-bearing: +mdreg stubs only the LEADING run of declarations, so a struct cannot name a type declared after an intervening func (it refuses %elab-unbound).  Keeping the declarations together also keeps the funcs in ONE scope frame:  interleaving them costs 7-12% of every compile.</p>
+<h2 id="types">Types</h2>
+<p>20 types. A type’s members ARE its interface, so each is shown whole rather than by name.</p>
+<h3 id="source"><code>Source</code></h3>
+<pre class="code jock">struct Source { hash: chain.Hash, coinbase: Bool };</pre>
+<p>No comment in the source. The signature above is the whole of what <code>Source</code> states about itself.</p>
+<h3 id="name"><code>Name</code></h3>
+<pre class="code jock">struct Name { first: chain.Hash, last: chain.Hash, pad: @ };</pre>
+<p>No comment in the source. The signature above is the whole of what <code>Name</code> states about itself.</p>
+<p class="label">used by examples/walletkernel.jock</p>
+<pre class="code jock">func decodeName(n: B58Name) -&gt; chaintx.Name {</pre>
+<h3 id="seed"><code>Seed</code></h3>
+<pre class="code jock">struct Seed { source: Source?, lockroot: chain.Hash, notedata: NoteData, gift: @, parent: chain.Hash, };</pre>
+<p>No comment in the source. The signature above is the whole of what <code>Seed</code> states about itself.</p>
+<p class="label">used by examples/walletkernel.jock</p>
+<pre class="code jock">func orderSeed(o: LockRootOrder, zero: chain.Hash) -&gt; chaintx.Seed {</pre>
+<h3 id="spendv0"><code>SpendV0</code></h3>
+<pre class="code jock">struct SpendV0 { version: @, signature: *, seeds: Seeds, fee: @ };</pre>
+<p>spend is $%([%0 spend-0] [%1 spend-1]) --- NUMERIC tags, which a Jock union cannot spell (it tags with the case name as @tas). So each version is its own struct with the tag as a leading field, and they are NOT joined:  v1 is the live shape and is what Spends carries;  v0 is declared for completeness.</p>
+<h3 id="spendv1"><code>SpendV1</code></h3>
+<pre class="code jock">struct SpendV1 { version: @, witness: Witness, seeds: Seeds, fee: @ };</pre>
+<p>No comment in the source. The signature above is the whole of what <code>SpendV1</code> states about itself.</p>
+<h3 id="rawtx"><code>RawTx</code></h3>
+<pre class="code jock">struct RawTx { version: @, id: chain.Hash, spends: Spends };</pre>
+<p>raw-tx v1 is a SINGLE version, not a dispatch:  [%1 id spends].</p>
+<h3 id="f6"><code>F6</code></h3>
+<pre class="code jock">struct F6 { a: @, b: @, c: @, d: @, e: @, f: @ };</pre>
+<p>The witness family (chain.md §6.2) --- phase 3's data layer.</p>
+<p>ONE RULING IS BAKED IN HERE.  lock-merkle-proof is a $^ head-shape union --- the stub case's head is a CELL, the full case's head is the atom %full --- and Jock cannot spell $^ at all.  A SIGNER does not need it to:  it PRODUCES proofs rather than accepting them, the engine's own bunt is the %full case, and the stub is the legacy shape whose hardcoded digest chain.md §7 preserves rather than fixes.  So only %full is declared and a Jock signer emits only %full.  READING a stub proof needs a $^ spelling, and nothing here should pretend otherwise. the two field-element widths the schnorr types are built from</p>
+<h3 id="f8"><code>F8</code></h3>
+<pre class="code jock">struct F8 { a: @, b: @, c: @, d: @, e: @, f: @, g: @, h: @ };</pre>
+<p>No comment in the source. The signature above is the whole of what <code>F8</code> states about itself.</p>
+<h3 id="schnorrpubkey"><code>SchnorrPubkey</code></h3>
+<pre class="code jock">struct SchnorrPubkey { x: F6, y: F6, inf: @ };</pre>
+<p>schnorr-pubkey:  a curve point --- two field elements and the point-at-infinity flag</p>
+<p class="label">used by examples/walletkernel.jock</p>
+<pre class="code jock">pubkey: chaintx.SchnorrPubkey,</pre>
+<h3 id="schnorrsignature"><code>SchnorrSignature</code></h3>
+<pre class="code jock">struct SchnorrSignature { chal: F8, sig: F8 };</pre>
+<p>No comment in the source. The signature above is the whole of what <code>SchnorrSignature</code> states about itself.</p>
+<h3 id="pkh"><code>Pkh</code></h3>
+<pre class="code jock">struct Pkh { m: @, h: chain.ZSet&lt;chain.Hash&gt; };</pre>
+<p>pkh:  [m=@ h=(z-set hash)] --- the m-of-n public-key-hash set</p>
+<h3 id="timrange"><code>TimRange</code></h3>
+<pre class="code jock">struct TimRange { min: @?, max: @? };</pre>
+<p>tim:  a relative and an absolute page-number range</p>
+<h3 id="tim"><code>Tim</code></h3>
+<pre class="code jock">struct Tim { rel: TimRange, abs: TimRange };</pre>
+<p>No comment in the source. The signature above is the whole of what <code>Tim</code> states about itself.</p>
+<h3 id="lockprimitive"><code>LockPrimitive</code></h3>
+<pre class="code jock">enum LockPrimitive { pkh(Pkh), tim(Tim), hax(Hax), brn(@) };</pre>
+<p>lock-primitive is $% with ALPHABETIC tags, so a Jock union matches it noun for noun.  <code>brn</code> carries an <code>@</code> rather than being nullary:  hoon's [%brn ~] erases to ['brn' 0], a CELL, where a Jock NULLARY case erases to the bare tag atom and would not match.  Pass 0.</p>
+<h3 id="merkproof"><code>MerkProof</code></h3>
+<pre class="code jock">struct MerkProof { root: chain.Hash, path: List&lt;chain.Hash&gt; };</pre>
+<p>merk-proof:  [root path]</p>
+<p class="label">used by examples/chaintx-arms.jock</p>
+<pre class="code jock">let mp = chaintx.MerkProof( root: z, path: e );</pre>
+<h3 id="lockmerkleproof"><code>LockMerkleProof</code></h3>
+<pre class="code jock">struct LockMerkleProof { version: @, cond: SpendCondition, axis: @, proof: MerkProof, };</pre>
+<p>lock-merkle-proof, %full only (see the ruling above)</p>
+<p class="label">used by examples/chaintx-arms.jock</p>
+<pre class="code jock">let lmp = chaintx.LockMerkleProof( version: %full, cond: ~, axis: 0, proof: mp );</pre>
+<h3 id="witness"><code>Witness</code></h3>
+<pre class="code jock">struct Witness { lmp: LockMerkleProof, pkh: PkhSignature, hax: WitHax, tim: @ };</pre>
+<p>witness:  [lmp pkh hax tim].  tim is ~ --- the engine's comment is "timelock is dynamic", so the slot is present and empty.</p>
+<p class="label">used by examples/chaintx-arms.jock</p>
+<pre class="code jock">let wt = chaintx.Witness( lmp: lmp, pkh: ps, hax: wh, tim: 0 );</pre>
+<h3 id="lockmerkleproofstub"><code>LockMerkleProofStub</code></h3>
+<pre class="code jock">struct LockMerkleProofStub { cond: SpendCondition, axis: @, proof: MerkProof };</pre>
+<p>the STUB lock-merkle-proof's payload.  The $^ union it is one half of has no Jock spelling (see the ruling above), but the payload alone is an ordinary struct, and its DIGEST is worth having:  the stub's hashable commits to a hardcoded legacy constant and, by the same legacy, not to the axis.  Both are preserved rather than fixed (chain.md §7), so both are pinned.</p>
+<h3 id="bignum"><code>Bignum</code></h3>
+<pre class="code jock">struct Bignum { tag: @, p: List&lt;@&gt; };</pre>
+<p>The block layer (chain.md §5), for <code>page-digest</code>. bignum is [%bn (list u32)], LSB first;  the tag is carried as a field so the erasure is the engine's noun.</p>
+<h3 id="page"><code>Page</code></h3>
+<pre class="code jock">struct Page { version: @, digest: chain.Hash, pow: *?, parent: chain.Hash, txids: TxIds, coinbase: CoinbaseSplit, timestamp: @, epoch: @, target: Bignum, work: Bignum, height: @, msg: List&lt;@&gt;, };</pre>
+<p>page, VERSION 1's own struct.  The $^ version dispatch lives in the COMBINED engine (<code>$^(page:v0 page:v1)</code>);  v1's own form is a plain twelve-field record, which is what a v1 kernel handles and what this declares.</p>
+<p><code>pow</code> is (unit proof) and the proof is a STARK object.  The slot is declared for mold fidelity;  nothing here hashes it --- see hashPow below for why that is a decision rather than a gap.</p>
+<h2 id="arms">Arms</h2>
+<p>44 arms, in source order. The signature is reproduced exactly; the prose is the comment above the arm in <code>crates/jockc/hoon/lib/chaintx.jock</code>.</p>
+<table><thead><tr><th>arm</th><th>signature</th><th>pinned by</th></tr></thead><tbody><tr><td><code>mkname</code></td><td><code>func mkname(f: chain.Hash, l: chain.Hash) -&gt; Name</code></td><td><code>walletkernel</code> (use)</td></tr><tr><td><code>mkspend</code></td><td><code>func mkspend(w: Witness, s: Seeds, fee: @) -&gt; SpendV1</code></td><td><code>chaintx-arms</code> (use)</td></tr><tr><td><code>mkrawtx</code></td><td><code>func mkrawtx(id: chain.Hash, sp: Spends) -&gt; RawTx</code></td><td><code>walletkernel</code> (use)</td></tr><tr><td><code>hzero</code></td><td><code>func hzero() -&gt; chain.Hash</code></td><td><code>chaintx-arms</code> (assert)</td></tr><tr><td><code>hashNoun</code></td><td><code>func hashNoun(n: *) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashSource</code></td><td><code>func hashSource(s: Source) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>nameFirst</code></td><td><code>func nameFirst(lock: chain.Hash) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>nameLast</code></td><td><code>func nameLast(s: Source) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashNoteData</code></td><td><code>func hashNoteData(d: NoteData) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashSeed</code></td><td><code>func hashSeed(sd: Seed) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashName</code></td><td><code>func hashName(n: Name) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashPath</code></td><td><code>func hashPath(p: List&lt;chain.Hash&gt;) -&gt; chain.Hash</code></td><td><code>chaintx-arms</code> (assert)</td></tr><tr><td><code>hashMerkProof</code></td><td><code>func hashMerkProof(m: MerkProof) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashHashes</code></td><td><code>func hashHashes(s: chain.ZSet&lt;chain.Hash&gt;) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashPkh</code></td><td><code>func hashPkh(p: Pkh) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashTimOpt</code></td><td><code>func hashTimOpt(u: @?) -&gt; chain.Hash</code></td><td><code>chaintx-arms</code> (assert)</td></tr><tr><td><code>hashTim</code></td><td><code>func hashTim(t: Tim) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashLockPrim</code></td><td><code>func hashLockPrim(p: LockPrimitive) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashSpendCond</code></td><td><code>func hashSpendCond(c: SpendCondition) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashLmp</code></td><td><code>func hashLmp(l: LockMerkleProof) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashPkhSig</code></td><td><code>func hashPkhSig(m: PkhSignature) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashWitHax</code></td><td><code>func hashWitHax(m: WitHax) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashWitness</code></td><td><code>func hashWitness(w: Witness) -&gt; chain.Hash</code></td><td><code>chaintx-arms</code> (use)</td></tr><tr><td><code>hashSeeds</code></td><td><code>func hashSeeds(s: Seeds) -&gt; chain.Hash</code></td><td><code>chaintx-arms</code> (use)</td></tr><tr><td><code>hashSpend1</code></td><td><code>func hashSpend1(s: SpendV1) -&gt; chain.Hash</code></td><td><code>chaintx-arms</code> (assert)</td></tr><tr><td><code>hashSpend</code></td><td><code>func hashSpend(s: SpendV1) -&gt; chain.Hash</code></td><td><code>chaintx-arms</code> (assert)</td></tr><tr><td><code>hashSpends</code></td><td><code>func hashSpends(m: Spends) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>computeId</code></td><td><code>func computeId(sp: Spends) -&gt; chain.Hash</code></td><td><code>walletkernel</code> (use)</td></tr><tr><td><code>hashSourceOpt</code></td><td><code>func hashSourceOpt(u: Source?) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>sigHashSeed</code></td><td><code>func sigHashSeed(sd: Seed) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>sigHashSeeds</code></td><td><code>func sigHashSeeds(s: Seeds) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>sigHashSpend</code></td><td><code>func sigHashSpend(s: SpendV1) -&gt; chain.Hash</code></td><td><code>walletkernel</code> (use)</td></tr><tr><td><code>signDigest</code></td><td><code>func signDigest(sk: SchnorrSeckey, m: chain.Hash) -&gt; SchnorrSignature</code></td><td>—</td></tr><tr><td><code>pubkeyOf</code></td><td><code>func pubkeyOf(sk: SchnorrSeckey) -&gt; SchnorrPubkey</code></td><td><code>walletkernel</code> (use)</td></tr><tr><td><code>pkhash</code></td><td><code>func pkhash(pk: SchnorrPubkey) -&gt; chain.Hash</code></td><td><code>walletkernel</code> (use)</td></tr><tr><td><code>verifyDigest</code></td><td><code>func verifyDigest(pk: SchnorrPubkey, m: chain.Hash, sg: SchnorrSignature) -&gt; Bool</code></td><td><code>walletkernel</code> (use)</td></tr><tr><td><code>signWitness</code></td><td><code>func signWitness(w: Witness, sk: SchnorrSeckey, m: chain.Hash) -&gt; Witness</code></td><td>—</td></tr><tr><td><code>signSpend</code></td><td><code>func signSpend(s: SpendV1, sk: SchnorrSeckey) -&gt; SpendV1</code></td><td><code>walletkernel</code> (use)</td></tr><tr><td><code>lmpStubDigest</code></td><td><code>func lmpStubDigest() -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashLmpStub</code></td><td><code>func hashLmpStub(l: LockMerkleProofStub) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashCoinbaseSplit</code></td><td><code>func hashCoinbaseSplit(m: CoinbaseSplit) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashBlockCommitment</code></td><td><code>func hashBlockCommitment(p: Page) -&gt; chain.Hash</code></td><td>—</td></tr><tr><td><code>hashPow</code></td><td><code>func hashPow(pd: chain.Hash?) -&gt; chain.Hash</code></td><td><code>chaintx-arms</code> (assert)</td></tr><tr><td><code>computeDigest</code></td><td><code>func computeDigest(p: Page, pd: chain.Hash?) -&gt; chain.Hash</code></td><td>—</td></tr></tbody></table>
+<h3 id="mkname"><code>mkname</code></h3>
+<pre class="code jock">func mkname(f: chain.Hash, l: chain.Hash) -&gt; Name { ... }</pre>
+<p>nnote, local-page and lock-merkle-proof are $^ head-shape unions and are NOT here.  Jock's discriminability judgment tells an atom from a cell, or one singleton head tag from another (hoon's $%);  it has no way to say "the head is a cell", which is what $^ dispatches on.  Both alternatives are structs, so both are simply cells and nothing separates them. The transaction core below needs none of them.</p>
+<p class="label">used by examples/walletkernel.jock</p>
+<pre class="code jock">chaintx.mkname(chain.fromb58(n.first), chain.fromb58(n.last))</pre>
+<h3 id="mkspend"><code>mkspend</code></h3>
+<pre class="code jock">func mkspend(w: Witness, s: Seeds, fee: @) -&gt; SpendV1 { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>mkspend</code> states about itself.</p>
+<p class="label">used by examples/chaintx-arms.jock</p>
+<pre class="code jock">let sp = chaintx.mkspend(wt, es, 0);</pre>
+<h3 id="mkrawtx"><code>mkrawtx</code></h3>
+<pre class="code jock">func mkrawtx(id: chain.Hash, sp: Spends) -&gt; RawTx { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>mkrawtx</code> states about itself.</p>
+<p class="label">used by examples/walletkernel.jock</p>
+<pre class="code jock">let raw = chaintx.mkrawtx(chaintx.computeId(tx.spends), tx.spends);</pre>
+<h3 id="hzero"><code>hzero</code></h3>
+<pre class="code jock">func hzero() -&gt; chain.Hash { ... }</pre>
+<p>Hashes.</p>
+<p>hash-hashable:tip5 walks a $hashable --- a little DSL --- and reduces it to a digest:</p>
+<p>hash+X  -&gt;  X                    (already a digest) leaf+X  -&gt;  hash-noun-varlen(X) list+L  -&gt;  hash-noun-varlen of L's digests [a b]   -&gt;  hash-ten-cell(a', b')</p>
+<p>A $hashable is a DESCRIPTION of a hash, and every structure below is known at the point it is written, so the walk is FUSED AWAY:  each arm applies the rules directly instead of building a value for an interpreter to take apart again.  The reduction is compositional --- a pair's digest is hash-ten-cell of its parts' digests --- so fusing arm by arm is sound.</p>
+<p>This is also why no <code>Hashable</code> TYPE appears here, which matters: its $^ head-shape case has no Jock spelling, and a recursive untagged union cannot be declared from source at all. Fusing sidesteps both.</p>
+<p>chain.hashnoun and chain.hashten are the only primitives, and both were already exported --- this needed nothing new from the package. the digest of <code>~</code>, which the DSL reaches often (leaf+~, leaf+&amp;, and the empty note-data all bottom out here)</p>
+<p class="label">asserted by examples/chaintx-arms.jock</p>
+<pre class="code jock">assert chaintx.hzero() == chain.hashnoun(0);</pre>
+<h3 id="hashnoun"><code>hashNoun</code></h3>
+<pre class="code jock">func hashNoun(n: *) -&gt; chain.Hash { ... }</pre>
+<p>hashable-noun:  the walk over an OPAQUE value.  The engine's arm is</p>
+<p>?^  n  [$(n -.n) $(n +.n)] leaf+n</p>
+<p>--- a cell becomes the pair of its halves' hashables, an atom a leaf --- so fused it is hash-ten-cell of the two recursions, and hash-noun-varlen at the bottom.  It is the one arm here that cannot be written against a declared shape, because the value has none:  a note's data and a witness's hax hold whatever the lock put there.  hoon.iscell (Nock 3) is the discrimination, and <code>as! (*, *)</code> is how the halves are reached once it answers.</p>
+<h3 id="hashsource"><code>hashSource</code></h3>
+<pre class="code jock">func hashSource(s: Source) -&gt; chain.Hash { ... }</pre>
+<p>source:  [hash+p leaf+is-coinbase]</p>
+<h3 id="namefirst"><code>nameFirst</code></h3>
+<pre class="code jock">func nameFirst(lock: chain.Hash) -&gt; chain.Hash { ... }</pre>
+<p>nname:  a name is [first last 0], and the two halves hash differently --- first over the lock, last over the source. first  =  [leaf+&amp; hash+lock] last   =  [leaf+&amp; (hashable:source source) leaf+~]</p>
+<h3 id="namelast"><code>nameLast</code></h3>
+<pre class="code jock">func nameLast(s: Source) -&gt; chain.Hash { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>nameLast</code> states about itself.</p>
+<h3 id="hashnotedata"><code>hashNoteData</code></h3>
+<pre class="code jock">func hashNoteData(d: NoteData) -&gt; chain.Hash { ... }</pre>
+<p>note-data:  a z-map @ -&gt; opaque, walked node by node.  The key is an atom (leaf+p) and the value is whatever the lock stored, so it goes through hashNoun.  An EMPTY treap is an atom and bottoms out at leaf+~.</p>
+<h3 id="hashseed"><code>hashSeed</code></h3>
+<pre class="code jock">func hashSeed(sd: Seed) -&gt; chain.Hash { ... }</pre>
+<p>seed:  [hash+lock-root hash+(hash:note-data) leaf+gift hash+parent-hash].  NOTE it does not include output-source --- that is sig-hashable, a different arm.</p>
+<h3 id="hashname"><code>hashName</code></h3>
+<pre class="code jock">func hashName(n: Name) -&gt; chain.Hash { ... }</pre>
+<p>The treap and list walks, and the consensus transaction id.</p>
+<p>Every container the engine hashes is walked in the SAME shape it stores:  a z-map node is [[key value] [left right]], a z-set node is [element [left right]], and an empty one is an atom that bottoms out at leaf+~.  The Jock ZMap/ZSet nominals erase to exactly those, so the walks destructure the real treap rather than a copy of it --- which is what makes the digest agree.</p>
+<p>The two containers holding OPAQUE values --- a seed's note-data and a witness's hax --- are walked the same way, except that their values go through hashNoun, which discriminates with hoon.iscell rather than against a declared shape. nname:  [hash+first hash+last leaf+pad]</p>
+<h3 id="hashpath"><code>hashPath</code></h3>
+<pre class="code jock">func hashPath(p: List&lt;chain.Hash&gt;) -&gt; chain.Hash { ... }</pre>
+<p>merk-proof:  [hash+root &lt;the path, a list of hashes&gt;]</p>
+<p class="label">asserted by examples/chaintx-arms.jock</p>
+<pre class="code jock">assert chaintx.hashPath(e) == chaintx.hzero();</pre>
+<h3 id="hashmerkproof"><code>hashMerkProof</code></h3>
+<pre class="code jock">func hashMerkProof(m: MerkProof) -&gt; chain.Hash { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>hashMerkProof</code> states about itself.</p>
+<h3 id="hashhashes"><code>hashHashes</code></h3>
+<pre class="code jock">func hashHashes(s: chain.ZSet&lt;chain.Hash&gt;) -&gt; chain.Hash { ... }</pre>
+<p>a (z-set hash), which pkh and lock-primitive's hax both are</p>
+<h3 id="hashpkh"><code>hashPkh</code></h3>
+<pre class="code jock">func hashPkh(p: Pkh) -&gt; chain.Hash { ... }</pre>
+<p>pkh:  [leaf+m &lt;the hash set&gt;]</p>
+<h3 id="hashtimopt"><code>hashTimOpt</code></h3>
+<pre class="code jock">func hashTimOpt(u: @?) -&gt; chain.Hash { ... }</pre>
+<p>a page-number bound inside tim:  ~ hashes as leaf+~, and a present one as [leaf+~ leaf+value]</p>
+<p class="label">asserted by examples/chaintx-arms.jock</p>
+<pre class="code jock">assert chaintx.hashTimOpt(notim) == chaintx.hzero();</pre>
+<h3 id="hashtim"><code>hashTim</code></h3>
+<pre class="code jock">func hashTim(t: Tim) -&gt; chain.Hash { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>hashTim</code> states about itself.</p>
+<h3 id="hashlockprim"><code>hashLockPrim</code></h3>
+<pre class="code jock">func hashLockPrim(p: LockPrimitive) -&gt; chain.Hash { ... }</pre>
+<p>lock-primitive:  [leaf+&lt;tag&gt; &lt;payload&gt;], and %brn's payload is ~</p>
+<h3 id="hashspendcond"><code>hashSpendCond</code></h3>
+<pre class="code jock">func hashSpendCond(c: SpendCondition) -&gt; chain.Hash { ... }</pre>
+<p>spend-condition:  a list of lock-primitives</p>
+<h3 id="hashlmp"><code>hashLmp</code></h3>
+<pre class="code jock">func hashLmp(l: LockMerkleProof) -&gt; chain.Hash { ... }</pre>
+<p>lock-merkle-proof, %full:  [leaf+ver hash+H(cond) leaf+axis &lt;merk&gt;]</p>
+<h3 id="hashpkhsig"><code>hashPkhSig</code></h3>
+<pre class="code jock">func hashPkhSig(m: PkhSignature) -&gt; chain.Hash { ... }</pre>
+<p>pkh-signature:  a z-map hash -&gt; (pubkey, signature).  A pubkey hashes as leaf+form and so does a signature.</p>
+<h3 id="hashwithax"><code>hashWitHax</code></h3>
+<pre class="code jock">func hashWitHax(m: WitHax) -&gt; chain.Hash { ... }</pre>
+<p>the witness's hax:  a z-map hash -&gt; opaque.  The key is ALREADY a digest (hash+p, passed through, not re-hashed) --- which is what distinguishes this walk from note-data's, whose key is an atom.</p>
+<h3 id="hashwitness"><code>hashWitness</code></h3>
+<pre class="code jock">func hashWitness(w: Witness) -&gt; chain.Hash { ... }</pre>
+<p>witness:  [hash+H(lmp) hash+H(pkh) hash+H(hax) leaf+tim]</p>
+<p class="label">used by examples/chaintx-arms.jock</p>
+<pre class="code jock">chaintx.hashWitness(sp.witness),</pre>
+<h3 id="hashseeds"><code>hashSeeds</code></h3>
+<pre class="code jock">func hashSeeds(s: Seeds) -&gt; chain.Hash { ... }</pre>
+<p>seeds:  a z-set of seed</p>
+<p class="label">used by examples/chaintx-arms.jock</p>
+<pre class="code jock">chain.hashten(chaintx.hashSeeds(sp.seeds), chain.hashnoun(sp.fee)));</pre>
+<h3 id="hashspend1"><code>hashSpend1</code></h3>
+<pre class="code jock">func hashSpend1(s: SpendV1) -&gt; chain.Hash { ... }</pre>
+<p>spend-1:  [&lt;witness&gt; &lt;seeds&gt; leaf+fee] --- the payload only, since the version tag is hashed by spend below</p>
+<p class="label">asserted by examples/chaintx-arms.jock</p>
+<pre class="code jock">assert chaintx.hashSpend1(sp)</pre>
+<h3 id="hashspend"><code>hashSpend</code></h3>
+<pre class="code jock">func hashSpend(s: SpendV1) -&gt; chain.Hash { ... }</pre>
+<p>spend:  [leaf+&lt;version&gt; &lt;the versioned payload&gt;]</p>
+<p class="label">asserted by examples/chaintx-arms.jock</p>
+<pre class="code jock">assert chaintx.hashSpend(sp)</pre>
+<h3 id="hashspends"><code>hashSpends</code></h3>
+<pre class="code jock">func hashSpends(m: Spends) -&gt; chain.Hash { ... }</pre>
+<p>spends:  a z-map nname -&gt; spend</p>
+<h3 id="computeid"><code>computeId</code></h3>
+<pre class="code jock">func computeId(sp: Spends) -&gt; chain.Hash { ... }</pre>
+<p>compute-id:  hash-hashable([leaf+%1 (hashable:spends spends)]). THE CONSENSUS TRANSACTION ID --- what examples/txbuild.jock has been approximating with a content hash since phase 2 opened.</p>
+<p class="label">used by examples/walletkernel.jock</p>
+<pre class="code jock">(chaintx.computeId(spends), spends)</pre>
+<h3 id="hashsourceopt"><code>hashSourceOpt</code></h3>
+<pre class="code jock">func hashSourceOpt(u: Source?) -&gt; chain.Hash { ... }</pre>
+<p>THE SIGNATURE HASH --- what a witness actually signs.</p>
+<p>It is NOT the spend's own hash.  That covers the witness, and a witness cannot commit to itself, so signing it would be circular. sig-hash covers the seeds and the fee, and nothing else:  what the spend PAYS OUT and what it PAYS FOR.</p>
+<p>The seed's sig-hashable differs from its id hashable in exactly one place --- it INCLUDES output-source, which the id omits --- and that difference is the whole point.  A signature commits to where the output must come from;  the transaction id does not. source, as a unit:  ~ hashes as leaf+~, a present one as [leaf+~ &lt;the source hashable&gt;].</p>
+<h3 id="sighashseed"><code>sigHashSeed</code></h3>
+<pre class="code jock">func sigHashSeed(sd: Seed) -&gt; chain.Hash { ... }</pre>
+<p>seed, sig-hashable:  [&lt;output-source&gt; hash+lock-root hash+H(note-data) leaf+gift hash+parent-hash]</p>
+<h3 id="sighashseeds"><code>sigHashSeeds</code></h3>
+<pre class="code jock">func sigHashSeeds(s: Seeds) -&gt; chain.Hash { ... }</pre>
+<p>seeds, sig-hashable:  the id walk's shape with the sig-hashable seed at each node.</p>
+<h3 id="sighashspend"><code>sigHashSpend</code></h3>
+<pre class="code jock">func sigHashSpend(s: SpendV1) -&gt; chain.Hash { ... }</pre>
+<p>spend-1's sig-hash:  [&lt;the seeds&gt; leaf+fee].</p>
+<p class="label">used by examples/walletkernel.jock</p>
+<pre class="code jock">if verifyPkhSig(v.witness.pkh, chaintx.sigHashSpend(v)) {</pre>
+<h3 id="signdigest"><code>signDigest</code></h3>
+<pre class="code jock">func signDigest(sk: SchnorrSeckey, m: chain.Hash) -&gt; SchnorrSignature { ... }</pre>
+<p>SIGNING.</p>
+<p>Every arm here is a call into the package, which is a call into the vendored curve.  Nothing in this file computes any part of a signature, and nothing should ever be added here that does.</p>
+<p>The package types key material as a bare noun so that no arm of it can take a secret apart;  these four wrappers put the molds back on at the Jock boundary, which is where a caller wants them.  The casts are the only place a shape assumption is made, and tools/molds.sh checks each against the engine's own value.</p>
+<h3 id="pubkeyof"><code>pubkeyOf</code></h3>
+<pre class="code jock">func pubkeyOf(sk: SchnorrSeckey) -&gt; SchnorrPubkey { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>pubkeyOf</code> states about itself.</p>
+<p class="label">used by examples/walletkernel.jock</p>
+<pre class="code jock">let pk = chaintx.pubkeyOf(chain.seckey(k.key) as! chaintx.SchnorrSeckey);</pre>
+<h3 id="pkhash"><code>pkhash</code></h3>
+<pre class="code jock">func pkhash(pk: SchnorrPubkey) -&gt; chain.Hash { ... }</pre>
+<p>hash:schnorr-pubkey is hash-hashable(leaf+pk), so this is hashnoun and not a second primitive.</p>
+<p class="label">used by examples/walletkernel.jock</p>
+<pre class="code jock">if version == 0 { chain.pubb58(pk) } else { chain.tob58(chaintx.pkhash(pk)) }</pre>
+<h3 id="verifydigest"><code>verifyDigest</code></h3>
+<pre class="code jock">func verifyDigest(pk: SchnorrPubkey, m: chain.Hash, sg: SchnorrSignature) -&gt; Bool { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>verifyDigest</code> states about itself.</p>
+<p class="label">used by examples/walletkernel.jock</p>
+<pre class="code jock">if chaintx.verifyDigest(pk, digest, sg) {</pre>
+<h3 id="signwitness"><code>signWitness</code></h3>
+<pre class="code jock">func signWitness(w: Witness, sk: SchnorrSeckey, m: chain.Hash) -&gt; Witness { ... }</pre>
+<p>witness.sign, the engine's arm step for step:  derive the pubkey from the secret, sign the digest, and file the pair under the pubkey's hash.  Only <code>pkh</code> changes.</p>
+<h3 id="signspend"><code>signSpend</code></h3>
+<pre class="code jock">func signSpend(s: SpendV1, sk: SchnorrSeckey) -&gt; SpendV1 { ... }</pre>
+<p>sign a spend:  the witness signs the spend's SIG-HASH, which covers the seeds and the fee and not the witness itself.</p>
+<p class="label">used by examples/walletkernel.jock</p>
+<pre class="code jock">buildSpends(t, sd, fee, sk, w, chain.zput(acc, h, chaintx.signSpend(unsigned, sk)))</pre>
+<h3 id="lmpstubdigest"><code>lmpStubDigest</code></h3>
+<pre class="code jock">func lmpStubDigest() -&gt; chain.Hash { ... }</pre>
+<p>The stub lock-merkle-proof's digest, and the block layer. THE FROZEN LEGACY DIGEST.  The stub hashable commits to this constant where the corrected one commits to the axis;  upstream calls it "the standard library hash (stopgap for determinism)" and spells it as base58 in the source.  It is written out here because a Jock program cannot decode base58 at compile time and because a constant that must never drift is better read than derived.  tools/molds.sh checks it against the engine's own decode, so a change upstream reddens the lane.</p>
+<h3 id="hashlmpstub"><code>hashLmpStub</code></h3>
+<pre class="code jock">func hashLmpStub(l: LockMerkleProofStub) -&gt; chain.Hash { ... }</pre>
+<p>lock-merkle-proof, STUB:  [hash+H(cond) hash+&lt;legacy&gt; &lt;merk&gt;]. NOTE WHAT IS ABSENT --- <code>axis</code> is a field of the stub and is not hashed, which is the "does not commit to axis" defect the full case exists to correct.  Two stubs differing only in axis have the same digest, and a fixture pins exactly that.</p>
+<h3 id="hashcoinbasesplit"><code>hashCoinbaseSplit</code></h3>
+<pre class="code jock">func hashCoinbaseSplit(m: CoinbaseSplit) -&gt; chain.Hash { ... }</pre>
+<p>coinbase-split:  a z-map lock-hash -&gt; coins.  The key is already a digest and passes through;  the value is a leaf.</p>
+<h3 id="hashblockcommitment"><code>hashBlockCommitment</code></h3>
+<pre class="code jock">func hashBlockCommitment(p: Page) -&gt; chain.Hash { ... }</pre>
+<p>block-commitment:  a NINE-element hashable, right-nested ---</p>
+<p>[hash+parent hash+H(tx-ids) hash+H(coinbase) leaf+timestamp leaf+epoch-counter leaf+target leaf+accumulated-work leaf+height leaf+msg]</p>
+<p>tx-ids is a z-set of digests, which is hashHashes' shape exactly, so it is not given an arm of its own.  target and accumulated-work are bignums and hash as whole nouns, msg likewise as a list of belts.  NOTE the commitment does NOT include the page's own digest --- that would be circular --- nor its pow.</p>
+<h3 id="hashpow"><code>hashPow</code></h3>
+<pre class="code jock">func hashPow(pd: chain.Hash?) -&gt; chain.Hash { ... }</pre>
+<p>the pow slot's contribution:  leaf+~ with no proof, and [leaf+~ hash+H(proof)] with one.</p>
+<p>THE PROOF DIGEST IS AN ARGUMENT, not a computation, and that is deliberate.  H(proof) is hash-proof, which absorbs STARK proof objects into a sponge --- machinery chain.md §8 puts out of scope indefinitely.  Jock hashes the PAGE;  it does not hash a proof, and pretending otherwise would be the only dishonest arm in this file.  A candidate page (the one a Jock miner-side program builds) has no proof and needs nothing.</p>
+<p class="label">asserted by examples/chaintx-arms.jock</p>
+<pre class="code jock">assert chaintx.hashPow(nopow) == chaintx.hzero();</pre>
+<h3 id="computedigest"><code>computeDigest</code></h3>
+<pre class="code jock">func computeDigest(p: Page, pd: chain.Hash?) -&gt; chain.Hash { ... }</pre>
+<p>compute-digest:  hash-hashable([&lt;pow&gt; &lt;block-commitment&gt;]). THE BLOCK ID.</p>
+<h2 id="what-no-lane-pins">What no lane pins</h2>
+<p>41 of 64 public declarations are named by no example in <code>examples/</code>. They compile — the module is built by <code>tools/modules.sh</code> on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.</p>
+<p>That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.</p>
+<ul><li><code>Source</code> — <code>struct Source { hash: chain.Hash, coinbase: Bool };</code></li><li><code>SpendV0</code> — <code>struct SpendV0 { version: @, signature: *, seeds: Seeds, fee: @ };</code></li><li><code>SpendV1</code> — <code>struct SpendV1 { version: @, witness: Witness, seeds: Seeds, fee: @ };</code></li><li><code>RawTx</code> — <code>struct RawTx { version: @, id: chain.Hash, spends: Spends };</code></li><li><code>F6</code> — <code>struct F6 { a: @, b: @, c: @, d: @, e: @, f: @ };</code></li><li><code>F8</code> — <code>struct F8 { a: @, b: @, c: @, d: @, e: @, f: @, g: @, h: @ };</code></li><li><code>SchnorrSignature</code> — <code>struct SchnorrSignature { chal: F8, sig: F8 };</code></li><li><code>Pkh</code> — <code>struct Pkh { m: @, h: chain.ZSet&lt;chain.Hash&gt; };</code></li><li><code>TimRange</code> — <code>struct TimRange { min: @?, max: @? };</code></li><li><code>Tim</code> — <code>struct Tim { rel: TimRange, abs: TimRange };</code></li><li><code>LockPrimitive</code> — <code>enum LockPrimitive { pkh(Pkh), tim(Tim), hax(Hax), brn(@) };</code></li><li><code>LockMerkleProofStub</code> — <code>struct LockMerkleProofStub { cond: SpendCondition, axis: @, proof: MerkProof };</code></li><li><code>Bignum</code> — <code>struct Bignum { tag: @, p: List&lt;@&gt; };</code></li><li><code>Page</code> — <code>struct Page { version: @, digest: chain.Hash, pow: *?, parent: chain.Hash, txids: TxIds, coinbase: CoinbaseSplit, timestamp: @, epoch: @, target: Bignum, work: Bignum, height: @, msg: List&lt;@&gt;, };</code></li><li><code>hashNoun</code> — <code>func hashNoun(n: *) -&gt; chain.Hash</code></li><li><code>hashSource</code> — <code>func hashSource(s: Source) -&gt; chain.Hash</code></li><li><code>nameFirst</code> — <code>func nameFirst(lock: chain.Hash) -&gt; chain.Hash</code></li><li><code>nameLast</code> — <code>func nameLast(s: Source) -&gt; chain.Hash</code></li><li><code>hashNoteData</code> — <code>func hashNoteData(d: NoteData) -&gt; chain.Hash</code></li><li><code>hashSeed</code> — <code>func hashSeed(sd: Seed) -&gt; chain.Hash</code></li><li><code>hashName</code> — <code>func hashName(n: Name) -&gt; chain.Hash</code></li><li><code>hashMerkProof</code> — <code>func hashMerkProof(m: MerkProof) -&gt; chain.Hash</code></li><li><code>hashHashes</code> — <code>func hashHashes(s: chain.ZSet&lt;chain.Hash&gt;) -&gt; chain.Hash</code></li><li><code>hashPkh</code> — <code>func hashPkh(p: Pkh) -&gt; chain.Hash</code></li><li><code>hashTim</code> — <code>func hashTim(t: Tim) -&gt; chain.Hash</code></li><li><code>hashLockPrim</code> — <code>func hashLockPrim(p: LockPrimitive) -&gt; chain.Hash</code></li><li><code>hashSpendCond</code> — <code>func hashSpendCond(c: SpendCondition) -&gt; chain.Hash</code></li><li><code>hashLmp</code> — <code>func hashLmp(l: LockMerkleProof) -&gt; chain.Hash</code></li><li><code>hashPkhSig</code> — <code>func hashPkhSig(m: PkhSignature) -&gt; chain.Hash</code></li><li><code>hashWitHax</code> — <code>func hashWitHax(m: WitHax) -&gt; chain.Hash</code></li><li><code>hashSpends</code> — <code>func hashSpends(m: Spends) -&gt; chain.Hash</code></li><li><code>hashSourceOpt</code> — <code>func hashSourceOpt(u: Source?) -&gt; chain.Hash</code></li><li><code>sigHashSeed</code> — <code>func sigHashSeed(sd: Seed) -&gt; chain.Hash</code></li><li><code>sigHashSeeds</code> — <code>func sigHashSeeds(s: Seeds) -&gt; chain.Hash</code></li><li><code>signDigest</code> — <code>func signDigest(sk: SchnorrSeckey, m: chain.Hash) -&gt; SchnorrSignature</code></li><li><code>signWitness</code> — <code>func signWitness(w: Witness, sk: SchnorrSeckey, m: chain.Hash) -&gt; Witness</code></li><li><code>lmpStubDigest</code> — <code>func lmpStubDigest() -&gt; chain.Hash</code></li><li><code>hashLmpStub</code> — <code>func hashLmpStub(l: LockMerkleProofStub) -&gt; chain.Hash</code></li><li><code>hashCoinbaseSplit</code> — <code>func hashCoinbaseSplit(m: CoinbaseSplit) -&gt; chain.Hash</code></li><li><code>hashBlockCommitment</code> — <code>func hashBlockCommitment(p: Page) -&gt; chain.Hash</code></li><li><code>computeDigest</code> — <code>func computeDigest(p: Page, pd: chain.Hash?) -&gt; chain.Hash</code></li></ul>
+<h2 id="where-it-is-used">Where it is used</h2>
+<p>2 examples import <code>chaintx</code>. Each is a complete program whose value <code>tools/examples.sh</code> pins on every push.</p>
+<ul><li><code>examples/chaintx-arms.jock</code> — the arms sheet: one assertion per arm</li><li><code>examples/walletkernel.jock</code> — a use</li></ul>
+<p>The <a href="../../examples/">worked examples</a> page shows the shortest of these in full.</p>
+</main>
+</div>
+</body>
+</html>

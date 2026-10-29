@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>lib/hof — Jock reference</title>
+<meta name="description" content="higher-order functions over closures and List.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!--  ABSOLUTE, not relative.  These were `../jock-highlight.css`,
+      which from /reference/tags/ resolves to
+      /reference/jock-highlight.css --- a 404 on every generated
+      page, so the highlighter never loaded and the listings were
+      marked `class="code jock"` for a script that was not there.
+      The site is served at an apex root, so an absolute path is
+      correct and is immune to however deep a page is nested.  -->
+<link rel="stylesheet" href="/jock-highlight.css">
+<script src="/jock-highlight.js" defer></script>
+<!--
+  HAND-MAINTAINED.  This is the only file in the reference that a
+  person edits:  tools/refgen.py in the compiler repo fills
+  the four placeholders below and writes the pages beside it.
+  Naming them here in their own spelling would be a bug:  the
+  substitution is a plain string replace, so a comment mentioning a
+  placeholder gets the substitution too --- which silently injected
+  the whole document into this comment, doubling every page, until
+  2026-10-27.  Nor may this comment contain a close-comment
+  sequence;  the sentence that said so, spelling it out, closed the
+  comment early and spilled the rest of this text onto the page.  Design lives here, content is generated, and
+  neither needs the other to change.
+
+  Styling is /jock.css, authored from design/style-guide.html ---
+  the design system's own document, which is a visual specimen of
+  inline styles rather than a stylesheet.  This page carries NO copy
+  of it:  that was the whole point of extracting it.
+
+  Jekyll ignores a file whose name starts with `_`, so this template
+  is never served.
+-->
+<link rel="stylesheet" href="/jock.css">
+</head>
+<body>
+<div class="page">
+<header class="bar">
+  <nav><a href="/">jock</a> <span>reference</span></nav>
+  <span>18 declarations · 18 pinned</span>
+</header>
+<main class="prose">
+<h1 class="ruled">lib/hof</h1>
+<p class="sub">higher-order functions over closures and List.</p>
+<!--  §3:  text column beside the 186px margin rail.  A marginal
+      floats into the rail where it was written, so it sits beside
+      its referent;  the rail is empty wherever nothing was said,
+      which §7 calls correct.  -->
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/hof.jock</code> and the examples that import it. 18 public declarations — 0 types, 18 arms. 18 pinned by a lane, 0 not. channel <code>%rc</code> · commit <code>15d64f3</code></aside>
+<h2 id="import">Import</h2>
+<p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>hof.&lt;name&gt;</code>.</p>
+<pre class="code jock">import hof;</pre>
+<p>The name is the file name minus <code>.jock</code>: <code>hof</code> is <code>crates/jockc/hoon/lib/hof.jock</code>, and it is found because the directory holding it was passed as a <code>--data-dir</code>. There is no search path and no implicit import; <code>tools/libs.py</code> holds the whole discovery rule, and the compiler itself is a pure function of source and libraries.</p>
+<h2 id="about">About</h2>
+<p>Jock's function type is <code>A -&gt; B</code> and it is RIGHT-ASSOCIATIVE, so <code>A -&gt; B -&gt; C</code> is <code>A -&gt; (B -&gt; C)</code> and currying is spellable in the surface syntax with no encoding. A multi-argument func has a TUPLE domain: <code>func add(x: @, y: @) -&gt; @</code> has the type <code>(@, @) -&gt; @</code>, one argument that happens to be a pair. That single fact organizes this whole module — <code>curry</code> moves between the two shapes, and nothing here needs a Curry2, Curry3 tower.</p>
+<p>Function values are closures, so the arms that RETURN functions return real values: <code>compose(f, g)</code> is a noun you can bind, store in a struct field, and pass on.</p>
+<p>A gate-typed VALUE takes one argument, so a tupled domain is applied to an explicit tuple — <code>f((a, b))</code>, not <code>f(a, b)</code>. A declared func keeps the familiar <code>add(2, 3)</code>.</p>
+<h2 id="arms">Arms</h2>
+<p>18 arms, in source order. The signature is reproduced exactly; the prose is the comment above the arm in <code>crates/jockc/hoon/lib/hof.jock</code>.</p>
+<table><thead><tr><th>arm</th><th>signature</th><th>pinned by</th></tr></thead><tbody><tr><td><code>id</code></td><td><code>func&lt;A&gt; id(x: A) -&gt; A</code></td><td><code>hof-arms</code> (assert)</td></tr><tr><td><code>constant</code></td><td><code>func&lt;A, B&gt; constant(a: A, b: B) -&gt; A</code></td><td><code>hof-arms</code> (assert)</td></tr><tr><td><code>ap</code></td><td><code>func&lt;A, B&gt; ap(f: A -&gt; B, a: A) -&gt; B</code></td><td><code>hof-arms</code> (assert)</td></tr><tr><td><code>compose</code></td><td><code>func&lt;A, B, C&gt; compose(g: B -&gt; C, f: A -&gt; B) -&gt; A -&gt; C</code></td><td><code>hof-arms</code> (assert)</td></tr><tr><td><code>pipe</code></td><td><code>func&lt;A, B, C&gt; pipe(f: A -&gt; B, g: B -&gt; C) -&gt; A -&gt; C</code></td><td><code>hof-arms</code> (assert)</td></tr><tr><td><code>curry</code></td><td><code>func&lt;A, B, C&gt; curry(f: (A, B) -&gt; C) -&gt; A -&gt; B -&gt; C</code></td><td><code>hof-arms</code> (assert)</td></tr><tr><td><code>uncurry</code></td><td><code>func&lt;A, B, C&gt; uncurry(f: A -&gt; B -&gt; C) -&gt; (A, B) -&gt; C</code></td><td><code>hof-arms</code> (assert)</td></tr><tr><td><code>flip</code></td><td><code>func&lt;A, B, C&gt; flip(f: (A, B) -&gt; C) -&gt; (B, A) -&gt; C</code></td><td><code>hof-arms</code> (assert)</td></tr><tr><td><code>bind1</code></td><td><code>func&lt;A, B, C&gt; bind1(f: (A, B) -&gt; C, a: A) -&gt; B -&gt; C</code></td><td><code>hof-arms</code> (assert)</td></tr><tr><td><code>turn</code></td><td><code>func&lt;T, U&gt; turn(xs: List&lt;T&gt;, f: T -&gt; U) -&gt; List&lt;U&gt;</code></td><td><code>hof-arms</code> (assert)</td></tr><tr><td><code>weld</code></td><td><code>func&lt;T&gt; weld(a: List&lt;T&gt;, b: List&lt;T&gt;) -&gt; List&lt;T&gt;</code></td><td><code>hof-arms</code> (assert)</td></tr><tr><td><code>filter</code></td><td><code>func&lt;T&gt; filter(xs: List&lt;T&gt;, p: T -&gt; Bool) -&gt; List&lt;T&gt;</code></td><td><code>hof-arms</code> (assert)</td></tr><tr><td><code>foldr</code></td><td><code>func&lt;T, U&gt; foldr(xs: List&lt;T&gt;, z: U, f: (T, U) -&gt; U) -&gt; U</code></td><td><code>hof-arms</code> (assert)</td></tr><tr><td><code>foldl</code></td><td><code>func&lt;T, U&gt; foldl(acc: U, xs: List&lt;T&gt;, f: (U, T) -&gt; U) -&gt; U</code></td><td><code>hof-arms</code> (assert)</td></tr><tr><td><code>all</code></td><td><code>func&lt;T&gt; all(xs: List&lt;T&gt;, p: T -&gt; Bool) -&gt; Bool</code></td><td><code>hof-arms</code> (assert)</td></tr><tr><td><code>any</code></td><td><code>func&lt;T&gt; any(xs: List&lt;T&gt;, p: T -&gt; Bool) -&gt; Bool</code></td><td><code>hof-arms</code> (assert)</td></tr><tr><td><code>find</code></td><td><code>func&lt;T&gt; find(xs: List&lt;T&gt;, p: T -&gt; Bool) -&gt; T?</code></td><td><code>hof-arms</code> (assert)</td></tr><tr><td><code>mapor</code></td><td><code>func&lt;T, U&gt; mapor(x: T?, f: T -&gt; U, d: T) -&gt; U</code></td><td><code>hof-arms</code> (assert)</td></tr></tbody></table>
+<h3 id="id"><code>id</code></h3>
+<pre class="code jock">func&lt;A&gt; id(x: A) -&gt; A { ... }</pre>
+<p>Generic in <code>A</code>.</p>
+<p>No comment in the source. The signature above is the whole of what <code>id</code> states about itself.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert hof.id(7) == 7;</pre>
+<h3 id="constant"><code>constant</code></h3>
+<pre class="code jock">func&lt;A, B&gt; constant(a: A, b: B) -&gt; A { ... }</pre>
+<p>Generic in <code>A, B</code>.</p>
+<p>No comment in the source. The signature above is the whole of what <code>constant</code> states about itself.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert hof.constant(1, 2) == 1;</pre>
+<h3 id="ap"><code>ap</code></h3>
+<pre class="code jock">func&lt;A, B&gt; ap(f: A -&gt; B, a: A) -&gt; B { ... }</pre>
+<p>Generic in <code>A, B</code>.</p>
+<p>No comment in the source. The signature above is the whole of what <code>ap</code> states about itself.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert hof.ap(inc, 41) == 42;</pre>
+<h3 id="compose"><code>compose</code></h3>
+<pre class="code jock">func&lt;A, B, C&gt; compose(g: B -&gt; C, f: A -&gt; B) -&gt; A -&gt; C { ... }</pre>
+<p>Generic in <code>A, B, C</code>.</p>
+<p>compose(g, f) is g after f; pipe(f, g) is the same in reading order, which is the one worth having in a chain.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert hof.compose(inc, dbl)(10) == 21;</pre>
+<h3 id="pipe"><code>pipe</code></h3>
+<pre class="code jock">func&lt;A, B, C&gt; pipe(f: A -&gt; B, g: B -&gt; C) -&gt; A -&gt; C { ... }</pre>
+<p>Generic in <code>A, B, C</code>.</p>
+<p>No comment in the source. The signature above is the whole of what <code>pipe</code> states about itself.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert hof.pipe(inc, dbl)(10) == 22;</pre>
+<h3 id="curry"><code>curry</code></h3>
+<pre class="code jock">func&lt;A, B, C&gt; curry(f: (A, B) -&gt; C) -&gt; A -&gt; B -&gt; C { ... }</pre>
+<p>Generic in <code>A, B, C</code>.</p>
+<p>curry and uncurry move between the tupled domain a declared func has and the nested-arrow shape. They are inverses: uncurry(curry(f)) has f's type and f's behavior.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert hof.curry(add)(2)(3) == 5;</pre>
+<h3 id="uncurry"><code>uncurry</code></h3>
+<pre class="code jock">func&lt;A, B, C&gt; uncurry(f: A -&gt; B -&gt; C) -&gt; (A, B) -&gt; C { ... }</pre>
+<p>Generic in <code>A, B, C</code>.</p>
+<p>No comment in the source. The signature above is the whole of what <code>uncurry</code> states about itself.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert hof.uncurry(hof.curry(add))((4, 5)) == 9;</pre>
+<h3 id="flip"><code>flip</code></h3>
+<pre class="code jock">func&lt;A, B, C&gt; flip(f: (A, B) -&gt; C) -&gt; (B, A) -&gt; C { ... }</pre>
+<p>Generic in <code>A, B, C</code>.</p>
+<p>No comment in the source. The signature above is the whole of what <code>flip</code> states about itself.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert hof.flip(sub)((1, 9)) == 8;</pre>
+<h3 id="bind1"><code>bind1</code></h3>
+<pre class="code jock">func&lt;A, B, C&gt; bind1(f: (A, B) -&gt; C, a: A) -&gt; B -&gt; C { ... }</pre>
+<p>Generic in <code>A, B, C</code>.</p>
+<p>A partial application: the closure keeps <code>a</code>, so this is the one-shot form of currying for an already-tupled func.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert hof.bind1(add, 100)(5) == 105;</pre>
+<h3 id="turn"><code>turn</code></h3>
+<pre class="code jock">func&lt;T, U&gt; turn(xs: List&lt;T&gt;, f: T -&gt; U) -&gt; List&lt;U&gt; { ... }</pre>
+<p>Generic in <code>T, U</code>.</p>
+<p>turn DELEGATES to the pinned +turn rather than recursing here, so a program writes one spelling and gets the kernel's formula — which is jetted, where this recursion was interpreted. Measured over 20,000 elements: the delegating form costs no time the harness can resolve, the recursion below it cost about two seconds. At small sizes there is nothing in it; this matters for long lists and hot loops, and costs nothing either way.</p>
+<p>The arm is forall-signed, and this func is generic, so the call is a generic call from inside a generic body: T and U are rigid here and the arm's own binders solve from the arguments.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert hof.turn([1, 2, 3], inc) === [2, 3, 4];</pre>
+<h3 id="weld"><code>weld</code></h3>
+<pre class="code jock">func&lt;T&gt; weld(a: List&lt;T&gt;, b: List&lt;T&gt;) -&gt; List&lt;T&gt; { ... }</pre>
+<p>Generic in <code>T</code>.</p>
+<p>weld appends: every element of <code>a</code>, then every element of <code>b</code>. A list is built at its head, so without this the only way to put something BEHIND an existing list is to rebuild it by hand --- and a breadth-first walk, a flood fill and an accumulating render all need exactly that.  Discovered missing by a real caller rather than guessed at.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert hof.weld([1, 2], [3, 4, 5]) === [1, 2, 3, 4, 5];</pre>
+<h3 id="filter"><code>filter</code></h3>
+<pre class="code jock">func&lt;T&gt; filter(xs: List&lt;T&gt;, p: T -&gt; Bool) -&gt; List&lt;T&gt; { ... }</pre>
+<p>Generic in <code>T</code>.</p>
+<p>No comment in the source. The signature above is the whole of what <code>filter</code> states about itself.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert hof.filter([1, 2, 3, 4, 5], isodd) === [1, 3, 5];</pre>
+<h3 id="foldr"><code>foldr</code></h3>
+<pre class="code jock">func&lt;T, U&gt; foldr(xs: List&lt;T&gt;, z: U, f: (T, U) -&gt; U) -&gt; U { ... }</pre>
+<p>Generic in <code>T, U</code>.</p>
+<p>foldr is the right fold: f(x1, f(x2, ... f(xn, z))). It is the one that builds lists, since <code>cons</code> drops straight into it. It delegates to the kernel's +reel, whose gate takes (item, acc) — the order this signature already had, so this is a straight pass-through.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert hof.foldr([1, 2, 3], 0, add) == 6;</pre>
+<h3 id="foldl"><code>foldl</code></h3>
+<pre class="code jock">func&lt;T, U&gt; foldl(acc: U, xs: List&lt;T&gt;, f: (U, T) -&gt; U) -&gt; U { ... }</pre>
+<p>Generic in <code>T, U</code>.</p>
+<p>foldl is the left fold, accumulator first: f(f(f(z, x1), x2), …).</p>
+<p>It delegates to the kernel's +roll, whose gate takes (item, acc) — the OPPOSITE order to this signature. Accumulator-first is the conventional spelling and the one every other arm here reads with, so the flip happens here rather than in the API: one wrapper closure per call, not one per element.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert hof.foldl(0, [1, 2, 3, 4], add) == 10;</pre>
+<h3 id="all"><code>all</code></h3>
+<pre class="code jock">func&lt;T&gt; all(xs: List&lt;T&gt;, p: T -&gt; Bool) -&gt; Bool { ... }</pre>
+<p>Generic in <code>T</code>.</p>
+<p>No comment in the source. The signature above is the whole of what <code>all</code> states about itself.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert hof.all([1, 3, 5], isodd);</pre>
+<h3 id="any"><code>any</code></h3>
+<pre class="code jock">func&lt;T&gt; any(xs: List&lt;T&gt;, p: T -&gt; Bool) -&gt; Bool { ... }</pre>
+<p>Generic in <code>T</code>.</p>
+<p>No comment in the source. The signature above is the whole of what <code>any</code> states about itself.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert hof.any([2, 4, 5], isodd);</pre>
+<h3 id="find"><code>find</code></h3>
+<pre class="code jock">func&lt;T&gt; find(xs: List&lt;T&gt;, p: T -&gt; Bool) -&gt; T? { ... }</pre>
+<p>Generic in <code>T</code>.</p>
+<p>find answers a unit: <code>~</code> when nothing matches. The branches are annotated to <code>T?</code> because the join of <code>T</code> and <code>T?</code> is not computed — that is the join rule, not the call rule.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert (hof.find([1, 5, 20], big) ?? 0) == 20;</pre>
+<h3 id="mapor"><code>mapor</code></h3>
+<pre class="code jock">func&lt;T, U&gt; mapor(x: T?, f: T -&gt; U, d: T) -&gt; U { ... }</pre>
+<p>Generic in <code>T, U</code>.</p>
+<p>mapor applies f through a unit, taking the fallback the narrowing needs from the caller. See WHAT IS NOT HERE.</p>
+<p class="label">asserted by examples/hof-arms.jock</p>
+<pre class="code jock">assert hof.mapor(some, inc, 0) == 42;</pre>
+<h2 id="what-is-not-here">What is not here</h2>
+<p>Stated by the module itself. The absences are the part a reader cannot guess at, so they are written down rather than left to be discovered by a refusal.</p>
+<p>There is no fold or map over Map and Set. Their nouns are hoon treaps and traversal means enumerating entries, which needs a curated FFI arm of the <code>tap</code> family; the pinned interface carries none, so the gap is in the interface, not in this library. An option map that PRESERVES emptiness is also absent: narrowing a <code>T?</code> to its <code>T</code> member is only possible through the <code>??</code> coalesce, which needs a fallback value, and an opaque binder has no bunt to supply one. <code>mapor</code> therefore takes the fallback from the caller.</p>
+<h2 id="what-no-lane-pins">What no lane pins</h2>
+<p>Nothing. All 18 public declarations are named by an example that runs on every push.</p>
+<h2 id="where-it-is-used">Where it is used</h2>
+<p>4 examples import <code>hof</code>. Each is a complete program whose value <code>tools/examples.sh</code> pins on every push.</p>
+<ul><li><code>examples/hof-arms.jock</code> — the arms sheet: one assertion per arm</li><li><code>examples/hof.jock</code> — a use</li><li><code>examples/minesweeper.jock</code> — a use</li><li><code>examples/tap.jock</code> — a use</li></ul>
+<p>The <a href="../../examples/">worked examples</a> page shows the shortest of these in full.</p>
+</main>
+</div>
+</body>
+</html>

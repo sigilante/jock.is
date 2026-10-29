@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>lib/http — Jock reference</title>
+<meta name="description" content="the NockApp http driver, from the Jock side.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!--  ABSOLUTE, not relative.  These were `../jock-highlight.css`,
+      which from /reference/tags/ resolves to
+      /reference/jock-highlight.css --- a 404 on every generated
+      page, so the highlighter never loaded and the listings were
+      marked `class="code jock"` for a script that was not there.
+      The site is served at an apex root, so an absolute path is
+      correct and is immune to however deep a page is nested.  -->
+<link rel="stylesheet" href="/jock-highlight.css">
+<script src="/jock-highlight.js" defer></script>
+<!--
+  HAND-MAINTAINED.  This is the only file in the reference that a
+  person edits:  tools/refgen.py in the compiler repo fills
+  the four placeholders below and writes the pages beside it.
+  Naming them here in their own spelling would be a bug:  the
+  substitution is a plain string replace, so a comment mentioning a
+  placeholder gets the substitution too --- which silently injected
+  the whole document into this comment, doubling every page, until
+  2026-10-27.  Nor may this comment contain a close-comment
+  sequence;  the sentence that said so, spelling it out, closed the
+  comment early and spilled the rest of this text onto the page.  Design lives here, content is generated, and
+  neither needs the other to change.
+
+  Styling is /jock.css, authored from design/style-guide.html ---
+  the design system's own document, which is a visual specimen of
+  inline styles rather than a stylesheet.  This page carries NO copy
+  of it:  that was the whole point of extracting it.
+
+  Jekyll ignores a file whose name starts with `_`, so this template
+  is never served.
+-->
+<link rel="stylesheet" href="/jock.css">
+</head>
+<body>
+<div class="page">
+<header class="bar">
+  <nav><a href="/">jock</a> <span>reference</span></nav>
+  <span>22 declarations · 13 pinned</span>
+</header>
+<main class="prose">
+<h1 class="ruled">lib/http</h1>
+<p class="sub">the NockApp http driver, from the Jock side.</p>
+<!--  §3:  text column beside the 186px margin rail.  A marginal
+      floats into the rail where it was written, so it sits beside
+      its referent;  the rail is empty wherever nothing was said,
+      which §7 calls correct.  -->
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/http.jock</code> and the examples that import it. 22 public declarations — 3 types, 19 arms. 13 pinned by a lane, 9 not. channel <code>%rc</code> · commit <code>15d64f3</code></aside>
+<h2 id="import">Import</h2>
+<p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>http.&lt;name&gt;</code>.</p>
+<pre class="code jock">import http;</pre>
+<p>The name is the file name minus <code>.jock</code>: <code>http</code> is <code>crates/jockc/hoon/lib/http.jock</code>, and it is found because the directory holding it was passed as a <code>--data-dir</code>. There is no search path and no implicit import; <code>tools/libs.py</code> holds the whole discovery rule, and the compiler itself is a pure function of source and libraries.</p>
+<h2 id="about">About</h2>
+<p>The runtime owns the driver.  What a kernel owes it is a shape: requests arrive as [%req id uri method headers body] causes inside an ovum, and the kernel answers with Effect.res --- [%res id status headers body], the driver's own parse verbatim.  This module is that shape, once, so an app is routing and state rather than marshalling.</p>
+<p>Ported from the Hoon side's lib/http.hoon, which every nockd example shares for exactly this reason. the driver's response effect, [%res id status headers body] --- its own parse verbatim (tuple payloads right-nest;  T? erasure is the unit;  Octs is hoon's).  Declared HERE because this is the module that owns the http driver's side of the wire;  it lived in the prelude until 2026-10-24 (runtime.md §8).</p>
+<h2 id="types">Types</h2>
+<p>3 types. A type’s members ARE its interface, so each is shown whole rather than by name.</p>
+<h3 id="effect"><code>Effect</code></h3>
+<pre class="code jock">enum Effect { res((@, @, List&lt;Header&gt;, Octs?)) };</pre>
+<p>No comment in the source. The signature above is the whole of what <code>Effect</code> states about itself.</p>
+<p class="label">used by examples/conway.jock</p>
+<pre class="code jock">class Life(Board) impl Kernel&lt;http.Effect&gt; {</pre>
+<h3 id="ovum"><code>Ovum</code></h3>
+<pre class="code jock">struct Ovum { num: Nat, wire: *, eny: @, our: @, now: @, cause: * };</pre>
+<p>the NockApp ovum (runtime.md §5).  Only <code>cause</code> is ever read here; the rest is named so the mold matches the wire noun.</p>
+<p><code>Nat</code> IS NARROWER THAN <code>@</code> --- it is the number aura, and a cord does not nest into it.  So the fields that carry numbers are Nat and the ones that carry raw atoms of another aura (entropy, a ship, a date) stay <code>@</code>.  Spelling them all Nat would look modern and refuse the wire.</p>
+<h3 id="req"><code>Req</code></h3>
+<pre class="code jock">struct Req { tag: @, id: Nat, uri: String, method: String, headers: List&lt;Header&gt;, body: Octs?, };</pre>
+<p>the %req cause.  <code>tag</code> is the %req atom --- a CORD, hence <code>@</code> --- so an ovum whose cause is shaped like a request but tagged otherwise is not one.</p>
+<p class="label">used by examples/conway.jock</p>
+<pre class="code jock">func route(b: Board, r: http.Req, eny: @) -&gt; Board {</pre>
+<h2 id="arms">Arms</h2>
+<p>19 arms, in source order. The signature is reproduced exactly; the prose is the comment above the arm in <code>crates/jockc/hoon/lib/http.jock</code>.</p>
+<table><thead><tr><th>arm</th><th>signature</th><th>pinned by</th></tr></thead><tbody><tr><td><code>none</code></td><td><code>func none() -&gt; Req</code></td><td>—</td></tr><tr><td><code>isReq</code></td><td><code>func isReq(r: Req) -&gt; Bool</code></td><td><code>conway</code> (use)</td></tr><tr><td><code>request</code></td><td><code>func request(e: *) -&gt; Req</code></td><td><code>conway</code> (use)</td></tr><tr><td><code>entropy</code></td><td><code>func entropy(e: *) -&gt; @</code></td><td><code>conway</code> (use)</td></tr><tr><td><code>isGet</code></td><td><code>func isGet(r: Req) -&gt; Bool</code></td><td><code>http-counter</code> (use)</td></tr><tr><td><code>isPost</code></td><td><code>func isPost(r: Req) -&gt; Bool</code></td><td><code>conway</code> (use)</td></tr><tr><td><code>header</code></td><td><code>func header(hs: List&lt;Header&gt;, k: String) -&gt; String?</code></td><td>—</td></tr><tr><td><code>body</code></td><td><code>func body(s: String) -&gt; Octs?</code></td><td>—</td></tr><tr><td><code>respond</code></td><td><code>func respond(id: Nat, status: Nat, hs: List&lt;Header&gt;, b: Octs?) -&gt; Effect</code></td><td>—</td></tr><tr><td><code>html</code></td><td><code>func html(id: Nat, status: Nat, s: String) -&gt; Effect</code></td><td><code>conway</code> (use)</td></tr><tr><td><code>text</code></td><td><code>func text(id: Nat, status: Nat, s: String) -&gt; Effect</code></td><td><code>http-counter</code> (use)</td></tr><tr><td><code>redirect</code></td><td><code>func redirect(id: Nat, loc: String) -&gt; Effect</code></td><td><code>webserver</code> (use)</td></tr><tr><td><code>status</code></td><td><code>func status(id: Nat, code: Nat) -&gt; Effect</code></td><td>—</td></tr><tr><td><code>digits</code></td><td><code>func digits(bs: List&lt;Byte&gt;, acc: @) -&gt; @</code></td><td>—</td></tr><tr><td><code>param</code></td><td><code>func param(s: String, key: String) -&gt; @</code></td><td><code>conway</code> (use)</td></tr><tr><td><code>bodyText</code></td><td><code>func bodyText(r: Req) -&gt; String</code></td><td>—</td></tr><tr><td><code>fields</code></td><td><code>func fields(r: Req) -&gt; String</code></td><td><code>wordle</code> (use)</td></tr><tr><td><code>lowerRun</code></td><td><code>func lowerRun(bs: List&lt;Byte&gt;) -&gt; List&lt;Byte&gt;</code></td><td>—</td></tr><tr><td><code>word</code></td><td><code>func word(s: String, key: String) -&gt; String</code></td><td><code>wordle</code> (use)</td></tr></tbody></table>
+<h3 id="none"><code>none</code></h3>
+<pre class="code jock">func none() -&gt; Req { ... }</pre>
+<p>Receipt. the not-a-request sentinel.  A zero tag is one the driver never sends, so it cannot collide with a real cause.</p>
+<h3 id="isreq"><code>isReq</code></h3>
+<pre class="code jock">func isReq(r: Req) -&gt; Bool { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>isReq</code> states about itself.</p>
+<p class="label">used by examples/conway.jock</p>
+<pre class="code jock">if http.isReq(r) {</pre>
+<h3 id="request"><code>request</code></h3>
+<pre class="code jock">func request(e: *) -&gt; Req { ... }</pre>
+<p>the ONE cascade.  A poke is an untyped noun: it may be an ovum, it may be a bare atom (the lanes poke those), and its cause may be anything.  Each step is a soft cast, so a poke that is not a request answers the sentinel rather than crashing the kernel.</p>
+<p>IT ANSWERS A Req, NOT A Req?, and that is deliberate.  Jock cannot narrow a <code>T?</code> to its <code>T</code> --- the only way through is <code>??</code> with a fallback --- so a unit here would make every app invent the same sentinel to unwrap it.  The library owns the sentinel instead, and <code>isReq</code> is the test.</p>
+<p class="label">used by examples/conway.jock</p>
+<pre class="code jock">let r = http.request(e);</pre>
+<h3 id="entropy"><code>entropy</code></h3>
+<pre class="code jock">func entropy(e: *) -&gt; @ { ... }</pre>
+<p>the ovum's entropy, or 0 when the poke is not an ovum.</p>
+<p>A kernel that wants an unpredictable game has NO OTHER SOURCE. Its state is checkpointed, so a seed kept in that state is the same seed after every restart --- which is a fresh boot dealing the identical board, every time.  The driver puts entropy in the ovum for exactly this, and <code>request</code> throws the ovum away, so this arm is how a caller keeps it.</p>
+<p class="label">used by examples/conway.jock</p>
+<pre class="code jock">let nb = route(view, r, http.entropy(e));</pre>
+<h3 id="isget"><code>isGet</code></h3>
+<pre class="code jock">func isGet(r: Req) -&gt; Bool { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>isGet</code> states about itself.</p>
+<p class="label">used by examples/http-counter.jock</p>
+<pre class="code jock">if http.isGet(r) { ([http.html(r.id, 200, page(self.count))], self) }</pre>
+<h3 id="ispost"><code>isPost</code></h3>
+<pre class="code jock">func isPost(r: Req) -&gt; Bool { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>isPost</code> states about itself.</p>
+<p class="label">used by examples/conway.jock</p>
+<pre class="code jock">if http.isPost(r) {</pre>
+<h3 id="header"><code>header</code></h3>
+<pre class="code jock">func header(hs: List&lt;Header&gt;, k: String) -&gt; String? { ... }</pre>
+<p>a header by name, or ~.  Header names arrive lowercased from the driver, and this does not fold case: it compares what it is given.</p>
+<h3 id="body"><code>body</code></h3>
+<pre class="code jock">func body(s: String) -&gt; Octs? { ... }</pre>
+<p>Emission. a String becomes a body.  Empty stays EMPTY --- hoon's +to-octs answers ~ for a zero-length payload and the driver expects that, so a blank page is a bodyless 200 rather than a zero-length one.</p>
+<h3 id="respond"><code>respond</code></h3>
+<pre class="code jock">func respond(id: Nat, status: Nat, hs: List&lt;Header&gt;, b: Octs?) -&gt; Effect { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>respond</code> states about itself.</p>
+<h3 id="html"><code>html</code></h3>
+<pre class="code jock">func html(id: Nat, status: Nat, s: String) -&gt; Effect { ... }</pre>
+<p>the three shapes an app actually emits.</p>
+<p class="label">used by examples/conway.jock</p>
+<pre class="code jock">( [http.html(r.id, 200, render(nb))],</pre>
+<h3 id="text"><code>text</code></h3>
+<pre class="code jock">func text(id: Nat, status: Nat, s: String) -&gt; Effect { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>text</code> states about itself.</p>
+<p class="label">used by examples/http-counter.jock</p>
+<pre class="code jock">([http.text(r.id, 405, "method not allowed: {r.method}")], self)</pre>
+<h3 id="redirect"><code>redirect</code></h3>
+<pre class="code jock">func redirect(id: Nat, loc: String) -&gt; Effect { ... }</pre>
+<p>a redirect carries no body;  the driver caches 200s by FULL uri and never caches a 302, which is what makes <code>/x?{n}</code> busting work.</p>
+<p class="label">used by examples/webserver.jock</p>
+<pre class="code jock">([http.redirect(r.id, "/?{n}")], Serve( hits: n ))</pre>
+<h3 id="status"><code>status</code></h3>
+<pre class="code jock">func status(id: Nat, code: Nat) -&gt; Effect { ... }</pre>
+<p>a bare status --- 400, 404, 405 --- with nothing to say.</p>
+<h3 id="digits"><code>digits</code></h3>
+<pre class="code jock">func digits(bs: List&lt;Byte&gt;, acc: @) -&gt; @ { ... }</pre>
+<p>Query and form parameters.</p>
+<p>The driver hands the uri whole ("/reveal?x=3&amp;y=5"), and a form body carries the same key=value&amp;... shape, so one arm reads either.  A String is a cord, so the walk is over its bytes.</p>
+<p>A MISSING KEY IS ZERO, not an error.  These are coordinates and counters from a browser, and a kernel that crashed on a truncated query would be a kernel a malformed link could kill. the leading run of digits as a number, stopping at the first non-digit ('&amp;', the end of the uri, anything)</p>
+<h3 id="param"><code>param</code></h3>
+<pre class="code jock">func param(s: String, key: String) -&gt; @ { ... }</pre>
+<p>param("/reveal?x=3&amp;y=5", "x=") is 3.  The key carries its own <code>=</code> so a caller can ask for "x=" without matching "max=". <code>key</code> must be NON-EMPTY.  String.split crashes on an empty separator, where the old hand-rolled search silently answered "the whole string";  crashing is the louder of the two and every caller here passes a literal.</p>
+<p class="label">used by examples/conway.jock</p>
+<pre class="code jock">toggle(b, http.param(r.uri, "x="), http.param(r.uri, "y="))</pre>
+<h3 id="bodytext"><code>bodyText</code></h3>
+<pre class="code jock">func bodyText(r: Req) -&gt; String { ... }</pre>
+<p>the request body as text, or "" when there is none.</p>
+<h3 id="fields"><code>fields</code></h3>
+<pre class="code jock">func fields(r: Req) -&gt; String { ... }</pre>
+<p>WHERE A FORM'S FIELDS ACTUALLY ARE.  A link or a GET puts them in the query;  a POST form puts them in the BODY.  An app that reads only the uri sees nothing a form submitted, so this joins the two with the separator they already use between fields.</p>
+<p class="label">used by examples/wordle.jock</p>
+<pre class="code jock">submit(g, http.word(http.fields(r), "w="))</pre>
+<h3 id="lowerrun"><code>lowerRun</code></h3>
+<pre class="code jock">func lowerRun(bs: List&lt;Byte&gt;) -&gt; List&lt;Byte&gt; { ... }</pre>
+<p>the run of ASCII letters following <code>key</code>, lowercased, stopping at the first non-letter.  The companion to <code>param</code>: that one reads a number out of a query, this one reads a word.</p>
+<p>A browser may send either case, and a form may send none at all, so uppercase folds down and an absent key answers "".</p>
+<h3 id="word"><code>word</code></h3>
+<pre class="code jock">func word(s: String, key: String) -&gt; String { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>word</code> states about itself.</p>
+<p class="label">used by examples/wordle.jock</p>
+<pre class="code jock">submit(g, http.word(http.fields(r), "w="))</pre>
+<h2 id="what-no-lane-pins">What no lane pins</h2>
+<p>9 of 22 public declarations are named by no example in <code>examples/</code>. They compile — the module is built by <code>tools/modules.sh</code> on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.</p>
+<p>That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.</p>
+<ul><li><code>Ovum</code> — <code>struct Ovum { num: Nat, wire: *, eny: @, our: @, now: @, cause: * };</code></li><li><code>none</code> — <code>func none() -&gt; Req</code></li><li><code>header</code> — <code>func header(hs: List&lt;Header&gt;, k: String) -&gt; String?</code></li><li><code>body</code> — <code>func body(s: String) -&gt; Octs?</code></li><li><code>respond</code> — <code>func respond(id: Nat, status: Nat, hs: List&lt;Header&gt;, b: Octs?) -&gt; Effect</code></li><li><code>status</code> — <code>func status(id: Nat, code: Nat) -&gt; Effect</code></li><li><code>digits</code> — <code>func digits(bs: List&lt;Byte&gt;, acc: @) -&gt; @</code></li><li><code>bodyText</code> — <code>func bodyText(r: Req) -&gt; String</code></li><li><code>lowerRun</code> — <code>func lowerRun(bs: List&lt;Byte&gt;) -&gt; List&lt;Byte&gt;</code></li></ul>
+<h2 id="where-it-is-used">Where it is used</h2>
+<p>5 examples import <code>http</code>. Each is a complete program whose value <code>tools/examples.sh</code> pins on every push.</p>
+<ul><li><code>examples/conway.jock</code> — a use</li><li><code>examples/http-counter.jock</code> — a use</li><li><code>examples/minesweeper.jock</code> — a use</li><li><code>examples/webserver.jock</code> — a use</li><li><code>examples/wordle.jock</code> — a use</li></ul>
+<p>The <a href="../../examples/">worked examples</a> page shows the shortest of these in full.</p>
+</main>
+</div>
+</body>
+</html>

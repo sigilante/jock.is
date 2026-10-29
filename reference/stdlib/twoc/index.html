@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>lib/twoc — Jock reference</title>
+<meta name="description" content="two&#x27;s-complement signed integers at arbitrary bit width">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Sometype+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!--  ABSOLUTE, not relative.  These were `../jock-highlight.css`,
+      which from /reference/tags/ resolves to
+      /reference/jock-highlight.css --- a 404 on every generated
+      page, so the highlighter never loaded and the listings were
+      marked `class="code jock"` for a script that was not there.
+      The site is served at an apex root, so an absolute path is
+      correct and is immune to however deep a page is nested.  -->
+<link rel="stylesheet" href="/jock-highlight.css">
+<script src="/jock-highlight.js" defer></script>
+<!--
+  HAND-MAINTAINED.  This is the only file in the reference that a
+  person edits:  tools/refgen.py in the compiler repo fills
+  the four placeholders below and writes the pages beside it.
+  Naming them here in their own spelling would be a bug:  the
+  substitution is a plain string replace, so a comment mentioning a
+  placeholder gets the substitution too --- which silently injected
+  the whole document into this comment, doubling every page, until
+  2026-10-27.  Nor may this comment contain a close-comment
+  sequence;  the sentence that said so, spelling it out, closed the
+  comment early and spilled the rest of this text onto the page.  Design lives here, content is generated, and
+  neither needs the other to change.
+
+  Styling is /jock.css, authored from design/style-guide.html ---
+  the design system's own document, which is a visual specimen of
+  inline styles rather than a stylesheet.  This page carries NO copy
+  of it:  that was the whole point of extracting it.
+
+  Jekyll ignores a file whose name starts with `_`, so this template
+  is never served.
+-->
+<link rel="stylesheet" href="/jock.css">
+</head>
+<body>
+<div class="page">
+<header class="bar">
+  <nav><a href="/">jock</a> <span>reference</span></nav>
+  <span>8 declarations · 7 pinned</span>
+</header>
+<main class="prose">
+<h1 class="ruled">lib/twoc</h1>
+<p class="sub">two's-complement signed integers at arbitrary bit width</p>
+<!--  §3:  text column beside the 186px margin rail.  A marginal
+      floats into the rail where it was written, so it sits beside
+      its referent;  the rail is empty wherever nothing was said,
+      which §7 calls correct.  -->
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/twoc.jock</code> and the examples that import it. 8 public declarations — 1 type, 7 arms. 7 pinned by a lane, 1 not. channel <code>%rc</code> · commit <code>15d64f3</code></aside>
+<h2 id="import">Import</h2>
+<p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>twoc.&lt;name&gt;</code>.</p>
+<pre class="code jock">import twoc;</pre>
+<p>The name is the file name minus <code>.jock</code>: <code>twoc</code> is <code>crates/jockc/hoon/lib/twoc.jock</code>, and it is found because the directory holding it was passed as a <code>--data-dir</code>. There is no search path and no implicit import; <code>tools/libs.py</code> holds the whole discovery rule, and the compiler itself is a pure function of source and libraries.</p>
+<h2 id="about">About</h2>
+<p>Operations wrap mod 2^width rather than crashing on overflow. That is deliberate, and it is what hardware does: a checked type is a different library. The consequence worth stating once is that the minimum value is its own negation — neg(min) = min, abs(min) = min, div(min, -1) = min — because there is no room above it.</p>
+<p>WHY A CLASS. The width is not a parameter of each operation but of the whole arithmetic, so it belongs in state: <code>let t = w32(); t.add(a, b)</code> reads as one 32-bit arithmetic rather than a pile of width arguments. Twoc is SEALED, so <code>wid</code> is positive by construction and no arm has to re-check it.</p>
+<p>THE REPRESENTATION. A width-w value is an ordinary Nat holding the low w bits; the sign lives in bit w-1 and nowhere else. This is NOT Jock's <code>Int</code>, which is ZigZag (<code>+n</code> = 2n) — the two encodings disagree about every negative number, so crossing between them goes through <code>fromInt</code>/<code>toInt</code> and never through a cast.</p>
+<p>HOW THE BITS ARE REACHED. The pinned <code>rsh</code>/<code>lsh</code>/<code>end</code> arms take a BIT count, not a bloq, which is what makes this library short: end(w, a)     is  a mod 2^w        — the truncation, everywhere lsh(w, 1)     is  2^w              — the modulus dec(lsh(w,1)) is  2^w - 1          — the all-ones mask mix(a, ones)  is  bitwise NOT      — within the width so <code>wrap</code> is one call and every other arm is arithmetic on top.</p>
+<p>FLOAT LANES. w16/w32/w64/w128 are the widths of Float16, Float32, Float64 and Float128, so this is the integer view of a float's bits: the lanes a numerics stack needs for exponent arithmetic, ordering tricks and bit-level round-tripping.</p>
+<h2 id="types">Types</h2>
+<p>1 type. A type’s members ARE its interface, so each is shown whole rather than by name.</p>
+<h3 id="twocstate"><code>TwocState</code></h3>
+<pre class="code jock">struct TwocState { wid: Nat };</pre>
+<p>No comment in the source. The signature above is the whole of what <code>TwocState</code> states about itself.</p>
+<h2 id="arms">Arms</h2>
+<p>7 arms, in source order. The signature is reproduced exactly; the prose is the comment above the arm in <code>crates/jockc/hoon/lib/twoc.jock</code>.</p>
+<table><thead><tr><th>arm</th><th>signature</th><th>pinned by</th></tr></thead><tbody><tr><td><code>wid</code></td><td><code>func wid(n: Nat) -&gt; Twoc</code></td><td><code>twoc-arms</code> (assert)</td></tr><tr><td><code>bloq</code></td><td><code>func bloq(b: Nat) -&gt; Twoc</code></td><td><code>twoc-arms</code> (assert)</td></tr><tr><td><code>w8</code></td><td><code>func w8() -&gt; Twoc</code></td><td><code>twoc-arms</code> (use)</td></tr><tr><td><code>w16</code></td><td><code>func w16() -&gt; Twoc</code></td><td><code>twoc-arms</code> (assert)</td></tr><tr><td><code>w32</code></td><td><code>func w32() -&gt; Twoc</code></td><td><code>twoc-arms</code> (assert)</td></tr><tr><td><code>w64</code></td><td><code>func w64() -&gt; Twoc</code></td><td><code>twoc-arms</code> (assert)</td></tr><tr><td><code>w128</code></td><td><code>func w128() -&gt; Twoc</code></td><td><code>twoc-arms</code> (assert)</td></tr></tbody></table>
+<h3 id="wid"><code>wid</code></h3>
+<pre class="code jock">func wid(n: Nat) -&gt; Twoc { ... }</pre>
+<p>wid: the general constructor, and the one refusal site — a zero-width two's complement has no sign bit to speak of.</p>
+<p class="label">asserted by examples/twoc-arms.jock</p>
+<pre class="code jock">assert twoc.wid(12).ones() == 4095;</pre>
+<h3 id="bloq"><code>bloq</code></h3>
+<pre class="code jock">func bloq(b: Nat) -&gt; Twoc { ... }</pre>
+<p>bloq: the bloq-keyed spelling, width 2^b, for callers working in bloq-sized lanes.</p>
+<p class="label">asserted by examples/twoc-arms.jock</p>
+<pre class="code jock">assert twoc.bloq(5).len() == 32;</pre>
+<h3 id="w8"><code>w8</code></h3>
+<pre class="code jock">func w8() -&gt; Twoc { ... }</pre>
+<p>The float lanes, and the byte.</p>
+<p class="label">used by examples/twoc-arms.jock</p>
+<pre class="code jock">let t = twoc.w8();</pre>
+<h3 id="w16"><code>w16</code></h3>
+<pre class="code jock">func w16() -&gt; Twoc { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>w16</code> states about itself.</p>
+<p class="label">asserted by examples/twoc-arms.jock</p>
+<pre class="code jock">assert twoc.w16().neg(1) == 65535;</pre>
+<h3 id="w32"><code>w32</code></h3>
+<pre class="code jock">func w32() -&gt; Twoc { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>w32</code> states about itself.</p>
+<p class="label">asserted by examples/twoc-arms.jock</p>
+<pre class="code jock">assert twoc.w32().neg(1) == 4294967295;</pre>
+<h3 id="w64"><code>w64</code></h3>
+<pre class="code jock">func w64() -&gt; Twoc { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>w64</code> states about itself.</p>
+<p class="label">asserted by examples/twoc-arms.jock</p>
+<pre class="code jock">assert twoc.w64().neg(1) == 18446744073709551615;</pre>
+<h3 id="w128"><code>w128</code></h3>
+<pre class="code jock">func w128() -&gt; Twoc { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>w128</code> states about itself.</p>
+<p class="label">asserted by examples/twoc-arms.jock</p>
+<pre class="code jock">assert twoc.w128().len() == 128;</pre>
+<h2 id="what-no-lane-pins">What no lane pins</h2>
+<p>1 of 8 public declarations are named by no example in <code>examples/</code>. They compile — the module is built by <code>tools/modules.sh</code> on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.</p>
+<p>That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.</p>
+<ul><li><code>TwocState</code> — <code>struct TwocState { wid: Nat };</code></li></ul>
+<h2 id="where-it-is-used">Where it is used</h2>
+<p>2 examples import <code>twoc</code>. Each is a complete program whose value <code>tools/examples.sh</code> pins on every push.</p>
+<ul><li><code>examples/twoc-arms.jock</code> — the arms sheet: one assertion per arm</li><li><code>examples/twoc.jock</code> — a use</li></ul>
+<p>The <a href="../../examples/">worked examples</a> page shows the shortest of these in full.</p>
+</main>
+</div>
+</body>
+</html>
