@@ -5,7 +5,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `019736f` (sigilante/review-fixes) · corpus 1147 vectors · 2026-10-28
+> channel `%rc` · commit `c215ea7` (sigilante/review-fixes) · corpus 1147 vectors · 2026-10-29
 
 |  | count |  |
 |---|---:|---|

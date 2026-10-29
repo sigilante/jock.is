@@ -5,7 +5,7 @@ What a Jock program becomes. Types erase totally — there is no runtime type in
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `019736f` (sigilante/review-fixes) · corpus 1147 vectors · 2026-10-28
+> channel `%rc` · commit `c215ea7` (sigilante/review-fixes) · corpus 1147 vectors · 2026-10-29
 
 ## The erasure table
 
@@ -34,7 +34,7 @@ Erasure is **total**: no runtime type information, and no vases beyond the FFI b
 
 ## The same table, run
 
-Each row is a claim S10.1 makes and the value the compiler produced when asked, probed with `tools/jockc.sh run` on 2026-10-28. These are probes, not corpus rows: the corpus asserts field *accesses* on these shapes rather than the shapes themselves, and a field access is not an erasure.
+Each row is a claim S10.1 makes and the value the compiler produced when asked, probed with `tools/jockc.sh run` on 2026-10-29. These are probes, not corpus rows: the corpus asserts field *accesses* on these shapes rather than the shapes themselves, and a field access is not an erasure.
 
 ```jock
 struct P { x: @, y: @ }; P( x: 1, y: 2 )
