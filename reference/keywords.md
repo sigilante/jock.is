@@ -5,7 +5,7 @@ All 30 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `8b5492e` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+> channel `%rc` · commit `a1f9572` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
 
 Each keyword below carries its **class** — kernel or sugar, one of the language’s four design principles — and **what it does**, both projected from the keyword inventory at [L-61](/spec/language/#l-61), whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.
 
@@ -51,6 +51,8 @@ There is deliberately **no BNF here.** Jock’s parser is recursive descent (`pa
 | 13 | `or` | left |
 
 The comparisons at 8 and 9 are **non-associative** and must be parenthesized: `a < b < c` refuses `%parse-nonassoc` rather than returning a boolean surprise ([L-108](/spec/language/#l-108)).
+
+Every level of this table is drawn as a railroad diagram on [the surface grammar](/reference/grammar/), projected from the parse arm that implements it — including the dead ends, which is where the non-associativity above is visible rather than stated.
 
 ## Keywords
 

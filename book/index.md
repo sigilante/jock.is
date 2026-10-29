@@ -5,7 +5,7 @@ R1–R11, the book’s reference sections. The same checked facts as [the agent 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes these pages.
 >
-> channel `%rc` · commit `8b5492e` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
+> channel `%rc` · commit `a1f9572` (sigilante/pre-rc-sweep) · corpus 1154 vectors · 2026-10-30
 
 The narrative chapters are hand-written and are not here. Only the back matter is generated, which is what makes it checkable: `refgen --check` regenerates these pages and fails on a diff.
 
@@ -31,7 +31,7 @@ The narrative chapters are hand-written and are not here. Only the back matter i
 
 One section cannot be generated as the outline describes it, and says so on its own page rather than looking finished.
 
-- **R2** wants railroad diagrams. A diagram is a rendering of a grammar, and there is no grammar artifact to render — the parser is recursive descent. The page carries the sugar rewrite index, which is the lowering half of what R2 asks for, and quotes the ruling that would have to be lifted first.
+- **R2** wants railroad diagrams for all 30 keywords and has 14 productions. The diagrams exist now — see [the surface grammar](/reference/grammar/) — and they are projected from the parser, which is the only place the grammar has ever been written down, and checked against it on every run. What is drawn so far is the precedence chain; the declarations, the statement forms, the patterns and the type grammar are not. This page carries the sugar rewrite index, which is the lowering half of what R2 asks for.
 
 **R1 was the other one, and is now complete.** It wanted the Nock 4K reduction rules verbatim and this repo had no copy; the specification is vendored now, hashed in `vendor/SNAPSHOT.txt`, and emitted from that file — so *verbatim* is a claim the `pins` lane checks rather than one this page makes.
 

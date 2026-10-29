@@ -5,7 +5,7 @@ Jock’s vocabulary, each term pointing at the normative rule that introduces it
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> 25 terms · channel `%rc` · commit `8b5492e`
+> 25 terms · channel `%rc` · commit `a1f9572`
 
 ## Why this is an index and not prose
 
