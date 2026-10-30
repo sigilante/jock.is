@@ -5,7 +5,7 @@ exact rational arithmetic over Int.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/rational.jock` and the examples that import it.
 >
-> 9 public declarations — 0 types, 9 arms. 9 pinned by a lane, 0 not. channel `%rc` · commit `f1c3be4`
+> 9 public declarations — 0 types, 9 arms. 9 pinned by a lane, 0 not. channel `%rc` · commit `8c0074a`
 
 ## Import
 

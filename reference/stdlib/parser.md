@@ -5,7 +5,7 @@ parser combinators.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/parser.jock` and the examples that import it.
 >
-> 38 public declarations — 7 types, 31 arms. 33 pinned by a lane, 5 not. channel `%rc` · commit `f1c3be4`
+> 38 public declarations — 7 types, 31 arms. 33 pinned by a lane, 5 not. channel `%rc` · commit `8c0074a`
 
 ## Import
 
@@ -584,6 +584,8 @@ assert (parser.rush("ab", parser.altseq(parser.just('a'), parser.just('b'), pars
 ## What no lane pins
 
 5 of 38 public declarations are named by no example in `examples/`. They compile — the module is built by `tools/modules.sh` on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.
+
+2 of those are an `impl`, and the rule is what cannot reach them, not the example. A pin is a line naming `parser.<declaration>`; an impl is named for its `Trait for Type` pair, and no program writes that — it writes `a < b` or `t.show()`, whose connection to the impl is a **type** fact this generator does not have. Guessing it from the text could claim coverage that is not there, so the count stays honest and says this instead.
 
 That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.
 

@@ -5,7 +5,7 @@ civil dates, ISO 8601, and the Urbit `@da`.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/time.jock` and the examples that import it.
 >
-> 21 public declarations — 1 type, 20 arms. 21 pinned by a lane, 0 not. channel `%rc` · commit `f1c3be4`
+> 28 public declarations — 6 types, 22 arms. 23 pinned by a lane, 5 not. channel `%rc` · commit `8c0074a`
 
 ## Import
 
@@ -33,7 +33,7 @@ let t = time.parse("2026-10-30T12:00:00Z"); match t { ~ => "unparseable", (~, s)
 
 ## Types
 
-1 type. A type’s members ARE its interface, so each is shown whole rather than by name.
+6 types. A type’s members ARE its interface, so each is shown whole rather than by name.
 
 ### `Stamp`
 
@@ -49,9 +49,57 @@ No comment in the source. The signature above is the whole of what `Stamp` state
 assert not time.valid(time.Stamp(year: 2026, month: 2, day: 30,
 ```
 
+### `Show for Stamp`
+
+```jock
+impl Show for Stamp { show(self: Stamp) -> String { iso(self) }; };
+```
+
+---- what the operators CAN carry -----------------------------
+
+Ordering and rendering, for `Stamp` only.
+
+`Span` gets none of this, and cannot: it is a prelude aura, so an `impl` for it from this module is an orphan and refuses `%mint-impl-orphan 'Add' '@span'`. Durations therefore add and compare through `spanSecs`, which is why that arm is public.
+
+`Eq` is absent because it would be redundant: a Stamp is a product of atoms, so two equal Stamps are the same noun and `==` is Nock 5 on them already. An impl would be a second answer to a question the substrate answers.
+
+Ordering goes through `toSecs` and NOT through the field order. A Stamp is a product and Nock has no lexicographic compare, so structural comparison would order by whatever the erasure happens to be rather than by time.
+
+### `Lt for Stamp`
+
+```jock
+impl Lt for Stamp { lt(self: Stamp, p: Stamp) -> Bool { toSecs(self) < toSecs(p) }; };
+```
+
+No comment in the source. The signature above is the whole of what `Lt for Stamp` states about itself.
+
+### `Lte for Stamp`
+
+```jock
+impl Lte for Stamp { lte(self: Stamp, p: Stamp) -> Bool { toSecs(self) <= toSecs(p) }; };
+```
+
+No comment in the source. The signature above is the whole of what `Lte for Stamp` states about itself.
+
+### `Gt for Stamp`
+
+```jock
+impl Gt for Stamp { gt(self: Stamp, p: Stamp) -> Bool { toSecs(self) > toSecs(p) }; };
+```
+
+No comment in the source. The signature above is the whole of what `Gt for Stamp` states about itself.
+
+### `Gte for Stamp`
+
+```jock
+impl Gte for Stamp { gte(self: Stamp, p: Stamp) -> Bool { toSecs(self) >= toSecs(p) }; };
+```
+
+No comment in the source. The signature above is the whole of what `Gte for Stamp` states about itself.
+
 ## Arms
 
-20 arms, in source order. The signature is reproduced exactly; the prose is the comment above the arm in `crates/jockc/hoon/lib/time.jock`.
+22 arms, in source order. The signature is reproduced exactly; the prose is the comment above the arm in `crates/jockc/hoon/lib/time.jock`.
 
 | arm | signature | pinned by |
 |---|---|---|
@@ -75,6 +123,8 @@ assert not time.valid(time.Stamp(year: 2026, month: 2, day: 30,
 | `valid` | `func valid(t: Stamp) -> Bool` | `time-arms` (assert) |
 | `parse` | `func parse(s: String) -> Stamp?` | `time-arms` (assert) |
 | `show` | `func show(t: Stamp) -> String` | `time-arms` (assert) |
+| `plus` | `func plus(t: Stamp, s: Span) -> Stamp` | `time-arms` (assert) |
+| `minus` | `func minus(t: Stamp, s: Span) -> Stamp` | `time-arms` (assert) |
 
 ### `epoch`
 
@@ -358,11 +408,51 @@ No comment in the source. The signature above is the whole of what `show` states
 assert time.show(time.fromDate(d)) === "2026-10-30T12:34:56Z";
 ```
 
+### `plus`
+
+```jock
+func plus(t: Stamp, s: Span) -> Stamp { ... }
+```
+
+---- shifting an instant --------------------------------------
+
+NOT operators, and not for want of trying. An arithmetic op-trait is `(Self, Self) -> Self`: `Stamp + Span` fails because the right operand is not `Self`, and `Stamp - Stamp -> Span` fails because the result is not. Both refuse `%mint-impl-sig`. So the two genuinely useful arithmetic operations on instants are named functions, and `between` above is the subtraction.
+
+*asserted by examples/time-arms.jock*
+
+```jock
+assert time.show(time.plus(newyear, anHour)) === "2026-01-01T01:00:00Z";
+```
+
+### `minus`
+
+```jock
+func minus(t: Stamp, s: Span) -> Stamp { ... }
+```
+
+No comment in the source. The signature above is the whole of what `minus` states about itself.
+
+*asserted by examples/time-arms.jock*
+
+```jock
+assert time.toSecs(time.minus(time.plus(noon, anHour), anHour)) == time.toSecs(noon);
+```
+
 ## What no lane pins
 
-Nothing. All 21 public declarations are named by an example that runs on every push.
+5 of 28 public declarations are named by no example in `examples/`. They compile — the module is built by `tools/modules.sh` on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.
 
-14 further declarations are `private` and therefore not reachable by an importer at all: `monthsBefore`, `yawnLoop`, `yallMonth`, `yallYear`, `yall`, `isDigit`, `digits`, `lit`, `some`, `none`, `parseTime`, `padLoop`, `pad`, `showFull`.
+5 of those are an `impl`, and the rule is what cannot reach them, not the example. A pin is a line naming `time.<declaration>`; an impl is named for its `Trait for Type` pair, and no program writes that — it writes `a < b` or `t.show()`, whose connection to the impl is a **type** fact this generator does not have. Guessing it from the text could claim coverage that is not there, so the count stays honest and says this instead.
+
+That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.
+
+- `Show for Stamp` — `impl Show for Stamp { show(self: Stamp) -> String { iso(self) }; };`
+- `Lt for Stamp` — `impl Lt for Stamp { lt(self: Stamp, p: Stamp) -> Bool { toSecs(self) < toSecs(p) }; };`
+- `Lte for Stamp` — `impl Lte for Stamp { lte(self: Stamp, p: Stamp) -> Bool { toSecs(self) <= toSecs(p) }; };`
+- `Gt for Stamp` — `impl Gt for Stamp { gt(self: Stamp, p: Stamp) -> Bool { toSecs(self) > toSecs(p) }; };`
+- `Gte for Stamp` — `impl Gte for Stamp { gte(self: Stamp, p: Stamp) -> Bool { toSecs(self) >= toSecs(p) }; };`
+
+15 further declarations are `private` and therefore not reachable by an importer at all: `monthsBefore`, `yawnLoop`, `yallMonth`, `yallYear`, `yall`, `isDigit`, `digits`, `lit`, `some`, `none`, `parseTime`, `padLoop`, `pad`, `showFull`, `iso`.
 
 ## Where it is used
 

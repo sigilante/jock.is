@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>f1c3be4</code> (sigilante/pre-rc-sweep) · corpus 1156 vectors · 2026-10-30</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>8c0074a</code> (sigilante/pre-rc-sweep) · corpus 1156 vectors · 2026-10-30</aside>
 <p>An agent driving the compiler should parse this rather than the human output, which is built for a terminal and whose alignment is meaningful.</p>
 <h2 id="fields">Fields</h2>
 <table><thead><tr><th>Field</th><th>On success</th><th>On refusal</th></tr></thead><tbody><tr><td><code>status</code></td><td><code>"ok"</code></td><td><code>"refused"</code>, or <code>"crashed"</code> with no tag</td></tr><tr><td><code>type</code></td><td>the program’s type, as a string</td><td>absent</td></tr><tr><td><code>tag</code></td><td>absent</td><td>the refusal tag, without its <code>%</code></td></tr><tr><td><code>line</code>, <code>col</code></td><td>absent</td><td>1-indexed position; <code>0,0</code> means end of input</td></tr><tr><td><code>module</code></td><td>absent</td><td>the <code>--data-dir</code> module the refusal came from, or <code>null</code></td></tr><tr><td><code>report</code></td><td>absent</td><td>the human report, one string per line</td></tr></tbody></table>

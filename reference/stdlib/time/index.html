@@ -45,7 +45,7 @@
 <div class="page">
 <header class="bar">
   <nav><a href="/">jock</a> <span>reference</span></nav>
-  <span>21 declarations · 21 pinned</span>
+  <span>28 declarations · 23 pinned</span>
 </header>
 <main class="prose">
 <h1 class="ruled">lib/time</h1>
@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/time.jock</code> and the examples that import it. 21 public declarations — 1 type, 20 arms. 21 pinned by a lane, 0 not. channel <code>%rc</code> · commit <code>f1c3be4</code></aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/time.jock</code> and the examples that import it. 28 public declarations — 6 types, 22 arms. 23 pinned by a lane, 5 not. channel <code>%rc</code> · commit <code>8c0074a</code></aside>
 <h2 id="import">Import</h2>
 <p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>time.&lt;name&gt;</code>.</p>
 <pre class="code jock">import time;</pre>
@@ -67,15 +67,34 @@
 <p>import time;</p>
 <p>let t = time.parse("2026-10-30T12:00:00Z"); match t { ~ =&gt; "unparseable", (~, s) =&gt; time.show(s) } An instant, broken down. Fields are plain atoms and nothing validates them on construction — <code>show</code> of a nonsense Stamp is nonsense, and <code>valid</code> is how you ask.</p>
 <h2 id="types">Types</h2>
-<p>1 type. A type’s members ARE its interface, so each is shown whole rather than by name.</p>
+<p>6 types. A type’s members ARE its interface, so each is shown whole rather than by name.</p>
 <h3 id="stamp"><code>Stamp</code></h3>
 <pre class="code jock">struct Stamp { year: @, month: @, day: @, hour: @, minute: @, second: @ } // EPOCH: years from the start of the Urbit epoch to 1 AD. // `+year:hoon` adds this to an AD year;</pre>
 <p>No comment in the source. The signature above is the whole of what <code>Stamp</code> states about itself.</p>
 <p class="label">asserted by examples/time-arms.jock</p>
 <pre class="code jock">assert not time.valid(time.Stamp(year: 2026, month: 2, day: 30,</pre>
+<h3 id="show-for-stamp"><code>Show for Stamp</code></h3>
+<pre class="code jock">impl Show for Stamp { show(self: Stamp) -&gt; String { iso(self) }; };</pre>
+<p>---- what the operators CAN carry -----------------------------</p>
+<p>Ordering and rendering, for <code>Stamp</code> only.</p>
+<p><code>Span</code> gets none of this, and cannot: it is a prelude aura, so an <code>impl</code> for it from this module is an orphan and refuses <code>%mint-impl-orphan 'Add' '@span'</code>. Durations therefore add and compare through <code>spanSecs</code>, which is why that arm is public.</p>
+<p><code>Eq</code> is absent because it would be redundant: a Stamp is a product of atoms, so two equal Stamps are the same noun and <code>==</code> is Nock 5 on them already. An impl would be a second answer to a question the substrate answers.</p>
+<p>Ordering goes through <code>toSecs</code> and NOT through the field order. A Stamp is a product and Nock has no lexicographic compare, so structural comparison would order by whatever the erasure happens to be rather than by time.</p>
+<h3 id="lt-for-stamp"><code>Lt for Stamp</code></h3>
+<pre class="code jock">impl Lt for Stamp { lt(self: Stamp, p: Stamp) -&gt; Bool { toSecs(self) &lt; toSecs(p) }; };</pre>
+<p>No comment in the source. The signature above is the whole of what <code>Lt for Stamp</code> states about itself.</p>
+<h3 id="lte-for-stamp"><code>Lte for Stamp</code></h3>
+<pre class="code jock">impl Lte for Stamp { lte(self: Stamp, p: Stamp) -&gt; Bool { toSecs(self) &lt;= toSecs(p) }; };</pre>
+<p>No comment in the source. The signature above is the whole of what <code>Lte for Stamp</code> states about itself.</p>
+<h3 id="gt-for-stamp"><code>Gt for Stamp</code></h3>
+<pre class="code jock">impl Gt for Stamp { gt(self: Stamp, p: Stamp) -&gt; Bool { toSecs(self) &gt; toSecs(p) }; };</pre>
+<p>No comment in the source. The signature above is the whole of what <code>Gt for Stamp</code> states about itself.</p>
+<h3 id="gte-for-stamp"><code>Gte for Stamp</code></h3>
+<pre class="code jock">impl Gte for Stamp { gte(self: Stamp, p: Stamp) -&gt; Bool { toSecs(self) &gt;= toSecs(p) }; };</pre>
+<p>No comment in the source. The signature above is the whole of what <code>Gte for Stamp</code> states about itself.</p>
 <h2 id="arms">Arms</h2>
-<p>20 arms, in source order. The signature is reproduced exactly; the prose is the comment above the arm in <code>crates/jockc/hoon/lib/time.jock</code>.</p>
-<table><thead><tr><th>arm</th><th>signature</th><th>pinned by</th></tr></thead><tbody><tr><td><code>epoch</code></td><td><code>func epoch() -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>daySecs</code></td><td><code>func daySecs() -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>hourSecs</code></td><td><code>func hourSecs() -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>minuteSecs</code></td><td><code>func minuteSecs() -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>leap</code></td><td><code>func leap(y: @) -&gt; Bool</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>monthDays</code></td><td><code>func monthDays(y: @, m: @) -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>dayOf</code></td><td><code>func dayOf(y: @, m: @, d: @) -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>toSecs</code></td><td><code>func toSecs(t: Stamp) -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>fromSecs</code></td><td><code>func fromSecs(secs: @) -&gt; Stamp</code></td><td><code>time-arms</code> (use)</td></tr><tr><td><code>toDate</code></td><td><code>func toDate(t: Stamp) -&gt; Date</code></td><td><code>time-arms</code> (use)</td></tr><tr><td><code>fromDate</code></td><td><code>func fromDate(d: Date) -&gt; Stamp</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>span</code></td><td><code>func span(secs: @) -&gt; Span</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>spanSecs</code></td><td><code>func spanSecs(s: Span) -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>between</code></td><td><code>func between(a: Stamp, b: Stamp) -&gt; Span</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>unixEpoch</code></td><td><code>func unixEpoch() -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>toUnix</code></td><td><code>func toUnix(t: Stamp) -&gt; Int</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>fromUnix</code></td><td><code>func fromUnix(secs: Int) -&gt; Stamp</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>valid</code></td><td><code>func valid(t: Stamp) -&gt; Bool</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>parse</code></td><td><code>func parse(s: String) -&gt; Stamp?</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>show</code></td><td><code>func show(t: Stamp) -&gt; String</code></td><td><code>time-arms</code> (assert)</td></tr></tbody></table>
+<p>22 arms, in source order. The signature is reproduced exactly; the prose is the comment above the arm in <code>crates/jockc/hoon/lib/time.jock</code>.</p>
+<table><thead><tr><th>arm</th><th>signature</th><th>pinned by</th></tr></thead><tbody><tr><td><code>epoch</code></td><td><code>func epoch() -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>daySecs</code></td><td><code>func daySecs() -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>hourSecs</code></td><td><code>func hourSecs() -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>minuteSecs</code></td><td><code>func minuteSecs() -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>leap</code></td><td><code>func leap(y: @) -&gt; Bool</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>monthDays</code></td><td><code>func monthDays(y: @, m: @) -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>dayOf</code></td><td><code>func dayOf(y: @, m: @, d: @) -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>toSecs</code></td><td><code>func toSecs(t: Stamp) -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>fromSecs</code></td><td><code>func fromSecs(secs: @) -&gt; Stamp</code></td><td><code>time-arms</code> (use)</td></tr><tr><td><code>toDate</code></td><td><code>func toDate(t: Stamp) -&gt; Date</code></td><td><code>time-arms</code> (use)</td></tr><tr><td><code>fromDate</code></td><td><code>func fromDate(d: Date) -&gt; Stamp</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>span</code></td><td><code>func span(secs: @) -&gt; Span</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>spanSecs</code></td><td><code>func spanSecs(s: Span) -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>between</code></td><td><code>func between(a: Stamp, b: Stamp) -&gt; Span</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>unixEpoch</code></td><td><code>func unixEpoch() -&gt; @</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>toUnix</code></td><td><code>func toUnix(t: Stamp) -&gt; Int</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>fromUnix</code></td><td><code>func fromUnix(secs: Int) -&gt; Stamp</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>valid</code></td><td><code>func valid(t: Stamp) -&gt; Bool</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>parse</code></td><td><code>func parse(s: String) -&gt; Stamp?</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>show</code></td><td><code>func show(t: Stamp) -&gt; String</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>plus</code></td><td><code>func plus(t: Stamp, s: Span) -&gt; Stamp</code></td><td><code>time-arms</code> (assert)</td></tr><tr><td><code>minus</code></td><td><code>func minus(t: Stamp, s: Span) -&gt; Stamp</code></td><td><code>time-arms</code> (assert)</td></tr></tbody></table>
 <h3 id="epoch"><code>epoch</code></h3>
 <pre class="code jock">func epoch() -&gt; @ { ... }</pre>
 <p>No comment in the source. The signature above is the whole of what <code>epoch</code> states about itself.</p>
@@ -177,9 +196,23 @@
 <p>No comment in the source. The signature above is the whole of what <code>show</code> states about itself.</p>
 <p class="label">asserted by examples/time-arms.jock</p>
 <pre class="code jock">assert time.show(time.fromDate(d)) === "2026-10-30T12:34:56Z";</pre>
+<h3 id="plus"><code>plus</code></h3>
+<pre class="code jock">func plus(t: Stamp, s: Span) -&gt; Stamp { ... }</pre>
+<p>---- shifting an instant --------------------------------------</p>
+<p>NOT operators, and not for want of trying. An arithmetic op-trait is <code>(Self, Self) -&gt; Self</code>: <code>Stamp + Span</code> fails because the right operand is not <code>Self</code>, and <code>Stamp - Stamp -&gt; Span</code> fails because the result is not. Both refuse <code>%mint-impl-sig</code>. So the two genuinely useful arithmetic operations on instants are named functions, and <code>between</code> above is the subtraction.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.show(time.plus(newyear, anHour)) === "2026-01-01T01:00:00Z";</pre>
+<h3 id="minus"><code>minus</code></h3>
+<pre class="code jock">func minus(t: Stamp, s: Span) -&gt; Stamp { ... }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>minus</code> states about itself.</p>
+<p class="label">asserted by examples/time-arms.jock</p>
+<pre class="code jock">assert time.toSecs(time.minus(time.plus(noon, anHour), anHour)) == time.toSecs(noon);</pre>
 <h2 id="what-no-lane-pins">What no lane pins</h2>
-<p>Nothing. All 21 public declarations are named by an example that runs on every push.</p>
-<p>14 further declarations are <code>private</code> and therefore not reachable by an importer at all: <code>monthsBefore</code>, <code>yawnLoop</code>, <code>yallMonth</code>, <code>yallYear</code>, <code>yall</code>, <code>isDigit</code>, <code>digits</code>, <code>lit</code>, <code>some</code>, <code>none</code>, <code>parseTime</code>, <code>padLoop</code>, <code>pad</code>, <code>showFull</code>.</p>
+<p>5 of 28 public declarations are named by no example in <code>examples/</code>. They compile — the module is built by <code>tools/modules.sh</code> on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.</p>
+<p>5 of those are an <code>impl</code>, and the rule is what cannot reach them, not the example. A pin is a line naming <code>time.&lt;declaration&gt;</code>; an impl is named for its <code>Trait for Type</code> pair, and no program writes that — it writes <code>a &lt; b</code> or <code>t.show()</code>, whose connection to the impl is a <strong>type</strong> fact this generator does not have. Guessing it from the text could claim coverage that is not there, so the count stays honest and says this instead.</p>
+<p>That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.</p>
+<ul><li><code>Show for Stamp</code> — <code>impl Show for Stamp { show(self: Stamp) -&gt; String { iso(self) }; };</code></li><li><code>Lt for Stamp</code> — <code>impl Lt for Stamp { lt(self: Stamp, p: Stamp) -&gt; Bool { toSecs(self) &lt; toSecs(p) }; };</code></li><li><code>Lte for Stamp</code> — <code>impl Lte for Stamp { lte(self: Stamp, p: Stamp) -&gt; Bool { toSecs(self) &lt;= toSecs(p) }; };</code></li><li><code>Gt for Stamp</code> — <code>impl Gt for Stamp { gt(self: Stamp, p: Stamp) -&gt; Bool { toSecs(self) &gt; toSecs(p) }; };</code></li><li><code>Gte for Stamp</code> — <code>impl Gte for Stamp { gte(self: Stamp, p: Stamp) -&gt; Bool { toSecs(self) &gt;= toSecs(p) }; };</code></li></ul>
+<p>15 further declarations are <code>private</code> and therefore not reachable by an importer at all: <code>monthsBefore</code>, <code>yawnLoop</code>, <code>yallMonth</code>, <code>yallYear</code>, <code>yall</code>, <code>isDigit</code>, <code>digits</code>, <code>lit</code>, <code>some</code>, <code>none</code>, <code>parseTime</code>, <code>padLoop</code>, <code>pad</code>, <code>showFull</code>, <code>iso</code>.</p>
 <h2 id="where-it-is-used">Where it is used</h2>
 <p>1 example imports <code>time</code>. Each is a complete program whose value <code>tools/examples.sh</code> pins on every push.</p>
 <ul><li><code>examples/time-arms.jock</code> — the arms sheet: one assertion per arm</li></ul>

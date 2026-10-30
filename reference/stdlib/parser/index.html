@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/parser.jock</code> and the examples that import it. 38 public declarations — 7 types, 31 arms. 33 pinned by a lane, 5 not. channel <code>%rc</code> · commit <code>f1c3be4</code></aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/parser.jock</code> and the examples that import it. 38 public declarations — 7 types, 31 arms. 33 pinned by a lane, 5 not. channel <code>%rc</code> · commit <code>8c0074a</code></aside>
 <h2 id="import">Import</h2>
 <p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>parser.&lt;name&gt;</code>.</p>
 <pre class="code jock">import parser;</pre>
@@ -256,6 +256,7 @@
 <pre class="code jock">assert (parser.rush("ab", parser.altseq(parser.just('a'), parser.just('b'), parser.just('c'))) ?? "x") === "ab";</pre>
 <h2 id="what-no-lane-pins">What no lane pins</h2>
 <p>5 of 38 public declarations are named by no example in <code>examples/</code>. They compile — the module is built by <code>tools/modules.sh</code> on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.</p>
+<p>2 of those are an <code>impl</code>, and the rule is what cannot reach them, not the example. A pin is a line naming <code>parser.&lt;declaration&gt;</code>; an impl is named for its <code>Trait for Type</code> pair, and no program writes that — it writes <code>a &lt; b</code> or <code>t.show()</code>, whose connection to the impl is a <strong>type</strong> fact this generator does not have. Guessing it from the text could claim coverage that is not there, so the count stays honest and says this instead.</p>
 <p>That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.</p>
 <ul><li><code>Rule</code> — <code>struct Rule { run: Nail -&gt; Edge };</code></li><li><code>Seq</code> — <code>trait Seq { then(⊛); };</code></li><li><code>Seq for Rule</code> — <code>impl Seq for Rule { then(self: Rule, p: Rule) -&gt; Rule { plug(self, p) }; };</code></li><li><code>Alt</code> — <code>trait Alt { alt(⊕); };</code></li><li><code>Alt for Rule</code> — <code>impl Alt for Rule { alt(self: Rule, p: Rule) -&gt; Rule { pose(self, p) }; };</code></li></ul>
 <h2 id="where-it-is-used">Where it is used</h2>
