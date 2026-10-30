@@ -45,7 +45,7 @@
 <div class="page">
 <header class="bar">
   <nav><a href="/">jock</a> <span>reference</span></nav>
-  <span>30 declarations · 23 pinned</span>
+  <span>32 declarations · 23 pinned</span>
 </header>
 <main class="prose">
 <h1 class="ruled">lib/time</h1>
@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/time.jock</code> and the examples that import it. 30 public declarations — 8 types, 22 arms. 23 pinned by a lane, 7 not. channel <code>%rc</code> · commit <code>c26a0c8</code></aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/time.jock</code> and the examples that import it. 32 public declarations — 10 types, 22 arms. 23 pinned by a lane, 9 not. channel <code>%rc</code> · commit <code>a62c164</code></aside>
 <h2 id="import">Import</h2>
 <p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>time.&lt;name&gt;</code>.</p>
 <pre class="code jock">import time;</pre>
@@ -67,12 +67,19 @@
 <p>import time;</p>
 <p>let t = time.parse("2026-10-30T12:00:00Z"); match t { ~ =&gt; "unparseable", (~, s) =&gt; time.show(s) } An instant, broken down. Fields are plain atoms and nothing validates them on construction — <code>show</code> of a nonsense Stamp is nonsense, and <code>valid</code> is how you ask.</p>
 <h2 id="types">Types</h2>
-<p>8 types. A type’s members ARE its interface, so each is shown whole rather than by name.</p>
+<p>10 types. A type’s members ARE its interface, so each is shown whole rather than by name.</p>
 <h3 id="stamp"><code>Stamp</code></h3>
 <pre class="code jock">struct Stamp { year: @, month: @, day: @, hour: @, minute: @, second: @ }</pre>
 <p>No comment in the source. The signature above is the whole of what <code>Stamp</code> states about itself.</p>
 <p class="label">asserted by examples/time-arms.jock</p>
 <pre class="code jock">assert not time.valid(time.Stamp(year: 2026, month: 2, day: 30,</pre>
+<h3 id="shift"><code>Shift</code></h3>
+<pre class="code jock">trait Shift { plus(self: Self, p: Span) -&gt; Self; minus(self: Self, p: Span) -&gt; Self; until(self: Self, p: Self) -&gt; Span; }</pre>
+<p>THE SAME THREE, AS METHODS, and this is the spelling to reach for. A trait method takes ANY signature as long as it is written out --- only the OPERATOR HOOK form <code>name(op);</code> has its shape synthesized, and that is the form that forces <code>(Self, Self) -&gt; Self</code>. So a method may take a <code>Span</code> where an operator may not, and <code>t.plus(anHour)</code> is as close to <code>t + anHour</code> as the language reaches.</p>
+<p>The bodies inline rather than calling the free functions above: a method named <code>plus</code> whose body called <code>plus</code> would be ambiguous between the free function and itself, which is the same trap <code>iso</code> exists to avoid on the Show side.</p>
+<h3 id="shift-for-stamp"><code>Shift for Stamp</code></h3>
+<pre class="code jock">impl Shift for Stamp { plus(self: Stamp, p: Span) -&gt; Stamp { fromSecs(toSecs(self) + spanSecs(p)) }; minus(self: Stamp, p: Span) -&gt; Stamp { fromSecs(toSecs(self) - spanSecs(p)) }; until(self: Stamp, p: Stamp) -&gt; Span { span(toSecs(p) - toSecs(self)) }; }</pre>
+<p>No comment in the source. The signature above is the whole of what <code>Shift for Stamp</code> states about itself.</p>
 <h3 id="duration"><code>Duration</code></h3>
 <pre class="code jock">trait Duration { secs(self: Self) -&gt; @; plus(self: Self, p: Self) -&gt; Self; minus(self: Self, p: Self) -&gt; Self; shorter(self: Self, p: Self) -&gt; Bool; show(self: Self) -&gt; String; }</pre>
 <p>A <code>Span</code> is the language's own <code>%span</code> aura, so the prelude's traits cannot be given to it from here --- <code>impl Add for Span</code> refuses <code>%mint-impl-orphan 'Add' '@span'</code>. A trait declared HERE is a different matter: the orphan rule is satisfied by owning EITHER side, so this one may be implemented for a prelude type.</p>
@@ -213,10 +220,10 @@
 <p class="label">asserted by examples/time-arms.jock</p>
 <pre class="code jock">assert time.toSecs(time.minus(time.plus(noon, anHour), anHour)) == time.toSecs(noon);</pre>
 <h2 id="what-no-lane-pins">What no lane pins</h2>
-<p>7 of 30 public declarations are named by no example in <code>examples/</code>. They compile — the module is built by <code>tools/modules.sh</code> on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.</p>
-<p>6 of those are an <code>impl</code>, and the rule is what cannot reach them, not the example. A pin is a line naming <code>time.&lt;declaration&gt;</code>; an impl is named for its <code>Trait for Type</code> pair, and no program writes that — it writes <code>a &lt; b</code> or <code>t.show()</code>, whose connection to the impl is a <strong>type</strong> fact this generator does not have. Guessing it from the text could claim coverage that is not there, so the count stays honest and says this instead.</p>
+<p>9 of 32 public declarations are named by no example in <code>examples/</code>. They compile — the module is built by <code>tools/modules.sh</code> on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.</p>
+<p>7 of those are an <code>impl</code>, and the rule is what cannot reach them, not the example. A pin is a line naming <code>time.&lt;declaration&gt;</code>; an impl is named for its <code>Trait for Type</code> pair, and no program writes that — it writes <code>a &lt; b</code> or <code>t.show()</code>, whose connection to the impl is a <strong>type</strong> fact this generator does not have. Guessing it from the text could claim coverage that is not there, so the count stays honest and says this instead.</p>
 <p>That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.</p>
-<ul><li><code>Duration</code> — <code>trait Duration { secs(self: Self) -&gt; @; plus(self: Self, p: Self) -&gt; Self; minus(self: Self, p: Self) -&gt; Self; shorter(self: Self, p: Self) -&gt; Bool; show(self: Self) -&gt; String; }</code></li><li><code>Duration for Span</code> — <code>impl Duration for Span { secs(self: Span) -&gt; @ { spanSecs(self) }; plus(self: Span, p: Span) -&gt; Span { span(spanSecs(self) + spanSecs(p)) }; minus(self: Span, p: Span) -&gt; Span { span(spanSecs(self) - spanSecs(p)) }; shorter(self: Span, p: Span) -&gt; Bool { spanSecs(self) &lt; spanSecs(p) }; show(self: Span) -&gt; String { isoDur(spanSecs(self)) }; }</code></li><li><code>Show for Stamp</code> — <code>impl Show for Stamp { show(self: Stamp) -&gt; String { iso(self) }; }</code></li><li><code>Lt for Stamp</code> — <code>impl Lt for Stamp { lt(self: Stamp, p: Stamp) -&gt; Bool { toSecs(self) &lt; toSecs(p) }; }</code></li><li><code>Lte for Stamp</code> — <code>impl Lte for Stamp { lte(self: Stamp, p: Stamp) -&gt; Bool { toSecs(self) &lt;= toSecs(p) }; }</code></li><li><code>Gt for Stamp</code> — <code>impl Gt for Stamp { gt(self: Stamp, p: Stamp) -&gt; Bool { toSecs(self) &gt; toSecs(p) }; }</code></li><li><code>Gte for Stamp</code> — <code>impl Gte for Stamp { gte(self: Stamp, p: Stamp) -&gt; Bool { toSecs(self) &gt;= toSecs(p) }; }</code></li></ul>
+<ul><li><code>Shift</code> — <code>trait Shift { plus(self: Self, p: Span) -&gt; Self; minus(self: Self, p: Span) -&gt; Self; until(self: Self, p: Self) -&gt; Span; }</code></li><li><code>Shift for Stamp</code> — <code>impl Shift for Stamp { plus(self: Stamp, p: Span) -&gt; Stamp { fromSecs(toSecs(self) + spanSecs(p)) }; minus(self: Stamp, p: Span) -&gt; Stamp { fromSecs(toSecs(self) - spanSecs(p)) }; until(self: Stamp, p: Stamp) -&gt; Span { span(toSecs(p) - toSecs(self)) }; }</code></li><li><code>Duration</code> — <code>trait Duration { secs(self: Self) -&gt; @; plus(self: Self, p: Self) -&gt; Self; minus(self: Self, p: Self) -&gt; Self; shorter(self: Self, p: Self) -&gt; Bool; show(self: Self) -&gt; String; }</code></li><li><code>Duration for Span</code> — <code>impl Duration for Span { secs(self: Span) -&gt; @ { spanSecs(self) }; plus(self: Span, p: Span) -&gt; Span { span(spanSecs(self) + spanSecs(p)) }; minus(self: Span, p: Span) -&gt; Span { span(spanSecs(self) - spanSecs(p)) }; shorter(self: Span, p: Span) -&gt; Bool { spanSecs(self) &lt; spanSecs(p) }; show(self: Span) -&gt; String { isoDur(spanSecs(self)) }; }</code></li><li><code>Show for Stamp</code> — <code>impl Show for Stamp { show(self: Stamp) -&gt; String { iso(self) }; }</code></li><li><code>Lt for Stamp</code> — <code>impl Lt for Stamp { lt(self: Stamp, p: Stamp) -&gt; Bool { toSecs(self) &lt; toSecs(p) }; }</code></li><li><code>Lte for Stamp</code> — <code>impl Lte for Stamp { lte(self: Stamp, p: Stamp) -&gt; Bool { toSecs(self) &lt;= toSecs(p) }; }</code></li><li><code>Gt for Stamp</code> — <code>impl Gt for Stamp { gt(self: Stamp, p: Stamp) -&gt; Bool { toSecs(self) &gt; toSecs(p) }; }</code></li><li><code>Gte for Stamp</code> — <code>impl Gte for Stamp { gte(self: Stamp, p: Stamp) -&gt; Bool { toSecs(self) &gt;= toSecs(p) }; }</code></li></ul>
 <p>19 further declarations are <code>private</code> and therefore not reachable by an importer at all: <code>monthsBefore</code>, <code>yawnLoop</code>, <code>yallMonth</code>, <code>yallYear</code>, <code>yall</code>, <code>isDigit</code>, <code>digits</code>, <code>lit</code>, <code>some</code>, <code>none</code>, <code>parseTime</code>, <code>padLoop</code>, <code>pad</code>, <code>showFull</code>, <code>iso</code>, <code>num</code>, <code>isoSecs</code>, <code>isoMins</code>, <code>isoDur</code>.</p>
 <h2 id="where-it-is-used">Where it is used</h2>
 <p>1 example imports <code>time</code>. Each is a complete program whose value <code>tools/examples.sh</code> pins on every push.</p>

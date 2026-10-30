@@ -5,7 +5,7 @@ higher-order functions over closures and List.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/hof.jock` and the examples that import it.
 >
-> 18 public declarations — 0 types, 18 arms. 18 pinned by a lane, 0 not. channel `%rc` · commit `c26a0c8`
+> 18 public declarations — 0 types, 18 arms. 18 pinned by a lane, 0 not. channel `%rc` · commit `a62c164`
 
 ## Import
 

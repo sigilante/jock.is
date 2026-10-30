@@ -5,7 +5,7 @@
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/grammar.py` writes the productions and checks them against `crates/jockc/hoon/lib/parse.hoon`; `tools/refgen.py` lays out this page.
 >
-> channel `%rc` · commit `c26a0c8` (sigilante/pre-rc-sweep) · 2026-10-30
+> channel `%rc` · commit `a62c164` (sigilante/pre-rc-sweep) · 2026-10-30
 
 ## Where these come from
 

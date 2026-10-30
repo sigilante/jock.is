@@ -5,7 +5,7 @@ the NockApp http driver, from the Jock side.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/http.jock` and the examples that import it.
 >
-> 22 public declarations — 3 types, 19 arms. 13 pinned by a lane, 9 not. channel `%rc` · commit `c26a0c8`
+> 22 public declarations — 3 types, 19 arms. 13 pinned by a lane, 9 not. channel `%rc` · commit `a62c164`
 
 ## Import
 

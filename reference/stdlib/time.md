@@ -5,7 +5,7 @@ civil dates, ISO 8601, and the Urbit `@da`.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/time.jock` and the examples that import it.
 >
-> 30 public declarations — 8 types, 22 arms. 23 pinned by a lane, 7 not. channel `%rc` · commit `c26a0c8`
+> 32 public declarations — 10 types, 22 arms. 23 pinned by a lane, 9 not. channel `%rc` · commit `a62c164`
 
 ## Import
 
@@ -33,7 +33,7 @@ let t = time.parse("2026-10-30T12:00:00Z"); match t { ~ => "unparseable", (~, s)
 
 ## Types
 
-8 types. A type’s members ARE its interface, so each is shown whole rather than by name.
+10 types. A type’s members ARE its interface, so each is shown whole rather than by name.
 
 ### `Stamp`
 
@@ -48,6 +48,24 @@ No comment in the source. The signature above is the whole of what `Stamp` state
 ```jock
 assert not time.valid(time.Stamp(year: 2026, month: 2, day: 30,
 ```
+
+### `Shift`
+
+```jock
+trait Shift { plus(self: Self, p: Span) -> Self; minus(self: Self, p: Span) -> Self; until(self: Self, p: Self) -> Span; }
+```
+
+THE SAME THREE, AS METHODS, and this is the spelling to reach for. A trait method takes ANY signature as long as it is written out --- only the OPERATOR HOOK form `name(op);` has its shape synthesized, and that is the form that forces `(Self, Self) -> Self`. So a method may take a `Span` where an operator may not, and `t.plus(anHour)` is as close to `t + anHour` as the language reaches.
+
+The bodies inline rather than calling the free functions above: a method named `plus` whose body called `plus` would be ambiguous between the free function and itself, which is the same trap `iso` exists to avoid on the Show side.
+
+### `Shift for Stamp`
+
+```jock
+impl Shift for Stamp { plus(self: Stamp, p: Span) -> Stamp { fromSecs(toSecs(self) + spanSecs(p)) }; minus(self: Stamp, p: Span) -> Stamp { fromSecs(toSecs(self) - spanSecs(p)) }; until(self: Stamp, p: Stamp) -> Span { span(toSecs(p) - toSecs(self)) }; }
+```
+
+No comment in the source. The signature above is the whole of what `Shift for Stamp` states about itself.
 
 ### `Duration`
 
@@ -454,12 +472,14 @@ assert time.toSecs(time.minus(time.plus(noon, anHour), anHour)) == time.toSecs(n
 
 ## What no lane pins
 
-7 of 30 public declarations are named by no example in `examples/`. They compile — the module is built by `tools/modules.sh` on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.
+9 of 32 public declarations are named by no example in `examples/`. They compile — the module is built by `tools/modules.sh` on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.
 
-6 of those are an `impl`, and the rule is what cannot reach them, not the example. A pin is a line naming `time.<declaration>`; an impl is named for its `Trait for Type` pair, and no program writes that — it writes `a < b` or `t.show()`, whose connection to the impl is a **type** fact this generator does not have. Guessing it from the text could claim coverage that is not there, so the count stays honest and says this instead.
+7 of those are an `impl`, and the rule is what cannot reach them, not the example. A pin is a line naming `time.<declaration>`; an impl is named for its `Trait for Type` pair, and no program writes that — it writes `a < b` or `t.show()`, whose connection to the impl is a **type** fact this generator does not have. Guessing it from the text could claim coverage that is not there, so the count stays honest and says this instead.
 
 That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.
 
+- `Shift` — `trait Shift { plus(self: Self, p: Span) -> Self; minus(self: Self, p: Span) -> Self; until(self: Self, p: Self) -> Span; }`
+- `Shift for Stamp` — `impl Shift for Stamp { plus(self: Stamp, p: Span) -> Stamp { fromSecs(toSecs(self) + spanSecs(p)) }; minus(self: Stamp, p: Span) -> Stamp { fromSecs(toSecs(self) - spanSecs(p)) }; until(self: Stamp, p: Stamp) -> Span { span(toSecs(p) - toSecs(self)) }; }`
 - `Duration` — `trait Duration { secs(self: Self) -> @; plus(self: Self, p: Self) -> Self; minus(self: Self, p: Self) -> Self; shorter(self: Self, p: Self) -> Bool; show(self: Self) -> String; }`
 - `Duration for Span` — `impl Duration for Span { secs(self: Span) -> @ { spanSecs(self) }; plus(self: Span, p: Span) -> Span { span(spanSecs(self) + spanSecs(p)) }; minus(self: Span, p: Span) -> Span { span(spanSecs(self) - spanSecs(p)) }; shorter(self: Span, p: Span) -> Bool { spanSecs(self) < spanSecs(p) }; show(self: Span) -> String { isoDur(spanSecs(self)) }; }`
 - `Show for Stamp` — `impl Show for Stamp { show(self: Stamp) -> String { iso(self) }; }`

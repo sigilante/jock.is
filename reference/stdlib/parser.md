@@ -5,7 +5,7 @@ parser combinators.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/parser.jock` and the examples that import it.
 >
-> 38 public declarations — 7 types, 31 arms. 33 pinned by a lane, 5 not. channel `%rc` · commit `c26a0c8`
+> 38 public declarations — 7 types, 31 arms. 33 pinned by a lane, 5 not. channel `%rc` · commit `a62c164`
 
 ## Import
 
