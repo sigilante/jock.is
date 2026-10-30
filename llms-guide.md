@@ -233,12 +233,17 @@ literal values as patterns, so it always covered value dispatch, and
 the word was unsquatted 2026-10-29, so writing `switch` names a
 binding like any other word. `self` and `mut` are likewise
 ordinary names, not keywords. Operator binding in traits is
-per-method, and the glyph must be one nothing has claimed:
-`trait Scale { s(⊛); }` binds `⊛`. The example here used to be
-`trait Add { add(+); }`, which refuses `%decl-op-rebind` — the prelude's own
-`Add` already owns `+`, and `t-err-op-rebind` pins exactly that text as a
-refusal. The eleven placed-but-unbound glyphs under Operators are what this
-feature is for.
+per-method, and a glyph need NOT be unclaimed: `trait MyAdd {
+add(+); }` is legal, and the left operand's head decides which
+trait applies, so `Add` keeps `+` for numbers while yours has it
+for your own type. Two traits reaching one head is the conflict,
+and refuses `%mint-op-amb` at the use site (`t-op-amb`). This was
+a flat first-come namespace until 2026-10-30, when the declaration
+itself refused `%decl-op-rebind`.
+
+A method written out may carry an operator after its return type,
+`plus(self: Self, p: Span) -> Self (+);`, which is the only way to
+give one a right operand that is not `Self` (`t-op-het`).
 
 String's prelude methods (the `Str` trait): `.len()` (bytes),
 `.cat(t)` (concatenation), `.trip()` (to `List<Byte>`),
@@ -305,7 +310,7 @@ renderings differ, and only the tag is stable:
 declaration — it carries the hint chain, which line:col cannot reconstruct,
 but its shape is not a contract.
 
-The tag INDEX is generated: <https://jock.is/reference/tags/> lists all 202
+The tag INDEX is generated: <https://jock.is/reference/tags/> lists all 201
 refusals the compiler can raise, 162 of them with the minimal program that
 raises one, plus the five tag families that discriminate on a second element
 and the refusals no input can reach. A hand-written taxonomy stood here and

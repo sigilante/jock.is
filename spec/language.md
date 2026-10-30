@@ -1618,8 +1618,21 @@ heads elaborate as `a.add(b)` through the operator's registered
 trait. ⟨`t-jimp-op-add-nominal`, `t-jimp-op-nominal`⟩
 
 **L-41 · The hook is spelled on the METHOD**, not the trait:
-`trait Add { add(+); }`. The signature is implied by the family.
+`trait Add { add(+); }`. In that SHORT form the signature is
+implied by the family — arithmetic `(Self, Self) -> Self`,
+comparison `(Self, Self) -> Bool` — and the parser fills it in.
 ⟨`t-decl-op-gen`⟩
+
+**L-41a · A WRITTEN signature may carry an operator too**, spelled
+after the return type: `plus(self: Self, p: Span) -> Self (+);`.
+This is the only way to give an operator a signature the short form
+cannot imply, and the right operand's type is the whole point of
+it — `Stamp + Span -> Stamp` is unspellable without it, and no
+choice of `Self` reaches it, a union included: one type variable
+cannot be the left operand, the right operand and the result at
+once. The wrong right operand is then an ordinary `%mill-nest` at
+the synthesized call, carrying its position, rather than a refusal
+of its own. ⟨`t-op-het`, `t-op-het-nest`⟩
 
 **L-42 · The hook spelling admits exactly the operator
 vocabulary** — `+ - * / %`, `⊛`, and `< > <= >= == !=`. Any other
@@ -1627,9 +1640,13 @@ punctuator refuses `%parse-trait-op` at parse, rather than
 registering silently. ⟨`t-trait-op-junk`⟩
 
 **L-43 · Policy stays with registration, not spelling.** `!=`
-refuses `%decl-op-eq`, being derived from `==`; rebinding an
-already-claimed operator refuses `%decl-op-rebind`.
-⟨`t-err-op-ne`, `t-err-op-rebind`⟩
+refuses `%decl-op-eq`, being derived from `==`. A second trait
+binding an already-claimed operator is PERMITTED, and resolved by
+the left operand's head: `Add` keeps `+` for every numeric head
+while another trait has it for one nominal. Two traits reaching
+ONE head is the conflict, and refuses `%mint-op-amb` where the
+operator is used rather than where it was declared.
+⟨`t-err-op-ne`, `t-op-rebind`, `t-op-two-heads`, `t-op-amb`⟩
 
 **L-44 · An empty `()` is a nullary signature, not a hook** — which
 the receiver rule then refuses, `%decl-trait-self`, trait dispatch

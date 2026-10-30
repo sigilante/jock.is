@@ -846,16 +846,30 @@ operator and the operator rides the method, so
 `trait Arithmetic { add(+); sub(-); }` is expressible and the
 trait-name form `trait Add(+)` is retired — one spelling. A trait
 batches exactly as its author chooses, and op-bound methods mix
-freely with ordinary signed ones. They take the implied signature by
-family (arithmetic `(Self, Self) -> Self`, comparison `-> Bool`),
-never bind `==`/`!=`, and live only in unparameterized traits.
-⟨`t-decl-op-gen`, `t-err-op-ne`, `t-op-amb-trait`⟩
+freely with ordinary signed ones. A method written in the SHORT hook
+form takes the implied signature by family (arithmetic
+`(Self, Self) -> Self`, comparison `-> Bool`); one written out may
+carry an operator after its return type and keep its own signature
+(language.md L-41a). Neither binds `==`/`!=`, and both live only in
+unparameterized traits.
+⟨`t-decl-op-gen`, `t-err-op-ne`, `t-op-amb-trait`, `t-op-het`⟩
 
-**R-62 · Registration is ONE FACT PER OPERATOR** (`ops.def`), with
-coherence by `%decl-op-rebind`, and `a + b` elaborates as `a.add(b)`
-— so user impls, class conformance and the prelude's Float64 impls
-are ONE mechanism. ⟨`t-err-op-rebind`, `t-jimp-op-nominal-meth`,
-`t-text-op-user`⟩
+**R-62 · Registration is a LIST PER OPERATOR** (`ops.def`),
+resolved at the use site by the left operand's head (`+ocan`), and
+`a + b` elaborates as `a.add(b)` — so user impls, class conformance
+and the prelude's Float64 impls are ONE mechanism.
+
+Until 2026-10-30 it was one fact per operator, with coherence by
+`%decl-op-rebind` at declaration. That made the operator namespace
+flat and FIRST-COME: one trait owned an operator for every type in
+the program, a library that bound a glyph took it from every other
+library it might be imported beside (`%op-conflict`), and an
+operator could never carry two signatures. Resolving by head costs
+a filter over a list that is almost always one long, and the
+conflict it cannot see — two traits reaching one head — refuses
+`%mint-op-amb` where the operator is used.
+⟨`t-op-rebind`, `t-op-two-heads`, `t-op-amb`,
+`t-jimp-op-nominal-meth`, `t-text-op-user`⟩
 
 **R-63 · The PRELUDE stays fine-grained — one operator per trait** —
 for conformance ergonomics; batched constraints arrive as superclass

@@ -465,7 +465,19 @@
 
       //  postfix binding, and the adjacency law's two refusals
       if (tok.k === 'punc' && (tok.t === '(' || tok.t === '[')) {
-        if (prev && ENDERS[prev.k]) {
+        //  A TRAIT METHOD MAY CARRY AN OPERATOR after its return
+        //  type --- `plus(self: Self, p: Span) -> Self (+);` ---
+        //  so a parenthesized OPERATOR here is a hook, not an
+        //  unglued call (language.md L-41a).  Two tokens of
+        //  lookahead settle it:  nothing else in the language puts
+        //  a bare operator immediately inside parentheses.
+        var h1 = tok.t === '(' ? nextSigAt(toks, k) : -1;
+        var h2 = h1 < 0 ? -1 : nextSigAt(toks, h1);
+        var hook = h1 >= 0 && h2 >= 0 &&
+                   toks[h1].k === 'op' && toks[h2].t === ')';
+        if (hook) {
+          //  leave it a plain punctuator
+        } else if (prev && ENDERS[prev.k]) {
           if (tok.glued) {
             tok.k = 'glue';
             //  a name with a glued ( is being called
@@ -554,10 +566,16 @@
   }
 
   function nextSig(toks, k) {
+    var j = nextSigAt(toks, k);
+    return j < 0 ? null : toks[j];
+  }
+
+  //  the same, as an INDEX, so a caller can look two along
+  function nextSigAt(toks, k) {
     for (var j = k + 1; j < toks.length; j++) {
-      if (toks[j].k !== 'ws' && toks[j].k !== 'comment') return toks[j];
+      if (toks[j].k !== 'ws' && toks[j].k !== 'comment') return j;
     }
-    return null;
+    return -1;
   }
 
   //  ---------------------------------------------------------------

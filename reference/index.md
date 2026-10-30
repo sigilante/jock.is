@@ -5,7 +5,7 @@ Generated from the compiler and its corpus. Every table is projected from a norm
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes these pages.
 >
-> channel `%rc` · commit `a62c164` (sigilante/pre-rc-sweep) · corpus 1156 vectors · 2026-10-30
+> channel `%rc` · commit `866e7f3` (sigilante/het-ops) · corpus 1160 vectors · 2026-10-30
 
 ## Writing Jock
 
@@ -53,7 +53,7 @@ The compiler talking back, and what it means.
 
 ### [Refusal tags](tags/)
 
-All 202 refusals the compiler can raise: 162 with the minimal program that triggers one, 30 pinned only by an AST-level vector, 10 pinned by nothing at all.
+All 201 refusals the compiler can raise: 162 with the minimal program that triggers one, 30 pinned only by an AST-level vector, 9 pinned by nothing at all.
 
 [`tags/`](tags/) — the page · [`tags.md`](tags.md) — the same content as raw Markdown
 

@@ -5,7 +5,7 @@ civil dates, ISO 8601, and the Urbit `@da`.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/time.jock` and the examples that import it.
 >
-> 32 public declarations — 10 types, 22 arms. 23 pinned by a lane, 9 not. channel `%rc` · commit `a62c164`
+> 32 public declarations — 10 types, 22 arms. 23 pinned by a lane, 9 not. channel `%rc` · commit `866e7f3`
 
 ## Import
 
@@ -52,10 +52,16 @@ assert not time.valid(time.Stamp(year: 2026, month: 2, day: 30,
 ### `Shift`
 
 ```jock
-trait Shift { plus(self: Self, p: Span) -> Self; minus(self: Self, p: Span) -> Self; until(self: Self, p: Self) -> Span; }
+trait Shift { plus(self: Self, p: Span) -> Self (+); minus(self: Self, p: Span) -> Self (-); until(self: Self, p: Self) -> Span; }
 ```
 
-THE SAME THREE, AS METHODS, and this is the spelling to reach for. A trait method takes ANY signature as long as it is written out --- only the OPERATOR HOOK form `name(op);` has its shape synthesized, and that is the form that forces `(Self, Self) -> Self`. So a method may take a `Span` where an operator may not, and `t.plus(anHour)` is as close to `t + anHour` as the language reaches.
+AND AS OPERATORS. `t + anHour` is a Stamp and `b - a` is a Span, which is what anyone reaching for a time library wants to write.
+
+This needed a language change, landed 2026-10-30. An operator hook used to be spelled `name(op);` and ONLY that, with the parser synthesizing `(self: Self, p: Self) -> Self` for it --- so an operator could never take a right operand of another type, and `Stamp + Span` was unspellable by any route, including the type tricks that look like they should work: one type variable cannot be Stamp, Span and Stamp at once. The hook may now carry a WRITTEN signature, `name(args) -> ret (op);`, which is the form below.
+
+Binding `+` here costs no one anything, which was the second half of the same change. The operator registry used to hold one trait per operator for the whole program, so a library claiming a glyph took it from every other library (%op-conflict, and %decl-op-rebind on the declaration). It now holds a LIST and resolves by the left operand's head, so `Add` keeps `+` for every numeric head and `Shift` has it for `Stamp` alone. Two traits reaching ONE head is the real conflict and refuses %mint-op-amb at the use site.
+
+The free functions above remain: an operator is unsearchable, and `time.plus` is what a reader greps for.
 
 The bodies inline rather than calling the free functions above: a method named `plus` whose body called `plus` would be ambiguous between the free function and itself, which is the same trap `iso` exists to avoid on the Show side.
 
@@ -478,7 +484,7 @@ assert time.toSecs(time.minus(time.plus(noon, anHour), anHour)) == time.toSecs(n
 
 That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.
 
-- `Shift` — `trait Shift { plus(self: Self, p: Span) -> Self; minus(self: Self, p: Span) -> Self; until(self: Self, p: Self) -> Span; }`
+- `Shift` — `trait Shift { plus(self: Self, p: Span) -> Self (+); minus(self: Self, p: Span) -> Self (-); until(self: Self, p: Self) -> Span; }`
 - `Shift for Stamp` — `impl Shift for Stamp { plus(self: Stamp, p: Span) -> Stamp { fromSecs(toSecs(self) + spanSecs(p)) }; minus(self: Stamp, p: Span) -> Stamp { fromSecs(toSecs(self) - spanSecs(p)) }; until(self: Stamp, p: Stamp) -> Span { span(toSecs(p) - toSecs(self)) }; }`
 - `Duration` — `trait Duration { secs(self: Self) -> @; plus(self: Self, p: Self) -> Self; minus(self: Self, p: Self) -> Self; shorter(self: Self, p: Self) -> Bool; show(self: Self) -> String; }`
 - `Duration for Span` — `impl Duration for Span { secs(self: Span) -> @ { spanSecs(self) }; plus(self: Span, p: Span) -> Span { span(spanSecs(self) + spanSecs(p)) }; minus(self: Span, p: Span) -> Span { span(spanSecs(self) - spanSecs(p)) }; shorter(self: Span, p: Span) -> Bool { spanSecs(self) < spanSecs(p) }; show(self: Span) -> String { isoDur(spanSecs(self)) }; }`

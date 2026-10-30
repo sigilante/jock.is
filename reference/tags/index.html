@@ -45,7 +45,7 @@
 <div class="page">
 <header class="bar">
   <nav><a href="/">jock</a> <span>reference</span></nav>
-  <span>202 tags · 192 pinned</span>
+  <span>201 tags · 192 pinned</span>
 </header>
 <main class="prose">
 <h1 class="ruled">Refusal tags</h1>
@@ -54,8 +54,8 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>a62c164</code> (sigilante/pre-rc-sweep) · corpus 1156 vectors · 2026-10-30</aside>
-<table><thead><tr><th></th><th>count</th><th></th></tr></thead><tbody><tr><td>tags the compiler can raise</td><td>202</td><td>197 <code>~|</code> heads + 7 <code>$diag</code> members</td></tr><tr><td><strong>with a runnable program</strong></td><td><strong>162</strong></td><td>the vector carries source, and the page shows it</td></tr><tr><td>no input can reach the guard</td><td>36</td><td>registered with the reason, and the registry is checked</td></tr><tr><td>…of those, still pinned by a vector</td><td>30</td><td>an AST- or judgment-level row reaches the arm directly</td></tr><tr><td>…and pinned by nothing</td><td>6</td><td>nothing to point an input at</td></tr><tr><td>compiler invariant with a tripwire</td><td>2</td><td>a vector green only while the invariant holds</td></tr><tr><td><strong>reachable, and pinned by nothing</strong></td><td><strong>2</strong></td><td>the gap list</td></tr><tr><td>AST-level only, with no reason recorded</td><td>0</td><td>the other gap: pinned, but never watched from a program</td></tr></tbody></table>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>866e7f3</code> (sigilante/het-ops) · corpus 1160 vectors · 2026-10-30</aside>
+<table><thead><tr><th></th><th>count</th><th></th></tr></thead><tbody><tr><td>tags the compiler can raise</td><td>201</td><td>196 <code>~|</code> heads + 7 <code>$diag</code> members</td></tr><tr><td><strong>with a runnable program</strong></td><td><strong>162</strong></td><td>the vector carries source, and the page shows it</td></tr><tr><td>no input can reach the guard</td><td>36</td><td>registered with the reason, and the registry is checked</td></tr><tr><td>…of those, still pinned by a vector</td><td>30</td><td>an AST- or judgment-level row reaches the arm directly</td></tr><tr><td>…and pinned by nothing</td><td>6</td><td>nothing to point an input at</td></tr><tr><td>compiler invariant with a tripwire</td><td>2</td><td>a vector green only while the invariant holds</td></tr><tr><td><strong>reachable, and pinned by nothing</strong></td><td><strong>1</strong></td><td>the gap list</td></tr><tr><td>AST-level only, with no reason recorded</td><td>0</td><td>the other gap: pinned, but never watched from a program</td></tr></tbody></table>
 <p>A <code>%neg</code> vector refuses <em>without</em> naming a tag, so it pins that a program is rejected and never in what words. 38 rows are <code>%neg</code>; none of them pins a tag here.</p>
 <p><strong>The two gap rows are the ones to read.</strong> Every other row is a refusal the corpus pins and this page can explain. A count of unpinned tags on its own cannot tell a missing test from a guard the compiler holds against itself, and this page published 82 of them as one list until the difference was worked out tag by tag.</p>
 <h2 id="tags-with-a-minimal-program">Tags with a minimal program</h2>
@@ -100,9 +100,6 @@
 <h3 id="decl-op-gen"><code>%decl-op-gen</code></h3>
 <pre class="code jock" data-refuses="decl-op-gen">trait T&lt;X&gt; { add(+); }; 1</pre>
 <p>pinned by <code>t-decl-op-gen</code></p>
-<h3 id="decl-op-rebind"><code>%decl-op-rebind</code></h3>
-<pre class="code jock" data-refuses="decl-op-rebind">trait MyAdd { add(+); }; 0</pre>
-<p>pinned by <code>t-err-op-rebind</code> · spec: docs/spec/language.md <a href="/spec/language/#l-43">L-43</a>, docs/spec/runtime.md <a href="/spec/runtime/#r-62">R-62</a></p>
 <h3 id="decl-trait-annot"><code>%decl-trait-annot</code></h3>
 <pre class="code jock" data-refuses="decl-trait-annot">trait T { m(self: Self, a) -&gt; @; }; 1</pre>
 <p>pinned by <code>t-decl-trait-annot</code></p>
@@ -232,7 +229,7 @@ cd"; s</pre>
 <p>pinned by <code>t-mill-lambda-arity</code> · spec: docs/spec/language.md <a href="/spec/language/#l-141">L-141</a></p>
 <h3 id="mill-nest"><code>%mill-nest</code></h3>
 <pre class="code jock" data-refuses="mill-nest">let u: UniChar = 0x1f600 as! UniChar; let b: Byte = u; b</pre>
-<p>pinned by <code>t-arc-unichar-narrow</code>, <code>t-err-class-gen-arg</code>, <code>t-err-map-annot-real</code>, <code>t-err-print-num</code>, <code>t-gen-rigid-arg</code>, <code>t-gen-rigid-unit</code>, <code>t-rigid-mcon</code>, <code>t-rigid-slit</code>, <code>t-roof-named-func</code>, <code>t-text-char-no</code>, <code>t-var-widen-shallow</code> · also <code>t-mint-annot</code>, <code>t-mint-cond</code>, <code>t-mint-guard</code>, <code>t-mint-inc-cell</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-132">L-132</a>, docs/spec/runtime.md <a href="/spec/runtime/#r-102">R-102</a>, docs/spec/runtime.md <a href="/spec/runtime/#r-59">R-59</a></p>
+<p>pinned by <code>t-arc-unichar-narrow</code>, <code>t-err-class-gen-arg</code>, <code>t-err-map-annot-real</code>, <code>t-err-print-num</code>, <code>t-gen-rigid-arg</code>, <code>t-gen-rigid-unit</code>, <code>t-op-het-nest</code>, <code>t-rigid-mcon</code>, <code>t-rigid-slit</code>, <code>t-roof-named-func</code>, <code>t-text-char-no</code>, <code>t-var-widen-shallow</code> · also <code>t-mint-annot</code>, <code>t-mint-cond</code>, <code>t-mint-guard</code>, <code>t-mint-inc-cell</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-132">L-132</a>, docs/spec/language.md <a href="/spec/language/#l-41">L-41</a>, docs/spec/runtime.md <a href="/spec/runtime/#r-102">R-102</a>, docs/spec/runtime.md <a href="/spec/runtime/#r-59">R-59</a></p>
 <h3 id="mint-call"><code>%mint-call</code></h3>
 <pre class="code jock" data-refuses="mint-call">1(2)</pre>
 <p>pinned by <code>t-rch-call</code> · also <code>t-mint-call-gate</code> (AST-level)</p>
@@ -380,6 +377,9 @@ cd"; s</pre>
 <h3 id="mint-op"><code>%mint-op</code></h3>
 <pre class="code jock" data-refuses="mint-op">1.5 % 2.0</pre>
 <p>pinned by <code>t-err-op-rmod</code> · spec: docs/spec/language.md <a href="/spec/language/#l-116">L-116</a></p>
+<h3 id="mint-op-amb"><code>%mint-op-amb</code></h3>
+<pre class="code jock" data-refuses="mint-op-amb">struct S { v: @ } trait A1 { a1(+); } trait A2 { a2(+); } impl A1 for S { a1(self: S, p: S) -&gt; S { self }; }; impl A2 for S { a2(self: S, p: S) -&gt; S { p }; }; (S(v: 1) + S(v: 2)).v</pre>
+<p>pinned by <code>t-op-amb</code> · spec: docs/spec/language.md <a href="/spec/language/#l-43">L-43</a>, docs/spec/runtime.md <a href="/spec/runtime/#r-62">R-62</a></p>
 <h3 id="mint-op-aura"><code>%mint-op-aura</code></h3>
 <pre class="code jock" data-refuses="mint-op-aura">1 + 'a'</pre>
 <p>pinned by <code>t-err-op-aura-char</code>, <code>t-err-op-aura-real</code> · spec: docs/spec/language.md <a href="/spec/language/#l-39">L-39</a>, docs/spec/runtime.md <a href="/spec/runtime/#r-51">R-51</a></p>
@@ -615,9 +615,8 @@ cd"; s</pre>
 <p>Stronger than a registry entry, and listed apart from it. No input reaches these either, but each has a vector that is green <strong>only while the invariant holds</strong> — so breaking the invariant reddens a named row rather than going unnoticed. Each pairing was verified by mutation, once, by hand, and is recorded at the guard and at the row. <code>run.hoon</code> refuses the whole run if one of these vectors disappears.</p>
 <table><thead><tr><th>tag</th><th>tripwire vector</th></tr></thead><tbody><tr><td><code>%mint-meth-fore</code></td><td><code>t-meth-fore-tripwire</code></td></tr><tr><td><code>%module-type</code></td><td><code>t-module-type-tripwire</code></td></tr></tbody></table>
 <h2 id="tags-pinned-by-nothing">Tags pinned by nothing</h2>
-<p>Reachable, and no vector asserts them: 2 of 202. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.</p>
+<p>Reachable, and no vector asserts them: 1 of 201. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.</p>
 <p><strong><code>%impl-conflict</code></strong> — Two libraries supplying different impl facts for one (trait, head) pair. Not reached from any spelling tried: two modules each declaring their own trait do not collide, because a module’s trait is its own, and the single-module spelling refuses <code>%mint-impl-coh</code> first. Probed, not inferred.</p>
-<p><strong><code>%op-conflict</code></strong> — The operator half of the same shape — two libraries binding one operator to different (trait, method) pairs. Same reason it is still open, and it will probably fall to the same vector as <code>%impl-conflict</code>.</p>
 <h2 id="families">Families</h2>
 <p>Five tags discriminate on a <em>second</em> element, so the thing to search for is the pair. Every one is an "unsupported thing" family, which is exactly where the compiler must say which.</p>
 <ul><li><code>%mint-mold</code> · <code>%deep</code> <code>%gate</code> <code>%var</code> <code>%void</code> — plus 4 computed leaf site(s), not enumerable from source</li><li><code>%mint-todo</code> · <code>%bound-ptrait</code> <code>%class-bound</code> <code>%export-class-ptrait</code> <code>%func-gen</code> <code>%impl-bound</code> <code>%impl-head</code> <code>%import-arm-gen</code> <code>%list-annot</code> <code>%trait-bound</code> — plus 1 computed leaf site(s), not enumerable from source</li><li><code>%module-form</code> · <code>%if</code> <code>%private</code> — plus 10 computed leaf site(s), not enumerable from source</li><li><code>%parse-todo</code> · <code>%defer</code> <code>%recur-edits</code></li><li><code>%sugar-todo</code> · <code>%list-annot</code> <code>%map-annot</code></li></ul>

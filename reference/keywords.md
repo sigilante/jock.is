@@ -5,7 +5,7 @@ All 30 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `a62c164` (sigilante/pre-rc-sweep) · corpus 1156 vectors · 2026-10-30
+> channel `%rc` · commit `866e7f3` (sigilante/het-ops) · corpus 1160 vectors · 2026-10-30
 
 Each keyword below carries its **class** — kernel or sugar, one of the language’s four design principles — and **what it does**, both projected from the keyword inventory at [L-61](/spec/language/#l-61), whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.
 
@@ -228,7 +228,7 @@ pinned by `t-text-qq` · 3 vectors use this keyword
 struct P { v: @ }; impl Show for P { show(self: P) -> String { "P!" }; }; let p = P( v: 1 ); "{p}"
 ```
 
-pinned by `t-text-interp-user` · 20 vectors use this keyword
+pinned by `t-text-interp-user` · 22 vectors use this keyword
 
 ### `func`
 
@@ -284,7 +284,7 @@ pinned by `t-eq-ne` · 34 vectors use this keyword
 struct P { v: @ }; impl Show for P { show(self: P) -> String { "P!" }; }; let p = P( v: 1 ); "{p}"
 ```
 
-pinned by `t-text-interp-user` · 35 vectors use this keyword
+pinned by `t-text-interp-user` · 37 vectors use this keyword
 
 ### `import`
 
@@ -362,7 +362,7 @@ Also named by [L-20](/spec/language/#l-20), [L-61](/spec/language/#l-61), [L-129
 let x = 1; x;
 ```
 
-pinned by `t-arc-term-semi` · 187 vectors use this keyword
+pinned by `t-arc-term-semi` · 188 vectors use this keyword
 
 ### `loop`
 
@@ -492,7 +492,7 @@ pinned by `t-text-loop` · 4 vectors use this keyword
 struct Q { w: @ }; Q( w: 9 ).w
 ```
 
-pinned by `t-text-dot-slit` · 70 vectors use this keyword
+pinned by `t-text-dot-slit` · 72 vectors use this keyword
 
 ### `trait`
 
@@ -503,10 +503,10 @@ pinned by `t-text-dot-slit` · 70 vectors use this keyword
 **No rule in `language.md` states what `trait` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61).
 
 ```jock
-trait Tw { tw(self: Self) -> @; } struct B { v: @ } impl Tw for B { tw(self: B) -> @ { self.v } } let b = B(v: 7); b.tw()
+trait MyAdd { add(+); }; 42
 ```
 
-pinned by `t-arc-impl-for` · 15 vectors use this keyword
+pinned by `t-op-rebind` · 18 vectors use this keyword
 
 ### `var`
 

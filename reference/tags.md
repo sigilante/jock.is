@@ -5,17 +5,17 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `a62c164` (sigilante/pre-rc-sweep) · corpus 1156 vectors · 2026-10-30
+> channel `%rc` · commit `866e7f3` (sigilante/het-ops) · corpus 1160 vectors · 2026-10-30
 
 |  | count |  |
 |---|---:|---|
-| tags the compiler can raise | 202 | 197 `~|` heads + 7 `$diag` members |
+| tags the compiler can raise | 201 | 196 `~|` heads + 7 `$diag` members |
 | **with a runnable program** | **162** | the vector carries source, and the page shows it |
 | no input can reach the guard | 36 | registered with the reason, and the registry is checked |
 | …of those, still pinned by a vector | 30 | an AST- or judgment-level row reaches the arm directly |
 | …and pinned by nothing | 6 | nothing to point an input at |
 | compiler invariant with a tripwire | 2 | a vector green only while the invariant holds |
-| **reachable, and pinned by nothing** | **2** | the gap list |
+| **reachable, and pinned by nothing** | **1** | the gap list |
 | AST-level only, with no reason recorded | 0 | the other gap: pinned, but never watched from a program |
 
 A `%neg` vector refuses *without* naming a tag, so it pins that a program is rejected and never in what words. 38 rows are `%neg`; none of them pins a tag here.
@@ -131,14 +131,6 @@ trait T<X> { add(+); }; 1
 ```
 
 pinned by `t-decl-op-gen`
-
-### `%decl-op-rebind`
-
-```jock
-trait MyAdd { add(+); }; 0
-```
-
-pinned by `t-err-op-rebind` · spec: docs/spec/language.md [L-43](/spec/language/#l-43), docs/spec/runtime.md [R-62](/spec/runtime/#r-62)
 
 ### `%decl-trait-annot`
 
@@ -477,7 +469,7 @@ pinned by `t-mill-lambda-arity` · spec: docs/spec/language.md [L-141](/spec/lan
 let u: UniChar = 0x1f600 as! UniChar; let b: Byte = u; b
 ```
 
-pinned by `t-arc-unichar-narrow`, `t-err-class-gen-arg`, `t-err-map-annot-real`, `t-err-print-num`, `t-gen-rigid-arg`, `t-gen-rigid-unit`, `t-rigid-mcon`, `t-rigid-slit`, `t-roof-named-func`, `t-text-char-no`, `t-var-widen-shallow` · also `t-mint-annot`, `t-mint-cond`, `t-mint-guard`, `t-mint-inc-cell` (AST-level) · spec: docs/spec/language.md [L-132](/spec/language/#l-132), docs/spec/runtime.md [R-102](/spec/runtime/#r-102), docs/spec/runtime.md [R-59](/spec/runtime/#r-59)
+pinned by `t-arc-unichar-narrow`, `t-err-class-gen-arg`, `t-err-map-annot-real`, `t-err-print-num`, `t-gen-rigid-arg`, `t-gen-rigid-unit`, `t-op-het-nest`, `t-rigid-mcon`, `t-rigid-slit`, `t-roof-named-func`, `t-text-char-no`, `t-var-widen-shallow` · also `t-mint-annot`, `t-mint-cond`, `t-mint-guard`, `t-mint-inc-cell` (AST-level) · spec: docs/spec/language.md [L-132](/spec/language/#l-132), docs/spec/language.md [L-41](/spec/language/#l-41), docs/spec/runtime.md [R-102](/spec/runtime/#r-102), docs/spec/runtime.md [R-59](/spec/runtime/#r-59)
 
 ### `%mint-call`
 
@@ -870,6 +862,14 @@ pinned by `t-cimp-seal`, `t-lark-atom-n`, `t-lark-seal-n`, `t-naxis-seal-n`
 ```
 
 pinned by `t-err-op-rmod` · spec: docs/spec/language.md [L-116](/spec/language/#l-116)
+
+### `%mint-op-amb`
+
+```jock
+struct S { v: @ } trait A1 { a1(+); } trait A2 { a2(+); } impl A1 for S { a1(self: S, p: S) -> S { self }; }; impl A2 for S { a2(self: S, p: S) -> S { p }; }; (S(v: 1) + S(v: 2)).v
+```
+
+pinned by `t-op-amb` · spec: docs/spec/language.md [L-43](/spec/language/#l-43), docs/spec/runtime.md [R-62](/spec/runtime/#r-62)
 
 ### `%mint-op-aura`
 
@@ -1521,11 +1521,9 @@ Stronger than a registry entry, and listed apart from it. No input reaches these
 
 ## Tags pinned by nothing
 
-Reachable, and no vector asserts them: 2 of 202. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.
+Reachable, and no vector asserts them: 1 of 201. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.
 
 **`%impl-conflict`** — Two libraries supplying different impl facts for one (trait, head) pair. Not reached from any spelling tried: two modules each declaring their own trait do not collide, because a module’s trait is its own, and the single-module spelling refuses `%mint-impl-coh` first. Probed, not inferred.
-
-**`%op-conflict`** — The operator half of the same shape — two libraries binding one operator to different (trait, method) pairs. Same reason it is still open, and it will probably fall to the same vector as `%impl-conflict`.
 
 ## Families
 
