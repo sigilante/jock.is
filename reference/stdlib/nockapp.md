@@ -5,7 +5,7 @@ the NockApp host's own effect vocabulary.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/nockapp.jock` and the examples that import it.
 >
-> 1 public declaration — 1 type, 0 arms. 1 pinned by a lane, 0 not. channel `%rc` · commit `242d79e`
+> 1 public declaration — 1 type, 0 arms. 1 pinned by a lane, 0 not. channel `%rc` · commit `c26a0c8`
 
 ## Import
 
@@ -32,7 +32,7 @@ This lived in the prelude until 2026-10-24.  It left under the rule in docs/spec
 ### `Effect`
 
 ```jock
-enum Effect { exit(@), markdown(String) };
+enum Effect { exit(@), markdown(String) }
 ```
 
 No comment in the source. The signature above is the whole of what `Effect` states about itself.

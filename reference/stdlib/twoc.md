@@ -5,7 +5,7 @@ two's-complement signed integers at arbitrary bit width
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/twoc.jock` and the examples that import it.
 >
-> 8 public declarations — 1 type, 7 arms. 7 pinned by a lane, 1 not. channel `%rc` · commit `242d79e`
+> 8 public declarations — 1 type, 7 arms. 7 pinned by a lane, 1 not. channel `%rc` · commit `c26a0c8`
 
 ## Import
 
@@ -36,7 +36,7 @@ FLOAT LANES. w16/w32/w64/w128 are the widths of Float16, Float32, Float64 and Fl
 ### `TwocState`
 
 ```jock
-struct TwocState { wid: Nat };
+struct TwocState { wid: Nat }
 ```
 
 No comment in the source. The signature above is the whole of what `TwocState` states about itself.
@@ -159,7 +159,7 @@ assert twoc.w128().len() == 128;
 
 That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.
 
-- `TwocState` — `struct TwocState { wid: Nat };`
+- `TwocState` — `struct TwocState { wid: Nat }`
 
 ## Where it is used
 

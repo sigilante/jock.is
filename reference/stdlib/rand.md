@@ -5,7 +5,7 @@ deterministic pseudo-random numbers.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/rand.jock` and the examples that import it.
 >
-> 12 public declarations — 1 type, 11 arms. 10 pinned by a lane, 2 not. channel `%rc` · commit `242d79e`
+> 12 public declarations — 1 type, 11 arms. 10 pinned by a lane, 2 not. channel `%rc` · commit `c26a0c8`
 
 ## Import
 
@@ -34,7 +34,7 @@ The output is a pure function of (key, counter), which is the property that matt
 ### `Phil`
 
 ```jock
-struct Phil { key: @, ctr: @ };
+struct Phil { key: @, ctr: @ }
 ```
 
 the Philox engine's state: a key and a 128-bit counter.

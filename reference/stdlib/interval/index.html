@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/interval.jock</code> and the examples that import it. 4 public declarations — 1 type, 3 arms. 3 pinned by a lane, 1 not. channel <code>%rc</code> · commit <code>242d79e</code></aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/interval.jock</code> and the examples that import it. 4 public declarations — 1 type, 3 arms. 3 pinned by a lane, 1 not. channel <code>%rc</code> · commit <code>c26a0c8</code></aside>
 <h2 id="import">Import</h2>
 <p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>interval.&lt;name&gt;</code>.</p>
 <pre class="code jock">import interval;</pre>
@@ -74,7 +74,7 @@
 <h2 id="types">Types</h2>
 <p>1 type. A type’s members ARE its interface, so each is shown whole rather than by name.</p>
 <h3 id="hull"><code>Hull</code></h3>
-<pre class="code jock">trait Hull { hull(⊛); };</pre>
+<pre class="code jock">trait Hull { hull(⊛); }</pre>
 <p>Hull binds <code>⊛</code>, the one operator the language lexes and leaves meaningless — no pinned arm, so a library gives it a meaning or it refuses. The hull is a fair claimant: it is total (any two intervals have a smallest enclosing one), closed, associative, and it is not any of the arithmetic operators. Declared before the class, which names it as a conformance.</p>
 <h2 id="arms">Arms</h2>
 <p>3 arms, in source order. The signature is reproduced exactly; the prose is the comment above the arm in <code>crates/jockc/hoon/lib/interval.jock</code>.</p>
@@ -97,7 +97,7 @@
 <h2 id="what-no-lane-pins">What no lane pins</h2>
 <p>1 of 4 public declarations are named by no example in <code>examples/</code>. They compile — the module is built by <code>tools/modules.sh</code> on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.</p>
 <p>That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.</p>
-<ul><li><code>Hull</code> — <code>trait Hull { hull(⊛); };</code></li></ul>
+<ul><li><code>Hull</code> — <code>trait Hull { hull(⊛); }</code></li></ul>
 <p>1 further declaration is <code>private</code> and therefore not reachable by an importer at all: <code>IvState</code>.</p>
 <h2 id="where-it-is-used">Where it is used</h2>
 <p>2 examples import <code>interval</code>. Each is a complete program whose value <code>tools/examples.sh</code> pins on every push.</p>

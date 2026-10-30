@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/parser.jock</code> and the examples that import it. 38 public declarations — 7 types, 31 arms. 33 pinned by a lane, 5 not. channel <code>%rc</code> · commit <code>242d79e</code></aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/parser.jock</code> and the examples that import it. 38 public declarations — 7 types, 31 arms. 33 pinned by a lane, 5 not. channel <code>%rc</code> · commit <code>c26a0c8</code></aside>
 <h2 id="import">Import</h2>
 <p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>parser.&lt;name&gt;</code>.</p>
 <pre class="code jock">import parser;</pre>
@@ -66,33 +66,33 @@
 <h2 id="types">Types</h2>
 <p>7 types. A type’s members ARE its interface, so each is shown whole rather than by name.</p>
 <h3 id="nail"><code>Nail</code></h3>
-<pre class="code jock">struct Nail { txt: List&lt;Byte&gt;, pos: @ };</pre>
+<pre class="code jock">struct Nail { txt: List&lt;Byte&gt;, pos: @ }</pre>
 <p>No comment in the source. The signature above is the whole of what <code>Nail</code> states about itself.</p>
 <p class="label">used by examples/parser.jock</p>
 <pre class="code jock">func nestRun(n: parser.Nail) -&gt; parser.Edge {</pre>
 <h3 id="edge"><code>Edge</code></h3>
-<pre class="code jock">enum Edge { fail(@), ok((String, Nail)) };</pre>
+<pre class="code jock">enum Edge { fail(@), ok((String, Nail)) }</pre>
 <p>Edge:  match result, either success or failure.</p>
 <p class="label">used by examples/parser-arms.jock</p>
 <pre class="code jock">func consumed(e: parser.Edge) -&gt; @ {</pre>
 <h3 id="rule"><code>Rule</code></h3>
-<pre class="code jock">struct Rule { run: Nail -&gt; Edge };</pre>
+<pre class="code jock">struct Rule { run: Nail -&gt; Edge }</pre>
 <p>Rule:  a parser, a function from Nail to Edge.</p>
 <h3 id="seq"><code>Seq</code></h3>
-<pre class="code jock">trait Seq { then(⊛); };</pre>
+<pre class="code jock">trait Seq { then(⊛); }</pre>
 <p>Sequencing operator</p>
 <p>Sequence composition. An importer writes</p>
 <p>parser.just('a') ⊛ parser.just('b')</p>
 <h3 id="seq-for-rule"><code>Seq for Rule</code></h3>
-<pre class="code jock">impl Seq for Rule { then(self: Rule, p: Rule) -&gt; Rule { plug(self, p) }; };</pre>
+<pre class="code jock">impl Seq for Rule { then(self: Rule, p: Rule) -&gt; Rule { plug(self, p) }; }</pre>
 <p>No comment in the source. The signature above is the whole of what <code>Seq for Rule</code> states about itself.</p>
 <h3 id="alt"><code>Alt</code></h3>
-<pre class="code jock">trait Alt { alt(⊕); };</pre>
+<pre class="code jock">trait Alt { alt(⊕); }</pre>
 <p>Alternation operator</p>
 <p>Ordered choice, like +pose.  An importer writes</p>
 <p>parser.dit() ⊕ parser.alf()</p>
 <h3 id="alt-for-rule"><code>Alt for Rule</code></h3>
-<pre class="code jock">impl Alt for Rule { alt(self: Rule, p: Rule) -&gt; Rule { pose(self, p) }; };</pre>
+<pre class="code jock">impl Alt for Rule { alt(self: Rule, p: Rule) -&gt; Rule { pose(self, p) }; }</pre>
 <p>No comment in the source. The signature above is the whole of what <code>Alt for Rule</code> states about itself.</p>
 <h2 id="arms">Arms</h2>
 <p>31 arms, in source order. The signature is reproduced exactly; the prose is the comment above the arm in <code>crates/jockc/hoon/lib/parser.jock</code>.</p>
@@ -258,7 +258,7 @@
 <p>5 of 38 public declarations are named by no example in <code>examples/</code>. They compile — the module is built by <code>tools/modules.sh</code> on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.</p>
 <p>2 of those are an <code>impl</code>, and the rule is what cannot reach them, not the example. A pin is a line naming <code>parser.&lt;declaration&gt;</code>; an impl is named for its <code>Trait for Type</code> pair, and no program writes that — it writes <code>a &lt; b</code> or <code>t.show()</code>, whose connection to the impl is a <strong>type</strong> fact this generator does not have. Guessing it from the text could claim coverage that is not there, so the count stays honest and says this instead.</p>
 <p>That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.</p>
-<ul><li><code>Rule</code> — <code>struct Rule { run: Nail -&gt; Edge };</code></li><li><code>Seq</code> — <code>trait Seq { then(⊛); };</code></li><li><code>Seq for Rule</code> — <code>impl Seq for Rule { then(self: Rule, p: Rule) -&gt; Rule { plug(self, p) }; };</code></li><li><code>Alt</code> — <code>trait Alt { alt(⊕); };</code></li><li><code>Alt for Rule</code> — <code>impl Alt for Rule { alt(self: Rule, p: Rule) -&gt; Rule { pose(self, p) }; };</code></li></ul>
+<ul><li><code>Rule</code> — <code>struct Rule { run: Nail -&gt; Edge }</code></li><li><code>Seq</code> — <code>trait Seq { then(⊛); }</code></li><li><code>Seq for Rule</code> — <code>impl Seq for Rule { then(self: Rule, p: Rule) -&gt; Rule { plug(self, p) }; }</code></li><li><code>Alt</code> — <code>trait Alt { alt(⊕); }</code></li><li><code>Alt for Rule</code> — <code>impl Alt for Rule { alt(self: Rule, p: Rule) -&gt; Rule { pose(self, p) }; }</code></li></ul>
 <h2 id="where-it-is-used">Where it is used</h2>
 <p>3 examples import <code>parser</code>. Each is a complete program whose value <code>tools/examples.sh</code> pins on every push.</p>
 <ul><li><code>examples/parser-arms.jock</code> — the arms sheet: one assertion per arm</li><li><code>examples/parser-combinators.jock</code> — a use</li><li><code>examples/parser.jock</code> — a use</li></ul>

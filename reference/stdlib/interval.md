@@ -5,7 +5,7 @@ interval arithmetic over exact rationals.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/interval.jock` and the examples that import it.
 >
-> 4 public declarations — 1 type, 3 arms. 3 pinned by a lane, 1 not. channel `%rc` · commit `242d79e`
+> 4 public declarations — 1 type, 3 arms. 3 pinned by a lane, 1 not. channel `%rc` · commit `c26a0c8`
 
 ## Import
 
@@ -48,7 +48,7 @@ import interval; (interval.unit() + interval.unit()).show()   // "[0, 2]" `priva
 ### `Hull`
 
 ```jock
-trait Hull { hull(⊛); };
+trait Hull { hull(⊛); }
 ```
 
 Hull binds `⊛`, the one operator the language lexes and leaves meaningless — no pinned arm, so a library gives it a meaning or it refuses. The hull is a fair claimant: it is total (any two intervals have a smallest enclosing one), closed, associative, and it is not any of the arithmetic operators. Declared before the class, which names it as a conformance.
@@ -111,7 +111,7 @@ let u = interval.unit();                        //  [0, 1]
 
 That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.
 
-- `Hull` — `trait Hull { hull(⊛); };`
+- `Hull` — `trait Hull { hull(⊛); }`
 
 1 further declaration is `private` and therefore not reachable by an importer at all: `IvState`.
 

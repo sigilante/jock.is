@@ -5,7 +5,7 @@ civil dates, ISO 8601, and the Urbit `@da`.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/time.jock` and the examples that import it.
 >
-> 29 public declarations — 7 types, 22 arms. 23 pinned by a lane, 6 not. channel `%rc` · commit `242d79e`
+> 30 public declarations — 8 types, 22 arms. 23 pinned by a lane, 7 not. channel `%rc` · commit `c26a0c8`
 
 ## Import
 
@@ -33,12 +33,12 @@ let t = time.parse("2026-10-30T12:00:00Z"); match t { ~ => "unparseable", (~, s)
 
 ## Types
 
-7 types. A type’s members ARE its interface, so each is shown whole rather than by name.
+8 types. A type’s members ARE its interface, so each is shown whole rather than by name.
 
 ### `Stamp`
 
 ```jock
-struct Stamp { year: @, month: @, day: @, hour: @, minute: @, second: @ } // EPOCH: years from the start of the Urbit epoch to 1 AD. // `+year:hoon` adds this to an AD year;
+struct Stamp { year: @, month: @, day: @, hour: @, minute: @, second: @ }
 ```
 
 No comment in the source. The signature above is the whole of what `Stamp` states about itself.
@@ -52,10 +52,8 @@ assert not time.valid(time.Stamp(year: 2026, month: 2, day: 30,
 ### `Duration`
 
 ```jock
-trait Duration { secs(self: Self) -> @; plus(self: Self, p: Self) -> Self; minus(self: Self, p: Self) -> Self; shorter(self: Self, p: Self) -> Bool; show(self: Self) -> String; } // The duration renderer, as ONE contiguous run of funcs: only // adjacent funcs see each other, and a comment between two of them // breaks the run, so these carry their explanation here instead. // // `num` is unpadded decimal --- a duration pads nothing. `isoDur` // is ISO 8601's PnDTnHnMnS with zero components omitted and `PT0S` // for an empty span, the same standard the Stamp side speaks. private func num(n: @) -> String { if n == 0 { "0" } else { hoon.crip(padLoop(n, 0, ~)) } };
+trait Duration { secs(self: Self) -> @; plus(self: Self, p: Self) -> Self; minus(self: Self, p: Self) -> Self; shorter(self: Self, p: Self) -> Bool; show(self: Self) -> String; }
 ```
-
----- Span gets methods, and NOT an operator -------------------
 
 A `Span` is the language's own `%span` aura, so the prelude's traits cannot be given to it from here --- `impl Add for Span` refuses `%mint-impl-orphan 'Add' '@span'`. A trait declared HERE is a different matter: the orphan rule is satisfied by owning EITHER side, so this one may be implemented for a prelude type.
 
@@ -66,15 +64,27 @@ The signature a slot demands comes from the operator's STATION, not from the tra
 ### `Duration for Span`
 
 ```jock
-impl Duration for Span { secs(self: Span) -> @ { spanSecs(self) }; plus(self: Span, p: Span) -> Span { span(spanSecs(self) + spanSecs(p)) }; minus(self: Span, p: Span) -> Span { span(spanSecs(self) - spanSecs(p)) }; shorter(self: Span, p: Span) -> Bool { spanSecs(self) < spanSecs(p) }; show(self: Span) -> String { isoDur(spanSecs(self)) }; } // ---- what the operators CAN carry ----------------------------- // // Ordering and rendering, for `Stamp` only. // // `Span` gets none of this, and cannot: it is a prelude aura, so // an `impl` for it from this module is an orphan and refuses // `%mint-impl-orphan 'Add' '@span'`. Durations therefore add and // compare through `spanSecs`, which is why that arm is public. // // `Eq` is absent because it would be redundant: a Stamp is a // product of atoms, so two equal Stamps are the same noun and `==` // is Nock 5 on them already. An impl would be a second answer to a // question the substrate answers. // // Ordering goes through `toSecs` and NOT through the field order. // A Stamp is a product and Nock has no lexicographic compare, so // structural comparison would order by whatever the erasure // happens to be rather than by time. impl Show for Stamp { show(self: Stamp) -> String { iso(self) }; };
+impl Duration for Span { secs(self: Span) -> @ { spanSecs(self) }; plus(self: Span, p: Span) -> Span { span(spanSecs(self) + spanSecs(p)) }; minus(self: Span, p: Span) -> Span { span(spanSecs(self) - spanSecs(p)) }; shorter(self: Span, p: Span) -> Bool { spanSecs(self) < spanSecs(p) }; show(self: Span) -> String { isoDur(spanSecs(self)) }; }
 ```
 
 No comment in the source. The signature above is the whole of what `Duration for Span` states about itself.
 
+### `Show for Stamp`
+
+```jock
+impl Show for Stamp { show(self: Stamp) -> String { iso(self) }; }
+```
+
+`Stamp` is ours, so the prelude's own traits may be given to it directly --- which is the ordinary case, and the one `Span` above could not take.
+
+`Eq` is absent because it would be redundant: a Stamp is a product of atoms, so two equal Stamps are the same noun and `==` is Nock 5 on them already. An impl would be a second answer to a question the substrate answers.
+
+Ordering goes through `toSecs` and NOT through the field order. A Stamp is a product and Nock has no lexicographic compare, so structural comparison would order by whatever the erasure happens to be rather than by time.
+
 ### `Lt for Stamp`
 
 ```jock
-impl Lt for Stamp { lt(self: Stamp, p: Stamp) -> Bool { toSecs(self) < toSecs(p) }; };
+impl Lt for Stamp { lt(self: Stamp, p: Stamp) -> Bool { toSecs(self) < toSecs(p) }; }
 ```
 
 No comment in the source. The signature above is the whole of what `Lt for Stamp` states about itself.
@@ -82,7 +92,7 @@ No comment in the source. The signature above is the whole of what `Lt for Stamp
 ### `Lte for Stamp`
 
 ```jock
-impl Lte for Stamp { lte(self: Stamp, p: Stamp) -> Bool { toSecs(self) <= toSecs(p) }; };
+impl Lte for Stamp { lte(self: Stamp, p: Stamp) -> Bool { toSecs(self) <= toSecs(p) }; }
 ```
 
 No comment in the source. The signature above is the whole of what `Lte for Stamp` states about itself.
@@ -90,7 +100,7 @@ No comment in the source. The signature above is the whole of what `Lte for Stam
 ### `Gt for Stamp`
 
 ```jock
-impl Gt for Stamp { gt(self: Stamp, p: Stamp) -> Bool { toSecs(self) > toSecs(p) }; };
+impl Gt for Stamp { gt(self: Stamp, p: Stamp) -> Bool { toSecs(self) > toSecs(p) }; }
 ```
 
 No comment in the source. The signature above is the whole of what `Gt for Stamp` states about itself.
@@ -98,7 +108,7 @@ No comment in the source. The signature above is the whole of what `Gt for Stamp
 ### `Gte for Stamp`
 
 ```jock
-impl Gte for Stamp { gte(self: Stamp, p: Stamp) -> Bool { toSecs(self) >= toSecs(p) }; };
+impl Gte for Stamp { gte(self: Stamp, p: Stamp) -> Bool { toSecs(self) >= toSecs(p) }; }
 ```
 
 No comment in the source. The signature above is the whole of what `Gte for Stamp` states about itself.
@@ -138,7 +148,7 @@ No comment in the source. The signature above is the whole of what `Gte for Stam
 func epoch() -> @ { ... }
 ```
 
-No comment in the source. The signature above is the whole of what `epoch` states about itself.
+EPOCH: years from the start of the Urbit epoch to 1 AD. `+year:hoon` adds this to an AD year; so does this module.
 
 *asserted by examples/time-arms.jock*
 
@@ -420,8 +430,6 @@ assert time.show(time.fromDate(d)) === "2026-10-30T12:34:56Z";
 func plus(t: Stamp, s: Span) -> Stamp { ... }
 ```
 
----- shifting an instant --------------------------------------
-
 NOT operators, and not for want of trying. An arithmetic op-trait is `(Self, Self) -> Self`: `Stamp + Span` fails because the right operand is not `Self`, and `Stamp - Stamp -> Span` fails because the result is not. Both refuse `%mint-impl-sig`. So the two genuinely useful arithmetic operations on instants are named functions, and `between` above is the subtraction.
 
 *asserted by examples/time-arms.jock*
@@ -446,20 +454,21 @@ assert time.toSecs(time.minus(time.plus(noon, anHour), anHour)) == time.toSecs(n
 
 ## What no lane pins
 
-6 of 29 public declarations are named by no example in `examples/`. They compile — the module is built by `tools/modules.sh` on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.
+7 of 30 public declarations are named by no example in `examples/`. They compile — the module is built by `tools/modules.sh` on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.
 
-5 of those are an `impl`, and the rule is what cannot reach them, not the example. A pin is a line naming `time.<declaration>`; an impl is named for its `Trait for Type` pair, and no program writes that — it writes `a < b` or `t.show()`, whose connection to the impl is a **type** fact this generator does not have. Guessing it from the text could claim coverage that is not there, so the count stays honest and says this instead.
+6 of those are an `impl`, and the rule is what cannot reach them, not the example. A pin is a line naming `time.<declaration>`; an impl is named for its `Trait for Type` pair, and no program writes that — it writes `a < b` or `t.show()`, whose connection to the impl is a **type** fact this generator does not have. Guessing it from the text could claim coverage that is not there, so the count stays honest and says this instead.
 
 That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.
 
-- `Duration` — `trait Duration { secs(self: Self) -> @; plus(self: Self, p: Self) -> Self; minus(self: Self, p: Self) -> Self; shorter(self: Self, p: Self) -> Bool; show(self: Self) -> String; } // The duration renderer, as ONE contiguous run of funcs: only // adjacent funcs see each other, and a comment between two of them // breaks the run, so these carry their explanation here instead. // // `num` is unpadded decimal --- a duration pads nothing. `isoDur` // is ISO 8601's PnDTnHnMnS with zero components omitted and `PT0S` // for an empty span, the same standard the Stamp side speaks. private func num(n: @) -> String { if n == 0 { "0" } else { hoon.crip(padLoop(n, 0, ~)) } };`
-- `Duration for Span` — `impl Duration for Span { secs(self: Span) -> @ { spanSecs(self) }; plus(self: Span, p: Span) -> Span { span(spanSecs(self) + spanSecs(p)) }; minus(self: Span, p: Span) -> Span { span(spanSecs(self) - spanSecs(p)) }; shorter(self: Span, p: Span) -> Bool { spanSecs(self) < spanSecs(p) }; show(self: Span) -> String { isoDur(spanSecs(self)) }; } // ---- what the operators CAN carry ----------------------------- // // Ordering and rendering, for `Stamp` only. // // `Span` gets none of this, and cannot: it is a prelude aura, so // an `impl` for it from this module is an orphan and refuses // `%mint-impl-orphan 'Add' '@span'`. Durations therefore add and // compare through `spanSecs`, which is why that arm is public. // // `Eq` is absent because it would be redundant: a Stamp is a // product of atoms, so two equal Stamps are the same noun and `==` // is Nock 5 on them already. An impl would be a second answer to a // question the substrate answers. // // Ordering goes through `toSecs` and NOT through the field order. // A Stamp is a product and Nock has no lexicographic compare, so // structural comparison would order by whatever the erasure // happens to be rather than by time. impl Show for Stamp { show(self: Stamp) -> String { iso(self) }; };`
-- `Lt for Stamp` — `impl Lt for Stamp { lt(self: Stamp, p: Stamp) -> Bool { toSecs(self) < toSecs(p) }; };`
-- `Lte for Stamp` — `impl Lte for Stamp { lte(self: Stamp, p: Stamp) -> Bool { toSecs(self) <= toSecs(p) }; };`
-- `Gt for Stamp` — `impl Gt for Stamp { gt(self: Stamp, p: Stamp) -> Bool { toSecs(self) > toSecs(p) }; };`
-- `Gte for Stamp` — `impl Gte for Stamp { gte(self: Stamp, p: Stamp) -> Bool { toSecs(self) >= toSecs(p) }; };`
+- `Duration` — `trait Duration { secs(self: Self) -> @; plus(self: Self, p: Self) -> Self; minus(self: Self, p: Self) -> Self; shorter(self: Self, p: Self) -> Bool; show(self: Self) -> String; }`
+- `Duration for Span` — `impl Duration for Span { secs(self: Span) -> @ { spanSecs(self) }; plus(self: Span, p: Span) -> Span { span(spanSecs(self) + spanSecs(p)) }; minus(self: Span, p: Span) -> Span { span(spanSecs(self) - spanSecs(p)) }; shorter(self: Span, p: Span) -> Bool { spanSecs(self) < spanSecs(p) }; show(self: Span) -> String { isoDur(spanSecs(self)) }; }`
+- `Show for Stamp` — `impl Show for Stamp { show(self: Stamp) -> String { iso(self) }; }`
+- `Lt for Stamp` — `impl Lt for Stamp { lt(self: Stamp, p: Stamp) -> Bool { toSecs(self) < toSecs(p) }; }`
+- `Lte for Stamp` — `impl Lte for Stamp { lte(self: Stamp, p: Stamp) -> Bool { toSecs(self) <= toSecs(p) }; }`
+- `Gt for Stamp` — `impl Gt for Stamp { gt(self: Stamp, p: Stamp) -> Bool { toSecs(self) > toSecs(p) }; }`
+- `Gte for Stamp` — `impl Gte for Stamp { gte(self: Stamp, p: Stamp) -> Bool { toSecs(self) >= toSecs(p) }; }`
 
-18 further declarations are `private` and therefore not reachable by an importer at all: `monthsBefore`, `yawnLoop`, `yallMonth`, `yallYear`, `yall`, `isDigit`, `digits`, `lit`, `some`, `none`, `parseTime`, `padLoop`, `pad`, `showFull`, `iso`, `isoSecs`, `isoMins`, `isoDur`.
+19 further declarations are `private` and therefore not reachable by an importer at all: `monthsBefore`, `yawnLoop`, `yallMonth`, `yallYear`, `yall`, `isDigit`, `digits`, `lit`, `some`, `none`, `parseTime`, `padLoop`, `pad`, `showFull`, `iso`, `num`, `isoSecs`, `isoMins`, `isoDur`.
 
 ## Where it is used
 

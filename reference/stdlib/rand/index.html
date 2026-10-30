@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/rand.jock</code> and the examples that import it. 12 public declarations — 1 type, 11 arms. 10 pinned by a lane, 2 not. channel <code>%rc</code> · commit <code>242d79e</code></aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/rand.jock</code> and the examples that import it. 12 public declarations — 1 type, 11 arms. 10 pinned by a lane, 2 not. channel <code>%rc</code> · commit <code>c26a0c8</code></aside>
 <h2 id="import">Import</h2>
 <p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>rand.&lt;name&gt;</code>.</p>
 <pre class="code jock">import rand;</pre>
@@ -67,7 +67,7 @@
 <h2 id="types">Types</h2>
 <p>1 type. A type’s members ARE its interface, so each is shown whole rather than by name.</p>
 <h3 id="phil"><code>Phil</code></h3>
-<pre class="code jock">struct Phil { key: @, ctr: @ };</pre>
+<pre class="code jock">struct Phil { key: @, ctr: @ }</pre>
 <p>the Philox engine's state: a key and a 128-bit counter.</p>
 <p class="label">asserted by examples/rand-arms.jock</p>
 <pre class="code jock">assert rand.step(rand.Phil( key: 0, ctr: 0 )).&lt; == 0xe169c58d6627e8d5;</pre>

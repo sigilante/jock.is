@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/http.jock</code> and the examples that import it. 22 public declarations — 3 types, 19 arms. 13 pinned by a lane, 9 not. channel <code>%rc</code> · commit <code>242d79e</code></aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/http.jock</code> and the examples that import it. 22 public declarations — 3 types, 19 arms. 13 pinned by a lane, 9 not. channel <code>%rc</code> · commit <code>c26a0c8</code></aside>
 <h2 id="import">Import</h2>
 <p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>http.&lt;name&gt;</code>.</p>
 <pre class="code jock">import http;</pre>
@@ -65,16 +65,16 @@
 <h2 id="types">Types</h2>
 <p>3 types. A type’s members ARE its interface, so each is shown whole rather than by name.</p>
 <h3 id="effect"><code>Effect</code></h3>
-<pre class="code jock">enum Effect { res((@, @, List&lt;Header&gt;, Octs?)) };</pre>
+<pre class="code jock">enum Effect { res((@, @, List&lt;Header&gt;, Octs?)) }</pre>
 <p>No comment in the source. The signature above is the whole of what <code>Effect</code> states about itself.</p>
 <p class="label">used by examples/conway.jock</p>
 <pre class="code jock">class Life(Board) impl Kernel&lt;http.Effect&gt; {</pre>
 <h3 id="ovum"><code>Ovum</code></h3>
-<pre class="code jock">struct Ovum { num: Nat, wire: *, eny: @, our: @, now: @, cause: * };</pre>
+<pre class="code jock">struct Ovum { num: Nat, wire: *, eny: @, our: @, now: @, cause: * }</pre>
 <p>the NockApp ovum (runtime.md §5).  Only <code>cause</code> is ever read here; the rest is named so the mold matches the wire noun.</p>
 <p><code>Nat</code> IS NARROWER THAN <code>@</code> --- it is the number aura, and a cord does not nest into it.  So the fields that carry numbers are Nat and the ones that carry raw atoms of another aura (entropy, a ship, a date) stay <code>@</code>.  Spelling them all Nat would look modern and refuse the wire.</p>
 <h3 id="req"><code>Req</code></h3>
-<pre class="code jock">struct Req { tag: @, id: Nat, uri: String, method: String, headers: List&lt;Header&gt;, body: Octs?, };</pre>
+<pre class="code jock">struct Req { tag: @, id: Nat, uri: String, method: String, headers: List&lt;Header&gt;, body: Octs?, }</pre>
 <p>the %req cause.  <code>tag</code> is the %req atom --- a CORD, hence <code>@</code> --- so an ovum whose cause is shaped like a request but tagged otherwise is not one.</p>
 <p class="label">used by examples/conway.jock</p>
 <pre class="code jock">func route(b: Board, r: http.Req, eny: @) -&gt; Board {</pre>
@@ -168,7 +168,7 @@
 <h2 id="what-no-lane-pins">What no lane pins</h2>
 <p>9 of 22 public declarations are named by no example in <code>examples/</code>. They compile — the module is built by <code>tools/modules.sh</code> on every push — but no assertion mentions them by name, so treat the signature as the only claim about them that a lane checks.</p>
 <p>That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.</p>
-<ul><li><code>Ovum</code> — <code>struct Ovum { num: Nat, wire: *, eny: @, our: @, now: @, cause: * };</code></li><li><code>none</code> — <code>func none() -&gt; Req</code></li><li><code>header</code> — <code>func header(hs: List&lt;Header&gt;, k: String) -&gt; String?</code></li><li><code>body</code> — <code>func body(s: String) -&gt; Octs?</code></li><li><code>respond</code> — <code>func respond(id: Nat, status: Nat, hs: List&lt;Header&gt;, b: Octs?) -&gt; Effect</code></li><li><code>status</code> — <code>func status(id: Nat, code: Nat) -&gt; Effect</code></li><li><code>digits</code> — <code>func digits(bs: List&lt;Byte&gt;, acc: @) -&gt; @</code></li><li><code>bodyText</code> — <code>func bodyText(r: Req) -&gt; String</code></li><li><code>lowerRun</code> — <code>func lowerRun(bs: List&lt;Byte&gt;) -&gt; List&lt;Byte&gt;</code></li></ul>
+<ul><li><code>Ovum</code> — <code>struct Ovum { num: Nat, wire: *, eny: @, our: @, now: @, cause: * }</code></li><li><code>none</code> — <code>func none() -&gt; Req</code></li><li><code>header</code> — <code>func header(hs: List&lt;Header&gt;, k: String) -&gt; String?</code></li><li><code>body</code> — <code>func body(s: String) -&gt; Octs?</code></li><li><code>respond</code> — <code>func respond(id: Nat, status: Nat, hs: List&lt;Header&gt;, b: Octs?) -&gt; Effect</code></li><li><code>status</code> — <code>func status(id: Nat, code: Nat) -&gt; Effect</code></li><li><code>digits</code> — <code>func digits(bs: List&lt;Byte&gt;, acc: @) -&gt; @</code></li><li><code>bodyText</code> — <code>func bodyText(r: Req) -&gt; String</code></li><li><code>lowerRun</code> — <code>func lowerRun(bs: List&lt;Byte&gt;) -&gt; List&lt;Byte&gt;</code></li></ul>
 <h2 id="where-it-is-used">Where it is used</h2>
 <p>5 examples import <code>http</code>. Each is a complete program whose value <code>tools/examples.sh</code> pins on every push.</p>
 <ul><li><code>examples/conway.jock</code> — a use</li><li><code>examples/http-counter.jock</code> — a use</li><li><code>examples/minesweeper.jock</code> — a use</li><li><code>examples/webserver.jock</code> — a use</li><li><code>examples/wordle.jock</code> — a use</li></ul>

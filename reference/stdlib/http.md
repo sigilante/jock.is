@@ -5,7 +5,7 @@ the NockApp http driver, from the Jock side.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/http.jock` and the examples that import it.
 >
-> 22 public declarations — 3 types, 19 arms. 13 pinned by a lane, 9 not. channel `%rc` · commit `242d79e`
+> 22 public declarations — 3 types, 19 arms. 13 pinned by a lane, 9 not. channel `%rc` · commit `c26a0c8`
 
 ## Import
 
@@ -30,7 +30,7 @@ Ported from the Hoon side's lib/http.hoon, which every nockd example shares for 
 ### `Effect`
 
 ```jock
-enum Effect { res((@, @, List<Header>, Octs?)) };
+enum Effect { res((@, @, List<Header>, Octs?)) }
 ```
 
 No comment in the source. The signature above is the whole of what `Effect` states about itself.
@@ -44,7 +44,7 @@ class Life(Board) impl Kernel<http.Effect> {
 ### `Ovum`
 
 ```jock
-struct Ovum { num: Nat, wire: *, eny: @, our: @, now: @, cause: * };
+struct Ovum { num: Nat, wire: *, eny: @, our: @, now: @, cause: * }
 ```
 
 the NockApp ovum (runtime.md §5).  Only `cause` is ever read here; the rest is named so the mold matches the wire noun.
@@ -54,7 +54,7 @@ the NockApp ovum (runtime.md §5).  Only `cause` is ever read here; the rest is 
 ### `Req`
 
 ```jock
-struct Req { tag: @, id: Nat, uri: String, method: String, headers: List<Header>, body: Octs?, };
+struct Req { tag: @, id: Nat, uri: String, method: String, headers: List<Header>, body: Octs?, }
 ```
 
 the %req cause.  `tag` is the %req atom --- a CORD, hence `@` --- so an ovum whose cause is shaped like a request but tagged otherwise is not one.
@@ -325,7 +325,7 @@ submit(g, http.word(http.fields(r), "w="))
 
 That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.
 
-- `Ovum` — `struct Ovum { num: Nat, wire: *, eny: @, our: @, now: @, cause: * };`
+- `Ovum` — `struct Ovum { num: Nat, wire: *, eny: @, our: @, now: @, cause: * }`
 - `none` — `func none() -> Req`
 - `header` — `func header(hs: List<Header>, k: String) -> String?`
 - `body` — `func body(s: String) -> Octs?`

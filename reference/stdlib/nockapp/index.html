@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/nockapp.jock</code> and the examples that import it. 1 public declaration — 1 type, 0 arms. 1 pinned by a lane, 0 not. channel <code>%rc</code> · commit <code>242d79e</code></aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/nockapp.jock</code> and the examples that import it. 1 public declaration — 1 type, 0 arms. 1 pinned by a lane, 0 not. channel <code>%rc</code> · commit <code>c26a0c8</code></aside>
 <h2 id="import">Import</h2>
 <p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>nockapp.&lt;name&gt;</code>.</p>
 <pre class="code jock">import nockapp;</pre>
@@ -66,7 +66,7 @@
 <h2 id="types">Types</h2>
 <p>1 type. A type’s members ARE its interface, so each is shown whole rather than by name.</p>
 <h3 id="effect"><code>Effect</code></h3>
-<pre class="code jock">enum Effect { exit(@), markdown(String) };</pre>
+<pre class="code jock">enum Effect { exit(@), markdown(String) }</pre>
 <p>No comment in the source. The signature above is the whole of what <code>Effect</code> states about itself.</p>
 <p class="label">used by examples/counter-v2.jock</p>
 <pre class="code jock">class CounterV2(KS2) impl Kernel&lt;nockapp.Effect&gt; {</pre>

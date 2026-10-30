@@ -5,7 +5,7 @@ parser combinators.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/parser.jock` and the examples that import it.
 >
-> 38 public declarations — 7 types, 31 arms. 33 pinned by a lane, 5 not. channel `%rc` · commit `242d79e`
+> 38 public declarations — 7 types, 31 arms. 33 pinned by a lane, 5 not. channel `%rc` · commit `c26a0c8`
 
 ## Import
 
@@ -32,7 +32,7 @@ A rule matches TEXT and answers text. Hoon's rules produce arbitrary values thro
 ### `Nail`
 
 ```jock
-struct Nail { txt: List<Byte>, pos: @ };
+struct Nail { txt: List<Byte>, pos: @ }
 ```
 
 No comment in the source. The signature above is the whole of what `Nail` states about itself.
@@ -46,7 +46,7 @@ func nestRun(n: parser.Nail) -> parser.Edge {
 ### `Edge`
 
 ```jock
-enum Edge { fail(@), ok((String, Nail)) };
+enum Edge { fail(@), ok((String, Nail)) }
 ```
 
 Edge:  match result, either success or failure.
@@ -60,7 +60,7 @@ func consumed(e: parser.Edge) -> @ {
 ### `Rule`
 
 ```jock
-struct Rule { run: Nail -> Edge };
+struct Rule { run: Nail -> Edge }
 ```
 
 Rule:  a parser, a function from Nail to Edge.
@@ -68,7 +68,7 @@ Rule:  a parser, a function from Nail to Edge.
 ### `Seq`
 
 ```jock
-trait Seq { then(⊛); };
+trait Seq { then(⊛); }
 ```
 
 Sequencing operator
@@ -80,7 +80,7 @@ parser.just('a') ⊛ parser.just('b')
 ### `Seq for Rule`
 
 ```jock
-impl Seq for Rule { then(self: Rule, p: Rule) -> Rule { plug(self, p) }; };
+impl Seq for Rule { then(self: Rule, p: Rule) -> Rule { plug(self, p) }; }
 ```
 
 No comment in the source. The signature above is the whole of what `Seq for Rule` states about itself.
@@ -88,7 +88,7 @@ No comment in the source. The signature above is the whole of what `Seq for Rule
 ### `Alt`
 
 ```jock
-trait Alt { alt(⊕); };
+trait Alt { alt(⊕); }
 ```
 
 Alternation operator
@@ -100,7 +100,7 @@ parser.dit() ⊕ parser.alf()
 ### `Alt for Rule`
 
 ```jock
-impl Alt for Rule { alt(self: Rule, p: Rule) -> Rule { pose(self, p) }; };
+impl Alt for Rule { alt(self: Rule, p: Rule) -> Rule { pose(self, p) }; }
 ```
 
 No comment in the source. The signature above is the whole of what `Alt for Rule` states about itself.
@@ -589,11 +589,11 @@ assert (parser.rush("ab", parser.altseq(parser.just('a'), parser.just('b'), pars
 
 That count is of DIRECT mentions. An arm an assertion reaches only through a caller is not counted here, so a helper below may well be exercised on every push without appearing to be — what is true is that no lane fixes its result independently of its caller’s.
 
-- `Rule` — `struct Rule { run: Nail -> Edge };`
-- `Seq` — `trait Seq { then(⊛); };`
-- `Seq for Rule` — `impl Seq for Rule { then(self: Rule, p: Rule) -> Rule { plug(self, p) }; };`
-- `Alt` — `trait Alt { alt(⊕); };`
-- `Alt for Rule` — `impl Alt for Rule { alt(self: Rule, p: Rule) -> Rule { pose(self, p) }; };`
+- `Rule` — `struct Rule { run: Nail -> Edge }`
+- `Seq` — `trait Seq { then(⊛); }`
+- `Seq for Rule` — `impl Seq for Rule { then(self: Rule, p: Rule) -> Rule { plug(self, p) }; }`
+- `Alt` — `trait Alt { alt(⊕); }`
+- `Alt for Rule` — `impl Alt for Rule { alt(self: Rule, p: Rule) -> Rule { pose(self, p) }; }`
 
 ## Where it is used
 

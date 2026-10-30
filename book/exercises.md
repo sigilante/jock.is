@@ -5,7 +5,7 @@
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> channel `%rc` · commit `242d79e`
+> channel `%rc` · commit `c26a0c8`
 
 ## The gradient
 
