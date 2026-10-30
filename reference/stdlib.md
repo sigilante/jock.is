@@ -1,11 +1,11 @@
 # The standard library
 
-10 modules under `lib/`, 142 public declarations between them. A module arrives by name through `import`; nothing in it is ambient, and nothing is in scope that was not imported.
+10 modules under `lib/`, 143 public declarations between them. A module arrives by name through `import`; nothing in it is ambient, and nothing is in scope that was not imported.
 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` reads the module sources and the examples that import them.
 >
-> 119 of 142 declarations pinned by a lane · channel `%rc` · commit `8c0074a` (sigilante/pre-rc-sweep) · 2026-10-30
+> 119 of 143 declarations pinned by a lane · channel `%rc` · commit `242d79e` (sigilante/pre-rc-sweep) · 2026-10-30
 
 ## What counts as the standard library
 
@@ -30,7 +30,7 @@ Tier 1 is what a program cannot reasonably be written without, and an addition t
 | [`parser`](parser/) | parser combinators | 7 | 31 | 33/38 |
 | [`rand`](rand/) | deterministic pseudo-random numbers | 1 | 11 | 10/12 |
 | [`rational`](rational/) | exact rational arithmetic over Int | 0 | 9 | 9/9 |
-| [`time`](time/) | civil dates, ISO 8601, and the Urbit `@da` | 6 | 22 | 23/28 |
+| [`time`](time/) | civil dates, ISO 8601, and the Urbit `@da` | 7 | 22 | 23/29 |
 | [`twoc`](twoc/) | two's-complement signed integers at arbitrary bit width | 1 | 7 | 7/8 |
 | [`urbit`](urbit/) | Urbit-native conversions, in Jock | 0 | 2 | 2/2 |
 
@@ -48,13 +48,13 @@ An arm named only by an ordinary program is marked a `use`: the call shape is de
 
 ## What no lane pins
 
-23 of 142 public declarations are named by no example — DIRECTLY; an arm reached only through a pinned caller is not counted. The gap is not spread evenly: 7 modules have an arms sheet and `http`, `nockapp`, `urbit` do not.
+24 of 143 public declarations are named by no example — DIRECTLY; an arm reached only through a pinned caller is not counted. The gap is not spread evenly: 7 modules have an arms sheet and `http`, `nockapp`, `urbit` do not.
 
 - `http` — 13 of 22 pinned, no arms sheet
 - `interval` — 3 of 4 pinned
 - `parser` — 33 of 38 pinned
 - `rand` — 10 of 12 pinned
-- `time` — 23 of 28 pinned
+- `time` — 23 of 29 pinned
 - `twoc` — 7 of 8 pinned
 
 ## What is in the library and not on this site
