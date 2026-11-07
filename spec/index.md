@@ -9,9 +9,9 @@ These are the authority. Where a generated page and a spec disagree, the spec is
 
 | spec | rules | lines | raw |
 |---|---:|---:|---|
-| [`language.md`](/spec/language/) | 184 | 1770 | [`language.md`](/spec/language.md) |
+| [`language.md`](/spec/language/) | 184 | 1774 | [`language.md`](/spec/language.md) |
 | [`types.md`](/spec/types/) | 35 | 1181 | [`types.md`](/spec/types.md) |
-| [`runtime.md`](/spec/runtime/) | 102 | 1121 | [`runtime.md`](/spec/runtime.md) |
+| [`runtime.md`](/spec/runtime/) | 102 | 1207 | [`runtime.md`](/spec/runtime.md) |
 | [`nockasm.md`](/spec/nockasm/) | 25 | 248 | [`nockasm.md`](/spec/nockasm.md) |
 | [`nockasm-target.md`](/spec/nockasm-target/) | 22 | 512 | [`nockasm-target.md`](/spec/nockasm-target.md) |
 | [`chain.md`](/spec/chain/) | 80 | 672 | [`chain.md`](/spec/chain.md) |

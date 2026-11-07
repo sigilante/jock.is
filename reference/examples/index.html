@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>866e7f3</code> (sigilante/het-ops) · corpus 1160 vectors · 2026-10-30</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>90c2d7b</code> (master) · corpus 1167 vectors · 2026-11-07</aside>
 <p>The descriptions are the authors’ own header comments, not written here: <code>examples/README.md</code> calls each example "executable documentation — the header comments are the prose, and a <code>// expect: &lt;noun&gt;</code> trailer pins the program’s value". 8 of them are <strong>kernels</strong>, carrying <code>// kernel: N</code> — built, poked N times, then peeked.</p>
 <p>Ordering is by <strong>size</strong>, shortest first. That is a proxy a reader can check, not a difficulty grading, which would be a judgement this page has no basis to make.</p>
 <table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>worked examples</td><td>39</td></tr><tr><td>…with a pinned value</td><td>39</td></tr><tr><td>…that are kernels</td><td>8</td></tr><tr><td>…shown in full on this page</td><td>14</td></tr><tr><td>total lines of Jock</td><td>3122</td></tr></tbody></table>
@@ -303,7 +303,7 @@ let third = hoon.rdiv(1.0, 3.0);
 //
 //     some(some(v))   here is the value
 //     some(none)      there is NO VALUE at this path
-//     none            block --- escapes the jet today (R-29)
+//     none            block --- yields no value (R-27a, R-29)
 //
 // `as?` is the some-idiom, so `(42 as? @) as? @?` is some(some(42))
 // and `~ as? *?` is some(none).

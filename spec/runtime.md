@@ -210,7 +210,7 @@ gives where the gate is never called. ⟨none — UNPINNED⟩
 | `hoon.mix` `con` `dis` | `(@, @) -> Nat` | ⟨`t-bit-mix`, `t-bit-con`, `t-bit-dis`⟩ | xor / or / and; the `@p` differential rides them (`examples/patp.jock`, `lib/urbit.jock`) |
 | `hoon.rsh` `lsh` `end` | `(@, @) -> Nat` | ⟨`t-bit-rsh`, `t-bit-lsh`, `t-bit-end`⟩ | (bit-count, atom) |
 | `hoon.muk` | `(@, @, @) -> Nat` | ⟨`t-bit-muk`⟩ | murmur3-32 `(syd, len, key)` — seed, byte length, key |
-| `hoon.mink` | `((*, *), scry) -> Tone` | ⟨none — UNPINNED⟩ | virtualization. `examples/peektry.jock` and `examples/roof.jock` exercise it, but an example is not a vector — `peekTry` reaches `mock`, not `mink`, so no corpus row calls this arm |
+| `hoon.mink` | `((*, *), scry) -> Tone` | ⟨`t-mink-three-way`, `t-peek-tone-answer`, `t-peek-tone-absent`, `t-peek-tone-null-aura`⟩ | virtualization. `peekTone` lowers onto it (R-27b) and `t-mink-three-way` calls it directly. This row read ⟨none — UNPINNED⟩ until 2026-11-05, while R-27a rested a claim on the arm; `peekTry` reaches `mock`, not `mink`, so nothing else did |
 | `hoon.mock` | `((*, *), scry) -> Toon` | ⟨`t-repl-peektry-some`, `t-repl-peektry-none`⟩ | `(mook (mink …))` — tone → toon; **trace frames flatten to `List<String>`** |
 | `hoon.ssum` `sdif` `spro` `sfra` `srem` | `(Int, Int) -> Int` | ⟨`t-sint-sum`, `t-sint-sum-mixed`, `t-sint-sub`, `t-sint-mul`, `t-sint-div`, `t-sint-rem`⟩ | ZigZag `@s` over `+si` verbatim |
 | `hoon.sdul` | `(Int, @) -> Nat` | ⟨`t-sint-dul`⟩ | **curated, not mirrored**; includes the exact-multiple edge |
@@ -322,7 +322,7 @@ contract says and the three outcomes are each reachable:
 |---|---|---|
 | `some(some(v))` | `(v as? T) as? T?` | here is the value |
 | `some(none)` | `~ as? *?` | **no value at this path** |
-| `none` | `~` | block — but see R-29 |
+| `none` | `~` | **block** — the `%1` tone, and it works (R-29); what each verb then does with it is R-27a and R-27b |
 
 `T?`'s some-erasure *is* Hoon's unit, so `T??` erases onto
 `$-(^ (unit (unit)))` exactly. ⟨`t-roof-shape-answer`,
@@ -335,13 +335,13 @@ only checking-mode coercion — wraps it **twice** into `[~ [~ v]]`,
 which `+mink` strips with `u.u.result`. Lift-two and strip-two
 cancel, so the product is the body, **verbatim, always**:
 
-| roof body | `peekUnder` / `peekTry` yields |
-|---|---|
-| `42` | `42` |
-| `0` | *blocks* — `~` nests as the OUTER none |
-| `(0, 0)` | `(0, 0)` — not absence |
-| `(0, 42)` | `(0, 42)` — not unwrapped |
-| `(5, 6)` | `(5, 6)` |
+| roof body | the tone | `peekUnder` | `peekTry` | `peekTone` |
+|---|---|---|---|---|
+| `42` | `%0` | `42` | `some(42)` | `(0, 42)` |
+| `0` | `%1` *blocks* — `~` nests as the OUTER none | **crashes** | `none` | `(1, …)` |
+| `(0, 0)` | `%0` | `(0, 0)` — not absence | `some((0, 0))` | `(0, (0, 0))` |
+| `(0, 42)` | `%0` | `(0, 42)` — not unwrapped | `some((0, 42))` | `(0, (0, 42))` |
+| `(5, 6)` | `%0` | `(5, 6)` | `some((5, 6))` | `(0, (5, 6))` |
 
 A lifted body can therefore only ever **answer**, which is why
 absence was unsayable before `trait Roof` adopted `T??`
@@ -357,10 +357,81 @@ has battery `[1 42]`.
 
 **R-27 · `peekTry`'s `none` means "nothing you can use".** It is
 returned for a crashing roof *and* for a reported absence, on
-purpose: both are the absence of a usable value. A caller that must
-distinguish them uses `peekUnder`, which crashes on the former and
-produces mink's `%2` carrying a `%hunk` frame on the latter.
+purpose: both are the absence of a usable value.
 ⟨`t-repl-peektry-none`, `t-roof-shape-absent`⟩
+
+**R-27a · `peekUnder` yields a value ONLY on `%0`, which is Vere's
+rule.** A namespace that answers gives its product; one that reports
+no such path, and one that blocks, both crash. Until 2026-11-04 the
+lowering was a bare `[0 3]` and took axis 3 of the tone whatever its
+tag, so `%2` handed the TRACE back as the answer and `%1` the block
+path — well-typed, and wrong, with `as!`/`as?` sitting directly
+downstream. The emitted Nock discriminates now:
+`[6 [5 [1 0] [0 2]] [0 3] [0 0]]`.
+
+This retires a claim this section used to make: that `peekUnder` was
+the verb which could tell a reported absence from a broken roof,
+because it produced the `%2`'s `%hunk` frame. It was true, and it was
+bought by returning a trace where a value was asked for. **The
+distinction is not lost; it moved to `peekTone`** (R-27b), where the
+type has room for it. It was reachable through `hoon.mink` all along
+— that is where R-29 measures block — but only through a cast that
+re-opened this rule's own hole, and no corpus row exercised the arm.
+
+Jock has no event loop to defer a block to, so `%1` crashes here where
+Vere would suspend the event and retry. That is the one place this
+diverges from Vere **in kind** while agreeing on what a caller can
+observe: no value. The crash is an unlabelled `[0 0]`; a tagged
+refusal would have to render through `+mook`, which is the cost
+jock#139 was about. jock#147. The block row joined the corpus on 2026-11-07, when the toolchain was pinned and `tools/toolchain.sh` began refusing anything else — before that the `%1` tone escaped under the honk-kick on PATH and the row could not be held (jock#151).
+⟨`t-peek-under-absent`, `t-peek-under-block`⟩
+
+**R-27b · `peekTone` is the third peek verb, and it is the one that
+tells the three outcomes apart.** It performs the same `+mink` scry as
+`peekUnder` and hands the **tone itself** back, unreduced. `+harms`
+types that return as `tont` — a `$%`-tagged `product`/`block`/`trace`
+— so `match` discriminates the arms by literal tag, and the `%0`
+payload binds as a value:
+
+```jock
+match peekTone(ns, /some/path) {
+  (0, p)  => use(p),
+  (1, b)  => blocked(b),
+  (2, tr) => absent(tr),
+}
+```
+
+No `_` arm is needed: the `%or`'s members are pairwise discriminable,
+so the three cases are exhaustive.
+
+**This costs nothing, and the three-way never did.** The tone is what
+the `+mink` jet already returns, whether or not a caller looks at the
+tag; `peekTone` emits strictly **less** than its siblings, omitting
+their discriminating formula with nothing in its place. Measured
+against `peekUnder` on the same roofs, a hand-rolled three-way through
+`hoon.mink` cost 23–43 extra steps on ~250 — and that was the `let`,
+`as!` and `match` boilerplate, not the tag test. For scale, jetting
+`+mink` saves ~350 steps (608 → 255, R-29). The jet is unaffected in
+kind: its boundary **is** `+mink`, the tone comes back whole, and
+everything a peek verb does afterward is plain Nock outside it.
+
+So what R-27a's change actually gave up was **soundness, not speed**.
+With all three tones typed `*` and `as?`/`as!` directly downstream, a
+trace molded out as the value the caller asked for. Here the tag is in
+the type and it cannot.
+
+**The tags are `%number` singletons, not `%n`.** `tont` carried the
+null aura until 2026-11-05, copied from the unit types where `%n 0` is
+correct. A constant numeric literal types as `%sing %number v`, and an
+`%or` member is selected by nesting its component into that type — so
+no arm was plausible and `match` refused the whole scrutinee. Every
+arm except one: `(~, p)` *did* select `%0`, by matching the aura
+rather than the tag. The one reachable case was reachable by accident
+and `%1`/`%2` not at all. The representation never moved — the tag is
+the atom 0/1/2 either way — but `+harms` is the ABI's identity, so the
+mug moved with it (`t-fabi-frozen`, `vendor/BLESSED.txt`).
+⟨`t-peek-tone-answer`, `t-peek-tone-absent`, `t-peek-tone-block`,
+`t-peek-tone-null-aura`, `t-mink-three-way`⟩
 
 **R-28 · Prefer the explicit shape.** Two spellings reaching one
 meaning is what this language does not do, and the lift survives
@@ -369,35 +440,50 @@ roof-specific code. New roofs answer `T??`; the lift is a
 convenience for a roof that only ever answers.
 ⟨`t-roof-shape-answer`⟩
 
-**R-29 · A BLOCKING roof loses its tone under `kick`, and `kick` is
-the outlier.** A roof answering `none` should make `+mink` return
-`[%1 path]` as a value. Measured three ways on one expression,
+**R-29 · A blocking roof WORKS, as of this merge, and this rule
+spent three months blaming the wrong component.** A roof answering
+`none` makes `+mink` return `[%1 path]` as a value. Measured three
+ways on one expression,
 `?:(?=([%1 *] (mink [[0 0] [12 [1 0] [0 2]]] |=(^ ~))) 8 9)`:
 
 | implementation | result |
 |---|---|
 | Vere 4.6, `urbit eval` | `8` ✓ |
 | NockVM, `jet_mink` direct (unit test) | `[%1 path]` ✓ |
-| `kick`, trap built by honk **or** hoonc | `[1 0]` ✗ |
+| `kick`, at pin `19b0bfdd` | `8` ✓ |
+| `kick`, before the fix | `[1 0]` ✗ |
 
-Under `kick` the tone becomes the program's product and the `?:`
-never runs, at exit 0 — it is not reporting a crash. It is specific
-to `%1`: the same driver gets `%0` and `%2` right. Ruled out: the
-compiler (honk and hoonc produce byte-identical products here),
-`kick`'s dispatch mode (reproduced on three builds including a
-pre-`Exact` one), and `jet_mink` itself (`util::mink` converts
-`Error::ScryBlocked` to `Ok([%1 path])`, and a direct unit test of
-that passes — NockVM has no test for this case today, which is
-how it stayed invisible). The reproduction, the ruled-out list and
-a lead are in
-[`docs/record/scry-block-escape.md`](../record/scry-block-escape.md),
-drafted for nockchain.
+**The fault was never `kick`'s.** It was NockVM's interpreter:
+`Work12` bare-`return`ed its errors instead of breaking, so
+`interpret` came back with the stack parked in the abandoned
+computation. A jetted `+mink` then built its tone *there* and
+handed it to an outer interpreter whose continuation had been
+clobbered. Only `%1` escaped visibly, because `Error::Deterministic`
+alone hit the `break` — which is why this looked `%1`-specific and
+looked like a `kick` bug. The earlier ruled-out list was correct as
+far as it went (not the compiler — honk and hoonc produce
+byte-identical products here; not the dispatch mode — reproduced on
+three builds including a pre-`Exact` one; not `jet_mink`, whose own
+unit test passes), and it was complete except for the one thing
+nobody suspected.
 
-Answer and absence are unaffected and verified. **Block is
-therefore not usable from Jock**, which costs an in-code roof
-nothing — the caller supplied the namespace, so "ask again with
-more in scope" has no meaning for it — and is the one thing the
-*runtime* roof (jock#73) would need. ⟨`t-roof-shape-absent`⟩
+**It was JET-dependent, not mode-dependent**, which is why the
+variable stayed invisible: every honk trap tested rebuilds the
+kernel and so registers `mink`, while through a jonk artifact the
+kernel is baked as a value, the `%fast` hint never fires, and `%1`
+was already correct. A negative result measured only on traps could
+not see it.
+
+**Both halves are present here and neither is upstream.** The pin
+`19b0bfdd` carries `b7e0da1e` (kick loads the canonical cold state,
+without which nothing in the ABI is jetted at all) and the `exit()`
+unwind itself; the surface half is R-30's `*??`, which this tree now
+has. nockchain#226 and #178 are both OPEN, and because the escape is
+a property of the *runtime* rather than of the compiled Nock, a
+shared artifact using block misbehaves on any NockVM lacking the
+fix — and `release.yml` does not track this pin (jock#146). So block
+is usable from Jock **here**, and not yet in anything released.
+⟨`t-roof-shape-absent`⟩
 
 **R-30 · This section's signatures were always right.** `roft` has
 returned `un2` since it was written and the frozen `+harms` mug is

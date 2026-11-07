@@ -5,7 +5,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `866e7f3` (sigilante/het-ops) · corpus 1160 vectors · 2026-10-30
+> channel `%rc` · commit `90c2d7b` (master) · corpus 1167 vectors · 2026-11-07
 
 |  | count |  |
 |---|---:|---|
@@ -18,7 +18,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 | **reachable, and pinned by nothing** | **1** | the gap list |
 | AST-level only, with no reason recorded | 0 | the other gap: pinned, but never watched from a program |
 
-A `%neg` vector refuses *without* naming a tag, so it pins that a program is rejected and never in what words. 38 rows are `%neg`; none of them pins a tag here.
+A `%neg` vector refuses *without* naming a tag, so it pins that a program is rejected and never in what words. 40 rows are `%neg`; none of them pins a tag here.
 
 **The two gap rows are the ones to read.** Every other row is a refusal the corpus pins and this page can explain. A count of unpinned tags on its own cannot tell a missing test from a guard the compiler holds against itself, and this page published 82 of them as one list until the difference was worked out tag by tag.
 
@@ -890,10 +890,10 @@ pinned by `t-err-op-impl`, `t-err-op-impl-bool`, `t-err-op-impl-char` · spec: d
 ### `%mint-patt`
 
 ```jock
-enum E { a, b }; let s = E.a; match s { 7 => 1, _ => 0 }
+match peekTone(lambda (r: *, p: *) -> *?? { (42 as? @) as? @? }, 0) { (~, p) => 0, _ => 1, }
 ```
 
-pinned by `t-rch-patt` · also `t-mint-match-patt`, `t-mint-match-sing` (AST-level)
+pinned by `t-peek-tone-null-aura`, `t-rch-patt` · also `t-mint-match-patt`, `t-mint-match-sing` (AST-level)
 
 ### `%mint-patt-bare`
 

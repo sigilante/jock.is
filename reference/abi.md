@@ -5,7 +5,7 @@ What a Jock program can call: the arms the runtime pins, the traits the prelude 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `866e7f3` (sigilante/het-ops) · corpus 1160 vectors · 2026-10-30
+> channel `%rc` · commit `90c2d7b` (master) · corpus 1167 vectors · 2026-11-07
 
 `docs/spec/runtime.md` is the authority for everything here. [R-9](/spec/runtime/#r-9) freezes the ABI through 1.0 with **append** as the one sanctioned change shape — a new arm enters at the END so every prior arm keeps its index, and a modification in place is not available because it would move an index that emitted code already depends on. [R-10](/spec/runtime/#r-10): the freeze rests on two pins, and only one is a mug.
 
@@ -44,7 +44,7 @@ What a Jock program can call: the arms the runtime pins, the traits the prelude 
 | `hoon.mix` `con` `dis` | `(@, @) -> Nat` | ⟨`t-bit-mix`, `t-bit-con`, `t-bit-dis`⟩ | xor / or / and; the `@p` differential rides them (`examples/patp.jock`, `lib/urbit.jock`) |
 | `hoon.rsh` `lsh` `end` | `(@, @) -> Nat` | ⟨`t-bit-rsh`, `t-bit-lsh`, `t-bit-end`⟩ | (bit-count, atom) |
 | `hoon.muk` | `(@, @, @) -> Nat` | ⟨`t-bit-muk`⟩ | murmur3-32 `(syd, len, key)` — seed, byte length, key |
-| `hoon.mink` | `((*, *), scry) -> Tone` | ⟨none — UNPINNED⟩ | virtualization. `examples/peektry.jock` and `examples/roof.jock` exercise it, but an example is not a vector — `peekTry` reaches `mock`, not `mink`, so no corpus row calls this arm |
+| `hoon.mink` | `((*, *), scry) -> Tone` | ⟨`t-mink-three-way`, `t-peek-tone-answer`, `t-peek-tone-absent`, `t-peek-tone-null-aura`⟩ | virtualization. `peekTone` lowers onto it (R-27b) and `t-mink-three-way` calls it directly. This row read ⟨none — UNPINNED⟩ until 2026-11-05, while R-27a rested a claim on the arm; `peekTry` reaches `mock`, not `mink`, so nothing else did |
 | `hoon.mock` | `((*, *), scry) -> Toon` | ⟨`t-repl-peektry-some`, `t-repl-peektry-none`⟩ | `(mook (mink …))` — tone → toon; **trace frames flatten to `List<String>`** |
 | `hoon.ssum` `sdif` `spro` `sfra` `srem` | `(Int, Int) -> Int` | ⟨`t-sint-sum`, `t-sint-sum-mixed`, `t-sint-sub`, `t-sint-mul`, `t-sint-div`, `t-sint-rem`⟩ | ZigZag `@s` over `+si` verbatim |
 | `hoon.sdul` | `(Int, @) -> Nat` | ⟨`t-sint-dul`⟩ | **curated, not mirrored**; includes the exact-multiple edge |

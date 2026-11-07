@@ -5,7 +5,7 @@
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `866e7f3` (sigilante/het-ops) · corpus 1160 vectors · 2026-10-30
+> channel `%rc` · commit `90c2d7b` (master) · corpus 1167 vectors · 2026-11-07
 
 The descriptions are the authors’ own header comments, not written here: `examples/README.md` calls each example "executable documentation — the header comments are the prose, and a `// expect: <noun>` trailer pins the program’s value". 8 of them are **kernels**, carrying `// kernel: N` — built, poked N times, then peeked.
 
@@ -365,7 +365,7 @@ peekUnder(roof, path): read a path under an in-code roof --- the mink-based name
 //
 //     some(some(v))   here is the value
 //     some(none)      there is NO VALUE at this path
-//     none            block --- escapes the jet today (R-29)
+//     none            block --- yields no value (R-27a, R-29)
 //
 // `as?` is the some-idiom, so `(42 as? @) as? @?` is some(some(42))
 // and `~ as? *?` is some(none).

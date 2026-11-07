@@ -54,9 +54,9 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>866e7f3</code> (sigilante/het-ops) · corpus 1160 vectors · 2026-10-30</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>90c2d7b</code> (master) · corpus 1167 vectors · 2026-11-07</aside>
 <table><thead><tr><th></th><th>count</th><th></th></tr></thead><tbody><tr><td>tags the compiler can raise</td><td>201</td><td>196 <code>~|</code> heads + 7 <code>$diag</code> members</td></tr><tr><td><strong>with a runnable program</strong></td><td><strong>162</strong></td><td>the vector carries source, and the page shows it</td></tr><tr><td>no input can reach the guard</td><td>36</td><td>registered with the reason, and the registry is checked</td></tr><tr><td>…of those, still pinned by a vector</td><td>30</td><td>an AST- or judgment-level row reaches the arm directly</td></tr><tr><td>…and pinned by nothing</td><td>6</td><td>nothing to point an input at</td></tr><tr><td>compiler invariant with a tripwire</td><td>2</td><td>a vector green only while the invariant holds</td></tr><tr><td><strong>reachable, and pinned by nothing</strong></td><td><strong>1</strong></td><td>the gap list</td></tr><tr><td>AST-level only, with no reason recorded</td><td>0</td><td>the other gap: pinned, but never watched from a program</td></tr></tbody></table>
-<p>A <code>%neg</code> vector refuses <em>without</em> naming a tag, so it pins that a program is rejected and never in what words. 38 rows are <code>%neg</code>; none of them pins a tag here.</p>
+<p>A <code>%neg</code> vector refuses <em>without</em> naming a tag, so it pins that a program is rejected and never in what words. 40 rows are <code>%neg</code>; none of them pins a tag here.</p>
 <p><strong>The two gap rows are the ones to read.</strong> Every other row is a refusal the corpus pins and this page can explain. A count of unpinned tags on its own cannot tell a missing test from a guard the compiler holds against itself, and this page published 82 of them as one list until the difference was worked out tag by tag.</p>
 <h2 id="tags-with-a-minimal-program">Tags with a minimal program</h2>
 <p>Each program is the vector’s own input, verbatim — extracted, never transcribed (<code>LISTINGS.md</code> X-1), and pinned by its tag rather than a value (X-8). Running it reproduces the refusal.</p>
@@ -387,8 +387,8 @@ cd"; s</pre>
 <pre class="code jock" data-refuses="mint-op-impl">struct P { v: @ }; let a = P( v: 1 ); let b = P( v: 2 ); let c = a + b; 0</pre>
 <p>pinned by <code>t-err-op-impl</code>, <code>t-err-op-impl-bool</code>, <code>t-err-op-impl-char</code> · spec: docs/spec/runtime.md <a href="/spec/runtime/#r-51">R-51</a></p>
 <h3 id="mint-patt"><code>%mint-patt</code></h3>
-<pre class="code jock" data-refuses="mint-patt">enum E { a, b }; let s = E.a; match s { 7 =&gt; 1, _ =&gt; 0 }</pre>
-<p>pinned by <code>t-rch-patt</code> · also <code>t-mint-match-patt</code>, <code>t-mint-match-sing</code> (AST-level)</p>
+<pre class="code jock" data-refuses="mint-patt">match peekTone(lambda (r: *, p: *) -&gt; *?? { (42 as? @) as? @? }, 0) { (~, p) =&gt; 0, _ =&gt; 1, }</pre>
+<p>pinned by <code>t-peek-tone-null-aura</code>, <code>t-rch-patt</code> · also <code>t-mint-match-patt</code>, <code>t-mint-match-sing</code> (AST-level)</p>
 <h3 id="mint-patt-bare"><code>%mint-patt-bare</code></h3>
 <pre class="code jock" data-refuses="mint-patt-bare">enum C { red, green } let c = C.green; match c { red =&gt; 1, green =&gt; 2, }</pre>
 <p>pinned by <code>t-arc-patt-bare</code> · spec: docs/spec/language.md <a href="/spec/language/#l-149">L-149</a></p>

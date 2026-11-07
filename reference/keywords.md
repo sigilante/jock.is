@@ -5,7 +5,7 @@ All 30 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `866e7f3` (sigilante/het-ops) · corpus 1160 vectors · 2026-10-30
+> channel `%rc` · commit `90c2d7b` (master) · corpus 1167 vectors · 2026-11-07
 
 Each keyword below carries its **class** — kernel or sugar, one of the language’s four design principles — and **what it does**, both projected from the keyword inventory at [L-61](/spec/language/#l-61), whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.
 
@@ -100,7 +100,7 @@ Also named by [L-12](/spec/language/#l-12), [L-24](/spec/language/#l-24), [L-61]
 +42 as @
 ```
 
-pinned by `t-sint-lit` · 52 vectors use this keyword
+pinned by `t-sint-lit` · 55 vectors use this keyword
 
 ### `assert`
 
@@ -344,7 +344,7 @@ pinned by `t-arc-alias-is` · 7 vectors use this keyword
 peekUnder(lambda (r: *, p: *) -> * { (0, 0) }, 0)
 ```
 
-pinned by `t-roof-lift-absent` · 17 vectors use this keyword
+pinned by `t-roof-lift-absent` · 21 vectors use this keyword
 
 ### `let`
 
@@ -400,7 +400,7 @@ Also named by [L-61](/spec/language/#l-61), [L-101](/spec/language/#l-101), [L-1
 let a: @ = 3; match a { 1 => 0, _ => 84, }
 ```
 
-pinned by `t-arc-arm-comma` · 20 vectors use this keyword
+pinned by `t-arc-arm-comma` · 24 vectors use this keyword
 
 ### `not`
 

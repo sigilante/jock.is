@@ -108,7 +108,11 @@ free.** Both hyphenated (`starts-with`) and camelCase (`myCount`,
 stdlib* prefer hyphenated Term-style for new multi-word names, with
 `starts-with` as the precedent, while existing camelCase prelude
 names stand. The rule governs what the stdlib adds, not what users
-write.
+write. `peekTone` (2026-11-05) is camelCase although it is new,
+because it joins `peekContext`/`peekUnder`/`peekTry` as a fourth
+member of one family: a hyphenated `peek-tone` beside those three
+would read as a different kind of thing. Consistency inside a named
+set beats the default for the set's next member.
 ### 2.2 Keywords
 
 **L-61 · The table below is the keyword inventory.** A word not in
