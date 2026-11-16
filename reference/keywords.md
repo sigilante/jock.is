@@ -1,11 +1,11 @@
 # Keywords
 
-All 30 keywords Jock reserves, what each one does, and a working program that uses it. The counterpart to [refusal tags](/reference/tags/), which is the same corpus read for what it rejects.
+All 31 keywords Jock reserves, what each one does, and a working program that uses it. The counterpart to [refusal tags](/reference/tags/), which is the same corpus read for what it rejects.
 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `90c2d7b` (master) · corpus 1167 vectors · 2026-11-07
+> channel `%rc` · commit `244dd1c` (master) · corpus 1181 vectors · 2026-11-17
 
 Each keyword below carries its **class** — kernel or sugar, one of the language’s four design principles — and **what it does**, both projected from the keyword inventory at [L-61](/spec/language/#l-61), whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.
 
@@ -13,11 +13,11 @@ The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexe
 
 |  | count |
 |---|---:|
-| keywords in the mold | 30 |
-| usable, with a demonstrating program | 29 |
+| keywords in the mold | 31 |
+| usable, with a demonstrating program | 30 |
 | usable, demonstrated by nothing | 0 |
 | deliberately not usable | 1 |
-| with a rule that states what it does | 12 |
+| with a rule that states what it does | 13 |
 | specified only by their inventory row | 18 |
 
 ## Syntactic slots
@@ -25,7 +25,7 @@ The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexe
 Which slot each keyword occupies, from the tmLanguage grammar’s three keyword groups — the only machine-readable statement of this in the tree. `tools/hilite.py` checks that the three **partition** the `$keyword` mold: disjoint, and summing to it.
 
 - **declaration** (14): `alias` `class` `enum` `for` `func` `impl` `import` `is` `lambda` `let` `private` `struct` `trait` `var`
-- **control** (10): `assert` `crash` `defer` `else` `eval` `if` `loop` `match` `print` `recur`
+- **control** (11): `assert` `crash` `defer` `else` `eval` `hint` `if` `loop` `match` `print` `recur`
 - **operator** (6): `and` `as` `in` `not` `or` `xor`
 
 There is deliberately **no BNF here.** Jock’s parser is recursive descent (`parse.hoon`); no grammar artifact exists to project from, so a written-out grammar would be a second author of the syntax rather than a rendering of it — which is exactly how this reference’s predecessor acquired seven wrong tag names. A formal grammar is worth having and is expressible (the adjacency law needs glued and spaced `(` as *distinct terminals*, which the lexer’s `glu` flag already supplies), but it should arrive with the corpus as its acceptance suite — every source-bearing `%pos` vector parsing, every `%parse` and `%lex` refusal failing to — so that it is a lane and not a claim.
@@ -62,7 +62,7 @@ Every level of this table is drawn as a railroad diagram on [the surface grammar
 
 **Kernel (declaration).** `alias New is Old`. Rules [L-67](/spec/language/#l-67) to [L-69](/spec/language/#l-69) below
 
-**No rule in `language.md` states what `alias` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61), [L-66](/spec/language/#l-66), [L-81](/spec/language/#l-81).
+**No rule in `language.md` states what `alias` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61), [L-81](/spec/language/#l-81).
 
 ```jock
 alias Foo is @; let x: Foo = 1; x
@@ -166,7 +166,7 @@ Specified by [L-188](/spec/language/#l-188):
 
 > [L-188](/spec/language/#l-188) · `defer` is the one reserved word.
 
-Also named by [L-61](/spec/language/#l-61).
+Also named by [L-61](/spec/language/#l-61), [L-194](/spec/language/#l-194).
 
 **RESERVED.** Reserved in the lexer’s mold so that the parser recognises it and refuses with a diagnosis rather than an unbound name. Refuses `%parse-todo %defer` — parsed and refused;  not implemented for 1.0.
 
@@ -190,7 +190,7 @@ pinned by `t-eq-ne` · 33 vectors use this keyword
 
 **Kernel (declaration).** `%decl`: tagged sum. Rules [L-70](/spec/language/#l-70) to [L-73](/spec/language/#l-73) below
 
-**No rule in `language.md` states what `enum` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61), [L-69](/spec/language/#l-69), [L-149](/spec/language/#l-149), [L-170](/spec/language/#l-170).
+**No rule in `language.md` states what `enum` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61), [L-149](/spec/language/#l-149), [L-170](/spec/language/#l-170).
 
 ```jock
 enum Rec { leaf, cell(Rec, Rec) }; 0
@@ -208,7 +208,7 @@ Specified by [L-129](/spec/language/#l-129):
 
 > [L-129](/spec/language/#l-129) · `eval` is CALL-SHAPED
 
-Also named by [L-13](/spec/language/#l-13), [L-61](/spec/language/#l-61), [L-188](/spec/language/#l-188).
+Also named by [L-13](/spec/language/#l-13), [L-61](/spec/language/#l-61), [L-188](/spec/language/#l-188), [L-193](/spec/language/#l-193).
 
 ```jock
 (eval(42, (0, 1)) as? @) ?? 99
@@ -256,7 +256,25 @@ Also named by [L-61](/spec/language/#l-61), [L-87](/spec/language/#l-87), [L-139
 func<T> id(x: T) -> T { x }; id(42)
 ```
 
-pinned by `t-text-gen` · 78 vectors use this keyword
+pinned by `t-text-gen` · 79 vectors use this keyword
+
+### `hint`
+
+**control keyword.**
+
+**Kernel.** `hint %tag; k` / `hint(%tag, clue); k`. Rules [L-190](/spec/language/#l-190) to [L-194](/spec/language/#l-194) below
+
+Specified by [L-190](/spec/language/#l-190):
+
+> [L-190](/spec/language/#l-190) · `hint` reaches Nock 11 in general
+
+Also named by [L-61](/spec/language/#l-61).
+
+```jock
+hint %xray; 42
+```
+
+pinned by `t-text-hint-static` · 6 vectors use this keyword
 
 ### `if`
 
@@ -306,7 +324,7 @@ pinned by `t-text-arith` · 72 vectors use this keyword
 
 **Sugar.** **membership**. Rules [L-74](/spec/language/#l-74) to [L-76](/spec/language/#l-76) below
 
-**No rule in `language.md` states what `in` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61), [L-73](/spec/language/#l-73), [L-107](/spec/language/#l-107), [L-108](/spec/language/#l-108), [L-115](/spec/language/#l-115), [L-173](/spec/language/#l-173), [L-188](/spec/language/#l-188).
+**No rule in `language.md` states what `in` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61), [L-107](/spec/language/#l-107), [L-108](/spec/language/#l-108), [L-115](/spec/language/#l-115), [L-173](/spec/language/#l-173), [L-188](/spec/language/#l-188).
 
 ```jock
 let s = "in"; "[{s}]"
@@ -356,13 +374,13 @@ Specified by [L-134](/spec/language/#l-134):
 
 > [L-134](/spec/language/#l-134) · Destructuring `let` is admitted
 
-Also named by [L-20](/spec/language/#l-20), [L-61](/spec/language/#l-61), [L-129](/spec/language/#l-129), [L-130](/spec/language/#l-130), [L-131](/spec/language/#l-131), [L-171](/spec/language/#l-171), [L-185](/spec/language/#l-185).
+Also named by [L-20](/spec/language/#l-20), [L-61](/spec/language/#l-61), [L-130](/spec/language/#l-130), [L-131](/spec/language/#l-131), [L-171](/spec/language/#l-171), [L-185](/spec/language/#l-185).
 
 ```jock
 let x = 1; x;
 ```
 
-pinned by `t-arc-term-semi` · 188 vectors use this keyword
+pinned by `t-arc-term-semi` · 189 vectors use this keyword
 
 ### `loop`
 
@@ -436,7 +454,7 @@ pinned by `t-logic-or-tt` · 6 vectors use this keyword
 
 **Kernel.** `print e; k` / `print(e, N); k`. Rules [L-33](/spec/language/#l-33) to [L-37](/spec/language/#l-37) below
 
-**No rule in `language.md` states what `print` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-35](/spec/language/#l-35), [L-61](/spec/language/#l-61), [L-76](/spec/language/#l-76).
+**No rule in `language.md` states what `print` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-35](/spec/language/#l-35), [L-61](/spec/language/#l-61), [L-190](/spec/language/#l-190).
 
 ```jock
 print("hi"); 42
@@ -454,7 +472,7 @@ Specified by [L-17](/spec/language/#l-17):
 
 > [L-17](/spec/language/#l-17) · `private` marks the next declaration or `func` unexported.
 
-Also named by [L-25](/spec/language/#l-25), [L-37](/spec/language/#l-37), [L-61](/spec/language/#l-61).
+Also named by [L-25](/spec/language/#l-25), [L-61](/spec/language/#l-61).
 
 ```jock
 private func dbl(n: @) -> @ { n + n }; dbl(21)
@@ -518,7 +536,7 @@ Specified by [L-132](/spec/language/#l-132):
 
 > [L-132](/spec/language/#l-132) · `var` widening is SHALLOW.
 
-Also named by [L-61](/spec/language/#l-61), [L-129](/spec/language/#l-129), [L-130](/spec/language/#l-130), [L-131](/spec/language/#l-131), [L-134](/spec/language/#l-134).
+Also named by [L-61](/spec/language/#l-61), [L-130](/spec/language/#l-130), [L-131](/spec/language/#l-131), [L-134](/spec/language/#l-134).
 
 ```jock
 var b = 1; b = 3; b

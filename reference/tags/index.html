@@ -45,7 +45,7 @@
 <div class="page">
 <header class="bar">
   <nav><a href="/">jock</a> <span>reference</span></nav>
-  <span>201 tags · 192 pinned</span>
+  <span>204 tags · 195 pinned</span>
 </header>
 <main class="prose">
 <h1 class="ruled">Refusal tags</h1>
@@ -54,9 +54,9 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>90c2d7b</code> (master) · corpus 1167 vectors · 2026-11-07</aside>
-<table><thead><tr><th></th><th>count</th><th></th></tr></thead><tbody><tr><td>tags the compiler can raise</td><td>201</td><td>196 <code>~|</code> heads + 7 <code>$diag</code> members</td></tr><tr><td><strong>with a runnable program</strong></td><td><strong>162</strong></td><td>the vector carries source, and the page shows it</td></tr><tr><td>no input can reach the guard</td><td>36</td><td>registered with the reason, and the registry is checked</td></tr><tr><td>…of those, still pinned by a vector</td><td>30</td><td>an AST- or judgment-level row reaches the arm directly</td></tr><tr><td>…and pinned by nothing</td><td>6</td><td>nothing to point an input at</td></tr><tr><td>compiler invariant with a tripwire</td><td>2</td><td>a vector green only while the invariant holds</td></tr><tr><td><strong>reachable, and pinned by nothing</strong></td><td><strong>1</strong></td><td>the gap list</td></tr><tr><td>AST-level only, with no reason recorded</td><td>0</td><td>the other gap: pinned, but never watched from a program</td></tr></tbody></table>
-<p>A <code>%neg</code> vector refuses <em>without</em> naming a tag, so it pins that a program is rejected and never in what words. 40 rows are <code>%neg</code>; none of them pins a tag here.</p>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>244dd1c</code> (master) · corpus 1181 vectors · 2026-11-17</aside>
+<table><thead><tr><th></th><th>count</th><th></th></tr></thead><tbody><tr><td>tags the compiler can raise</td><td>204</td><td>199 <code>~|</code> heads + 7 <code>$diag</code> members</td></tr><tr><td><strong>with a runnable program</strong></td><td><strong>165</strong></td><td>the vector carries source, and the page shows it</td></tr><tr><td>no input can reach the guard</td><td>36</td><td>registered with the reason, and the registry is checked</td></tr><tr><td>…of those, still pinned by a vector</td><td>30</td><td>an AST- or judgment-level row reaches the arm directly</td></tr><tr><td>…and pinned by nothing</td><td>6</td><td>nothing to point an input at</td></tr><tr><td>compiler invariant with a tripwire</td><td>2</td><td>a vector green only while the invariant holds</td></tr><tr><td><strong>reachable, and pinned by nothing</strong></td><td><strong>1</strong></td><td>the gap list</td></tr><tr><td>AST-level only, with no reason recorded</td><td>0</td><td>the other gap: pinned, but never watched from a program</td></tr></tbody></table>
+<p>A <code>%neg</code> vector refuses <em>without</em> naming a tag, so it pins that a program is rejected and never in what words. 41 rows are <code>%neg</code>; none of them pins a tag here.</p>
 <p><strong>The two gap rows are the ones to read.</strong> Every other row is a refusal the corpus pins and this page can explain. A count of unpinned tags on its own cannot tell a missing test from a guard the compiler holds against itself, and this page published 82 of them as one list until the difference was worked out tag by tag.</p>
 <h2 id="tags-with-a-minimal-program">Tags with a minimal program</h2>
 <p>Each program is the vector’s own input, verbatim — extracted, never transcribed (<code>LISTINGS.md</code> X-1), and pinned by its tag rather than a value (X-8). Running it reproduces the refusal.</p>
@@ -296,6 +296,12 @@ cd"; s</pre>
 <h3 id="mint-gen-unused"><code>%mint-gen-unused</code></h3>
 <pre class="code jock" data-refuses="mint-gen-unused">func&lt;T&gt; bad(x: @) -&gt; @ { x }; func&lt;U&gt; ok(x: U) -&gt; U { x }; 0</pre>
 <p>pinned by <code>t-err-ggroup-unused</code> · also <code>t-mint-gen-unsolved</code> (AST-level)</p>
+<h3 id="mint-hint-reserved"><code>%mint-hint-reserved</code></h3>
+<pre class="code jock" data-refuses="mint-hint-reserved">hint %dont; 1</pre>
+<p>pinned by <code>t-text-hint-dont-n</code>, <code>t-text-hint-fast-n</code>, <code>t-text-hint-sham-n</code> · spec: docs/spec/language.md <a href="/spec/language/#l-193">L-193</a></p>
+<h3 id="mint-hint-uncatalogued"><code>%mint-hint-uncatalogued</code></h3>
+<pre class="code jock" data-refuses="mint-hint-uncatalogued">hint %zzzz; 1</pre>
+<p>pinned by <code>t-text-hint-uncat-n</code> · spec: docs/spec/language.md <a href="/spec/language/#l-193">L-193</a></p>
 <h3 id="mint-impl-coh"><code>%mint-impl-coh</code></h3>
 <pre class="code jock" data-refuses="mint-impl-coh">impl&lt;T&gt; Meas for List&lt;T&gt; { len(self: List&lt;T&gt;) -&gt; @ { 0 }; }; 1</pre>
 <p>pinned by <code>t-mint-gimpl-coh</code> · also <code>t-mint-impl-coh</code> (AST-level)</p>
@@ -482,6 +488,9 @@ cd"; s</pre>
 <h3 id="parse-func-parens"><code>%parse-func-parens</code></h3>
 <pre class="code jock" data-refuses="parse-func-parens">func f () -&gt; @ { 1 }; f()</pre>
 <p>pinned by <code>t-parse-func-parens</code></p>
+<h3 id="parse-hint-tag"><code>%parse-hint-tag</code></h3>
+<pre class="code jock" data-refuses="parse-hint-tag">hint 42; 1</pre>
+<p>pinned by <code>t-text-hint-tag-n</code> · spec: docs/spec/language.md <a href="/spec/language/#l-191">L-191</a></p>
 <h3 id="parse-impl-for"><code>%parse-impl-for</code></h3>
 <pre class="code jock" data-refuses="parse-impl-for">struct P { x: @ }; impl Show P { show(self: P) -&gt; String { 1 as! String }; }; 1</pre>
 <p>pinned by <code>t-parse-impl-for</code></p>
@@ -615,11 +624,11 @@ cd"; s</pre>
 <p>Stronger than a registry entry, and listed apart from it. No input reaches these either, but each has a vector that is green <strong>only while the invariant holds</strong> — so breaking the invariant reddens a named row rather than going unnoticed. Each pairing was verified by mutation, once, by hand, and is recorded at the guard and at the row. <code>run.hoon</code> refuses the whole run if one of these vectors disappears.</p>
 <table><thead><tr><th>tag</th><th>tripwire vector</th></tr></thead><tbody><tr><td><code>%mint-meth-fore</code></td><td><code>t-meth-fore-tripwire</code></td></tr><tr><td><code>%module-type</code></td><td><code>t-module-type-tripwire</code></td></tr></tbody></table>
 <h2 id="tags-pinned-by-nothing">Tags pinned by nothing</h2>
-<p>Reachable, and no vector asserts them: 1 of 201. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.</p>
+<p>Reachable, and no vector asserts them: 1 of 204. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.</p>
 <p><strong><code>%impl-conflict</code></strong> — Two libraries supplying different impl facts for one (trait, head) pair. Not reached from any spelling tried: two modules each declaring their own trait do not collide, because a module’s trait is its own, and the single-module spelling refuses <code>%mint-impl-coh</code> first. Probed, not inferred.</p>
 <h2 id="families">Families</h2>
-<p>Five tags discriminate on a <em>second</em> element, so the thing to search for is the pair. Every one is an "unsupported thing" family, which is exactly where the compiler must say which.</p>
-<ul><li><code>%mint-mold</code> · <code>%deep</code> <code>%gate</code> <code>%var</code> <code>%void</code> — plus 4 computed leaf site(s), not enumerable from source</li><li><code>%mint-todo</code> · <code>%bound-ptrait</code> <code>%class-bound</code> <code>%export-class-ptrait</code> <code>%func-gen</code> <code>%impl-bound</code> <code>%impl-head</code> <code>%import-arm-gen</code> <code>%list-annot</code> <code>%trait-bound</code> — plus 1 computed leaf site(s), not enumerable from source</li><li><code>%module-form</code> · <code>%if</code> <code>%private</code> — plus 10 computed leaf site(s), not enumerable from source</li><li><code>%parse-todo</code> · <code>%defer</code> <code>%recur-edits</code></li><li><code>%sugar-todo</code> · <code>%list-annot</code> <code>%map-annot</code></li></ul>
+<p>6 tags discriminate on a <em>second</em> element, so the thing to search for is the pair. Most are "unsupported thing" families, which is exactly where the compiler must say which; <code>%mint-hint-reserved</code> is the exception, naming the tag a program may not claim.</p>
+<ul><li><code>%mint-hint-reserved</code> · <code>%dont</code> <code>%fast</code> <code>%sham</code></li><li><code>%mint-mold</code> · <code>%deep</code> <code>%gate</code> <code>%var</code> <code>%void</code> — plus 4 computed leaf site(s), not enumerable from source</li><li><code>%mint-todo</code> · <code>%bound-ptrait</code> <code>%class-bound</code> <code>%export-class-ptrait</code> <code>%func-gen</code> <code>%impl-bound</code> <code>%impl-head</code> <code>%import-arm-gen</code> <code>%list-annot</code> <code>%trait-bound</code> — plus 1 computed leaf site(s), not enumerable from source</li><li><code>%module-form</code> · <code>%if</code> <code>%private</code> — plus 10 computed leaf site(s), not enumerable from source</li><li><code>%parse-todo</code> · <code>%defer</code> <code>%recur-edits</code></li><li><code>%sugar-todo</code> · <code>%list-annot</code> <code>%map-annot</code></li></ul>
 </main>
 </div>
 </body>

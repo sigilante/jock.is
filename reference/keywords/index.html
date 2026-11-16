@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Keywords — Jock reference</title>
-<meta name="description" content="All 30 keywords Jock reserves, what each one does, and a working program that uses it. The counterpart to refusal tags, which is the same corpus read for what it rejects.">
+<meta name="description" content="All 31 keywords Jock reserves, what each one does, and a working program that uses it. The counterpart to refusal tags, which is the same corpus read for what it rejects.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,22 +45,22 @@
 <div class="page">
 <header class="bar">
   <nav><a href="/">jock</a> <span>reference</span></nav>
-  <span>30 keywords</span>
+  <span>31 keywords</span>
 </header>
 <main class="prose">
 <h1 class="ruled">Keywords</h1>
-<p class="sub">All 30 keywords Jock reserves, what each one does, and a working program that uses it. The counterpart to <a href="/reference/tags/">refusal tags</a>, which is the same corpus read for what it rejects.</p>
+<p class="sub">All 31 keywords Jock reserves, what each one does, and a working program that uses it. The counterpart to <a href="/reference/tags/">refusal tags</a>, which is the same corpus read for what it rejects.</p>
 <!--  §3:  text column beside the 186px margin rail.  A marginal
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>90c2d7b</code> (master) · corpus 1167 vectors · 2026-11-07</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>244dd1c</code> (master) · corpus 1181 vectors · 2026-11-17</aside>
 <p>Each keyword below carries its <strong>class</strong> — kernel or sugar, one of the language’s four design principles — and <strong>what it does</strong>, both projected from the keyword inventory at <a href="/spec/language/#l-61">L-61</a>, whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.</p>
 <p>The keyword set is read from the <code>$keyword</code> mold in <code>sur/jock.hoon</code> — the lexer’s own authority, which <code>tools/hilite.py</code> holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.</p>
-<table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>keywords in the mold</td><td>30</td></tr><tr><td>usable, with a demonstrating program</td><td>29</td></tr><tr><td>usable, demonstrated by nothing</td><td>0</td></tr><tr><td>deliberately not usable</td><td>1</td></tr><tr><td>with a rule that states what it does</td><td>12</td></tr><tr><td>specified only by their inventory row</td><td>18</td></tr></tbody></table>
+<table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>keywords in the mold</td><td>31</td></tr><tr><td>usable, with a demonstrating program</td><td>30</td></tr><tr><td>usable, demonstrated by nothing</td><td>0</td></tr><tr><td>deliberately not usable</td><td>1</td></tr><tr><td>with a rule that states what it does</td><td>13</td></tr><tr><td>specified only by their inventory row</td><td>18</td></tr></tbody></table>
 <h2 id="syntactic-slots">Syntactic slots</h2>
 <p>Which slot each keyword occupies, from the tmLanguage grammar’s three keyword groups — the only machine-readable statement of this in the tree. <code>tools/hilite.py</code> checks that the three <strong>partition</strong> the <code>$keyword</code> mold: disjoint, and summing to it.</p>
-<ul><li><strong>declaration</strong> (14): <code>alias</code> <code>class</code> <code>enum</code> <code>for</code> <code>func</code> <code>impl</code> <code>import</code> <code>is</code> <code>lambda</code> <code>let</code> <code>private</code> <code>struct</code> <code>trait</code> <code>var</code></li><li><strong>control</strong> (10): <code>assert</code> <code>crash</code> <code>defer</code> <code>else</code> <code>eval</code> <code>if</code> <code>loop</code> <code>match</code> <code>print</code> <code>recur</code></li><li><strong>operator</strong> (6): <code>and</code> <code>as</code> <code>in</code> <code>not</code> <code>or</code> <code>xor</code></li></ul>
+<ul><li><strong>declaration</strong> (14): <code>alias</code> <code>class</code> <code>enum</code> <code>for</code> <code>func</code> <code>impl</code> <code>import</code> <code>is</code> <code>lambda</code> <code>let</code> <code>private</code> <code>struct</code> <code>trait</code> <code>var</code></li><li><strong>control</strong> (11): <code>assert</code> <code>crash</code> <code>defer</code> <code>else</code> <code>eval</code> <code>hint</code> <code>if</code> <code>loop</code> <code>match</code> <code>print</code> <code>recur</code></li><li><strong>operator</strong> (6): <code>and</code> <code>as</code> <code>in</code> <code>not</code> <code>or</code> <code>xor</code></li></ul>
 <p>There is deliberately <strong>no BNF here.</strong> Jock’s parser is recursive descent (<code>parse.hoon</code>); no grammar artifact exists to project from, so a written-out grammar would be a second author of the syntax rather than a rendering of it — which is exactly how this reference’s predecessor acquired seven wrong tag names. A formal grammar is worth having and is expressible (the adjacency law needs glued and spaced <code>(</code> as <em>distinct terminals</em>, which the lexer’s <code>glu</code> flag already supplies), but it should arrive with the corpus as its acceptance suite — every source-bearing <code>%pos</code> vector parsing, every <code>%parse</code> and <code>%lex</code> refusal failing to — so that it is a lane and not a claim.</p>
 <h2 id="precedence">Precedence</h2>
 <p>13 levels, tightest first — <code>language.md</code> <a href="/spec/language/#l-107">L-107</a>, which says the table <em>is</em> the rule. Projected from it verbatim.</p>
@@ -71,7 +71,7 @@
 <h3 id="alias"><code>alias</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <p><strong>Kernel (declaration).</strong> <code>alias New is Old</code>. Rules <a href="/spec/language/#l-67">L-67</a> to <a href="/spec/language/#l-69">L-69</a> below</p>
-<p><strong>No rule in <code>language.md</code> states what <code>alias</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-22">L-22</a>, <a href="/spec/language/#l-45">L-45</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-66">L-66</a>, <a href="/spec/language/#l-81">L-81</a>.</p>
+<p><strong>No rule in <code>language.md</code> states what <code>alias</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-22">L-22</a>, <a href="/spec/language/#l-45">L-45</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-81">L-81</a>.</p>
 <pre class="code jock">alias Foo is @; let x: Foo = 1; x</pre>
 <p>pinned by <code>t-arc-alias-is</code> · 7 vectors use this keyword</p>
 <h3 id="and"><code>and</code></h3>
@@ -116,7 +116,7 @@
 <p>**<strong>reserved, unimplemented</strong>.** the keyword lexes and the parser then refuses <code>%parse-todo %defer</code> unconditionally (<code>parse.hoon</code>); <code>sugar.hoon</code> carries a <code>%defer</code> arm no program can reach. Reserved on the same footing as <code>$(…)</code> re-entry, so the meaning can land without reinterpreting any legal program.</p>
 <p>Specified by <a href="/spec/language/#l-188">L-188</a>:</p>
 <blockquote><a href="/spec/language/#l-188">L-188</a> · <code>defer</code> is the one reserved word.</blockquote>
-<p>Also named by <a href="/spec/language/#l-61">L-61</a>.</p>
+<p>Also named by <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-194">L-194</a>.</p>
 <p><strong>RESERVED.</strong> Reserved in the lexer’s mold so that the parser recognises it and refuses with a diagnosis rather than an unbound name. Refuses <code>%parse-todo %defer</code> — parsed and refused;  not implemented for 1.0.</p>
 <h3 id="else"><code>else</code></h3>
 <p><strong>control keyword.</strong></p>
@@ -127,7 +127,7 @@
 <h3 id="enum"><code>enum</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <p><strong>Kernel (declaration).</strong> <code>%decl</code>: tagged sum. Rules <a href="/spec/language/#l-70">L-70</a> to <a href="/spec/language/#l-73">L-73</a> below</p>
-<p><strong>No rule in <code>language.md</code> states what <code>enum</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-22">L-22</a>, <a href="/spec/language/#l-45">L-45</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-69">L-69</a>, <a href="/spec/language/#l-149">L-149</a>, <a href="/spec/language/#l-170">L-170</a>.</p>
+<p><strong>No rule in <code>language.md</code> states what <code>enum</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-22">L-22</a>, <a href="/spec/language/#l-45">L-45</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-149">L-149</a>, <a href="/spec/language/#l-170">L-170</a>.</p>
 <pre class="code jock">enum Rec { leaf, cell(Rec, Rec) }; 0</pre>
 <p>pinned by <code>t-decl-fond-reorder</code> · 15 vectors use this keyword</p>
 <h3 id="eval"><code>eval</code></h3>
@@ -135,7 +135,7 @@
 <p><strong>Kernel.</strong> Nock evaluation: <code>%eval</code> (Nock 2)</p>
 <p>Specified by <a href="/spec/language/#l-129">L-129</a>:</p>
 <blockquote><a href="/spec/language/#l-129">L-129</a> · <code>eval</code> is CALL-SHAPED</blockquote>
-<p>Also named by <a href="/spec/language/#l-13">L-13</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-188">L-188</a>.</p>
+<p>Also named by <a href="/spec/language/#l-13">L-13</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-188">L-188</a>, <a href="/spec/language/#l-193">L-193</a>.</p>
 <pre class="code jock">(eval(42, (0, 1)) as? @) ?? 99</pre>
 <p>pinned by <code>t-text-qq</code> · 3 vectors use this keyword</p>
 <h3 id="for"><code>for</code></h3>
@@ -156,7 +156,15 @@
 <blockquote><a href="/spec/language/#l-140">L-140</a> · <code>recur</code> re-enters only the innermost enclosing <code>func</code> or <code>loop</code>.</blockquote>
 <p>Also named by <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-87">L-87</a>, <a href="/spec/language/#l-139">L-139</a>, <a href="/spec/language/#l-143">L-143</a>, <a href="/spec/language/#l-185">L-185</a>.</p>
 <pre class="code jock">func&lt;T&gt; id(x: T) -&gt; T { x }; id(42)</pre>
-<p>pinned by <code>t-text-gen</code> · 78 vectors use this keyword</p>
+<p>pinned by <code>t-text-gen</code> · 79 vectors use this keyword</p>
+<h3 id="hint"><code>hint</code></h3>
+<p><strong>control keyword.</strong></p>
+<p><strong>Kernel.</strong> <code>hint %tag; k</code> / <code>hint(%tag, clue); k</code>. Rules <a href="/spec/language/#l-190">L-190</a> to <a href="/spec/language/#l-194">L-194</a> below</p>
+<p>Specified by <a href="/spec/language/#l-190">L-190</a>:</p>
+<blockquote><a href="/spec/language/#l-190">L-190</a> · <code>hint</code> reaches Nock 11 in general</blockquote>
+<p>Also named by <a href="/spec/language/#l-61">L-61</a>.</p>
+<pre class="code jock">hint %xray; 42</pre>
+<p>pinned by <code>t-text-hint-static</code> · 6 vectors use this keyword</p>
 <h3 id="if"><code>if</code></h3>
 <p><strong>control keyword.</strong></p>
 <p><strong>Kernel.</strong> <code>%if</code>; <code>else if</code> chains flatten to nested <code>%if</code> at parse</p>
@@ -178,7 +186,7 @@
 <h3 id="in"><code>in</code></h3>
 <p><strong>operator keyword.</strong> Precedence level 8 of 13 (non-associative), sharing it with <code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code>  <code>∈</code> <code>⊂</code> <code>⊃</code>.</p>
 <p><strong>Sugar.</strong> <strong>membership</strong>. Rules <a href="/spec/language/#l-74">L-74</a> to <a href="/spec/language/#l-76">L-76</a> below</p>
-<p><strong>No rule in <code>language.md</code> states what <code>in</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-73">L-73</a>, <a href="/spec/language/#l-107">L-107</a>, <a href="/spec/language/#l-108">L-108</a>, <a href="/spec/language/#l-115">L-115</a>, <a href="/spec/language/#l-173">L-173</a>, <a href="/spec/language/#l-188">L-188</a>.</p>
+<p><strong>No rule in <code>language.md</code> states what <code>in</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-107">L-107</a>, <a href="/spec/language/#l-108">L-108</a>, <a href="/spec/language/#l-115">L-115</a>, <a href="/spec/language/#l-173">L-173</a>, <a href="/spec/language/#l-188">L-188</a>.</p>
 <pre class="code jock">let s = "in"; "[{s}]"</pre>
 <p>pinned by <code>t-text-interp-str</code> · 6 vectors use this keyword</p>
 <h3 id="is"><code>is</code></h3>
@@ -200,9 +208,9 @@
 <p><strong>Kernel.</strong> immutable binding: <code>%let</code></p>
 <p>Specified by <a href="/spec/language/#l-134">L-134</a>:</p>
 <blockquote><a href="/spec/language/#l-134">L-134</a> · Destructuring <code>let</code> is admitted</blockquote>
-<p>Also named by <a href="/spec/language/#l-20">L-20</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-129">L-129</a>, <a href="/spec/language/#l-130">L-130</a>, <a href="/spec/language/#l-131">L-131</a>, <a href="/spec/language/#l-171">L-171</a>, <a href="/spec/language/#l-185">L-185</a>.</p>
+<p>Also named by <a href="/spec/language/#l-20">L-20</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-130">L-130</a>, <a href="/spec/language/#l-131">L-131</a>, <a href="/spec/language/#l-171">L-171</a>, <a href="/spec/language/#l-185">L-185</a>.</p>
 <pre class="code jock">let x = 1; x;</pre>
-<p>pinned by <code>t-arc-term-semi</code> · 188 vectors use this keyword</p>
+<p>pinned by <code>t-arc-term-semi</code> · 189 vectors use this keyword</p>
 <h3 id="loop"><code>loop</code></h3>
 <p><strong>control keyword.</strong></p>
 <p><strong>Kernel.</strong> recursion point / re-entry: <code>%loop</code> / <code>%recur</code>, both optionally labeled (<code>loop outer { … recur outer }</code>) — note no <code>;</code> before the closing brace; a trailing separator there refuses <code>%parse-expected %'}'</code></p>
@@ -235,7 +243,7 @@
 <h3 id="print"><code>print</code></h3>
 <p><strong>control keyword.</strong></p>
 <p><strong>Kernel.</strong> <code>print e; k</code> / <code>print(e, N); k</code>. Rules <a href="/spec/language/#l-33">L-33</a> to <a href="/spec/language/#l-37">L-37</a> below</p>
-<p><strong>No rule in <code>language.md</code> states what <code>print</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-35">L-35</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-76">L-76</a>.</p>
+<p><strong>No rule in <code>language.md</code> states what <code>print</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-35">L-35</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-190">L-190</a>.</p>
 <pre class="code jock">print("hi"); 42</pre>
 <p>pinned by <code>t-text-print</code> · 10 vectors use this keyword</p>
 <h3 id="private"><code>private</code></h3>
@@ -243,7 +251,7 @@
 <p><strong>Kernel (declaration).</strong> marks the next declaration or <code>func</code> unexported. Rules <a href="/spec/language/#l-17">L-17</a> to <a href="/spec/language/#l-25">L-25</a> below</p>
 <p>Specified by <a href="/spec/language/#l-17">L-17</a>:</p>
 <blockquote><a href="/spec/language/#l-17">L-17</a> · <code>private</code> marks the next declaration or <code>func</code> unexported.</blockquote>
-<p>Also named by <a href="/spec/language/#l-25">L-25</a>, <a href="/spec/language/#l-37">L-37</a>, <a href="/spec/language/#l-61">L-61</a>.</p>
+<p>Also named by <a href="/spec/language/#l-25">L-25</a>, <a href="/spec/language/#l-61">L-61</a>.</p>
 <pre class="code jock">private func dbl(n: @) -&gt; @ { n + n }; dbl(21)</pre>
 <p>pinned by <code>t-text-private-func</code> · 5 vectors use this keyword</p>
 <h3 id="recur"><code>recur</code></h3>
@@ -271,7 +279,7 @@
 <p><strong>Kernel.</strong> mutable binding: <code>%let</code> with <code>mut=%.y</code>; <code>%edit</code> targets only <code>var</code> bindings (OPEN-14)</p>
 <p>Specified by <a href="/spec/language/#l-132">L-132</a>:</p>
 <blockquote><a href="/spec/language/#l-132">L-132</a> · <code>var</code> widening is SHALLOW.</blockquote>
-<p>Also named by <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-129">L-129</a>, <a href="/spec/language/#l-130">L-130</a>, <a href="/spec/language/#l-131">L-131</a>, <a href="/spec/language/#l-134">L-134</a>.</p>
+<p>Also named by <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-130">L-130</a>, <a href="/spec/language/#l-131">L-131</a>, <a href="/spec/language/#l-134">L-134</a>.</p>
 <pre class="code jock">var b = 1; b = 3; b</pre>
 <p>pinned by <code>t-var-widen</code> · 12 vectors use this keyword</p>
 <h3 id="xor"><code>xor</code></h3>

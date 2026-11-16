@@ -139,6 +139,7 @@ inventory and the mold `$keyword` in
 | `as` (`as?`, `as!`) | kernel | cast: `%cast` (particle of expression grammar, not a standalone form) |
 | `assert` | sugar | → `if cond { next } else { crash }` |
 | `print` | kernel | `print e; k` / `print(e, N); k`. Rules L-33 to L-37 below |
+| `hint` | kernel | `hint %tag; k` / `hint(%tag, clue); k`. Rules L-190 to L-194 below |
 | `and`, `or`, `xor`, `not` | sugar | word connectives (OPEN-13): `and`/`or` → nested `%if` (short-circuit); `xor`/`not` → `%if`/stdlib rewrites |
 | `struct` | kernel (declaration) | `%decl`: def-registration in `+mint` (types.md S9.1 — desugar has no environment, so declarations are one kernel form the parser emits directly) |
 | `class` / `impl` | kernel (declaration) | `%decl`: registration + method minting; standalone instances are `impl Trait for Type { … };` (types.md S9.4/S9.5) |
@@ -246,6 +247,101 @@ runtime prints — 0 info, 1 warn `>`, 2 error `>>`, 3 crit `>>>`,
 following NockVM's Slogger — and one without the hint evaluates `k`
 regardless, so a program's *value* never depends on whether anyone
 was listening. ⟨`t-text-print-crit`, `t-spot-print`⟩
+
+#### `hint` — L-190 to L-194
+
+**L-190 · `hint` reaches Nock 11 in general**, where `print` reaches
+one tag of it. `hint %tag; k` lowers to `[11 %tag k]` and
+`hint(%tag, clue); k` to `[11 [%tag clue] k]`. The body is the
+continuation, as `print`'s is (L-36). `hint` is a `$keyword`, so no
+program may bind the name — the one source-compatibility cost of this
+rule. ⟨`t-text-hint-static`, `t-text-hint-dyn`⟩
+
+**L-191 · The tag is a term literal, not an expression.** Nock 11's
+tag sits in a noun position, and a computed tag could not be checked
+against the reserved set of L-193. A non-term tag refuses
+`%parse-hint-tag`. ⟨`t-text-hint-tag-n`⟩
+
+**L-192 · A hint is value-transparent**, so its type is the body's and
+`want` distributes to the body alone. The clue is computed and
+discarded, which is Nock's own rule, so the clue has no expected type
+and is synthesized. **Computed, though** — a dynamic clue is
+evaluated, so one that crashes or diverges takes the program with it;
+the product is the body's provided the clue terminates and does not
+crash. ⟨`t-text-hint-type`⟩
+
+**L-193 · The compiler refuses three tags, and admits a catalogue.**
+This rule is a *vocabulary*, and it is worth saying plainly what it
+is not.
+
+**Nock issues a hint to the ether.** `*[a 11 b c]` is the body's
+product; the kernel attaches no meaning whatever to the tag, and a
+conforming interpreter may honour every tag, some, or none. So what a
+tag *means* is a property of a runtime and not of this language, and
+an unrecognised tag is harmless by Nock's own rule. L-192 is where the
+guarantee lives, and it holds unconditionally — not because of
+anything in this rule.
+
+Three tags are refused because their conventional meaning is a claim
+no program is entitled to make. `%fast` asserts *"run native code
+instead of this formula"*, which nothing in the language checks.
+`%sham` is the same claim without the indirection: it names a jet and
+a runtime in the right mode dispatches it *in place of the body*,
+where `%fast` only registers a core for later matching. `%dont`
+asserts *"I am nondeterministic"* — and sits behind nockvm's
+`hint_dont` cargo feature, which is not a default, so a default build
+honours eleven of its twelve. All three refuse
+`%mint-hint-reserved`, discriminated by the offending tag.
+⟨`t-text-hint-fast-n`, `t-text-hint-sham-n`, `t-text-hint-dont-n`⟩
+
+Everything else either target honours is admitted — the union, since
+the two disagree. nockvm honours twelve tags and Vere eighteen, nine
+in common. `%dont`, `%hand` and `%sham` are nockvm's alone; `%cash`,
+`%drop`, `%jinx`, `%live`, `%loop`, `%meme`, `%nara`, `%spin` and
+`%xray` are Vere's alone. A tag outside the catalogue refuses
+`%mint-hint-uncatalogued`, which exists so that a typo is caught here
+rather than issued silently into the void — that is the whole of what
+it buys. Vere keeps the same kind of list and calls it a whitelist.
+The catalogue is `+hcat` in `lib/mint.hoon`, and adding or pruning a
+tag is one term in it.
+⟨`t-text-hint-uncat-n`, `t-text-hint-vere`, `t-text-hint-vere-dyn`⟩
+
+**Admitted does not mean honoured, and does not mean harmless.**
+**Both** runtimes are form-sensitive and the catalogue is form-blind,
+so a tag may compile at a spelling where it is merely computed and
+dropped. In Vere only `%cash` and `%drop` are honoured as static
+hints and only `%bout`, `%hela`, `%loop`, `%meme`, `%nara` and
+`%xray` in both forms; everything else there is dynamic-only. nockvm
+is the same in kind — `%slog`, `%fast` and the five clue-pushers
+reach the clue through a `?`, so a static spelling returns early and
+does nothing, while `%bout`, `%hela`, `%dont` and `%memo`'s insert
+work either way. `docs/hints.md` §1 carries the per-form tables.
+
+Separately, a tag a runtime *does* honour can still cost. Under
+nockvm `%bout` nests an interpreter call on the host stack, so `hint
+%bout` inside deep tail recursion aborts the process where the same
+program without it returns — while `jonk`'s own interpreter does not
+reproduce it, which is the point rather than an exception: the
+behaviour belongs to a runtime, not to the language. And static
+`%memo` is near-useless — nockvm inserts into its cache but looks up
+only on the dynamic path, and Vere omits `%memo` from its static
+whitelist entirely, so `hint(%memo, …)` is the form worth writing.
+None of this is the language's to fix; it is the ether's.
+
+**None of this is a boundary, and the spec should not be read as
+claiming one.** `eval` is unrestricted Nock 2, so a program can
+hand-build `[11 %fast body]` and reach op 11 without passing the
+check. These refusals are a compile-time lint over the surface
+syntax. A program that wants a reserved tag can have it; the lint
+only declines to spell it for them.
+
+**L-194 · It cannot be a prelude function.** A Nock 11 wraps a body,
+and for a statement form that body is the continuation; a Jock
+function receives evaluated arguments and returns a value, with no
+access to what follows its call, and `defer` (L-188) is refused
+unconditionally. So this is a keyword because the shape is
+inexpressible otherwise, not because a keyword reads better.
+⟨none — this rule is about what is *not* expressible⟩
 
 #### `private` — L-17 to L-25
 

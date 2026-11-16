@@ -5,12 +5,12 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `90c2d7b` (master) · corpus 1167 vectors · 2026-11-07
+> channel `%rc` · commit `244dd1c` (master) · corpus 1181 vectors · 2026-11-17
 
 |  | count |  |
 |---|---:|---|
-| tags the compiler can raise | 201 | 196 `~|` heads + 7 `$diag` members |
-| **with a runnable program** | **162** | the vector carries source, and the page shows it |
+| tags the compiler can raise | 204 | 199 `~|` heads + 7 `$diag` members |
+| **with a runnable program** | **165** | the vector carries source, and the page shows it |
 | no input can reach the guard | 36 | registered with the reason, and the registry is checked |
 | …of those, still pinned by a vector | 30 | an AST- or judgment-level row reaches the arm directly |
 | …and pinned by nothing | 6 | nothing to point an input at |
@@ -18,7 +18,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 | **reachable, and pinned by nothing** | **1** | the gap list |
 | AST-level only, with no reason recorded | 0 | the other gap: pinned, but never watched from a program |
 
-A `%neg` vector refuses *without* naming a tag, so it pins that a program is rejected and never in what words. 40 rows are `%neg`; none of them pins a tag here.
+A `%neg` vector refuses *without* naming a tag, so it pins that a program is rejected and never in what words. 41 rows are `%neg`; none of them pins a tag here.
 
 **The two gap rows are the ones to read.** Every other row is a refusal the corpus pins and this page can explain. A count of unpinned tags on its own cannot tell a missing test from a guard the compiler holds against itself, and this page published 82 of them as one list until the difference was worked out tag by tag.
 
@@ -647,6 +647,22 @@ func<T> bad(x: @) -> @ { x }; func<U> ok(x: U) -> U { x }; 0
 
 pinned by `t-err-ggroup-unused` · also `t-mint-gen-unsolved` (AST-level)
 
+### `%mint-hint-reserved`
+
+```jock
+hint %dont; 1
+```
+
+pinned by `t-text-hint-dont-n`, `t-text-hint-fast-n`, `t-text-hint-sham-n` · spec: docs/spec/language.md [L-193](/spec/language/#l-193)
+
+### `%mint-hint-uncatalogued`
+
+```jock
+hint %zzzz; 1
+```
+
+pinned by `t-text-hint-uncat-n` · spec: docs/spec/language.md [L-193](/spec/language/#l-193)
+
 ### `%mint-impl-coh`
 
 ```jock
@@ -1139,6 +1155,14 @@ func f () -> @ { 1 }; f()
 
 pinned by `t-parse-func-parens`
 
+### `%parse-hint-tag`
+
+```jock
+hint 42; 1
+```
+
+pinned by `t-text-hint-tag-n` · spec: docs/spec/language.md [L-191](/spec/language/#l-191)
+
 ### `%parse-impl-for`
 
 ```jock
@@ -1521,14 +1545,15 @@ Stronger than a registry entry, and listed apart from it. No input reaches these
 
 ## Tags pinned by nothing
 
-Reachable, and no vector asserts them: 1 of 201. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.
+Reachable, and no vector asserts them: 1 of 204. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.
 
 **`%impl-conflict`** — Two libraries supplying different impl facts for one (trait, head) pair. Not reached from any spelling tried: two modules each declaring their own trait do not collide, because a module’s trait is its own, and the single-module spelling refuses `%mint-impl-coh` first. Probed, not inferred.
 
 ## Families
 
-Five tags discriminate on a *second* element, so the thing to search for is the pair. Every one is an "unsupported thing" family, which is exactly where the compiler must say which.
+6 tags discriminate on a *second* element, so the thing to search for is the pair. Most are "unsupported thing" families, which is exactly where the compiler must say which; `%mint-hint-reserved` is the exception, naming the tag a program may not claim.
 
+- `%mint-hint-reserved` · `%dont` `%fast` `%sham`
 - `%mint-mold` · `%deep` `%gate` `%var` `%void` — plus 4 computed leaf site(s), not enumerable from source
 - `%mint-todo` · `%bound-ptrait` `%class-bound` `%export-class-ptrait` `%func-gen` `%impl-bound` `%impl-head` `%import-arm-gen` `%list-annot` `%trait-bound` — plus 1 computed leaf site(s), not enumerable from source
 - `%module-form` · `%if` `%private` — plus 10 computed leaf site(s), not enumerable from source

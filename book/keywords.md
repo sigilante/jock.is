@@ -5,7 +5,7 @@ Every keyword by the slot it occupies, and for the sugar forms, what each one re
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> 30 keywords · channel `%rc` · commit `90c2d7b`
+> 31 keywords · channel `%rc` · commit `244dd1c`
 
 ## No railroad diagrams, and that is a ruling
 
@@ -21,34 +21,35 @@ That ruling binds this page. It also says what would lift it — a formal gramma
 
 | keyword | stated at |
 |---|---|
-| `alias` | `L-61`, `L-66`, `L-22`, `L-81`, `L-45` |
+| `alias` | `L-61`, `L-22`, `L-81`, `L-45` |
 | `class` | `L-61`, `L-22`, `L-146`, `L-45` |
-| `enum` | `L-61`, `L-69`, `L-22`, `L-149`, `L-170`, `L-45` |
+| `enum` | `L-61`, `L-22`, `L-149`, `L-170`, `L-45` |
 | `for` | `L-61` |
 | `func` | `L-185`, `L-61`, `L-17`, `L-20`, `L-87`, `L-135`, `L-136`, `L-137`, `L-139`, `L-140`, `L-143` |
 | `impl` | `L-61`, `L-20`, `L-45` |
 | `import` | `L-185`, `L-61` |
 | `is` | `L-61`, `L-69` |
 | `lambda` | `L-61` |
-| `let` | `L-185`, `L-61`, `L-20`, `L-129`, `L-130`, `L-131`, `L-134`, `L-171` |
-| `private` | `L-61`, `L-37`, `L-17`, `L-25` |
+| `let` | `L-185`, `L-61`, `L-20`, `L-130`, `L-131`, `L-134`, `L-171` |
+| `private` | `L-61`, `L-17`, `L-25` |
 | `struct` | `L-61`, `L-45` |
 | `trait` | `L-61`, `L-22`, `L-45` |
-| `var` | `L-61`, `L-129`, `L-130`, `L-131`, `L-132`, `L-134` |
+| `var` | `L-61`, `L-130`, `L-131`, `L-132`, `L-134` |
 
-### Control (10)
+### Control (11)
 
 | keyword | stated at |
 |---|---|
 | `assert` | `L-185`, `L-61` |
 | `crash` | `L-61`, `L-178`, `L-182` |
-| `defer` | `L-61`, `L-188` |
+| `defer` | `L-61`, `L-194`, `L-188` |
 | `else` | `L-61` |
-| `eval` | `L-61`, `L-13`, `L-129`, `L-188` |
+| `eval` | `L-61`, `L-193`, `L-13`, `L-129`, `L-188` |
+| `hint` | `L-61`, `L-190` |
 | `if` | `L-185`, `L-61` |
 | `loop` | `L-185`, `L-61`, `L-87`, `L-140` |
 | `match` | `L-185`, `L-61`, `L-84`, `L-101`, `L-126`, `L-148`, `L-150`, `L-151`, `L-173` |
-| `print` | `L-61`, `L-76`, `L-35` |
+| `print` | `L-61`, `L-35`, `L-190` |
 | `recur` | `L-61`, `L-140`, `L-152` |
 
 ### Operator (6)
@@ -57,7 +58,7 @@ That ruling binds this page. It also says what would lift it — a formal gramma
 |---|---|
 | `and` | `L-61`, `L-107`, `L-173`, `L-178` |
 | `as` | `L-61`, `L-24`, `L-12`, `L-107`, `L-120` |
-| `in` | `L-61`, `L-73`, `L-107`, `L-108`, `L-115`, `L-173`, `L-188` |
+| `in` | `L-61`, `L-107`, `L-108`, `L-115`, `L-173`, `L-188` |
 | `not` | `L-61`, `L-107`, `L-173`, `L-178` |
 | `or` | `L-61`, `L-107`, `L-173`, `L-178` |
 | `xor` | `L-61`, `L-107`, `L-173`, `L-178` |

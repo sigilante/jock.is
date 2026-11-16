@@ -5,7 +5,7 @@ Generated from the compiler and its corpus. Every table is projected from a norm
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes these pages.
 >
-> channel `%rc` · commit `90c2d7b` (master) · corpus 1167 vectors · 2026-11-07
+> channel `%rc` · commit `244dd1c` (master) · corpus 1181 vectors · 2026-11-17
 
 ## Writing Jock
 
@@ -13,7 +13,7 @@ What the language offers and how it is spelled.
 
 ### [Keywords](keywords/)
 
-All 30 keywords, each with its syntactic slot, its precedence where it has one, a working program that uses it, and the `language.md` rules that define it.
+All 31 keywords, each with its syntactic slot, its precedence where it has one, a working program that uses it, and the `language.md` rules that define it.
 
 [`keywords/`](keywords/) — the page · [`keywords.md`](keywords.md) — the same content as raw Markdown
 
@@ -53,7 +53,7 @@ The compiler talking back, and what it means.
 
 ### [Refusal tags](tags/)
 
-All 201 refusals the compiler can raise: 162 with the minimal program that triggers one, 30 pinned only by an AST-level vector, 9 pinned by nothing at all.
+All 204 refusals the compiler can raise: 165 with the minimal program that triggers one, 30 pinned only by an AST-level vector, 9 pinned by nothing at all.
 
 [`tags/`](tags/) — the page · [`tags.md`](tags.md) — the same content as raw Markdown
 
