@@ -5,7 +5,7 @@
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` reads the module sources and the examples that import them.
 >
-> 119 of 146 declarations pinned by a lane · channel `%rc` · commit `244dd1c` (master) · 2026-11-17
+> 119 of 146 declarations pinned by a lane · channel `%rc` · commit `72ab116` (master) · 2026-11-17
 
 ## What counts as the standard library
 

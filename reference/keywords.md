@@ -5,7 +5,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `244dd1c` (master) · corpus 1181 vectors · 2026-11-17
+> channel `%rc` · commit `72ab116` (master) · corpus 1189 vectors · 2026-11-17
 
 Each keyword below carries its **class** — kernel or sugar, one of the language’s four design principles — and **what it does**, both projected from the keyword inventory at [L-61](/spec/language/#l-61), whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.
 
@@ -14,9 +14,9 @@ The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexe
 |  | count |
 |---|---:|
 | keywords in the mold | 31 |
-| usable, with a demonstrating program | 30 |
+| usable, with a demonstrating program | 31 |
 | usable, demonstrated by nothing | 0 |
-| deliberately not usable | 1 |
+| deliberately not usable | 0 |
 | with a rule that states what it does | 13 |
 | specified only by their inventory row | 18 |
 
@@ -25,7 +25,7 @@ The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexe
 Which slot each keyword occupies, from the tmLanguage grammar’s three keyword groups — the only machine-readable statement of this in the tree. `tools/hilite.py` checks that the three **partition** the `$keyword` mold: disjoint, and summing to it.
 
 - **declaration** (14): `alias` `class` `enum` `for` `func` `impl` `import` `is` `lambda` `let` `private` `struct` `trait` `var`
-- **control** (11): `assert` `crash` `defer` `else` `eval` `hint` `if` `loop` `match` `print` `recur`
+- **control** (11): `assert` `await` `crash` `else` `eval` `hint` `if` `loop` `match` `print` `recur`
 - **operator** (6): `and` `as` `in` `not` `or` `xor`
 
 There is deliberately **no BNF here.** Jock’s parser is recursive descent (`parse.hoon`); no grammar artifact exists to project from, so a written-out grammar would be a second author of the syntax rather than a rendering of it — which is exactly how this reference’s predecessor acquired seven wrong tag names. A formal grammar is worth having and is expressible (the adjacency law needs glued and spaced `(` as *distinct terminals*, which the lexer’s `glu` flag already supplies), but it should arrive with the corpus as its acceptance suite — every source-bearing `%pos` vector parsing, every `%parse` and `%lex` refusal failing to — so that it is a lane and not a claim.
@@ -124,6 +124,26 @@ import m; m.inc(41)
 
 pinned by `t-jimp-assert` · 1 vector use this keyword
 
+### `await`
+
+**control keyword.**
+
+**Sugar.** monadic bind: `await a = e; k` → `e.bind(lambda (a) { k })`. Rules [L-195](/spec/language/#l-195) to [L-198](/spec/language/#l-198) below
+
+Specified by [L-195](/spec/language/#l-195), [L-198](/spec/language/#l-198):
+
+> [L-195](/spec/language/#l-195) · `await` is monadic bind, and it is sugar.
+
+> [L-198](/spec/language/#l-198) · `await` says nothing about concurrency
+
+Also named by [L-61](/spec/language/#l-61).
+
+```jock
+enum R { ok(@), err(String) }; trait M { bind(self: Self, f: @ -> Self) -> Self; }; impl M for R { bind(self: R, f: @ -> R) -> R { match self { .ok(v) => f(v), .err(e) => R.err(e) } } }; func h(n: @) -> R { if n == 0 { R.err("z") } else { R.ok(n / 2) } }; await h(0); R.ok(7)
+```
+
+pinned by `t-text-await-discard-short` · 7 vectors use this keyword
+
 ### `class`
 
 **declaration keyword.**
@@ -156,20 +176,6 @@ enum Nope {}; func f(x: @) -> Nope { crash }; 1
 
 pinned by `t-text-never` · 4 vectors use this keyword
 
-### `defer`
-
-**control keyword.**
-
-****reserved, unimplemented**.** the keyword lexes and the parser then refuses `%parse-todo %defer` unconditionally (`parse.hoon`); `sugar.hoon` carries a `%defer` arm no program can reach. Reserved on the same footing as `$(…)` re-entry, so the meaning can land without reinterpreting any legal program.
-
-Specified by [L-188](/spec/language/#l-188):
-
-> [L-188](/spec/language/#l-188) · `defer` is the one reserved word.
-
-Also named by [L-61](/spec/language/#l-61), [L-194](/spec/language/#l-194).
-
-**RESERVED.** Reserved in the lexer’s mold so that the parser recognises it and refuses with a diagnosis rather than an unbound name. Refuses `%parse-todo %defer` — parsed and refused;  not implemented for 1.0.
-
 ### `else`
 
 **control keyword.**
@@ -182,7 +188,7 @@ Also named by [L-61](/spec/language/#l-61), [L-194](/spec/language/#l-194).
 if 3 != 4 { 7 } else { 9 }
 ```
 
-pinned by `t-eq-ne` · 33 vectors use this keyword
+pinned by `t-eq-ne` · 40 vectors use this keyword
 
 ### `enum`
 
@@ -196,7 +202,7 @@ pinned by `t-eq-ne` · 33 vectors use this keyword
 enum Rec { leaf, cell(Rec, Rec) }; 0
 ```
 
-pinned by `t-decl-fond-reorder` · 15 vectors use this keyword
+pinned by `t-decl-fond-reorder` · 22 vectors use this keyword
 
 ### `eval`
 
@@ -228,7 +234,7 @@ pinned by `t-text-qq` · 3 vectors use this keyword
 struct P { v: @ }; impl Show for P { show(self: P) -> String { "P!" }; }; let p = P( v: 1 ); "{p}"
 ```
 
-pinned by `t-text-interp-user` · 22 vectors use this keyword
+pinned by `t-text-interp-user` · 29 vectors use this keyword
 
 ### `func`
 
@@ -256,7 +262,7 @@ Also named by [L-61](/spec/language/#l-61), [L-87](/spec/language/#l-87), [L-139
 func<T> id(x: T) -> T { x }; id(42)
 ```
 
-pinned by `t-text-gen` · 79 vectors use this keyword
+pinned by `t-text-gen` · 86 vectors use this keyword
 
 ### `hint`
 
@@ -288,7 +294,7 @@ pinned by `t-text-hint-static` · 6 vectors use this keyword
 if 3 != 4 { 7 } else { 9 }
 ```
 
-pinned by `t-eq-ne` · 34 vectors use this keyword
+pinned by `t-eq-ne` · 41 vectors use this keyword
 
 ### `impl`
 
@@ -302,7 +308,7 @@ pinned by `t-eq-ne` · 34 vectors use this keyword
 struct P { v: @ }; impl Show for P { show(self: P) -> String { "P!" }; }; let p = P( v: 1 ); "{p}"
 ```
 
-pinned by `t-text-interp-user` · 37 vectors use this keyword
+pinned by `t-text-interp-user` · 44 vectors use this keyword
 
 ### `import`
 
@@ -324,7 +330,7 @@ pinned by `t-text-arith` · 72 vectors use this keyword
 
 **Sugar.** **membership**. Rules [L-74](/spec/language/#l-74) to [L-76](/spec/language/#l-76) below
 
-**No rule in `language.md` states what `in` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61), [L-107](/spec/language/#l-107), [L-108](/spec/language/#l-108), [L-115](/spec/language/#l-115), [L-173](/spec/language/#l-173), [L-188](/spec/language/#l-188).
+**No rule in `language.md` states what `in` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61), [L-107](/spec/language/#l-107), [L-108](/spec/language/#l-108), [L-115](/spec/language/#l-115), [L-173](/spec/language/#l-173), [L-188](/spec/language/#l-188), [L-196](/spec/language/#l-196).
 
 ```jock
 let s = "in"; "[{s}]"
@@ -380,7 +386,7 @@ Also named by [L-20](/spec/language/#l-20), [L-61](/spec/language/#l-61), [L-130
 let x = 1; x;
 ```
 
-pinned by `t-arc-term-semi` · 189 vectors use this keyword
+pinned by `t-arc-term-semi` · 192 vectors use this keyword
 
 ### `loop`
 
@@ -418,7 +424,7 @@ Also named by [L-61](/spec/language/#l-61), [L-101](/spec/language/#l-101), [L-1
 let a: @ = 3; match a { 1 => 0, _ => 84, }
 ```
 
-pinned by `t-arc-arm-comma` · 24 vectors use this keyword
+pinned by `t-arc-arm-comma` · 31 vectors use this keyword
 
 ### `not`
 
@@ -524,7 +530,7 @@ pinned by `t-text-dot-slit` · 72 vectors use this keyword
 trait MyAdd { add(+); }; 42
 ```
 
-pinned by `t-op-rebind` · 18 vectors use this keyword
+pinned by `t-op-rebind` · 25 vectors use this keyword
 
 ### `var`
 
@@ -536,7 +542,7 @@ Specified by [L-132](/spec/language/#l-132):
 
 > [L-132](/spec/language/#l-132) · `var` widening is SHALLOW.
 
-Also named by [L-61](/spec/language/#l-61), [L-130](/spec/language/#l-130), [L-131](/spec/language/#l-131), [L-134](/spec/language/#l-134).
+Also named by [L-61](/spec/language/#l-61), [L-130](/spec/language/#l-130), [L-131](/spec/language/#l-131), [L-134](/spec/language/#l-134), [L-195](/spec/language/#l-195).
 
 ```jock
 var b = 1; b = 3; b

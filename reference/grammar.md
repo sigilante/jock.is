@@ -5,13 +5,13 @@
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/grammar.py` writes the productions and checks them against `crates/jockc/hoon/lib/parse.hoon`; `tools/refgen.py` lays out this page.
 >
-> channel `%rc` · commit `244dd1c` (master) · 2026-11-17
+> channel `%rc` · commit `72ab116` (master) · 2026-11-17
 
 ## Where these come from
 
 Not from the specifications. Six normative documents carry exactly one grammar fence between them — `language.md` [L-92](/spec/language/#l-92)’s ten `tex` forms — and state everything else as prose constraints; `types.md` [S12.1](/spec/types/#s12.1) is titled *the pattern grammar* and is a typing table. A diagram set drawn from the specs would have been one drawing and a great many inventions.
 
-The parser is the grammar. `parse.hoon` is hand-rolled recursive descent — there are no parser combinators to walk — but 65 of its arms are productions, one per form, and each reaches its terminals through six stream helpers that take **literal** arguments. Outside those helpers there are six inline token literals in the whole file, each declared with its reason, and a seventh fails the lane.
+The parser is the grammar. `parse.hoon` is hand-rolled recursive descent — there are no parser combinators to walk — but 66 of its arms are productions, one per form, and each reaches its terminals through six stream helpers that take **literal** arguments. Outside those helpers there are six inline token literals in the whole file, each declared with its reason, and a seventh fails the lane.
 
 ## How to read one
 
@@ -143,4 +143,4 @@ For every production above, four reference sets are extracted from the parse arm
 
 ## The rest of the surface
 
-14 of `parse.hoon`’s 65 form arms have a production here. The declarations, the statement forms, the patterns and the type grammar do not yet, and are named in `ROADMAP.md` rather than sketched here — a diagram no lane checks is the thing this page exists to avoid.
+14 of `parse.hoon`’s 66 form arms have a production here. The declarations, the statement forms, the patterns and the type grammar do not yet, and are named in `ROADMAP.md` rather than sketched here — a diagram no lane checks is the thing this page exists to avoid.

@@ -5,7 +5,7 @@ higher-order functions over closures and List.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/hof.jock` and the examples that import it.
 >
-> 18 public declarations — 0 types, 18 arms. 18 pinned by a lane, 0 not. channel `%rc` · commit `244dd1c`
+> 18 public declarations — 0 types, 18 arms. 18 pinned by a lane, 0 not. channel `%rc` · commit `72ab116`
 
 ## Import
 
@@ -354,8 +354,9 @@ Nothing. All 18 public declarations are named by an example that runs on every p
 
 ## Where it is used
 
-4 examples import `hof`. Each is a complete program whose value `tools/examples.sh` pins on every push.
+5 examples import `hof`. Each is a complete program whose value `tools/examples.sh` pins on every push.
 
+- `examples/await-cards.jock` — a use
 - `examples/hof-arms.jock` — the arms sheet: one assertion per arm
 - `examples/hof.jock` — a use
 - `examples/minesweeper.jock` — a use

@@ -1,11 +1,11 @@
 # R10 · The examples as exercises
 
-39 programs, each with the value it produces and each run on every push. Six are landmarks on a difficulty gradient; the rest are ungraded, and this page says so rather than inventing a grading.
+41 programs, each with the value it produces and each run on every push. Six are landmarks on a difficulty gradient; the rest are ungraded, and this page says so rather than inventing a grading.
 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> channel `%rc` · commit `244dd1c`
+> channel `%rc` · commit `72ab116`
 
 ## The gradient
 
@@ -24,7 +24,7 @@ The steps are the outline’s order, which is by what each one introduces — so
 
 ## Everything else, ungraded
 
-33 further programs, by size. Size is a proxy a reader can check; difficulty is a judgement, and nothing in the tree makes it for these, so this page does not either.
+35 further programs, by size. Size is a proxy a reader can check; difficulty is a judgement, and nothing in the tree makes it for these, so this page does not either.
 
 | example | lines | value | imports |
 |---|---:|---|---|
@@ -54,6 +54,8 @@ The steps are the outline’s order, which is by what each one introduces — so
 | `interval-arms` | 80 | `23` | `interval`, `rational` |
 | `generic-class` | 84 | `14` | — |
 | `rand-arms` | 90 | `11` | `rand` |
+| `await-strand` | 93 | — | — |
+| `await-cards` | 98 | — | `hof` |
 | `parser-arms` | 100 | `33` | `parser` |
 | `watcher` | 121 | `[2 2 1 1]` | `nockapp` |
 | `string-views` | 126 | `45` | — |

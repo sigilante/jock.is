@@ -5,7 +5,7 @@ R1–R11, the book’s reference sections. The same checked facts as [the agent 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes these pages.
 >
-> channel `%rc` · commit `244dd1c` (master) · corpus 1181 vectors · 2026-11-17
+> channel `%rc` · commit `72ab116` (master) · corpus 1189 vectors · 2026-11-17
 
 The narrative chapters are hand-written and are not here. Only the back matter is generated, which is what makes it checkable: `refgen --check` regenerates these pages and fails on a diff.
 

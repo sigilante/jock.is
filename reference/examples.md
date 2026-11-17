@@ -1,11 +1,11 @@
 # Worked examples
 
-39 complete Jock programs, each with the value it produces. `tools/examples.sh` compiles and runs every one under NockVM on every push, so none of them can silently rot.
+41 complete Jock programs, each with the value it produces. `tools/examples.sh` compiles and runs every one under NockVM on every push, so none of them can silently rot.
 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `244dd1c` (master) · corpus 1181 vectors · 2026-11-17
+> channel `%rc` · commit `72ab116` (master) · corpus 1189 vectors · 2026-11-17
 
 The descriptions are the authors’ own header comments, not written here: `examples/README.md` calls each example "executable documentation — the header comments are the prose, and a `// expect: <noun>` trailer pins the program’s value". 8 of them are **kernels**, carrying `// kernel: N` — built, poked N times, then peeked.
 
@@ -13,11 +13,11 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 
 |  | count |
 |---|---:|
-| worked examples | 39 |
+| worked examples | 41 |
 | …with a pinned value | 39 |
 | …that are kernels | 8 |
 | …shown in full on this page | 14 |
-| total lines of Jock | 3122 |
+| total lines of Jock | 3313 |
 
 ## Every example
 
@@ -54,6 +54,8 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 | `interval-arms` | 80 | `23` | interval-arms.jock |
 | `generic-class` | 84 | `14` | generic-class.jock |
 | `rand-arms` | 90 | `11` | rand-arms.jock |
+| `await-strand` | 93 | — | await over a FREE monad: a computation that SUSPENDS, hands a request to whoever is driving it, and resumes with the answer. |
+| `await-cards` | 98 | — | await over a WRITER monad: a computation that accumulates effects alongside its value and runs to completion in one evaluation. |
 | `parser-arms` | 100 | `33` | parser-arms.jock |
 | `watcher` | 121 | `[2 2 1 1]` | Chain watcher — the TWO-MAP STORE (chain.md §6.1's state shape, unblocked by %mold-gen: class state can hold containers, so load's `old as! Watch` mol |
 | `string-views` | 126 | `45` | string-views.jock |
@@ -65,7 +67,7 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 
 ## The short ones, in full
 
-Every example of 40 lines or fewer, verbatim. The 25 longer ones are listed in the table on this page with their values; their sources live in `examples/` in the compiler repo.
+Every example of 40 lines or fewer, verbatim. The 27 longer ones are listed in the table on this page with their values; their sources live in `examples/` in the compiler repo.
 
 ### `counter`
 
@@ -564,4 +566,4 @@ value `616` · imports `hof` · run by `tools/examples.sh`
 | `chainkernel` | 127 | `chain`, `nockapp` |
 | `walletkernel` | 740 | `chain`, `chainkey`, `chaintx`, `nockapp`, `wallet` |
 
-They are NOT excluded from the lane. `tools/examples.sh` compiles and runs all 46 programs on every push, these included, which is what keeps the chain modules compiling. The boundary here is what the site documents, not what the repo tests.
+They are NOT excluded from the lane. `tools/examples.sh` compiles and runs all 48 programs on every push, these included, which is what keeps the chain modules compiling. The boundary here is what the site documents, not what the repo tests.

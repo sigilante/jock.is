@@ -5,12 +5,12 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `244dd1c` (master) · corpus 1181 vectors · 2026-11-17
+> channel `%rc` · commit `72ab116` (master) · corpus 1189 vectors · 2026-11-17
 
 |  | count |  |
 |---|---:|---|
-| tags the compiler can raise | 204 | 199 `~|` heads + 7 `$diag` members |
-| **with a runnable program** | **165** | the vector carries source, and the page shows it |
+| tags the compiler can raise | 205 | 200 `~|` heads + 7 `$diag` members |
+| **with a runnable program** | **166** | the vector carries source, and the page shows it |
 | no input can reach the guard | 36 | registered with the reason, and the registry is checked |
 | …of those, still pinned by a vector | 30 | an AST- or judgment-level row reaches the arm directly |
 | …and pinned by nothing | 6 | nothing to point an input at |
@@ -469,7 +469,7 @@ pinned by `t-mill-lambda-arity` · spec: docs/spec/language.md [L-141](/spec/lan
 let u: UniChar = 0x1f600 as! UniChar; let b: Byte = u; b
 ```
 
-pinned by `t-arc-unichar-narrow`, `t-err-class-gen-arg`, `t-err-map-annot-real`, `t-err-print-num`, `t-gen-rigid-arg`, `t-gen-rigid-unit`, `t-op-het-nest`, `t-rigid-mcon`, `t-rigid-slit`, `t-roof-named-func`, `t-text-char-no`, `t-var-widen-shallow` · also `t-mint-annot`, `t-mint-cond`, `t-mint-guard`, `t-mint-inc-cell` (AST-level) · spec: docs/spec/language.md [L-132](/spec/language/#l-132), docs/spec/language.md [L-41](/spec/language/#l-41), docs/spec/runtime.md [R-102](/spec/runtime/#r-102), docs/spec/runtime.md [R-59](/spec/runtime/#r-59)
+pinned by `t-arc-unichar-narrow`, `t-err-class-gen-arg`, `t-err-map-annot-real`, `t-err-print-num`, `t-gen-rigid-arg`, `t-gen-rigid-unit`, `t-op-het-nest`, `t-rigid-mcon`, `t-rigid-slit`, `t-roof-named-func`, `t-text-char-no`, `t-var-widen-shallow` · also `t-mint-annot`, `t-mint-cond`, `t-mint-guard`, `t-mint-inc-cell` (AST-level) · spec: docs/spec/language.md [L-195](/spec/language/#l-195), docs/spec/language.md [L-132](/spec/language/#l-132), docs/spec/language.md [L-41](/spec/language/#l-41), docs/spec/runtime.md [R-102](/spec/runtime/#r-102), docs/spec/runtime.md [R-59](/spec/runtime/#r-59)
 
 ### `%mint-call`
 
@@ -1217,7 +1217,7 @@ pinned by `t-minus-glued-l`, `t-minus-glued-r` · spec: docs/spec/language.md [L
 let 5 = 3; 5
 ```
 
-pinned by `t-parse-name`
+pinned by `t-parse-name` · spec: docs/spec/language.md [L-197](/spec/language/#l-197)
 
 ### `%parse-no-result`
 
@@ -1290,6 +1290,14 @@ match 1 { . => 1; _ => 0; }
 ```
 
 pinned by `t-parse-patt-case`
+
+### `%parse-patt-qualified`
+
+```jock
+enum R { ok(@) }; func f(r: R) -> @ { match r { R.ok(v) => v } }; f(R.ok(7))
+```
+
+pinned by `t-parse-patt-qualified` · spec: docs/spec/language.md [L-149](/spec/language/#l-149)
 
 ### `%parse-place`
 
@@ -1366,10 +1374,10 @@ pinned by `t-parse-tex-qual`
 ### `%parse-todo`
 
 ```jock
-let a = 1; defer { a }; a
+func fib(n: @) -> @ { if n == 0 { 1 } else { $(n - 1) } }; fib(3)
 ```
 
-pinned by `t-parse-defer`, `t-recur-edits` · spec: docs/spec/language.md [L-154](/spec/language/#l-154), docs/spec/language.md [L-188](/spec/language/#l-188)
+pinned by `t-recur-edits` · spec: docs/spec/language.md [L-154](/spec/language/#l-154), docs/spec/language.md [L-188](/spec/language/#l-188)
 
 ### `%parse-trailing`
 
@@ -1545,7 +1553,7 @@ Stronger than a registry entry, and listed apart from it. No input reaches these
 
 ## Tags pinned by nothing
 
-Reachable, and no vector asserts them: 1 of 204. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.
+Reachable, and no vector asserts them: 1 of 205. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.
 
 **`%impl-conflict`** — Two libraries supplying different impl facts for one (trait, head) pair. Not reached from any spelling tried: two modules each declaring their own trait do not collide, because a module’s trait is its own, and the single-module spelling refuses `%mint-impl-coh` first. Probed, not inferred.
 
@@ -1557,5 +1565,5 @@ Reachable, and no vector asserts them: 1 of 204. Simultaneously a documentation 
 - `%mint-mold` · `%deep` `%gate` `%var` `%void` — plus 4 computed leaf site(s), not enumerable from source
 - `%mint-todo` · `%bound-ptrait` `%class-bound` `%export-class-ptrait` `%func-gen` `%impl-bound` `%impl-head` `%import-arm-gen` `%list-annot` `%trait-bound` — plus 1 computed leaf site(s), not enumerable from source
 - `%module-form` · `%if` `%private` — plus 10 computed leaf site(s), not enumerable from source
-- `%parse-todo` · `%defer` `%recur-edits`
+- `%parse-todo` · `%recur-edits`
 - `%sugar-todo` · `%list-annot` `%map-annot`

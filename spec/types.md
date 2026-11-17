@@ -469,11 +469,10 @@ This is checking-position-only by construction (there is no expected type in ⇒
 
 `%match` value ⇒ σ (the scrutinee synthesizes; singletons in σ enable literal-pattern completeness). Each case: pattern typed against σ (S12) extending Γ with its bindings; bodies ⇐ τ in checking mode, or ⇒ and fold with `join` in synthesis mode. Exhaustiveness per S12.3; the default case, if present, absorbs the residual space. ⟨`t-run-match-lit`, `t-run-match-sum-c`, `t-mint-match-inex`⟩
 
-### S8.9 Loops, recur, defer
+### S8.9 Loops and recur
 
 - `%loop` (label optional): the body synthesizes; `recur` (targeting this loop by label or innermost) types as `%void` (N2 makes it disappear into joins — a diverging loop is `Never`). Loop state is whatever `var` bindings the body edits; there is no loop-local type refinement (S4 keeps state widened).
 - `%recur`: each edit's `limb` must resolve (S7) into the re-entered scope frame with `mut=%.y` semantics of `$()`-edit; each `val ⇐` the binding's type. ⇒ `%void`. ⟨`t-mint-recur-outer`, `t-mint-recur-naked`⟩
-- `%defer`: typing rule pends the runtime spec's semantics for the form (S14); until stated, `%defer` types as its `next`.
 
 ### S8.10 Casts and coalescing
 
@@ -1012,16 +1011,16 @@ Case bodies see the bindings; the scrutinee's *type* is refined per-case only th
 | any other atom, `%noun`, `%ref` (non-union), `%gate`, `%var` | infinite — a wildcard/bind row (or `default`) is required |
 
 A `match` must be exhaustive: if the wildcard row is useful against the residual matrix, error — `%mint-inexhaustive`, which retires the interim `%match-needs-default` rule — **carrying a witness in the hint noun rather than in the message**, and the witness is only as sharp as `+mcov` is. For a union it is concrete: `enum E { a, b, c }` matched on `.a` and `.b` reports `[%tag tag=%c pat=~]`. For an atom or a cell scrutinee it degrades to a bare `_`: `(Bool, Bool)` matched on `(true, true)` and `(false, _)` leaves `(true, false)` uncovered and reports `[%wild ~]`. Probed; the imprecision is the cover test showing through, and is the same weakness the redundancy note below records. A case shadowed by an **irrefutable** earlier case is an error, not a
-warning (`+pirr`) — `match x { _ => 1, E.b => 2 }` refuses
+warning (`+pirr`) — `match x { _ => 1, .b => 2 }` refuses
 `%mint-unreachable`.
 
 *This once said any case that is not useful is an
-error. Duplicate REFUTABLE cases are not detected — `match x { E.a
-=> 1, E.b => 2, E.a => 3 }` compiles and returns 1 — because `+mcov`
+error. Duplicate REFUTABLE cases are not detected — `match x { .a
+=> 1, .b => 2, .a => 3 }` compiles and returns 1 — because `+mcov`
 is a cover test rather than a usefulness algorithm (S12.2). So
 exhaustiveness is enforced and redundancy only partly; the stated rule
 is the goal, not the implementation. Both halves probed: the duplicate
-compiles and answers 1, and `match x { _ => 1, E.b => 2 }` refuses.* ⟨`t-run-match-sum-p`, `t-mint-match-inex`, `t-mint-match-unreach`⟩
+compiles and answers 1, and `match x { _ => 1, .b => 2 }` refuses.* ⟨`t-run-match-sum-p`, `t-mint-match-inex`, `t-mint-match-unreach`⟩
 
 ## S13. Corpus vector format
 
@@ -1071,8 +1070,6 @@ here and has since shipped is listed under **closed** below, because a
 section called "Open" holding four closed items is how a reader ends
 up implementing around a feature that exists.
 
-1. **`%defer` semantics** — owned by the runtime spec; the typing rule
-   is a placeholder and `%defer` types as its `next` (S8.9).
 2. **Bounded generic impls** (`impl<T: Ord> …`) and **bounded trait
    binders** — excluded from 1.0 (S9.4). Both need per-instantiation
    dictionaries; dictionaries-as-values make them natural extensions.

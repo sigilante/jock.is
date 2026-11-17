@@ -38,8 +38,8 @@
   var KEYWORDS_DECL = ['let', 'var', 'func', 'lambda', 'struct', 'class',
                        'impl', 'trait', 'enum', 'for', 'is', 'alias',
                        'import', 'private'];
-  var KEYWORDS_CTRL = ['if', 'else', 'crash', 'assert', 'loop', 'defer',
-                       'recur', 'match', 'eval', 'print', 'hint'];
+  var KEYWORDS_CTRL = ['if', 'else', 'crash', 'assert', 'loop',
+                       'recur', 'match', 'eval', 'print', 'hint', 'await'];
   var KEYWORDS_OP   = ['as', 'in', 'and', 'or', 'xor', 'not'];
   var KEYWORDS = KEYWORDS_DECL.concat(KEYWORDS_CTRL, KEYWORDS_OP);
 

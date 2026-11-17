@@ -132,7 +132,7 @@ inventory and the mold `$keyword` in
 | `match` | kernel | pattern/type discrimination: `%match` |
 | `switch` | **retired, and NOT reserved** | collapsed into `match` (OPEN-15), then **unsquatted 2026-10-29**: it is an ordinary name and not in `$keyword`. Listed here because a reader who remembers the word comes looking. Vector `t-switch-name` |
 | `loop` / `recur` | kernel | recursion point / re-entry: `%loop` / `%recur`, both optionally labeled (`loop outer { … recur outer }`) — note no `;` before the closing brace; a trailing separator there refuses `%parse-expected %'}'` |
-| `defer` | **reserved, unimplemented** | the keyword lexes and the parser then refuses `%parse-todo %defer` unconditionally (`parse.hoon`); `sugar.hoon` carries a `%defer` arm no program can reach. Reserved on the same footing as `$(…)` re-entry, so the meaning can land without reinterpreting any legal program. |
+| `defer` | **retired, and NOT reserved** | was a `$keyword` refusing `%parse-todo %defer` with no semantics ever decided; **unsquatted** by L-188, so it is an ordinary name. Listed here because a reader who remembers the word comes looking. Vector `t-defer-name` |
 | `eval` | kernel | Nock evaluation: `%eval` (Nock 2) |
 | `crash` | kernel | `%crash` (Nock `[0 0]`) |
 | `import` | kernel | `%import`; resolution happens at environment construction, not parse |
@@ -140,6 +140,7 @@ inventory and the mold `$keyword` in
 | `assert` | sugar | → `if cond { next } else { crash }` |
 | `print` | kernel | `print e; k` / `print(e, N); k`. Rules L-33 to L-37 below |
 | `hint` | kernel | `hint %tag; k` / `hint(%tag, clue); k`. Rules L-190 to L-194 below |
+| `await` | sugar | monadic bind: `await a = e; k` → `e.bind(lambda (a) { k })`. Rules L-195 to L-198 below |
 | `and`, `or`, `xor`, `not` | sugar | word connectives (OPEN-13): `and`/`or` → nested `%if` (short-circuit); `xor`/`not` → `%if`/stdlib rewrites |
 | `struct` | kernel (declaration) | `%decl`: def-registration in `+mint` (types.md S9.1 — desugar has no environment, so declarations are one kernel form the parser emits directly) |
 | `class` / `impl` | kernel (declaration) | `%decl`: registration + method minting; standalone instances are `impl Trait for Type { … };` (types.md S9.4/S9.5) |
@@ -338,10 +339,56 @@ only declines to spell it for them.
 **L-194 · It cannot be a prelude function.** A Nock 11 wraps a body,
 and for a statement form that body is the continuation; a Jock
 function receives evaluated arguments and returns a value, with no
-access to what follows its call, and `defer` (L-188) is refused
-unconditionally. So this is a keyword because the shape is
+access to what follows its call. So this is a keyword because the
+shape is
 inexpressible otherwise, not because a keyword reads better.
 ⟨none — this rule is about what is *not* expressible⟩
+
+#### `await` — L-195 to L-198
+
+**L-195 · `await` is monadic bind, and it is sugar.** `await a = e; k`
+rewrites to `e.bind(lambda (a) { k })` and `await e; k` to the same
+with a binder nothing can reference. This is Hoon's `;<`, which is
+what all of `strandio` is written in: the tail becomes a gate and the
+monad's own arm receives it. The rewrite needs no environment, so it
+lives in `desugar` and no kernel form is added.
+⟨`t-text-await-bind`, `t-text-await-discard`⟩
+
+**The tail becomes a gate, and the rewrite is otherwise transparent.**
+An enclosing `var` may be assigned after an `await` in the same block:
+`var b: @ = 0; await a = e; b = a;` compiles, and the assignment
+takes effect. An earlier draft of this rule claimed the opposite —
+that the tail being a lambda stopped the edit propagating — and the
+evidence for it was a program whose `var` had no annotation. That
+refusal is L-132's shallow widening and has nothing to do with
+`await`: `var b = 7` admits another literal (`b = 5`, and `b = 300`)
+but not an opaque `@`, which refuses `%mill-nest`; `var b: @ = 7`
+admits either. `func g(x: @) { var b = 7; b = x; b }` refuses
+identically with no `await` anywhere.
+
+**L-196 · The bind arm is found by method dispatch on the name
+`bind`.** The language owns that one identifier on a monad, exactly as
+`in` owns `.has` (L-74) and indexing owns `.at`/`.put` (L-46). No
+trait is required and none is built in: any type with a suitable
+`bind` method works, and dispatch resolves statically per receiver
+head. ⟨`t-text-await-limb`⟩
+
+**L-197 · The discarding form is the common one.** `await e;` binds
+nothing, and it is spelled without ceremony because a realistic
+thread discards more often than it binds. `_` **binds nothing anywhere** in Jock — `let _ = e` refuses
+`%parse-name`, though `let (a, _) = e` does discard inside a pattern
+— so the discard is its own production. The rewrite
+still passes a one-parameter gate, bound to a reserved
+`$`-prefixed name that no program can spell. ⟨`t-text-await-discard`⟩
+
+**L-198 · `await` says nothing about concurrency**, and the word is
+borrowed for the shape of the rewrite rather than for its usual
+meaning. Jock has no scheduler, no futures and no parallelism of any
+kind; `await` suspends nothing and nothing else runs meanwhile. What
+it shares with the `await` of other languages is only that
+`const a = await m; rest` is `m.then(a => rest)` — bind for one
+particular monad. A reader who expects more is owed this sentence.
+⟨none — this rule is about what is *not* implied⟩
 
 #### `private` — L-17 to L-25
 
@@ -1363,14 +1410,28 @@ binding, and type tests — the last legal exactly where `as?` is legal
 `t-run-match-bool`, `t-run-match-order`, `t-parse-patt`,
 `t-parse-patt-as`, `t-parse-patt-case`⟩
 
-**L-149 · A case pattern is QUALIFIED; a bare name is a BINDING.**
-Write `.circle(r)` or `Shape.circle(r)` to match a case, and `x` to
-bind. A bare name that happens to be a case of the scrutinee refuses
-`%mint-patt-bare` rather than being reinterpreted — because a binding
-matches everything, so the old coincidence rule meant adding a case
-to an `enum` could silently turn somebody's binding into a match and
-kill every arm below it. ⟨`t-arc-patt-bare`, `t-arc-enum`,
-`t-mint-patt-tag`, `t-mint-patt-ambiguous`⟩
+**L-149 · A case pattern is `.circle(r)`, and that is the only
+spelling; a bare name is a BINDING.** A bare name that happens to be
+a case of the scrutinee refuses `%mint-patt-bare` rather than being
+reinterpreted — because a binding matches everything, so the old
+coincidence rule meant adding a case to an `enum` could silently turn
+somebody's binding into a match and kill every arm below it.
+⟨`t-arc-patt-bare`, `t-arc-enum`, `t-mint-patt-tag`,
+`t-mint-patt-ambiguous`⟩
+
+**`Shape.circle(r)` is refused**, `%parse-patt-qualified`. It used to
+parse, and this rule used to offer it as an alternative spelling. It
+was never more than decoration: `$patt`'s case is `[%tag tag pat]`
+with nowhere to put a type, so both compilers read the qualifier and
+discarded it — the parser comment claiming `+mint` checked it against
+the scrutinee described a check that did not exist. Being discarded,
+it could not be printed back either: the formatter emits the
+canonical form, and the comment splicer cannot align a token that
+vanished, so a *commented* file using the qualified spelling would
+not format at all. L-151 settled the principle when it retired
+`switch` — two spellings for one construct is the thing the language
+does not do — and this is the same case.
+⟨`t-parse-patt-qualified`⟩
 
 **L-150 · Exhaustiveness is CHECKED; redundancy only partly**, by a
 cover test over the scrutinee's type (types.md S12.3): a
@@ -1381,7 +1442,7 @@ This said "by **usefulness analysis**", and `types.md` S12.3 had
 already corrected itself and said so: `+mcov` is a conservative
 five-case **cover** test, not Maranget specialize/default matrices.
 It is sound for exhaustiveness and weaker for redundancy —
-`match x { E.a => 1, E.b => 2, E.a => 3 }` compiles and returns 1,
+`match x { .a => 1, .b => 2, .a => 3 }` compiles and returns 1,
 because duplicate *refutable* cases are not detected. The two
 documents disagreed for as long as the correction existed, and
 `types.md` was the honest one; this rule is the goal, S12.3 is the
@@ -1770,9 +1831,11 @@ version number, and this section does not track what the language
 has not got round to. A feature under consideration is roadmap
 material — [`docs/ROADMAP.md`](../ROADMAP.md) for what is planned,
 [`POSSIBLES.md`](../POSSIBLES.md) for what is merely arguable — and
-it does not appear in a normative section until it is decided. One
-word is reserved against a form that does not exist yet; L-188
-names it, and it is the only one.
+it does not appear in a normative section until it is decided. **No
+word is reserved against a form that does not exist**, and none ever
+will be without a rule saying so: `defer` was the one, L-188 retired
+it, and the ROADMAP's standing instruction — reserve nothing until it
+is decided — now holds with nothing outstanding.
 
 **L-178 · The glyph connectives `&&`, `||` and `!` are absent**, the
 word operators `and`/`or`/`xor`/`not` taking their place. `&&` and
@@ -1818,14 +1881,22 @@ Jock compiler written in Jock would use the same surface every
 other program uses, so adding a construct for it would be a
 language change and not a filling-in. ⟨none — UNPINNED⟩
 
-**L-188 · `defer` is the one reserved word.** It is a `$keyword`,
-so no program can bind the name, and it refuses `%parse-todo
-%defer` wherever a statement may stand — the squat is deliberate,
-and it is the only one in the language. Every other spelling that
-refuses `%parse-todo` is punctuation rather than a name: `$(...)`
-re-entry edits refuse `%parse-todo %recur-edits` (L-157), and `$`
-is a punctuator no program could have used for anything else.
-⟨`t-parse-defer`, `t-recur-edits`⟩
+**L-188 · `defer` is GONE, and the word is NOT reserved.** It was a
+`$keyword` with no semantics from the first commit of the rewrite,
+refusing `%parse-todo %defer` wherever a statement might stand, and
+it carried that squat for four months while nothing decided what it
+would mean. What it wanted to be — a statement form with access to
+its own continuation — is a real form and wants a rule of its own;
+this is not the word for it. `defer` names scope-exit cleanup in
+Go, Swift and Zig, and Jock has no scope exit to hook and no stack
+to unwind. So the squat is spent rather than kept, and `defer` is an
+ordinary name. **No word is reserved against a form that does not
+exist now** — the thirty-one `$keyword` words all have a form behind
+them, which `defer` did not. Every spelling
+that refuses `%parse-todo` is punctuation rather than a name: `$(...)`
+re-entry edits refuse `%parse-todo %recur-edits` (L-157), and `$` is
+a punctuator no program could have used for anything else.
+⟨`t-defer-name`, `t-recur-edits`⟩
 
 ## 10. Decision ids
 
