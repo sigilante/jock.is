@@ -130,9 +130,7 @@ inventory and the mold `$keyword` in
 | `lambda` | kernel | anonymous function value: `%lambda` |
 | `if` / `else` | kernel | `%if`; `else if` chains flatten to nested `%if` at parse |
 | `match` | kernel | pattern/type discrimination: `%match` |
-| `switch` | **retired, and NOT reserved** | collapsed into `match` (OPEN-15), then **unsquatted 2026-10-29**: it is an ordinary name and not in `$keyword`. Listed here because a reader who remembers the word comes looking. Vector `t-switch-name` |
 | `loop` / `recur` | kernel | recursion point / re-entry: `%loop` / `%recur`, both optionally labeled (`loop outer { … recur outer }`) — note no `;` before the closing brace; a trailing separator there refuses `%parse-expected %'}'` |
-| `defer` | **retired, and NOT reserved** | was a `$keyword` refusing `%parse-todo %defer` with no semantics ever decided; **unsquatted** by L-188, so it is an ordinary name. Listed here because a reader who remembers the word comes looking. Vector `t-defer-name` |
 | `eval` | kernel | Nock evaluation: `%eval` (Nock 2) |
 | `crash` | kernel | `%crash` (Nock `[0 0]`) |
 | `import` | kernel | `%import`; resolution happens at environment construction, not parse |
@@ -1428,9 +1426,9 @@ the scrutinee described a check that did not exist. Being discarded,
 it could not be printed back either: the formatter emits the
 canonical form, and the comment splicer cannot align a token that
 vanished, so a *commented* file using the qualified spelling would
-not format at all. L-151 settled the principle when it retired
-`switch` — two spellings for one construct is the thing the language
-does not do — and this is the same case.
+not format at all. L-151 states the principle — two spellings for one
+construct is the thing the language does not do — and this is a case
+of it.
 ⟨`t-parse-patt-qualified`⟩
 
 **L-150 · Exhaustiveness is CHECKED; redundancy only partly**, by a
@@ -1449,38 +1447,26 @@ documents disagreed for as long as the correction existed, and
 implementation. ⟨`t-mint-match-inex`, `t-mint-match-unreach`,
 `t-mint-match-sing`⟩
 
-**L-151 · `switch` is GONE, and the word is NOT reserved.** It was
-never the value-equality special case this section used to claim:
-both keywords shared one parser, so `switch` accepted case patterns,
-cell destructuring and type tests exactly as `match` does — a
-synonym, and two spellings for one construct is the thing the
-language does not do. Literal values are patterns (L-148), so `match`
-covers value dispatch with no second keyword.
+**L-151 · Two spellings for one construct is the thing the language
+does not do.** `match` covers value dispatch with no second keyword,
+since literal values are patterns (L-148). The rule is cited for that
+principle rather than for its history — L-149 applies it to case
+patterns, and both parsers' comments name it at the site where a
+synonym would otherwise have been accepted.
 
-This rule used to end "a retired spelling that becomes a legal
-variable name is worse than one that errors", and the word stayed in
-`$keyword` on that reasoning, refusing `%parse-switch-gone` with the
-rewrite named. **Reversed 2026-10-29**, deliberately and with the
-trade stated: a reservation taxes every program that would like the
-name, forever, while the did-you-mean serves only readers who
-remember a spelling that was never in a released Jock and has had
-zero call sites in this tree since before `$patt` landed. Bare
-`switch` now refuses as any unbound name does, with the limb
-sentence; `switch a { … }` refuses `%parse-trailing`, which is a
-worse sentence than the old hint and is the acknowledged price.
-⟨`t-switch-name`⟩
+The rule's original subject, and the reversal that followed, are
+retired: it was written when one word was collapsed into `match` and
+then amended when the reservation was withdrawn. Both are history
+rather than law, and the record keeps them
+([`language-arc.md`](../record/language-arc.md) OPEN-15). The
+principle is unvectored; what it governs is pinned where it is
+applied.
 
-**L-187 · `mut` is an ordinary name**, as `self` is (L-158), and
-for the same reason. It was never in `$keyword` —
-`+p-let` refused it at one site, so `let mut x = …`, the habit a
-Rust-shaped writer brings, reported `%parse-let-mut` with prose
-instead of dying as expected-`'='`. **Unsquatted 2026-10-29** with
-`switch`, same trade: the hint bought one clear sentence for one
-mistake and charged every program wanting a binding called `mut`.
-`let mut x = 1` is `%parse-expected %'='` at `x` again — which is
-not the baffling error the hint's own note called it, since the
-report now carries a caret under the offending token.
-⟨`t-let-mut-name`⟩
+**L-187 · Retired.** The rule said that one word was an ordinary
+name after a parse hint squatting it was withdrawn. Nothing reserves
+it, nothing special is true of it, and the id is kept because rule
+ids are append-only. Unvectored, and the record has the history
+([`punch-list.md`](../record/punch-list.md) B-4).
 
 ### 5.4 Loops
 
@@ -1832,10 +1818,10 @@ has not got round to. A feature under consideration is roadmap
 material — [`docs/ROADMAP.md`](../ROADMAP.md) for what is planned,
 [`POSSIBLES.md`](../POSSIBLES.md) for what is merely arguable — and
 it does not appear in a normative section until it is decided. **No
-word is reserved against a form that does not exist**, and none ever
-will be without a rule saying so: `defer` was the one, L-188 retired
-it, and the ROADMAP's standing instruction — reserve nothing until it
-is decided — now holds with nothing outstanding.
+word is reserved against a form that does not exist** (L-188), and
+none ever will be without a rule saying so. The ROADMAP's standing
+instruction — reserve nothing until it is decided — holds with
+nothing outstanding.
 
 **L-178 · The glyph connectives `&&`, `||` and `!` are absent**, the
 word operators `and`/`or`/`xor`/`not` taking their place. `&&` and
@@ -1881,22 +1867,15 @@ Jock compiler written in Jock would use the same surface every
 other program uses, so adding a construct for it would be a
 language change and not a filling-in. ⟨none — UNPINNED⟩
 
-**L-188 · `defer` is GONE, and the word is NOT reserved.** It was a
-`$keyword` with no semantics from the first commit of the rewrite,
-refusing `%parse-todo %defer` wherever a statement might stand, and
-it carried that squat for four months while nothing decided what it
-would mean. What it wanted to be — a statement form with access to
-its own continuation — is a real form and wants a rule of its own;
-this is not the word for it. `defer` names scope-exit cleanup in
-Go, Swift and Zig, and Jock has no scope exit to hook and no stack
-to unwind. So the squat is spent rather than kept, and `defer` is an
-ordinary name. **No word is reserved against a form that does not
-exist now** — the thirty-one `$keyword` words all have a form behind
-them, which `defer` did not. Every spelling
-that refuses `%parse-todo` is punctuation rather than a name: `$(...)`
-re-entry edits refuse `%parse-todo %recur-edits` (L-157), and `$` is
-a punctuator no program could have used for anything else.
-⟨`t-defer-name`, `t-recur-edits`⟩
+**L-188 · No word is reserved against a form that does not exist.**
+Every `$keyword` word has a form behind it. One word once did not —
+a squat carried for four months while nothing decided what it would
+mean — and retiring it is what left this rule with nothing
+outstanding to report. Every spelling that refuses `%parse-todo` is
+punctuation rather than a name: `$(...)` re-entry edits refuse
+`%parse-todo %recur-edits` (L-157), and `$` is a punctuator no
+program could have used for anything else.
+⟨`t-recur-edits`⟩
 
 ## 10. Decision ids
 
@@ -1926,7 +1905,7 @@ compiler lands on the rule rather than on its history.
 | OPEN-12 | L-1 — dissolved by the glued-paren move |
 | OPEN-13 | L-178, L-61 (word connectives) |
 | OPEN-14 | L-130 to L-132 (shallow widening) |
-| OPEN-15 | L-151 (`switch` retired) |
+| OPEN-15 | L-151 (one spelling per construct) |
 | OPEN-16 | L-90 (`->`) |
 | OPEN-17 | L-95 (`?` confined to optionality) |
 | OPEN-18 | L-88 (`hoon.iscell`) |

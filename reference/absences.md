@@ -5,7 +5,7 @@ What Jock does not have, and what you get instead. 6 rules, each one something t
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `72ab116` (master) · corpus 1189 vectors · 2026-11-17
+> channel `%rc` · commit `54bd1b0` (master) · corpus 1186 vectors · 2026-11-17
 
 A missing feature is the one thing documentation cannot leave implicit: a reader who does not find `&&` will try it, and a model will write it confidently. Each rule below is stated as `language.md` states it, with the vectors that pin it or an honest `⟨none — UNPINNED⟩`.
 
@@ -39,10 +39,10 @@ from `t-hint-amp` · also cites `t-hint-amp-mid`, `t-hint-bar`, `t-logic-and-tt`
 
 ⟨none — UNPINNED⟩ — `language.md` states this rule and no corpus vector pins it.
 
-### [L-188](/spec/language/#l-188) · `defer` is GONE, and the word is NOT reserved.
+### [L-188](/spec/language/#l-188) · No word is reserved against a form that does not exist.
 
 ```jock
-let defer = 41; defer + 1
+func fib(n: @) -> @ { if n == 0 { 1 } else { $(n - 1) } }; fib(3)
 ```
 
-from `t-defer-name` · also cites `t-recur-edits`
+from `t-recur-edits`
