@@ -5,7 +5,7 @@ What Jock does not have, and what you get instead. 6 rules, each one something t
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `54bd1b0` (master) · corpus 1186 vectors · 2026-11-17
+> channel `%rc` · commit `9d8fdc5` (sigilante/grammar-spec) · corpus 1187 vectors · 2026-11-19
 
 A missing feature is the one thing documentation cannot leave implicit: a reader who does not find `&&` will try it, and a model will write it confidently. Each rule below is stated as `language.md` states it, with the vectors that pin it or an honest `⟨none — UNPINNED⟩`.
 
@@ -15,7 +15,7 @@ A missing feature is the one thing documentation cannot leave implicit: a reader
 | …pinned by at least one vector | 2 |
 | …marked `⟨none — UNPINNED⟩` | 4 |
 
-### [L-178](/spec/language/#l-178) · The glyph connectives `&&`, `||` and `!` are absent
+### [L-178](/spec/language/#l-178) · There are no glyph connectives `&&`, `||` or `!`
 
 ```jock
 let a = true; let b = false; a && b
@@ -23,7 +23,7 @@ let a = true; let b = false; a && b
 
 from `t-hint-amp` · also cites `t-hint-amp-mid`, `t-hint-bar`, `t-logic-and-tt`, `t-logic-and-tf`, `t-logic-and-ft`, `t-logic-and-ff`, `t-logic-or-tt`, `t-logic-or-tf`, `t-logic-or-ft`, `t-logic-or-ff`, `t-logic-xor-tt`, `t-logic-xor-tf`, `t-logic-xor-ft`, `t-logic-xor-ff`, `t-logic-not-t`, `t-logic-not-f`, `t-logic-short`, `t-logic-short`
 
-### [L-180](/spec/language/#l-180) · The core algebra is not in the language.
+### [L-180](/spec/language/#l-180) · There is no core algebra in the language.
 
 ⟨none — UNPINNED⟩ — `language.md` states this rule and no corpus vector pins it.
 
@@ -35,7 +35,7 @@ from `t-hint-amp` · also cites `t-hint-amp-mid`, `t-hint-bar`, `t-logic-and-tt`
 
 ⟨none — UNPINNED⟩ — `language.md` states this rule and no corpus vector pins it.
 
-### [L-183](/spec/language/#l-183) · The language has no self-hosting constructs.
+### [L-183](/spec/language/#l-183) · There are no self-hosting constructs.
 
 ⟨none — UNPINNED⟩ — `language.md` states this rule and no corpus vector pins it.
 

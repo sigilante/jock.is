@@ -54,19 +54,19 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>54bd1b0</code> (master) · corpus 1186 vectors · 2026-11-17</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>9d8fdc5</code> (sigilante/grammar-spec) · corpus 1187 vectors · 2026-11-19</aside>
 <p>A missing feature is the one thing documentation cannot leave implicit: a reader who does not find <code>&amp;&amp;</code> will try it, and a model will write it confidently. Each rule below is stated as <code>language.md</code> states it, with the vectors that pin it or an honest <code>⟨none — UNPINNED⟩</code>.</p>
 <table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>absences stated as rules</td><td>6</td></tr><tr><td>…pinned by at least one vector</td><td>2</td></tr><tr><td>…marked <code>⟨none — UNPINNED⟩</code></td><td>4</td></tr></tbody></table>
-<h3 id="l-178-the-glyph-connectives-and-are-absent"><a href="/spec/language/#l-178">L-178</a> · The glyph connectives <code>&amp;&amp;</code>, <code>||</code> and <code>!</code> are absent</h3>
+<h3 id="l-178-there-are-no-glyph-connectives-or"><a href="/spec/language/#l-178">L-178</a> · There are no glyph connectives <code>&amp;&amp;</code>, <code>||</code> or <code>!</code></h3>
 <pre class="code jock" data-refuses="lex-connective">let a = true; let b = false; a &amp;&amp; b</pre>
 <p>from <code>t-hint-amp</code> · also cites <code>t-hint-amp-mid</code>, <code>t-hint-bar</code>, <code>t-logic-and-tt</code>, <code>t-logic-and-tf</code>, <code>t-logic-and-ft</code>, <code>t-logic-and-ff</code>, <code>t-logic-or-tt</code>, <code>t-logic-or-tf</code>, <code>t-logic-or-ft</code>, <code>t-logic-or-ff</code>, <code>t-logic-xor-tt</code>, <code>t-logic-xor-tf</code>, <code>t-logic-xor-ft</code>, <code>t-logic-xor-ff</code>, <code>t-logic-not-t</code>, <code>t-logic-not-f</code>, <code>t-logic-short</code>, <code>t-logic-short</code></p>
-<h3 id="l-180-the-core-algebra-is-not-in-the-language"><a href="/spec/language/#l-180">L-180</a> · The core algebra is not in the language.</h3>
+<h3 id="l-180-there-is-no-core-algebra-in-the-language"><a href="/spec/language/#l-180">L-180</a> · There is no core algebra in the language.</h3>
 <p>⟨none — UNPINNED⟩ — <code>language.md</code> states this rule and no corpus vector pins it.</p>
 <h3 id="l-181-there-are-no-trait-objects-or-existentials"><a href="/spec/language/#l-181">L-181</a> · There are no trait objects or existentials.</h3>
 <p>⟨none — UNPINNED⟩ — <code>language.md</code> states this rule and no corpus vector pins it.</p>
 <h3 id="l-182-there-are-no-exceptions-nulls-inheritance-or-macros"><a href="/spec/language/#l-182">L-182</a> · There are no exceptions, nulls, inheritance or macros.</h3>
 <p>⟨none — UNPINNED⟩ — <code>language.md</code> states this rule and no corpus vector pins it.</p>
-<h3 id="l-183-the-language-has-no-self-hosting-constructs"><a href="/spec/language/#l-183">L-183</a> · The language has no self-hosting constructs.</h3>
+<h3 id="l-183-there-are-no-self-hosting-constructs"><a href="/spec/language/#l-183">L-183</a> · There are no self-hosting constructs.</h3>
 <p>⟨none — UNPINNED⟩ — <code>language.md</code> states this rule and no corpus vector pins it.</p>
 <h3 id="l-188-no-word-is-reserved-against-a-form-that-does-not-exist"><a href="/spec/language/#l-188">L-188</a> · No word is reserved against a form that does not exist.</h3>
 <pre class="code jock" data-refuses="parse-todo">func fib(n: @) -&gt; @ { if n == 0 { 1 } else { $(n - 1) } }; fib(3)</pre>

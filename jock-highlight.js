@@ -289,14 +289,14 @@
         while (w2 < n && isAln(src[w2])) w2++;
         //  hyphenated Term-style names (ruled 2026-08-25, lex.hoon
         //  +gnam): a glued '-' followed by an alphanumeric extends
-        //  a LOWER-CASE name — a-1, foo-bar, starts-with are one
-        //  name; a trailing or doubled hyphen stops it, and type
-        //  names take no hyphens.
-        if (isLow(c)) {
-          while (w2 + 1 < n && src[w2] === '-' && isAln(src[w2 + 1])) {
-            w2++;
-            while (w2 < n && isAln(src[w2])) w2++;
-          }
+        //  the identifier — a-1, foo-bar, starts-with are one name;
+        //  a trailing or doubled hyphen stops it.  +gnam does not
+        //  consult the case, so a type name folds the same way
+        //  (Foo-bar is one token), CamelCase being style rather
+        //  than grammar.
+        while (w2 + 1 < n && src[w2] === '-' && isAln(src[w2 + 1])) {
+          w2++;
+          while (w2 < n && isAln(src[w2])) w2++;
         }
         var name = src.slice(i, w2);
         var kind;

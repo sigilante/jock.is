@@ -5,7 +5,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `54bd1b0` (master) · corpus 1186 vectors · 2026-11-17
+> channel `%rc` · commit `9d8fdc5` (sigilante/grammar-spec) · corpus 1187 vectors · 2026-11-19
 
 Each keyword below carries its **class** — kernel or sugar, one of the language’s four design principles — and **what it does**, both projected from the keyword inventory at [L-61](/spec/language/#l-61), whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.
 
@@ -17,8 +17,8 @@ The keyword set is read from the `$keyword` mold in `sur/jock.hoon` — the lexe
 | usable, with a demonstrating program | 31 |
 | usable, demonstrated by nothing | 0 |
 | deliberately not usable | 0 |
-| with a rule that states what it does | 13 |
-| specified only by their inventory row | 18 |
+| with a rule that states what it does | 15 |
+| specified only by their inventory row | 16 |
 
 ## Syntactic slots
 
@@ -92,7 +92,7 @@ pinned by `t-logic-and-tt` · 8 vectors use this keyword
 
 Specified by [L-120](/spec/language/#l-120):
 
-> [L-120](/spec/language/#l-120) · `as` is STATIC.
+> [L-120](/spec/language/#l-120) · `as` is a STATIC cast.
 
 Also named by [L-12](/spec/language/#l-12), [L-24](/spec/language/#l-24), [L-61](/spec/language/#l-61), [L-107](/spec/language/#l-107).
 
@@ -254,7 +254,7 @@ Specified by [L-17](/spec/language/#l-17), [L-20](/spec/language/#l-20), [L-135]
 
 > [L-137](/spec/language/#l-137) · Adjacent `func`s form a MUTUAL-RECURSION GROUP.
 
-> [L-140](/spec/language/#l-140) · `recur` re-enters only the innermost enclosing `func` or `loop`.
+> [L-140](/spec/language/#l-140) · An unlabeled `recur` re-enters only the innermost enclosing `func` or `loop`
 
 Also named by [L-61](/spec/language/#l-61), [L-87](/spec/language/#l-87), [L-139](/spec/language/#l-139), [L-143](/spec/language/#l-143), [L-185](/spec/language/#l-185).
 
@@ -270,9 +270,11 @@ pinned by `t-text-gen` · 86 vectors use this keyword
 
 **Kernel.** `hint %tag; k` / `hint(%tag, clue); k`. Rules [L-190](/spec/language/#l-190) to [L-194](/spec/language/#l-194) below
 
-Specified by [L-190](/spec/language/#l-190):
+Specified by [L-190](/spec/language/#l-190), [L-194](/spec/language/#l-194):
 
 > [L-190](/spec/language/#l-190) · `hint` reaches Nock 11 in general
+
+> [L-194](/spec/language/#l-194) · `hint` cannot be a prelude function.
 
 Also named by [L-61](/spec/language/#l-61).
 
@@ -330,7 +332,13 @@ pinned by `t-text-arith` · 72 vectors use this keyword
 
 **Sugar.** **membership**. Rules [L-74](/spec/language/#l-74) to [L-76](/spec/language/#l-76) below
 
-**No rule in `language.md` states what `in` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-61](/spec/language/#l-61), [L-107](/spec/language/#l-107), [L-108](/spec/language/#l-108), [L-115](/spec/language/#l-115), [L-173](/spec/language/#l-173), [L-188](/spec/language/#l-188), [L-196](/spec/language/#l-196).
+Specified by [L-75](/spec/language/#l-75), [L-76](/spec/language/#l-76):
+
+> [L-75](/spec/language/#l-75) · `in` sits at the ordered-comparison level
+
+> [L-76](/spec/language/#l-76) · `∈` is the glyph alias of `in`
+
+Also named by [L-61](/spec/language/#l-61), [L-107](/spec/language/#l-107), [L-108](/spec/language/#l-108), [L-115](/spec/language/#l-115), [L-173](/spec/language/#l-173), [L-188](/spec/language/#l-188), [L-196](/spec/language/#l-196).
 
 ```jock
 let s = "in"; "[{s}]"
@@ -376,17 +384,19 @@ pinned by `t-roof-lift-absent` · 21 vectors use this keyword
 
 **Kernel.** immutable binding: `%let`
 
-Specified by [L-134](/spec/language/#l-134):
+Specified by [L-131](/spec/language/#l-131), [L-134](/spec/language/#l-134):
+
+> [L-131](/spec/language/#l-131) · A `let` of a literal keeps its singleton (constant) type; a `var` widens it to its general aura at binding.
 
 > [L-134](/spec/language/#l-134) · Destructuring `let` is admitted
 
-Also named by [L-20](/spec/language/#l-20), [L-61](/spec/language/#l-61), [L-130](/spec/language/#l-130), [L-131](/spec/language/#l-131), [L-171](/spec/language/#l-171), [L-185](/spec/language/#l-185).
+Also named by [L-20](/spec/language/#l-20), [L-61](/spec/language/#l-61), [L-130](/spec/language/#l-130), [L-171](/spec/language/#l-171), [L-185](/spec/language/#l-185).
 
 ```jock
 let x = 1; x;
 ```
 
-pinned by `t-arc-term-semi` · 189 vectors use this keyword
+pinned by `t-arc-term-semi` · 190 vectors use this keyword
 
 ### `loop`
 
@@ -396,9 +406,9 @@ pinned by `t-arc-term-semi` · 189 vectors use this keyword
 
 Specified by [L-140](/spec/language/#l-140):
 
-> [L-140](/spec/language/#l-140) · `recur` re-enters only the innermost enclosing `func` or `loop`.
+> [L-140](/spec/language/#l-140) · An unlabeled `recur` re-enters only the innermost enclosing `func` or `loop`
 
-Also named by [L-61](/spec/language/#l-61), [L-87](/spec/language/#l-87), [L-185](/spec/language/#l-185).
+Also named by [L-61](/spec/language/#l-61), [L-87](/spec/language/#l-87), [L-185](/spec/language/#l-185), [L-188](/spec/language/#l-188).
 
 ```jock
 import hoon; var b = 0; loop { if b == 5 { b } else { b = b + 1; recur } }
@@ -414,7 +424,7 @@ pinned by `t-text-loop` · 4 vectors use this keyword
 
 Specified by [L-84](/spec/language/#l-84), [L-148](/spec/language/#l-148):
 
-> [L-84](/spec/language/#l-84) · `match` arms are comma-separated
+> [L-84](/spec/language/#l-84) · `match` arms are comma-separated.
 
 > [L-148](/spec/language/#l-148) · `match` is the eliminator, and `$patt` is closed
 
@@ -460,7 +470,11 @@ pinned by `t-logic-or-tt` · 6 vectors use this keyword
 
 **Kernel.** `print e; k` / `print(e, N); k`. Rules [L-33](/spec/language/#l-33) to [L-37](/spec/language/#l-37) below
 
-**No rule in `language.md` states what `print` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-35](/spec/language/#l-35), [L-61](/spec/language/#l-61), [L-190](/spec/language/#l-190).
+Specified by [L-36](/spec/language/#l-36):
+
+> [L-36](/spec/language/#l-36) · `print` lowers to a slog hint
+
+Also named by [L-35](/spec/language/#l-35), [L-61](/spec/language/#l-61), [L-190](/spec/language/#l-190).
 
 ```jock
 print("hi"); 42
@@ -474,9 +488,11 @@ pinned by `t-text-print` · 10 vectors use this keyword
 
 **Kernel (declaration).** marks the next declaration or `func` unexported. Rules [L-17](/spec/language/#l-17) to [L-25](/spec/language/#l-25) below
 
-Specified by [L-17](/spec/language/#l-17):
+Specified by [L-17](/spec/language/#l-17), [L-18](/spec/language/#l-18):
 
 > [L-17](/spec/language/#l-17) · `private` marks the next declaration or `func` unexported.
+
+> [L-18](/spec/language/#l-18) · Export is the default, and `private` is the opt-out.
 
 Also named by [L-25](/spec/language/#l-25), [L-61](/spec/language/#l-61).
 
@@ -494,9 +510,9 @@ pinned by `t-text-private-func` · 5 vectors use this keyword
 
 Specified by [L-140](/spec/language/#l-140):
 
-> [L-140](/spec/language/#l-140) · `recur` re-enters only the innermost enclosing `func` or `loop`.
+> [L-140](/spec/language/#l-140) · An unlabeled `recur` re-enters only the innermost enclosing `func` or `loop`
 
-Also named by [L-61](/spec/language/#l-61), [L-152](/spec/language/#l-152).
+Also named by [L-61](/spec/language/#l-61), [L-152](/spec/language/#l-152), [L-188](/spec/language/#l-188).
 
 ```jock
 import hoon; var b = 0; loop { if b == 5 { b } else { b = b + 1; recur } }
@@ -516,7 +532,7 @@ pinned by `t-text-loop` · 4 vectors use this keyword
 struct Q { w: @ }; Q( w: 9 ).w
 ```
 
-pinned by `t-text-dot-slit` · 72 vectors use this keyword
+pinned by `t-text-dot-slit` · 73 vectors use this keyword
 
 ### `trait`
 
@@ -538,11 +554,13 @@ pinned by `t-op-rebind` · 25 vectors use this keyword
 
 **Kernel.** mutable binding: `%let` with `mut=%.y`; `%edit` targets only `var` bindings (OPEN-14)
 
-Specified by [L-132](/spec/language/#l-132):
+Specified by [L-131](/spec/language/#l-131), [L-132](/spec/language/#l-132):
+
+> [L-131](/spec/language/#l-131) · A `let` of a literal keeps its singleton (constant) type; a `var` widens it to its general aura at binding.
 
 > [L-132](/spec/language/#l-132) · `var` widening is SHALLOW.
 
-Also named by [L-61](/spec/language/#l-61), [L-130](/spec/language/#l-130), [L-131](/spec/language/#l-131), [L-134](/spec/language/#l-134), [L-195](/spec/language/#l-195).
+Also named by [L-61](/spec/language/#l-61), [L-130](/spec/language/#l-130), [L-134](/spec/language/#l-134), [L-195](/spec/language/#l-195).
 
 ```jock
 var b = 1; b = 3; b

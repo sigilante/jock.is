@@ -5,7 +5,7 @@ Every keyword by the slot it occupies, and for the sugar forms, what each one re
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> 31 keywords · channel `%rc` · commit `54bd1b0`
+> 31 keywords · channel `%rc` · commit `9d8fdc5`
 
 ## No railroad diagrams, and that is a ruling
 
@@ -31,7 +31,7 @@ That ruling binds this page. It also says what would lift it — a formal gramma
 | `is` | `L-61`, `L-69` |
 | `lambda` | `L-61` |
 | `let` | `L-185`, `L-61`, `L-20`, `L-130`, `L-131`, `L-134`, `L-171` |
-| `private` | `L-61`, `L-17`, `L-25` |
+| `private` | `L-61`, `L-17`, `L-18`, `L-25` |
 | `struct` | `L-61`, `L-45` |
 | `trait` | `L-61`, `L-22`, `L-45` |
 | `var` | `L-61`, `L-195`, `L-130`, `L-131`, `L-132`, `L-134` |
@@ -45,12 +45,12 @@ That ruling binds this page. It also says what would lift it — a formal gramma
 | `crash` | `L-61`, `L-178`, `L-182` |
 | `else` | `L-61` |
 | `eval` | `L-61`, `L-193`, `L-13`, `L-129`, `L-188` |
-| `hint` | `L-61`, `L-190` |
+| `hint` | `L-61`, `L-190`, `L-194` |
 | `if` | `L-185`, `L-61` |
-| `loop` | `L-185`, `L-61`, `L-87`, `L-140` |
+| `loop` | `L-185`, `L-61`, `L-87`, `L-140`, `L-188` |
 | `match` | `L-185`, `L-61`, `L-84`, `L-101`, `L-126`, `L-148`, `L-150`, `L-151`, `L-173` |
-| `print` | `L-61`, `L-35`, `L-190` |
-| `recur` | `L-61`, `L-140`, `L-152` |
+| `print` | `L-61`, `L-35`, `L-36`, `L-190` |
+| `recur` | `L-61`, `L-140`, `L-152`, `L-188` |
 
 ### Operator (6)
 
@@ -58,7 +58,7 @@ That ruling binds this page. It also says what would lift it — a formal gramma
 |---|---|
 | `and` | `L-61`, `L-107`, `L-173`, `L-178` |
 | `as` | `L-61`, `L-24`, `L-12`, `L-107`, `L-120` |
-| `in` | `L-61`, `L-196`, `L-107`, `L-108`, `L-115`, `L-173`, `L-188` |
+| `in` | `L-61`, `L-75`, `L-76`, `L-196`, `L-107`, `L-108`, `L-115`, `L-173`, `L-188` |
 | `not` | `L-61`, `L-107`, `L-173`, `L-178` |
 | `or` | `L-61`, `L-107`, `L-173`, `L-178` |
 | `xor` | `L-61`, `L-107`, `L-173`, `L-178` |

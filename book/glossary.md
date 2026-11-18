@@ -5,7 +5,7 @@ Jock’s vocabulary, each term pointing at the normative rule that introduces it
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> 25 terms · channel `%rc` · commit `54bd1b0`
+> 25 terms · channel `%rc` · commit `9d8fdc5`
 
 ## Why this is an index and not prose
 
@@ -29,7 +29,7 @@ So each entry below is the rule that introduces the term, quoted. A reader gets 
 
 ### bunt
 
-> [L-71](/spec/language/#l-71) · Bunt is the FIRST case's bunt
+> [L-71](/spec/language/#l-71) · An enum's bunt is the FIRST case's bunt
 
 `docs/spec/language.md` [L-71](/spec/language/#l-71) · pinned by `t-arc-enum`
 
@@ -83,13 +83,13 @@ So each entry below is the rule that introduces the term, quoted. A reader gets 
 
 ### glued hyphen
 
-> [L-59](/spec/language/#l-59) · Names admit glued hyphens, Hoon-Term-style.
+> [L-59](/spec/language/#l-59) · Identifiers admit glued hyphens, Hoon-Term-style.
 
-`docs/spec/language.md` [L-59](/spec/language/#l-59) · pinned by `t-term-hyphen`
+`docs/spec/language.md` [L-59](/spec/language/#l-59) · pinned by `t-term-hyphen`, `t-term-hyphen-t`
 
 ### cast (`as`)
 
-> [L-120](/spec/language/#l-120) · `as` is STATIC.
+> [L-120](/spec/language/#l-120) · `as` is a STATIC cast.
 
 `docs/spec/language.md` [L-120](/spec/language/#l-120) · pinned by `t-mint-cast`, `t-run-cast`, `t-err-chars-cast`
 

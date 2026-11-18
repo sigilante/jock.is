@@ -5,7 +5,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `54bd1b0` (master) · corpus 1186 vectors · 2026-11-17
+> channel `%rc` · commit `9d8fdc5` (sigilante/grammar-spec) · corpus 1187 vectors · 2026-11-19
 
 |  | count |  |
 |---|---:|---|
@@ -1305,7 +1305,7 @@ pinned by `t-parse-patt-qualified` · spec: docs/spec/language.md [L-149](/spec/
 struct T { z: @ }; func mt() -> T { T( z: 1 ) }; mt().z = 5; 0
 ```
 
-pinned by `t-err-dot-place`, `t-err-slice-place` · spec: docs/spec/language.md [L-114](/spec/language/#l-114)
+pinned by `t-err-dot-place`, `t-err-slice-place` · spec: docs/spec/language.md [L-46](/spec/language/#l-46), docs/spec/language.md [L-114](/spec/language/#l-114)
 
 ### `%parse-print-pri`
 

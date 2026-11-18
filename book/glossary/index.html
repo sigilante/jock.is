@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this page. 25 terms · channel <code>%rc</code> · commit <code>54bd1b0</code></aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this page. 25 terms · channel <code>%rc</code> · commit <code>9d8fdc5</code></aside>
 <h2 id="why-this-is-an-index-and-not-prose">Why this is an index and not prose</h2>
 <p><code>OUTLINE.md</code> R9 asks for a glossary with prose definitions. The specs do not define these terms — they <strong>use</strong> them, normatively and precisely, which is a different thing. A regex for definitional sentences over all 457 normative rules was tried and returned <code>chain.md</code> rules about merkle proofs for "bunt" and about signers for "kernel".</p>
 <p>So each entry below is the rule that introduces the term, quoted. A reader gets "aura: <a href="/spec/language/#l-97">L-97</a> says the table below is the utterable aura set" rather than a definition this generator wrote. Writing one would make the generator a second author of the language’s vocabulary, which is the failure mode this whole reference exists to avoid.</p>
@@ -66,7 +66,7 @@
 <blockquote><a href="/spec/types/#s3.1">S3.1</a> · Auras are flat: every named aura sits directly under bare <code>@</code> (aura <code>%$</code>). There is no Hoon-style prefix nesting; <code>@ud</code> vs <code>@u</code> subtlety does not exist. The initial semantic vocabulary (open-ended; surface-utterable set in language.md §3.1):</blockquote>
 <p><code>docs/spec/types.md</code> <a href="/spec/types/#s3.1">S3.1</a></p>
 <h3 id="bunt">bunt</h3>
-<blockquote><a href="/spec/language/#l-71">L-71</a> · Bunt is the FIRST case's bunt</blockquote>
+<blockquote><a href="/spec/language/#l-71">L-71</a> · An enum's bunt is the FIRST case's bunt</blockquote>
 <p><code>docs/spec/language.md</code> <a href="/spec/language/#l-71">L-71</a> · pinned by <code>t-arc-enum</code></p>
 <h3 id="guard">guard</h3>
 <blockquote><a href="/spec/types/#s3.4">S3.4</a> · Guards are a <strong>closed, enumerated set</strong> — <code>%based</code> (value &lt; 2⁶⁴ − 2³² + 1, the Goldilocks prime), <code>%byte</code> (&lt; 256), <code>%unic</code> (a Unicode scalar, <code>0x0</code>–<code>0x10FFFF</code>), <code>%loob</code> (&lt; 2), <code>%term</code> (a valid Hoon term). <strong>Five.</strong> A guard is not a general refinement mechanism and never will be.</blockquote>
@@ -93,10 +93,10 @@
 <blockquote><a href="/spec/language/#l-109">L-109</a> · Binary <code>-</code> is SPACED ON BOTH SIDES.</blockquote>
 <p><code>docs/spec/language.md</code> <a href="/spec/language/#l-109">L-109</a> · pinned by <code>t-minus-glued-l</code>, <code>t-minus-glued-r</code>, <code>t-minus-spaced</code></p>
 <h3 id="glued-hyphen">glued hyphen</h3>
-<blockquote><a href="/spec/language/#l-59">L-59</a> · Names admit glued hyphens, Hoon-Term-style.</blockquote>
-<p><code>docs/spec/language.md</code> <a href="/spec/language/#l-59">L-59</a> · pinned by <code>t-term-hyphen</code></p>
+<blockquote><a href="/spec/language/#l-59">L-59</a> · Identifiers admit glued hyphens, Hoon-Term-style.</blockquote>
+<p><code>docs/spec/language.md</code> <a href="/spec/language/#l-59">L-59</a> · pinned by <code>t-term-hyphen</code>, <code>t-term-hyphen-t</code></p>
 <h3 id="cast-as">cast (<code>as</code>)</h3>
-<blockquote><a href="/spec/language/#l-120">L-120</a> · <code>as</code> is STATIC.</blockquote>
+<blockquote><a href="/spec/language/#l-120">L-120</a> · <code>as</code> is a STATIC cast.</blockquote>
 <p><code>docs/spec/language.md</code> <a href="/spec/language/#l-120">L-120</a> · pinned by <code>t-mint-cast</code>, <code>t-run-cast</code>, <code>t-err-chars-cast</code></p>
 <h3 id="trait">trait</h3>
 <blockquote><a href="/spec/language/#l-62">L-62</a> · A trait's methods carry full signatures</blockquote>

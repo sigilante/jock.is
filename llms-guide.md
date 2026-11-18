@@ -54,8 +54,9 @@ juxtaposition anywhere in the grammar.
 - **Casing is grammar.** Lowercase-initial identifiers are values/functions/
   fields; Uppercase-initial are types. Union case tags are lowercase (they
   erase to term atoms). No underscores in identifiers (`_` is the wildcard
-  pattern). Names admit glued hyphens, Hoon-Term-style: `a-1` and `foo-bar`
-  are each ONE name, never a subtraction. Type names take no hyphens.
+  pattern). Identifiers admit glued hyphens, Hoon-Term-style: `a-1` and
+  `foo-bar` are each ONE name, never a subtraction. Type names are
+  CamelCase.
 - **Binary `-` is spaced on both sides.** `a - 1` is subtraction; `a- 1`
   and `a -1` refuse `%parse-minus-glue`; fully glued `a-1` is the NAME
   `a-1` (see casing rule above), refusing `%mint-limb` only if unbound.

@@ -11,14 +11,20 @@ never renumbered, because `crates/`, `tests/` and `tools/` cite
 them. Each rule names the corpus vectors that pin it, or says
 `⟨none — UNPINNED⟩` so the gap is countable rather than invisible.
 
-The surface syntax is settled, and the release may ship
-zero-versioned precisely so it can settle further — so read the
-tables below as current rather than as a contract. The molds in
+The surface syntax is settled, yet the release may ship
+zero-versioned precisely so that it can settle further. Read the
+tables below as current, not as a contract. The molds in
 `crates/jockc/hoon/sur/jock.hoon` (`$keyword`, `$jpunc`, `$jatom`,
 `$tex`, `$jock-form`) must match the tables here; a mismatch is a
 bug in one or the other.
 
-Jock is a statically typed language that compiles to the Nock ISA (via Nockasm). Its syntax is Swift-inspired first, Rust-inspired second; its semantics are Nock-native (everything is a noun; functions are closures, emitted as cores at the ABI only — no core algebra is user-visible (types.md S9.8); recursion is the loop primitive). It is not an imitation of either source language: where Swift/Rust idiom conflicts with noun semantics, the noun wins.
+Jock is a statically typed language that compiles to the Nock ISA
+(via Nockasm). Its syntax is Swift-inspired first, Rust-inspired
+second. Its semantics are Nock-native: everything is a noun;
+functions are closures, emitted as cores at the ABI only, with no
+core algebra user-visible (types.md S9.8); recursion is the loop
+primitive. It is not an imitation of either source language: where
+Swift/Rust idiom conflicts with noun semantics, the noun wins.
 
 **Design principles**
 
@@ -40,7 +46,7 @@ inc(a)
 ```
 
 **L-184 · A program is `;`-terminated statements followed by a final
-expression**, whose value is the program's value. A missing
+expression, whose value is the program's value.** A missing
 terminator refuses `%parse-expected %';'`, pointed at the start of
 the next statement. ⟨`t-arc-term-semi`, `t-text-split-trail`⟩
 
@@ -55,8 +61,8 @@ declaration needs none at all (L-81).
 silently compose. Sequencing uses `;`, and names enter scope through
 bindings, declarations and imports only. Juxtaposition does not
 exist anywhere in the grammar — collections and tuples are
-comma-separated (L-79) — so two adjacent expressions are either
-separated by `;` or a parse error, which is what lets L-1 read
+comma-separated (L-79) — so two adjacent expressions either have a
+`;` between them or are a parse error, which is what lets L-1 read
 whitespace as the only adjacency signal.
 ⟨`t-arc-ctor`, `t-parse-unglued`⟩
 
@@ -67,8 +73,8 @@ whitespace as the only adjacency signal.
 lexical errors — loud failure, so there is no invisible-whitespace
 ambiguity to debug. ⟨`t-lex-tab-n`⟩
 
-**L-53 · Comments are `//` to end of line and `/* … */`**, stripped
-by the lexer. Non-nesting. ⟨`t-lex-comment-p`⟩
+**L-53 · Comments are `//` to end of line and the non-nesting
+`/* … */`**, stripped by the lexer. ⟨`t-lex-comment-p`⟩
 
 **L-54 · A comment separates tokens exactly as whitespace does.** A
 token after a comment is never glued, so a comment can never create
@@ -88,31 +94,36 @@ classes, traits and aliases. ⟨`t-lex-term-p`⟩
 
 **L-57 · The casing split is load-bearing**, not convention: the
 parser distinguishes name tokens from type tokens, so it is the
-Rust convention enforced *as grammar* rather than as style. It is
-also what lets L-59 hold — a hyphen can be part of a name because
-no type name can contain one.
+Rust convention enforced *as grammar* rather than as style.
+`Point(x: 3)` is a struct literal and `point(3)` is a call, read
+apart by the initial letter alone, with no type-directed lookahead.
 
 **L-58 · An identifier is a letter followed by letters and
 digits.** No underscores; `_` is the wildcard. ⟨`t-lex-term`⟩
 
-**L-59 · Names admit glued hyphens, Hoon-Term-style.** `a-1` and
-`foo-bar` are each ONE name token, never a subtraction. A trailing
-hyphen (`a-`) is not a name and refuses. Hyphens never appear in
-type names — a `-` after a type name is minus. The readings cannot
-collide because binary `-` is spaced on both sides (§4.2).
-⟨`t-term-hyphen`⟩
+**L-59 · Identifiers admit glued hyphens, Hoon-Term-style.** `a-1`
+and `foo-bar` are each ONE token, never a subtraction. A hyphen
+joins only *between* identifier characters, so a trailing or
+doubled hyphen (`a-`, `a--b`) ends the identifier and refuses. The
+readings cannot collide because binary `-` is spaced on both sides
+(§4.2). The fold does not consult the initial letter, so `Foo-bar`
+is one type-name token as well; L-60 asks for CamelCase there
+regardless.
+⟨`t-term-hyphen`, `t-term-hyphen-t`⟩
 
 **L-60 · Stdlib multi-word naming prefers hyphens; user style is
 free.** Both hyphenated (`starts-with`) and camelCase (`myCount`,
-`peekUnder`) are legal everywhere names are legal. The *prelude and
-stdlib* prefer hyphenated Term-style for new multi-word names, with
-`starts-with` as the precedent, while existing camelCase prelude
-names stand. The rule governs what the stdlib adds, not what users
-write. `peekTone` (2026-11-05) is camelCase although it is new,
-because it joins `peekContext`/`peekUnder`/`peekTry` as a fourth
-member of one family: a hyphenated `peek-tone` beside those three
-would read as a different kind of thing. Consistency inside a named
-set beats the default for the set's next member.
+`peekUnder`) are legal everywhere names are legal. Type names take
+CamelCase (`LockPrimitive`); a hyphen is legal there too and goes
+unused. The *prelude and stdlib* prefer hyphenated Term-style for
+new multi-word names, with `starts-with` as the precedent, while
+existing camelCase prelude names stand. The rule governs what the
+stdlib adds, not what users write. `peekTone` (2026-11-05) is
+camelCase although it is new, because it joins
+`peekContext`/`peekUnder`/`peekTry` as a fourth member of one
+family: a hyphenated `peek-tone` beside those three would read as a
+different kind of thing. Consistency inside a named set beats the
+default for the set's next member.
 ### 2.2 Keywords
 
 **L-61 · The table below is the keyword inventory.** A word not in
@@ -180,7 +191,7 @@ erase exactly as impl binders do, so the dictionary is one core per
 **L-67 · `alias New is Old` is transparent**, expanded at
 elaboration. ⟨`t-alias-ok`, `t-elab-alias-p`⟩
 
-**L-68 · It is an ALIAS, not a newtype.** The two names denote one
+**L-68 · An alias is not a newtype.** The two names denote one
 type; there is no wrapping, no distinct identity, and nothing to
 unwrap. ⟨`t-decl-or-alias`⟩
 
@@ -193,10 +204,11 @@ adjacent with nothing between them. Omitting it refuses.
 
 **L-70 · An enum is a tagged sum declaration.** ⟨`t-arc-enum`⟩
 
-**L-71 · Bunt is the FIRST case's bunt**, by declaration order.
-This deliberately breaks Hoon's last-case `$%` convention, so a
-reader coming from Hoon should not assume. Well-foundedness is
-checked at registration (types.md S10.3). ⟨`t-arc-enum`⟩
+**L-71 · An enum's bunt is the FIRST case's bunt**, by declaration
+order. This deliberately breaks Hoon's last-case `$%` convention,
+so a reader coming from Hoon should not assume that convention.
+Well-foundedness is checked at registration (types.md S10.3).
+⟨`t-arc-enum`⟩
 
 **L-72 · An empty enum is well-formed and uninhabited.** It is
 `%void`, it nests into everything, and it has **no** bunt —
@@ -212,18 +224,18 @@ illustrating L-72. Use a fresh name to try it. ⟨none — UNPINNED⟩
 collection, so dispatch is ordinary per-head resolution and **no
 operator trait is involved**. ⟨none — UNPINNED⟩
 
-**L-75 · It sits at the ordered-comparison level**, and is
+**L-75 · `in` sits at the ordered-comparison level**, and is
 non-associative there like the rest of that level (§4.2).
 ⟨none — UNPINNED⟩
 
-**L-76 · `∈` is its glyph alias**, one of the three aliases rather
-than a trait-only operator (§4.2).
+**L-76 · `∈` is the glyph alias of `in`**, one of the three aliases
+rather than a trait-only operator (§4.2).
 
 
 #### `print` — L-33 to L-37
 
-**L-33 · `print e; k` takes one `String`.** The statement form is
-`print e; k`; with a priority it is `print(e, N); k`.
+**L-33 · `print e; k` takes one `String`.** With a priority the
+form is `print(e, N); k`.
 ⟨`t-text-print`, `t-des-print`⟩
 
 **L-34 · The priority is a BARE number literal.** Severities are
@@ -238,7 +250,7 @@ trailing-priority shape permanently unambiguous: with a variadic
 form, `print(x, 2)` could not be told from a two-value print.
 ⟨`t-text-interp-print`⟩
 
-**L-36 · It lowers to a slog hint**, `[11 [%slog [N %leaf tape]] k]`,
+**L-36 · `print` lowers to a slog hint**, `[11 [%slog [N %leaf tape]] k]`,
 through the pinned `trip` arm. ⟨`t-jimp-print`, `t-jimp-print-first`⟩
 
 **L-37 · A blind runtime computes and discards.** A slog-aware
@@ -253,8 +265,8 @@ was listening. ⟨`t-text-print-crit`, `t-spot-print`⟩
 one tag of it. `hint %tag; k` lowers to `[11 %tag k]` and
 `hint(%tag, clue); k` to `[11 [%tag clue] k]`. The body is the
 continuation, as `print`'s is (L-36). `hint` is a `$keyword`, so no
-program may bind the name — the one source-compatibility cost of this
-rule. ⟨`t-text-hint-static`, `t-text-hint-dyn`⟩
+program may bind the name, which is the one source-compatibility
+cost of this rule. ⟨`t-text-hint-static`, `t-text-hint-dyn`⟩
 
 **L-191 · The tag is a term literal, not an expression.** Nock 11's
 tag sits in a noun position, and a computed tag could not be checked
@@ -263,11 +275,11 @@ against the reserved set of L-193. A non-term tag refuses
 
 **L-192 · A hint is value-transparent**, so its type is the body's and
 `want` distributes to the body alone. The clue is computed and
-discarded, which is Nock's own rule, so the clue has no expected type
-and is synthesized. **Computed, though** — a dynamic clue is
-evaluated, so one that crashes or diverges takes the program with it;
-the product is the body's provided the clue terminates and does not
-crash. ⟨`t-text-hint-type`⟩
+discarded (Nock's own rule), so it has no expected type and is
+synthesized. It is still computed: a dynamic clue is evaluated, so
+one that crashes or diverges takes the program with it. The product
+is the body's, provided the clue terminates without crashing.
+⟨`t-text-hint-type`⟩
 
 **L-193 · The compiler refuses three tags, and admits a catalogue.**
 This rule is a *vocabulary*, and it is worth saying plainly what it
@@ -289,7 +301,7 @@ a runtime in the right mode dispatches it *in place of the body*,
 where `%fast` only registers a core for later matching. `%dont`
 asserts *"I am nondeterministic"* — and sits behind nockvm's
 `hint_dont` cargo feature, which is not a default, so a default build
-honours eleven of its twelve. All three refuse
+honours eleven of nockvm's twelve. All three refuse
 `%mint-hint-reserved`, discriminated by the offending tag.
 ⟨`t-text-hint-fast-n`, `t-text-hint-sham-n`, `t-text-hint-dont-n`⟩
 
@@ -334,12 +346,12 @@ check. These refusals are a compile-time lint over the surface
 syntax. A program that wants a reserved tag can have it; the lint
 only declines to spell it for them.
 
-**L-194 · It cannot be a prelude function.** A Nock 11 wraps a body,
-and for a statement form that body is the continuation; a Jock
+**L-194 · `hint` cannot be a prelude function.** A Nock 11 wraps a
+body, and for a statement form that body is the continuation; a Jock
 function receives evaluated arguments and returns a value, with no
-access to what follows its call. So this is a keyword because the
-shape is
-inexpressible otherwise, not because a keyword reads better.
+access to what follows its call. So `hint` is a keyword because the
+shape is inexpressible otherwise, not because a keyword reads
+better.
 ⟨none — this rule is about what is *not* expressible⟩
 
 #### `await` — L-195 to L-198
@@ -361,7 +373,7 @@ evidence for it was a program whose `var` had no annotation. That
 refusal is L-132's shallow widening and has nothing to do with
 `await`: `var b = 7` admits another literal (`b = 5`, and `b = 300`)
 but not an opaque `@`, which refuses `%mill-nest`; `var b: @ = 7`
-admits either. `func g(x: @) { var b = 7; b = x; b }` refuses
+admits either. `func g(x: @) -> @ { var b = 7; b = x; b }` refuses
 identically with no `await` anywhere.
 
 **L-196 · The bind arm is found by method dispatch on the name
@@ -373,11 +385,12 @@ head. ⟨`t-text-await-limb`⟩
 
 **L-197 · The discarding form is the common one.** `await e;` binds
 nothing, and it is spelled without ceremony because a realistic
-thread discards more often than it binds. `_` **binds nothing anywhere** in Jock — `let _ = e` refuses
-`%parse-name`, though `let (a, _) = e` does discard inside a pattern
-— so the discard is its own production. The rewrite
-still passes a one-parameter gate, bound to a reserved
-`$`-prefixed name that no program can spell. ⟨`t-text-await-discard`⟩
+thread discards more often than it binds. `_` **binds nothing
+anywhere** in Jock: `let _ = e` refuses `%parse-name`, though
+`let (a, _) = e` does discard inside a pattern. So the discard is
+its own production. The rewrite still passes a one-parameter gate,
+bound to a reserved `$`-prefixed name that no program can spell.
+⟨`t-text-await-discard`⟩
 
 **L-198 · `await` says nothing about concurrency**, and the word is
 borrowed for the shape of the rewrite rather than for its usual
@@ -395,12 +408,13 @@ unexported.** It registers, compiles and is fully usable inside its
 own module; it does not enter the module's `$hlib`.
 ⟨`t-text-private-local`, `t-text-private-func`⟩
 
-**L-18 · It is opt-out, not opt-in.** There is no `pub`. A program
-that never writes the word cannot be broken by the feature
-existing — which is the whole reason the default is export.
+**L-18 · Export is the default, and `private` is the opt-out.** There
+is no `pub`. A program that never writes the word cannot be broken
+by the feature existing, which is the whole reason the default is
+export.
 
 **L-19 · Visibility is module-scoped**, following Rust: the
-declaring module *and its descendants*. That is the reading which
+declaring module *and its descendants*. That is the reading that
 survives multi-file modules; while a module is one file the two are
 indistinguishable. There is no graduated visibility, because
 `pub(crate)` has no referent here — there is no crate layer to be
@@ -437,7 +451,8 @@ name never crosses a boundary. This is what lets `lib/rational` and
 erasure cast reads private fields across a module boundary. Note
 the shape precisely, because it is easy to check and conclude the
 opposite: the *direct* `r as (Int, Int)` is **refused**
-`%mint-cast`, a private state struct not unfolding in an importer.
+`%mint-cast`, because a private state struct does not unfold in
+an importer.
 The leak is the **two-step** `(r as *) as! (Int, Int)`, which reads
 the fields. Making such a nominal non-congruent for `as` is the
 recorded follow-on. ⟨`t-jimp-private-forge`⟩
@@ -475,10 +490,10 @@ back, and transliterates the vendored Hoon's own calendar so the
 shorter spelling of `time.parse("2026-10-30")`, not a capability
 the language is missing.
 
-What the spelling would have to clear, recorded here because it is
-the actual obstacle and was nowhere: **`~` is the null literal**
-(L-89), so Hoon's `~2026.10.30` and `~d1.h2` lex as `~` followed by
-a numeric run and refuse `%parse-trailing`. A glued postfix on `~`
+The obstacle, recorded here because it was recorded nowhere else,
+is that **`~` is the null literal** (L-89). Hoon's `~2026.10.30`
+and `~d1.h2` therefore lex as `~` followed by a numeric run and
+refuse `%parse-trailing`. A glued postfix on `~`
 is the mechanism that would settle it — `~` followed by an un-spaced
 alphanumeric run, read as one literal, with the bare `~` unchanged —
 and that surface is free: `~a` and `~1` are parse errors today. It
@@ -491,7 +506,7 @@ is decided, `docs/ROADMAP.md` holds it. ⟨`t-parse-tilde-glued`⟩
 | decimal | `@` (number) | `42`, `1_024` — underscore grouping (OPEN-11); `.` is never a digit separator |
 | hexadecimal | Hex | `0x2a` |
 | signed | Int | `+42`, `-42` — ZigZag. Rules L-6 to L-16 below |
-| float | Float64 (`@rd`) | `3.14` — digit-dot-digit, both sides required, ≤ 15 digits; rounding pinned `%n`, no mode surface. Float16/32/128 pend need |
+| float | Float64 (`@rd`) | `3.14` — digit-dot-digit, both sides required, ≤ 15 digits; rounding pinned `%n`, no mode surface. Float16/32/128 pending demand |
 | boolean | `Bool` (logical) | `true`, `false` — the beta `?` type spelling is retired (OPEN-2) |
 | char/cord | chars | `'a'` |
 | string | String | `"hello"` |
@@ -518,7 +533,8 @@ impls for it are `runtime.md`'s, not restated here.
 renders as `lit {x} ok`. ⟨`t-text-interp-esc`⟩
 
 **L-28 · A backslash escape is one BYTE, written as two hex
-digits.** `\0a` is a newline, `\09` a tab, either case of hex.
+digits.** `\0a` is a newline, `\09` a tab; the hex digits may be
+either case.
 `\\` is a backslash. The five named escapes — `\n` `\t` `\"`
 `\'` `\\` — are sugar over exactly that form: `\n` **is**
 `\0a`, per byte, with no separate mechanism. Both string paths
@@ -553,8 +569,8 @@ IS a cord and UTF-8 is a byte encoding, so `"caf\c3\a9"` is
 `café`. A `\u{…}` codepoint form could only ever be sugar over
 this. ⟨`t-str-esc-utf8`⟩
 
-**L-31 · A fragment is a single expression.** No string literals
-inside a fragment (`%lex-interp-str`), and no newlines. Fragment
+**L-31 · A fragment is a single expression.** It may contain no
+string literal (`%lex-interp-str`) and no newline. Fragment
 diagnostics are fragment-relative, not whole-string-relative.
 ⟨`t-err-interp-str`, `t-err-interp-open`, `t-err-interp-brace`⟩
 
@@ -566,9 +582,10 @@ outside one.
 
 #### Int — L-6 to L-16
 
-**L-6 · Int is ZigZag `@s`.** `+n` encodes as `2n` and `-n` as
-`2n−1` — Hoon's own encoding, so small magnitudes stay small and the
-FFI arms mirror `+si`. ⟨`t-sint-lit`⟩
+**L-6 · Int is ZigZag `@s`.** `+n` encodes as `2n`, and `-n` as
+`2n−1` for n > 0 — Hoon's own encoding, so small magnitudes stay
+small and the FFI arms mirror `+si`. There is no negative zero to
+encode, so `-0` is `0` (L-7), not the formula's `2n−1`. ⟨`t-sint-lit`⟩
 
 **L-7 · An Int literal is a sign glued to a decimal, in operand
 position.** `+42` is 84 and `-42` is 83. `-0`, `+0` and `0` are the
@@ -576,11 +593,12 @@ same value. ⟨`t-sint-lit`, `t-sint-lit-neg`, `t-sint-lit-zero`⟩
 
 **L-8 · The glued sign cannot be mistaken for arithmetic**, because
 binary `+`/`-` are consumed at the additive level first. So
-`a +42` is addition — with `a` = 5 it is 47, exactly as `a + 42` is.
+`a +42` is addition, as `a + 42` is: with `a` = 5, both give 47.
 ⟨`t-sint-not-add`⟩
 
-**L-9 · An Int literal is a primary**, so postfix forms and casts
-bind tighter than the sign: `-42 as @` is `(-42) as @`.
+**L-9 · An Int literal is a primary, sign included**, so the sign
+binds before any postfix form or cast: `-42 as @` is `(-42) as @`,
+and `-42[0]` applies `.at()` to the signed literal.
 ⟨none — UNPINNED⟩  *(verified by hand, not by corpus)*
 
 **L-10 · The near-misses refuse, each with its own tag.** A spaced
@@ -598,8 +616,8 @@ remains `%same`, which ZigZag satisfies. Mixed `@`/Int arithmetic
 refuses across aura families.
 ⟨`t-sint-sum`, `t-sint-sub`, `t-sint-mul`, `t-sint-cmp`, `t-sint-sum-mixed`⟩
 
-**L-12 · Casting INTO Int refuses through all three doors, at every
-position**, `%mint-cast-sint`. A cast reinterprets bits, so
+**L-12 · Casting INTO Int refuses `%mint-cast-sint` through all
+three doors, at every position.** A cast reinterprets bits, so
 `42 as Int` would read as `+21`; and the soft doors are no safer,
 because Int's erasure is a bare unguarded atom whose mold passes
 everything — so `42 as? Int` and `42 as! Int` refuse identically.
@@ -685,9 +703,9 @@ dropped separator *between* items is a loud parse error,
 ⟨`t-parse-method-nosep`, `t-text-method-nosemi`,
 `t-parse-match-nosep`⟩
 
-**L-84 · `match` arms are comma-separated**, an arm list being an
-enumeration of cases (§5.3), with the comma optional on the last
-arm and a dropped one between arms a loud `%parse-expected`.
+**L-84 · `match` arms are comma-separated.** An arm list is an
+enumeration of cases (§5.3). The comma is optional on the last arm;
+a comma dropped between arms is a loud `%parse-expected`.
 ⟨`t-parse-match-nocomma`, `t-parse-match-nosep`, `t-arc-patt-bare`⟩
 
 **L-85 · Literal-ness is lexical; constancy is a judgment.** The
@@ -749,7 +767,7 @@ annotated — `Set<@>()`, or the empty map literal `[->]`.
 
 Not style. Two reasons, and both are load-bearing.
 
-It is what makes L-2's diagnostic *possible*: a whitespace-blind
+The law makes L-2's diagnostic *possible*: a whitespace-blind
 grammar must guess what the user meant, and so cannot name the
 error. And it forecloses the JavaScript newline-swallow hazard,
 where a line break changes what the previous line meant.
@@ -783,8 +801,8 @@ is unvectored. ⟨`t-nx-inc-p`, `t-abi-iscell-cell`,
 pattern.** ⟨none — UNPINNED⟩
 
 **L-90 · `->` separates argument types from return types** and keys
-map literals. The two readings never collide, `->` being a single
-two-byte munch read in different positions.
+map literals. The two readings never collide: `->` is a single
+two-byte munch, read in different positions.
 ⟨`t-arc-map-empty`, `t-arc-map-bracket`, `t-text-map-annot-put`,
 `t-lex-type-nest`⟩
 
@@ -841,8 +859,6 @@ this single meaning. ⟨`t-hint-bar`⟩
 aura vocabulary is open-ended; these are the names a program may
 write, and each maps to a `$jatom-type`. ⟨`t-lex-type-p`⟩
 
-Surface names for atom auras (the utterable set; the semantic aura vocabulary is open-ended):
-
 | Surface | `$jatom-type` | Notes |
 |---|---|---|
 | `@`, `Atom` | `%$` | the any-aura atom (top of the aura order — the parser maps the surface spelling to `%$`) |
@@ -866,7 +882,7 @@ Surface names for atom auras (the utterable set; the semantic aura vocabulary is
 arguments, `f()` for none. ⟨`t-arc-ctor`⟩
 
 **L-99 · Field access is `p.x`.** The dot never needs the adjacency
-rule, being unambiguous either way. ⟨`t-lark-param`⟩
+rule; it is unambiguous either way. ⟨`t-lark-param`⟩
 
 #### Positional access — the lark, L-100 to L-105
 
@@ -889,10 +905,10 @@ escape hatch for deep or generated axes. ⟨`t-lark-atom-n`⟩
 
 **L-104 · A bare `p.5` is deliberately unavailable.** The lexer
 reads digit-dot-digit as one Float64, so `p.2.3` would tokenize as
-name-dot-real. The `+n` form exists because this one cannot.
+name-dot-real. The `+n` form exists because the bare form cannot.
 ⟨none — UNPINNED⟩
 
-**L-105 · A glued `=` after a lark run refuses**,
+**L-105 · A glued `=` after a lark run refuses** with
 `%parse-lark-cmp`: `p.>= 3` would otherwise parse as the lark `p.>`
 followed by an *assignment*. Write `p.> >= 3` to compare, or
 `p.> = 3` to assign.
@@ -907,36 +923,37 @@ followed by an *assignment*. Write `p.> >= 3` to compare, or
 | `e[a..b]` | slice | `e.slice(a, b)` — the `Slice` trait; **half-open** `[a, b)` |
 | `e[i] = v; ...` | put | `e.put(i, v)` through `%edit` — the `Put` trait |
 
-  Six further spellings were proposed and are **not in the language**: `e[i?]` (membership), `e[!i]` (delete), `e[]` (stack peek), `e[!]` (stack pop), `e[i:j]` and `e[i::j]` (slices). They are named methods when their collections land. They are not reserved, not deprecated, and do not parse — see the resolution below.
+  Seven further spellings were proposed and are **not in the language**: `e[i?]` (membership), `e[!i]` (delete), `e[]` (stack peek), `e[!]` (stack pop), `e[] = v` (stack push), `e[i:j]` and `e[i::j]` (slices). They are named methods when their collections land. They are not reserved, not deprecated, and do not parse — see the resolution below.
 
 #### The index family — L-46 to L-51
 
-**L-46 · The family is exactly `e[i]` and `e[i] = v`**, desugaring
-to `.at()` and `.put()` method calls through the prelude's `Idx`
-and `Put` traits. So indexing dispatches per receiver head, and
-`xs[i]` and `m[k]` are one rule rather than two.
+**L-46 · The family is exactly three forms: `e[i]`, `e[a..b]` and
+`e[i] = v`**, desugaring to `.at()`, `.slice()` and `.put()` method
+calls through the prelude's `Idx`, `Slice` and `Put` traits. So
+indexing dispatches per receiver head, and `xs[i]` and `m[k]` are
+one rule rather than two. The slice READS only: `e[a..b] = v`
+refuses `%parse-place`, so `%put` needs a real index.
 ⟨`t-index-gone-has`, `t-index-gone-peek`⟩
 
-**L-47 · Everything else is withdrawn.** `has`, `del` and `pop`
+**L-47 · Every other bracket form is withdrawn.** `has`, `del` and `pop`
 are named methods when their collections land, not bracket forms.
 ⟨`t-index-gone-pop`, `t-index-gone-push`⟩
 
-**L-48 · There is exactly one range spelling, `..`**, it lives on
+**L-48 · There is exactly one range spelling, `..`**; it lives on
 the `Slice` trait, and `List<T>` is its only impl. A `String` has
-no slice at all: it must first say which view it means — `bytes()`
-or `chars()` — and it is the **view** that carries the unit,
-visibly, at the call, in the reader's line of sight.
+no slice at all: a program must first choose a view, `bytes()` or
+`chars()`, and the **view** carries the unit, visibly, at the call.
 
 The objection was never to slicing. It was to a slice *pair* —
 two spellings in the brackets, one meaning bytes and one meaning
 scalars — smuggling a Byte/UniChar decision into an indexing form.
-One spelling obeys that rather than reversing it, which is why the
-withdrawn `e[i:j]` / `e[i::j]` pair is not revived under new
-punctuation. ⟨`t-text-slice`, `t-text-chars-slice`,
+One spelling honors that objection rather than reversing it, which
+is why the withdrawn `e[i:j]` / `e[i::j]` pair is not revived under
+new punctuation. ⟨`t-text-slice`, `t-text-chars-slice`,
 `t-index-gone-slice`⟩
 
-**L-49 · A range is half-open, `[a, b)`**, chosen for the
-composition law: `e[0..k]` and `e[k..n]` partition `e` with no
+**L-49 · A range is half-open, `[a, b)`.** The composition law is
+the reason: `e[0..k]` and `e[k..n]` partition `e` with no
 arithmetic at the seam. ⟨`t-text-slice-compose`⟩
 
 **L-50 · Past the end crashes; an inverted range does not.**
@@ -1036,7 +1053,7 @@ vectors are **desugar** rows (AST in, AST out) and pin
 non-normalization, not placement; they are not what stations rest on.
 
 Until 2026-10-27 six of the fourteen — `⊖ ± ∩ ∘ · ⊃` — had no vector
-at any stage, so two thirds of the family's table was parser source
+at any stage, so for those six the family's table was parser source
 read back as prose (jock#128). The ASCII operator each glyph is set
 against is independently pinned at its own station, so a red row
 indicts the glyph and not the comparison.
@@ -1057,11 +1074,11 @@ hyphenated Term-style name (L-59), and the right-glued form is
 reserved for the operand-position Int literal (L-6: `+42`/`-42`).
 ⟨`t-minus-glued-l`, `t-minus-glued-r`, `t-minus-spaced`⟩
 
-**L-110 · `??` binds tighter than the comparisons and looser than
-`+ -`** (station 7), right-associative, following Swift's
+**L-110 · `??` is right-associative, tighter than the comparisons,
+and looser than `+ -`** (station 7), following Swift's
 nil-coalescing placement: `m[k] ?? 0 == 5` groups as
-`(m[k] ?? 0) == 5`, and a fallback may be an arithmetic expression
-unparenthesized. A chain falls through left to right.
+`(m[k] ?? 0) == 5`, and a fallback may be an unparenthesized
+arithmetic expression. A chain falls through left to right.
 ⟨`t-prec-qq-cmp`, `t-prec-qq-add`, `t-prec-qq-right`⟩
 
 **L-111 · Every operator is BINARY-ONLY.** A unary form refuses
@@ -1110,11 +1127,11 @@ mathematical convention, with the signature the station implies:
 | additive (with `+ -`) | `∪ ⊕ ⊖ ±` | left | `(Self, Self) -> Self` |
 | comparator (with `< > <= >= in`) | `⊂ ⊃` | none | `(Self, Self) -> Bool` |
 
-So multiplicative-like glyphs bind tighter than additive-like —
+So multiplicative-like glyphs bind tighter than additive-like ones:
 `2 ⊕ 3 ⊗ 4` is `2 ⊕ (3 ⊗ 4)`, which gives a combinator library
-sequencing-binds-tighter-than-alternation for free — and the
-relations sit with the comparisons, non-associative like them
-(L-108). `⊂` and `⊃` emit `%operator`, **not** `%compare`: they
+sequencing-binds-tighter-than-alternation for free. The relations sit
+with the comparisons and are non-associative like them (L-108). `⊂`
+and `⊃` emit `%operator`, **not** `%compare`: they
 dispatch through the ops registry exactly like `⊛`, borrowing only
 their station and implied signature from the comparators.
 ⟨`t-text-glyph-prec`, `t-text-glyph-cup-chain`,
@@ -1149,9 +1166,9 @@ x as! Atom                  // forced cast:  crash on failure
 (x as? Atom) ?? 99          // coalesce:  unwrap-or-default
 ```
 
-**L-120 · `as` is STATIC.** The source type must nest in the target
-and nothing is checked at runtime; a cast that does not nest refuses
-`%mint-cast` at elaboration. ⟨`t-mint-cast`, `t-run-cast`,
+**L-120 · `as` is a STATIC cast.** The source type must nest in the
+target and nothing is checked at runtime; a cast that does not nest
+refuses `%mint-cast` at elaboration. ⟨`t-mint-cast`, `t-run-cast`,
 `t-err-chars-cast`⟩
 
 **L-121 · `as?` is a SOFT cast producing a unit** — `[~ value]` on
@@ -1171,11 +1188,11 @@ and answering `~` under `as?`.
 ⟨`t-run-asx-grd`, `t-run-asq-grd-no`⟩
 
 **L-124 · A cast target must be a MOLD, not a gate.** A gate in
-target position refuses `%mint-mold`, which keeps the cast forms from
-becoming an arbitrary call. ⟨`t-mint-asx-gate`⟩
+target position refuses `%mint-mold`; the refusal keeps the cast forms
+from becoming an arbitrary call. ⟨`t-mint-asx-gate`⟩
 
-**L-125 · Recursive types cast**, under both runtime forms: the
-target is the declared type, not its one-step unrolling.
+**L-125 · Recursive types cast under both runtime forms.** The target
+is the declared type, not its one-step unrolling.
 ⟨`t-run-asx-rec`, `t-run-asq-rec-no`⟩
 
 **L-126 · `??` unwraps a unit with a default.** It is the companion
@@ -1225,10 +1242,10 @@ a `let`-bound name refuses `%mint-edit-immutable`, and an unbound
 name is an error too.
 ⟨`t-mint-edit-let`, `t-let-no-edit`⟩
 
-**L-131 · Elaboration uses the BINDING CLASS.** A `let` of a literal
-keeps its singleton (constant) type, while a `var` widens the literal
-to its general aura at binding, because future edits will store other
-values. ⟨`t-var-widen`⟩
+**L-131 · A `let` of a literal keeps its singleton (constant) type; a
+`var` widens it to its general aura at binding.** Elaboration follows
+the BINDING CLASS, because future edits will store other values in a
+`var`. ⟨`t-var-widen`⟩
 
 **L-132 · `var` widening is SHALLOW.** It widens the binding's own
 type and does not descend into cells, so singletons *inside* a tuple
@@ -1309,9 +1326,10 @@ to detect: the note never asserts the func exists, and a misspelled
 name gets it too.
 ⟨`t-diag-limb`, `t-drec-limb`, `t-chkj-refuse`⟩
 
-**L-140 · `recur` re-enters only the innermost enclosing `func` or
-`loop`.** Mutual calls are ordinary calls by name; a bare `recur`
-outside any such form refuses `%mint-recur`.
+**L-140 · An unlabeled `recur` re-enters only the innermost
+enclosing `func` or `loop`** — a labeled one re-enters the loop it
+names (L-153). Mutual calls are ordinary calls by name; a bare
+`recur` outside any such form refuses `%mint-recur`.
 ⟨`t-mint-recur-naked`, `t-mint-recur-limb`⟩
 
 **L-141 · Lambdas are monomorphic and arity-checked.** A lambda
@@ -1371,13 +1389,13 @@ expression — and therefore no constructor call — can appear, so the
 glued-paren-constructs rule has nothing to collide with.
 ⟨`t-parse-class`, `t-jimp-class`⟩
 
-**L-147 · A generic NULLARY constructor is the one gap in L-143.**
-`let q: Option<@> = Option.none;` refuses `%mint-inst-annot` today,
-because a nullary case offers no argument to solve `T` from and the
-expected-type route is unbuilt for it. The payload cases are
+**L-147 · A generic NULLARY constructor is the one gap in L-143: it
+refuses `%mint-inst-annot`.** `let q: Option<@> = Option.none;` fails
+today because a nullary case offers no argument to solve `T` from, and
+the expected-type route is unbuilt for it. The payload cases are
 unaffected, as is an annotated generic struct literal
-(`let p: Pair<@> = Pair( … )`); until it is built, a nullary generic
-case needs a monomorphic declaration.
+(`let p: Pair<@> = Pair( … )`). Until that route is built, a nullary
+generic case needs a monomorphic declaration.
 ⟨`t-mint-inst-annot`⟩
 
 ### 5.3 Conditionals and matching
@@ -1410,9 +1428,9 @@ binding, and type tests — the last legal exactly where `as?` is legal
 
 **L-149 · A case pattern is `.circle(r)`, and that is the only
 spelling; a bare name is a BINDING.** A bare name that happens to be
-a case of the scrutinee refuses `%mint-patt-bare` rather than being
-reinterpreted — because a binding matches everything, so the old
-coincidence rule meant adding a case to an `enum` could silently turn
+a case of the scrutinee refuses `%mint-patt-bare` instead of being
+reinterpreted. A binding matches everything, so under the old
+coincidence rule adding a case to an `enum` could silently turn
 somebody's binding into a match and kill every arm below it.
 ⟨`t-arc-patt-bare`, `t-arc-enum`, `t-mint-patt-tag`,
 `t-mint-patt-ambiguous`⟩
@@ -1421,14 +1439,13 @@ somebody's binding into a match and kill every arm below it.
 parse, and this rule used to offer it as an alternative spelling. It
 was never more than decoration: `$patt`'s case is `[%tag tag pat]`
 with nowhere to put a type, so both compilers read the qualifier and
-discarded it — the parser comment claiming `+mint` checked it against
-the scrutinee described a check that did not exist. Being discarded,
-it could not be printed back either: the formatter emits the
-canonical form, and the comment splicer cannot align a token that
-vanished, so a *commented* file using the qualified spelling would
-not format at all. L-151 states the principle — two spellings for one
-construct is the thing the language does not do — and this is a case
-of it.
+discarded it. The parser comment claiming that `+mint` checked it
+against the scrutinee described a check that did not exist. A
+discarded qualifier could not be printed back either: the formatter
+emits the canonical form, and the comment splicer cannot align a
+token that vanished, so a *commented* file using the qualified
+spelling would not format at all. L-151 states the principle, and
+this refusal is a case of it.
 ⟨`t-parse-patt-qualified`⟩
 
 **L-150 · Exhaustiveness is CHECKED; redundancy only partly**, by a
@@ -1447,26 +1464,27 @@ documents disagreed for as long as the correction existed, and
 implementation. ⟨`t-mint-match-inex`, `t-mint-match-unreach`,
 `t-mint-match-sing`⟩
 
-**L-151 · Two spellings for one construct is the thing the language
-does not do.** `match` covers value dispatch with no second keyword,
+**L-151 · The language does not give one construct two spellings.**
+`match` covers value dispatch with no second keyword,
 since literal values are patterns (L-148). The rule is cited for that
 principle rather than for its history — L-149 applies it to case
 patterns, and both parsers' comments name it at the site where a
 synonym would otherwise have been accepted.
 
 The rule's original subject, and the reversal that followed, are
-retired: it was written when one word was collapsed into `match` and
-then amended when the reservation was withdrawn. Both are history
-rather than law, and the record keeps them
+retired. The rule was written when one word was collapsed into
+`match`, and amended when the reservation on that word was withdrawn.
+Both are history rather than law, and the record keeps them
 ([`language-arc.md`](../record/language-arc.md) OPEN-15). The
-principle is unvectored; what it governs is pinned where it is
+principle is unvectored; vectors pin what it governs where it is
 applied.
 
-**L-187 · Retired.** The rule said that one word was an ordinary
-name after a parse hint squatting it was withdrawn. Nothing reserves
-it, nothing special is true of it, and the id is kept because rule
-ids are append-only. Unvectored, and the record has the history
-([`punch-list.md`](../record/punch-list.md) B-4).
+**L-187 · Retired.** The rule said that one word became an ordinary
+name once the parse hint that squatted on it was withdrawn. Nothing
+reserves the word and nothing special is true of it. The id is kept
+because rule ids are append-only. The rule is unvectored, and the
+record has the history ([`punch-list.md`](../record/punch-list.md)
+B-4).
 
 ### 5.4 Loops
 
@@ -1572,7 +1590,7 @@ paren glued to the field access (L-1, L-99).
 are data shapes), and a tag may appear once per enum.
 ⟨`t-arc-enum`, `t-decl-dup-tag`⟩
 
-**L-163 · Case tags are NAMES**, lowercase — forced, not stylistic:
+**L-163 · Case tags are lowercase NAMES** — forced, not stylistic:
 tags erase to term atoms (`@tas`) and the uppercase namespace belongs
 to types (L-57). `enum S { Point }` refuses `%parse-enum-casing`,
 with a casing hint. ⟨`t-parse-casing`⟩
@@ -1585,17 +1603,17 @@ fail to be well-founded: a first case that contains the union while
 some *other* case does not is an ordering mistake and refuses
 `%decl-fond-order`, naming the reorder; a union with no base case at
 any ordering refuses `%decl-fond`. A third tag, `%decl-fond-deep`,
-reports the 64-deep unroll cap, which is not evidence of
-ill-foundedness at all.
+reports the 64-deep unroll cap, which is no evidence of
+ill-foundedness.
 ⟨`t-decl-fond-cycl`, `t-decl-fond-only`, `t-decl-fond-reorder`,
 `t-decl-fond-deep`, `t-mint-decl-fond`, `t-bunt-fond-n`⟩
 
 **L-165 · A nullary case is BARE; a payload case is POSITIONAL.**
 `E.a()` on a nullary case refuses `%mint-ctor-nullary`, and the wrong
-number of payload arguments refuses `%mint-ctor-arity`. A *named*
-payload (`circle(r: Float64)`) is not a declaration the grammar has:
-it refuses `%parse-or-face` at the colon, hinting to drop the face
-and bind the name in the match arm instead. A multi-payload case's
+number of payload arguments refuses `%mint-ctor-arity`. The grammar
+has no *named* payload (`circle(r: Float64)`): that spelling refuses
+`%parse-or-face` at the colon, hinting to drop the face and bind the
+name in the match arm instead. A multi-payload case's
 payload is the right-nested tuple of its types.
 ⟨`t-mint-ctor-nullary`, `t-mint-ctor-arity`, `t-run-decl-nullary`,
 `t-parse-or-face`, `t-parse-or-posn`⟩
@@ -1604,10 +1622,10 @@ payload is the right-nested tuple of its types.
 `Shape.circle(2.0)`: the same shape as the declaration, per
 declaration-site-binds/use-site-applies (L-142). An unknown tag
 refuses `%mint-ctor-tag`. A bare payload constructor refuses
-`%mint-ctor-applied`, a payload constructor not being a first-class
-value in 1.0 — and the refusal hints the eta wrapper,
-`lambda (x: T) -> Shape { Shape.circle(x) }`, which is written by
-hand. ⟨`t-mint-ctor-tag`, `t-mint-ctor-applied`, `t-run-decl-ctor`,
+`%mint-ctor-applied`, because a payload constructor is not a
+first-class value in 1.0. The refusal hints the eta wrapper,
+`lambda (x: T) -> Shape { Shape.circle(x) }`, which the programmer
+writes by hand. ⟨`t-mint-ctor-tag`, `t-mint-ctor-applied`, `t-run-decl-ctor`,
 `t-qual-ctor`, `t-text-ctor-applied`⟩
 
 **L-167 · Patterns are QUALIFIED and POSITIONAL.**
@@ -1618,8 +1636,8 @@ tuple. ⟨`t-run-match-sum-c`, `t-run-match-sum-p`, `t-arc-enum`⟩
 
 **L-168 · Sum-of-products: CASES REFERENCE TYPES, they do not
 declare them.** A case payload is any type — in particular a struct
-or class declared alongside. That is where named fields live, which
-is why case payloads have no faces, and behavior attaches by trait,
+or class declared alongside. Named fields live in those types, which
+is why case payloads have no faces and behavior attaches by trait,
 per payload type. ⟨`t-decl-or-field`, `t-run-match-sum-p`⟩
 
 **L-169 · A declared union is itself a NOMINAL HEAD**, so an impl
@@ -1661,13 +1679,13 @@ s.area()                              // 12.0 -- static dispatch throughout
 This is the earlier `Shape` remodeled: there `rect(Float64, Float64)`
 carried bare payloads and destructured as `rect(w, h)`; here the
 payloads are structs, each case binds one value, and the fields come
-through the struct. They mix freely — pick per case. The union impl
-matches and delegates, and the match needs no default because the
-checker proves the three cases exhaustive (L-150).
+through the struct. The two styles mix freely; pick per case. The
+union impl matches and delegates, and the match needs no default
+because the checker proves the three cases exhaustive (L-150).
 
-What deliberately does **not** exist is the trait-object route: §9
-has it. Open-world polymorphism is a generic bound
-(`func<T: Area> …`), resolved statically at each call (L-142).
+The trait-object route deliberately does **not** exist (§9).
+Open-world polymorphism is a generic bound (`func<T: Area> …`),
+resolved statically at each call (L-142).
 
 ## 7. Interop
 
@@ -1684,9 +1702,10 @@ positioned — imports.md §3.)
 
 **L-171a · `lib.arm` UNAPPLIED is the arm's gate** (since
 2026-10-28), so a module's functions are first-class across the
-boundary and pass to a higher-order arm of any module. Exactly two
-segments: an arm's gate has no fields, so `lib.arm.more` refuses
-`%mint-field` against the gate. A **∀-signed** arm still refuses
+boundary and pass to a higher-order arm of any module. The form
+takes exactly two segments: an arm's gate has no fields, so
+`lib.arm.more` refuses `%mint-field` against the gate. A
+**∀-signed** arm still refuses
 `%mint-todo` (clue `%import-arm-gen`), because a limb resolves in
 synthesis position and has no expected type to solve its binders
 from; the clue names the eta wrapper, which compiles. A name that is
@@ -1724,12 +1743,11 @@ boundary. Not everything embeds: a gate, a type variable, a sum and a
 
 ## 8. Sugar rewrite index
 
-A pointer index, not a second statement of the rules: each sugar form
-is normatively stated once, at the id named here, and the
-implementation is `lib/sugar.hoon` and must match. The one block that
-lives in this section rather than being pointed at is operator
-routing, below — it is about the *rewrite target*, which is what this
-section is for.
+A pointer index, not a second statement of the rules. Each sugar form
+is normatively stated once, at the id named here; the implementation,
+`lib/sugar.hoon`, must match. Operator routing, below, is the one
+block stated in this section rather than pointed at: it concerns the
+*rewrite target*, which is what this section is for.
 
 | Sugar | Rewrite | Stated at |
 |---|---|---|
@@ -1753,8 +1771,8 @@ section is for.
 **L-38 · `a + b` and the ordered comparisons are kernel forms, and
 mint routes on the LEFT operand's head.** ⟨`t-jimp-op-add`⟩
 
-**L-39 · The pinned `@` column serves the NUMERIC aura family
-only**, and checks *both* operands — a non-numeric aura on either
+**L-39 · The pinned `@` column serves only the NUMERIC aura
+family**, and checks *both* operands — a non-numeric aura on either
 side refuses `%mint-op-aura`.
 ⟨`t-err-op-aura-char`, `t-err-op-aura-real`⟩
 
@@ -1772,14 +1790,14 @@ comparison `(Self, Self) -> Bool` — and the parser fills it in.
 
 **L-41a · A WRITTEN signature may carry an operator too**, spelled
 after the return type: `plus(self: Self, p: Span) -> Self (+);`.
-This is the only way to give an operator a signature the short form
-cannot imply, and the right operand's type is the whole point of
-it — `Stamp + Span -> Stamp` is unspellable without it, and no
-choice of `Self` reaches it, a union included: one type variable
-cannot be the left operand, the right operand and the result at
-once. The wrong right operand is then an ordinary `%mill-nest` at
-the synthesized call, carrying its position, rather than a refusal
-of its own. ⟨`t-op-het`, `t-op-het-nest`⟩
+It is the only way to give an operator a signature that the short
+form cannot imply. The right operand's type is the point of it:
+`Stamp + Span -> Stamp` is unspellable without it, and no choice of
+`Self` reaches it, a union included, because one type variable cannot
+be the left operand, the right operand and the result at once. The
+wrong right operand is then an ordinary `%mill-nest` at the
+synthesized call, carrying its position, rather than a refusal of its
+own. ⟨`t-op-het`, `t-op-het-nest`⟩
 
 **L-42 · The hook spelling admits exactly the operator
 vocabulary** — `+ - * / %`, `⊛`, and `< > <= >= == !=`. Any other
@@ -1787,11 +1805,11 @@ punctuator refuses `%parse-trait-op` at parse, rather than
 registering silently. ⟨`t-trait-op-junk`⟩
 
 **L-43 · Policy stays with registration, not spelling.** `!=`
-refuses `%decl-op-eq`, being derived from `==`. A second trait
-binding an already-claimed operator is PERMITTED, and resolved by
-the left operand's head: `Add` keeps `+` for every numeric head
-while another trait has it for one nominal. Two traits reaching
-ONE head is the conflict, and refuses `%mint-op-amb` where the
+refuses `%decl-op-eq`, because it is derived from `==`. A second
+trait binding an already-claimed operator is PERMITTED, and the left
+operand's head resolves it: `Add` keeps `+` for every numeric head
+while another trait has it for one nominal. The conflict is two
+traits reaching ONE head; it refuses `%mint-op-amb` where the
 operator is used rather than where it was declared.
 ⟨`t-err-op-ne`, `t-op-rebind`, `t-op-two-heads`, `t-op-amb`⟩
 
@@ -1804,13 +1822,17 @@ being receiver-based. ⟨`t-err-op-impl`, `t-err-op-impl-bool`,
 `+ - * /` and the ordered comparisons, with Float64 impls; `%` is
 unclaimed and user-bindable. ⟨`t-err-op-rmod`⟩
 
-Declarations (`struct`/`enum`/`trait`/`impl`/`alias`/`class`) and struct literals are **not** in this table: both are kernel forms (`%decl`, `%struct-literal`) because their rules need the environment (types.md S9.1, S8.12); desugar is a pure AST rewrite and stays that way.
+Declarations (`struct`/`enum`/`trait`/`impl`/`alias`/`class`) and
+struct literals are **not** in this table: both are kernel forms
+(`%decl`, `%struct-literal`) because their rules need the environment
+(types.md S9.1, S8.12). Desugar is a pure AST rewrite and stays that
+way.
 
 ## 9. What is deliberately absent
 
 An absence is a rule like any other: something was asked for, ruled
-out, and now refuses or fails to parse. Each row says what the
-language does instead, and where the positive rule lives.
+out, and now refuses or fails to parse. Each rule below says what
+the language does instead, and where the positive rule lives.
 
 **These are PERMANENT exclusions.** Nothing here is waiting for a
 version number, and this section does not track what the language
@@ -1823,8 +1845,8 @@ none ever will be without a rule saying so. The ROADMAP's standing
 instruction — reserve nothing until it is decided — holds with
 nothing outstanding.
 
-**L-178 · The glyph connectives `&&`, `||` and `!` are absent**, the
-word operators `and`/`or`/`xor`/`not` taking their place. `&&` and
+**L-178 · There are no glyph connectives `&&`, `||` or `!`**; the
+word operators `and`/`or`/`xor`/`not` take their place. `&&` and
 `||` refuse `%lex-connective` at the lexer, with a hint, rather than
 reaching the parser as two punctuators.
 ⟨`t-hint-amp`, `t-hint-amp-mid`, `t-hint-bar`, `t-logic-and-tt`,
@@ -1842,7 +1864,7 @@ the reader at four words no vector in the corpus had ever executed
 (jock#129), which also made it the standing exception to L-61's own
 entry requirement of a positive and a negative row per keyword.
 
-**L-180 · The core algebra is not in the language.** `compose`,
+**L-180 · There is no core algebra in the language.** `compose`,
 `object`, and batteries and payloads are not user concepts. A core
 is a calling convention (types.md S9.8), reached by writing a
 closure or a trait, and a program never names one. Anonymous
@@ -1861,7 +1883,7 @@ Failure is `crash` and the unit; optionality is `T?` (§3); reuse is
 traits and generics; and code generation is the compiler's
 business, not the program's. ⟨none — UNPINNED⟩
 
-**L-183 · The language has no self-hosting constructs.** It cannot
+**L-183 · There are no self-hosting constructs.** The language cannot
 quote itself, stage its own evaluation, or reach its own AST. A
 Jock compiler written in Jock would use the same surface every
 other program uses, so adding a construct for it would be a
@@ -1873,7 +1895,7 @@ a squat carried for four months while nothing decided what it would
 mean — and retiring it is what left this rule with nothing
 outstanding to report. Every spelling that refuses `%parse-todo` is
 punctuation rather than a name: `$(...)` re-entry edits refuse
-`%parse-todo %recur-edits` (L-157), and `$` is a punctuator no
+`%parse-todo %recur-edits` (L-87), and `$` is a punctuator no
 program could have used for anything else.
 ⟨`t-recur-edits`⟩
 
@@ -1898,8 +1920,8 @@ compiler lands on the rule rather than on its history.
 | OPEN-5 | L-107 (the precedence table) |
 | OPEN-6 | L-74 to L-76 (`in`), L-108 |
 | OPEN-7 | L-111 (no `unary` keyword) |
-| OPEN-8 | L-107 — **and the row is stale; read L-110 and L-112** |
-| OPEN-9 | L-87, L-152 |
+| OPEN-8 | L-115, L-116, L-107a (the glyph stations) — **and the row is stale; L-116 is what makes it so** |
+| OPEN-9 | L-152 (braced `loop`), L-140 and L-153 (`recur`, and labels), L-87 (`$(…)` reserved) |
 | OPEN-10 | §1 (the kernel/sugar criterion), L-135 |
 | OPEN-11 | L-77, L-145 (underscore grouping) |
 | OPEN-12 | L-1 — dissolved by the glued-paren move |

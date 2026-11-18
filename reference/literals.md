@@ -5,7 +5,7 @@ Every literal form Jock can spell, the aura each carries, and the names the lang
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `54bd1b0` (master) · corpus 1186 vectors · 2026-11-17
+> channel `%rc` · commit `9d8fdc5` (sigilante/grammar-spec) · corpus 1187 vectors · 2026-11-19
 
 ## The literal inventory
 
@@ -16,7 +16,7 @@ Every literal form Jock can spell, the aura each carries, and the names the lang
 | decimal | `@` (number) | `42`, `1_024` — underscore grouping (OPEN-11); `.` is never a digit separator |
 | hexadecimal | Hex | `0x2a` |
 | signed | Int | `+42`, `-42` — ZigZag. Rules [L-6](/spec/language/#l-6) to [L-16](/spec/language/#l-16) below |
-| float | Float64 (`@rd`) | `3.14` — digit-dot-digit, both sides required, ≤ 15 digits; rounding pinned `%n`, no mode surface. Float16/32/128 pend need |
+| float | Float64 (`@rd`) | `3.14` — digit-dot-digit, both sides required, ≤ 15 digits; rounding pinned `%n`, no mode surface. Float16/32/128 pending demand |
 | boolean | `Bool` (logical) | `true`, `false` — the beta `?` type spelling is retired (OPEN-2) |
 | char/cord | chars | `'a'` |
 | string | String | `"hello"` |
@@ -135,7 +135,7 @@ let a = 5; a +42
 
 from `t-sint-not-add` (`%text`, `%pos`)
 
-### [L-9](/spec/language/#l-9) · An Int literal is a primary
+### [L-9](/spec/language/#l-9) · An Int literal is a primary, sign included
 
 ⟨none — UNPINNED⟩ — the spec states this rule and no corpus vector pins it.
 
@@ -155,7 +155,7 @@ from `t-lex-stray-n` (`%lex`, `%err`) · also cites `t-minus-spaced`, `t-minus-g
 
 from `t-sint-sum` (`%text`, `%pos`) · also cites `t-sint-sub`, `t-sint-mul`, `t-sint-cmp`, `t-sint-sum-mixed`
 
-### [L-12](/spec/language/#l-12) · Casting INTO Int refuses through all three doors, at every position
+### [L-12](/spec/language/#l-12) · Casting INTO Int refuses `%mint-cast-sint` through all three doors, at every position.
 
 ```jock
 42 as Int
@@ -227,7 +227,7 @@ struct A { n: @ }; class C(A) { f(self: C) -> @ { self.n } g(self: C) -> @ { sel
 
 from `t-parse-method-nosep` (`%parse`, `%err`) · also cites `t-text-method-nosemi`, `t-parse-match-nosep`
 
-### [L-84](/spec/language/#l-84) · `match` arms are comma-separated
+### [L-84](/spec/language/#l-84) · `match` arms are comma-separated.
 
 ```jock
 match a { 1 => 0, _ => 84 }
