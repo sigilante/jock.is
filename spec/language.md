@@ -1271,13 +1271,16 @@ pattern is not one, so `var (a, b) = …` refuses `%parse-var-patt`.
 ⟨`t-arc-let-unpack`, `t-parse-var-patt`⟩
 
 **L-199 · A closure captures its context BY VALUE.** A func or
-lambda holds the subject as it stood when the closure was built, so
-an edit of a captured `var` reaches the OUTER binding and not the
-copy: after `var k: @ = 1; func get() -> @ { k }; k = 9;`, `get()`
-answers 1 while `k` is 9. There is no by-reference capture and no way to ask
-for one. A `let` cannot reach this state, having no edit (L-130),
-which is what makes an immutable capture agree with its original.
-⟨`t-text-var-capture`, `t-run-grp-capture`⟩
+lambda holds the subject as it stood when the closure was built, and
+from that moment the copy and the original are INDEPENDENT: an edit
+reaches whichever one it is written in, and the other never sees it.
+Written outside, `var k: @ = 1; func get() -> @ { k }; k = 9;` leaves
+`get()` answering 1 while `k` is 9; written inside,
+`var k: @ = 1; func bump() -> @ { k = 9; k };` makes `(bump(), k)`
+answer `(9, 1)`. There is no by-reference capture and no way to ask
+for one. A `let` reaches neither state, having no edit (L-130), which
+is what makes an immutable capture agree with its original.
+⟨`t-text-var-capture`, `t-text-var-capture-in`, `t-run-grp-capture`⟩
 
 *Against C: ordinary visibility here is C's and not Pascal's — a
 name is live from its declarator to the end of the block — but

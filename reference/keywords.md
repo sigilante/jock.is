@@ -5,7 +5,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `ae93416` (sigilante/grammar-spec) · corpus 1188 vectors · 2026-11-20
+> channel `%rc` · commit `02c0e74` (master) · corpus 1189 vectors · 2026-11-20
 
 Each keyword below carries its **class** — kernel or sugar, one of the language’s four design principles — and **what it does**, both projected from the keyword inventory at [L-61](/spec/language/#l-61), whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.
 
@@ -262,7 +262,7 @@ Also named by [L-61](/spec/language/#l-61), [L-87](/spec/language/#l-87), [L-139
 func<T> id(x: T) -> T { x }; id(42)
 ```
 
-pinned by `t-text-gen` · 87 vectors use this keyword
+pinned by `t-text-gen` · 88 vectors use this keyword
 
 ### `hint`
 
@@ -560,13 +560,13 @@ Specified by [L-131](/spec/language/#l-131), [L-132](/spec/language/#l-132):
 
 > [L-132](/spec/language/#l-132) · `var` widening is SHALLOW.
 
-Also named by [L-61](/spec/language/#l-61), [L-130](/spec/language/#l-130), [L-134](/spec/language/#l-134), [L-195](/spec/language/#l-195), [L-199](/spec/language/#l-199).
+Also named by [L-61](/spec/language/#l-61), [L-130](/spec/language/#l-130), [L-134](/spec/language/#l-134), [L-195](/spec/language/#l-195).
 
 ```jock
 var b = 1; b = 3; b
 ```
 
-pinned by `t-var-widen` · 13 vectors use this keyword
+pinned by `t-var-widen` · 14 vectors use this keyword
 
 ### `xor`
 
