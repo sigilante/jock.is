@@ -1272,12 +1272,21 @@ pattern is not one, so `var (a, b) = …` refuses `%parse-var-patt`.
 
 **L-199 · A closure captures its context BY VALUE.** A func or
 lambda holds the subject as it stood when the closure was built, so
-an edit reaches the OUTER binding and not the copy: after
-`var k: @ = 1; func get() -> @ { k }; k = 9;`, `get()` answers 1
-while `k` is 9. There is no by-reference capture and no way to ask
+an edit of a captured `var` reaches the OUTER binding and not the
+copy: after `var k: @ = 1; func get() -> @ { k }; k = 9;`, `get()`
+answers 1 while `k` is 9. There is no by-reference capture and no way to ask
 for one. A `let` cannot reach this state, having no edit (L-130),
 which is what makes an immutable capture agree with its original.
 ⟨`t-text-var-capture`, `t-run-grp-capture`⟩
+
+*Against C: ordinary visibility here is C's and not Pascal's — a
+name is live from its declarator to the end of the block — but
+capture is not a C question at all, a C function reading a global
+live and a local never. The comparison is a Clang block or a C++
+lambda, where a plain capture is a const copy that goes stale in
+exactly this way and `__block` or `[&x]` opts into by-reference.
+Jock offers no such opt-in and can offer none: a noun has no address
+to take.* **Record** `record/language-arc.md`.
 
 ### 5.2 Functions
 
