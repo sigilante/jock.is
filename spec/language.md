@@ -1270,6 +1270,15 @@ being the same desugaring the `.`-receiver sugar already uses. Only
 pattern is not one, so `var (a, b) = …` refuses `%parse-var-patt`.
 ⟨`t-arc-let-unpack`, `t-parse-var-patt`⟩
 
+**L-199 · A closure captures its context BY VALUE.** A func or
+lambda holds the subject as it stood when the closure was built, so
+an edit reaches the OUTER binding and not the copy: after
+`var k: @ = 1; func get() -> @ { k }; k = 9;`, `get()` answers 1
+while `k` is 9. There is no by-reference capture and no way to ask
+for one. A `let` cannot reach this state, having no edit (L-130),
+which is what makes an immutable capture agree with its original.
+⟨`t-text-var-capture`, `t-run-grp-capture`⟩
+
 ### 5.2 Functions
 
 ```jock

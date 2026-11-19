@@ -5,7 +5,7 @@ Every keyword by the slot it occupies, and for the sugar forms, what each one re
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> 31 keywords · channel `%rc` · commit `9d8fdc5`
+> 31 keywords · channel `%rc` · commit `c9c1f05`
 
 ## No railroad diagrams, and that is a ruling
 
@@ -30,7 +30,7 @@ That ruling binds this page. It also says what would lift it — a formal gramma
 | `import` | `L-185`, `L-61` |
 | `is` | `L-61`, `L-69` |
 | `lambda` | `L-61` |
-| `let` | `L-185`, `L-61`, `L-20`, `L-130`, `L-131`, `L-134`, `L-171` |
+| `let` | `L-185`, `L-61`, `L-20`, `L-130`, `L-131`, `L-134`, `L-199`, `L-171` |
 | `private` | `L-61`, `L-17`, `L-18`, `L-25` |
 | `struct` | `L-61`, `L-45` |
 | `trait` | `L-61`, `L-22`, `L-45` |
