@@ -5,7 +5,7 @@ Every literal form Jock can spell, the aura each carries, and the names the lang
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `b283fdd` (master) · corpus 1189 vectors · 2026-11-20
+> channel `%rc` · commit `6c95abf` (master) · corpus 1189 vectors · 2026-11-21
 
 ## The literal inventory
 
@@ -248,7 +248,7 @@ Of 28 rules in this section, 23 cite at least one vector and 5 are marked `⟨no
 | Surface | `$jatom-type` | Notes |
 |---|---|---|
 | `@`, `Atom` | `%$` | the any-aura atom (top of the aura order — the parser maps the surface spelling to `%$`) |
-| `Nat` | `%number` | the aura a decimal **literal** carries, ordered *below* `Atom`. Every `Nat` is an `Atom`, so a signature written `@` takes one |
+| `Nat` | `%number` | the aura a decimal **literal** carries, ordered *below* `Atom`. Every `Nat` is an `Atom`, so a signature written `@` takes one. Resolves through the boot alias (L-97a) |
 | `Bool` | `%logical` | `true` / `false`; beta `?` spelling retired (OPEN-2/17). The annotation resolves through the **boot alias**, not a bare parser mapping, so the `%loob` guard rides along |
 | `Hex` | `%hex` |  |
 | `Int` | `%sint` |  |
@@ -258,7 +258,7 @@ Of 28 rules in this section, 23 cite at least one vector and 5 are marked `⟨no
 | `Date`, `Span` | `%date`, `%span` |  |
 | `String`, `Path` | (jnoun) | noun types, not atoms |
 | `*`, `Noun` | — | any noun (top) |
-| `Base` | — | BasedAtom: atom < 2^64 − 2^32 + 1 (types.md [S3.4](/spec/types/#s3.4); OPEN-4 resolved) |
+| `Base` | — | BasedAtom: atom < 2^64 − 2^32 + 1 (types.md [S3.4](/spec/types/#s3.4); OPEN-4 resolved). Resolves through the boot alias, which carries the `%based` guard exactly as `Bool`'s carries `%loob`; it had its own `$tex-form` until 2026-11-21 (L-97a) |
 
 ## Builtin type names
 

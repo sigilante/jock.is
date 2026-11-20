@@ -5,7 +5,7 @@ The 23 refusals that exist to catch a habit from another language, each with the
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `b283fdd` (master) · corpus 1189 vectors · 2026-11-20
+> channel `%rc` · commit `6c95abf` (master) · corpus 1189 vectors · 2026-11-21
 
 A refusal is counted here when its `~|` clue carries a **prose sentence**. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.
 
@@ -162,7 +162,7 @@ pinned by `t-jimp-seal-edit` · spec: docs/imports.md I-5
 enum C { red, green } let c = C.green; match c { red => 1, green => 2, }
 ```
 
-> a bare name is a binding, never a case; write .name or Type.name to match the case
+> a bare name is a binding, never a case; write .name to match the case
 
 pinned by `t-arc-patt-bare` · spec: docs/spec/language.md [L-149](/spec/language/#l-149)
 

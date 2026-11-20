@@ -865,10 +865,25 @@ this single meaning. ⟨`t-hint-bar`⟩
 aura vocabulary is open-ended; these are the names a program may
 write, and each maps to a `$jatom-type`. ⟨`t-lex-type-p`⟩
 
+**L-97a · TWO of these names are SPELLINGS and the rest are
+ALIASES.** `Atom` and `Noun` are mapped by the parser to `%$` and
+the noun type, so they collapse: the formatter reprints `Atom` as
+`@` and `Noun` as `*`, and one spelling reaches the output (L-151).
+Every other name in the table resolves by NAME through the boot
+env, survives the formatter as written, and carries whatever guard
+its alias carries — which is what `Bool` and `Byte` always did and
+what `Hex`, `Int`, `Nat`, the `Float`s, `Date`, `Span` and `Base`
+started doing on 2026-11-21, when the parser's cord ladder stopped
+being the place that knew what they meant. The line is not
+arbitrary: the type printer has exactly one name for `%$`, and it
+is `@`, so `Atom` could not round-trip as an alias without changing
+the printer, while the other ten already round-tripped before they
+moved. ⟨`t-elab-based-p`, `t-mint-guard`; lane `tools/hilite.py`⟩
+
 | Surface | `$jatom-type` | Notes |
 |---|---|---|
 | `@`, `Atom` | `%$` | the any-aura atom (top of the aura order — the parser maps the surface spelling to `%$`) |
-| `Nat` | `%number` | the aura a decimal **literal** carries, ordered *below* `Atom`. Every `Nat` is an `Atom`, so a signature written `@` takes one |
+| `Nat` | `%number` | the aura a decimal **literal** carries, ordered *below* `Atom`. Every `Nat` is an `Atom`, so a signature written `@` takes one. Resolves through the boot alias (L-97a) |
 | `Bool` | `%logical` | `true` / `false`; beta `?` spelling retired (OPEN-2/17). The annotation resolves through the **boot alias**, not a bare parser mapping, so the `%loob` guard rides along |
 | `Hex` | `%hex` | |
 | `Int` | `%sint` | |
@@ -878,7 +893,7 @@ write, and each maps to a `$jatom-type`. ⟨`t-lex-type-p`⟩
 | `Date`, `Span` | `%date`, `%span` | |
 | `String`, `Path` | (jnoun) | noun types, not atoms |
 | `*`, `Noun` | — | any noun (top) |
-| `Base` | — | BasedAtom: atom < 2^64 − 2^32 + 1 (types.md S3.4; OPEN-4 resolved) |
+| `Base` | — | BasedAtom: atom < 2^64 − 2^32 + 1 (types.md S3.4; OPEN-4 resolved). Resolves through the boot alias, which carries the `%based` guard exactly as `Bool`'s carries `%loob`; it had its own `$tex-form` until 2026-11-21 (L-97a) |
 
 ## 4. Expressions
 
