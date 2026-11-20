@@ -5,7 +5,7 @@ interval arithmetic over exact rationals.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/interval.jock` and the examples that import it.
 >
-> 4 public declarations — 1 type, 3 arms. 3 pinned by a lane, 1 not. channel `%rc` · commit `1895354`
+> 4 public declarations — 1 type, 3 arms. 3 pinned by a lane, 1 not. channel `%rc` · commit `b283fdd`
 
 ## Import
 
@@ -51,7 +51,7 @@ import interval; (interval.unit() + interval.unit()).show()   // "[0, 2]" `priva
 trait Hull { hull(⊛); }
 ```
 
-Hull binds `⊛`, the one operator the language lexes and leaves meaningless — no pinned arm, so a library gives it a meaning or it refuses. The hull is a fair claimant: it is total (any two intervals have a smallest enclosing one), closed, associative, and it is not any of the arithmetic operators. Declared before the class, which names it as a conformance.
+Hull binds `⊛`, one of the eleven operators the language lexes and leaves meaningless — no pinned arm for any of them, so a library gives it a meaning or it refuses (language.md [L-116](/spec/language/#l-116)). The hull is a fair claimant: it is total (any two intervals have a smallest enclosing one), closed, associative, and it is not any of the arithmetic operators. Declared before the class, which names it as a conformance.
 
 ## Arms
 

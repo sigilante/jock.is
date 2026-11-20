@@ -5,7 +5,7 @@
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `1895354` (master) · corpus 1189 vectors · 2026-11-20
+> channel `%rc` · commit `b283fdd` (master) · corpus 1189 vectors · 2026-11-20
 
 The descriptions are the authors’ own header comments, not written here: `examples/README.md` calls each example "executable documentation — the header comments are the prose, and a `// expect: <noun>` trailer pins the program’s value". 8 of them are **kernels**, carrying `// kernel: N` — built, poked N times, then peeked.
 
@@ -17,7 +17,7 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 | …with a pinned value | 40 |
 | …that are kernels | 8 |
 | …shown in full on this page | 14 |
-| total lines of Jock | 3448 |
+| total lines of Jock | 3455 |
 
 ## Every example
 
@@ -59,7 +59,7 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 | `parser-arms` | 100 | `33` | parser-arms.jock |
 | `watcher` | 121 | `[2 2 1 1]` | Chain watcher — the TWO-MAP STORE (chain.md §6.1's state shape, unblocked by %mold-gen: class state can hold containers, so load's `old as! Watch` mol |
 | `string-views` | 126 | `45` | string-views.jock |
-| `glyphs` | 135 | `13` | glyphs.jock |
+| `glyphs` | 142 | `13` | glyphs.jock |
 | `poker` | 167 | `%first` | poker.jock — score and compare two 5-card poker hands. |
 | `time-arms` | 205 | `22` | time-arms.jock |
 | `conway` | 237 | `0` | **kernel (2 pokes).** conway.jock — Life on a bounded 25x25 grid. Ported from nockd's examples/conway. |

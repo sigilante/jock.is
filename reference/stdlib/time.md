@@ -5,7 +5,7 @@ civil dates, ISO 8601, and the Urbit `@da`.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/time.jock` and the examples that import it.
 >
-> 32 public declarations — 10 types, 22 arms. 23 pinned by a lane, 9 not. channel `%rc` · commit `1895354`
+> 32 public declarations — 10 types, 22 arms. 23 pinned by a lane, 9 not. channel `%rc` · commit `b283fdd`
 
 ## Import
 
@@ -81,7 +81,7 @@ trait Duration { secs(self: Self) -> @; plus(self: Self, p: Self) -> Self; minus
 
 A `Span` is the language's own `%span` aura, so the prelude's traits cannot be given to it from here --- `impl Add for Span` refuses `%mint-impl-orphan 'Add' '@span'`. A trait declared HERE is a different matter: the orphan rule is satisfied by owning EITHER side, so this one may be implemented for a prelude type.
 
-AND IT COULD HAVE BEEN AN OPERATOR. `⊕` and `⊛` are free --- runtime.md [R-53](/spec/runtime/#r-53) calls `⊛` trait-only and gives `trait Seq { then(⊛); }` as the shape --- and a local trait may bind one: `trait Plus { plus(⊕); }` compiles, and `a ⊕ b` works across an import. It is deliberately not done, because an operator binding is GLOBAL and first-come: two modules that each bind `⊕` cannot be imported by one program, which refuses `%op-conflict`. A stdlib module taking a glyph as generic as `⊕` --- union, direct sum, xor --- would spend everyone's namespace on durations, which rarely add. Methods cost a dot and take nothing from anyone.
+AND IT COULD HAVE BEEN AN OPERATOR. `⊕` and `⊛` are free --- runtime.md [R-53](/spec/runtime/#r-53) calls `⊛` trait-only and gives `trait Seq { then(⊛); }` as the shape --- and a local trait may bind one: `trait Plus { plus(⊕); }` compiles, and `a ⊕ b` works across an import. It is deliberately not done, but NOT for the reason this comment used to give: it said an operator binding is global and first-come, so two modules that each bind `⊕` cannot be imported by one program, refusing `%op-conflict`. That refusal is retired (+ouni concatenates distinct registrations and leaves coherence to the use site), and several traits may bind one operator so long as no two reach one head (language.md [L-43](/spec/language/#l-43)). The real reason is namespace courtesy. A stdlib module taking a glyph as generic as `⊕` --- union, direct sum, xor --- would spend everyone's namespace on durations, which rarely add. Methods cost a dot and take nothing from anyone.
 
 The signature a slot demands comes from the operator's STATION, not from the trait: an additive or multiplicative one is `(Self, Self) -> Self` and a comparison is `(Self, Self) -> Bool`, both enforced as `%mint-impl-sig`. That is why `Stamp + Span` is not spellable by any route, operator or glyph.
 
