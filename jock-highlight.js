@@ -66,9 +66,15 @@
   //  $jpunc, single-byte members.
   var PUNCS = '.;,:&$@?!~(){}[]=<>#+-*/%_^|\\';
 
-  //  The multi-byte punctuator glyphs (+unis:lex), each an ASCII-first
-  //  operator's sugar alias.  `⊛` is the one with no ASCII spelling and
-  //  no pinned arm: trait-only, meaning supplied by a library.
+  //  The multi-byte punctuator glyphs (+unis:lex).  THREE are sugar
+  //  aliases that normalize at desugar --- `∈` to `in`, `×` to `*`,
+  //  `÷` to `/` (language.md L-115).  The other ELEVEN are
+  //  trait-only (L-116): no pinned arm and no ASCII spelling, so
+  //  `2 ⊕ 3` refuses %mint-op and a library supplies the meaning.
+  //  Highlighting treats all fourteen alike;  the distinction is
+  //  recorded because this comment used to state the opposite, with
+  //  `⊛` named as the sole trait-only glyph when it is one of eleven
+  //  (examples/glyphs.jock overloads them all).
   var UNI = ['×', '÷', '±', '⊕', '⊗', '⊖',
              '∘', '·', '∩', '∪', '∈', '⊂',
              '⊃', '⊛'];

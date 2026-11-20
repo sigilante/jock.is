@@ -5,7 +5,7 @@ Generated from the compiler and its corpus. Every table is projected from a norm
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes these pages.
 >
-> channel `%rc` · commit `02c0e74` (master) · corpus 1189 vectors · 2026-11-20
+> channel `%rc` · commit `1895354` (master) · corpus 1189 vectors · 2026-11-20
 
 ## Writing Jock
 
@@ -31,7 +31,7 @@ All 31 keywords, each with its syntactic slot, its precedence where it has one, 
 
 ### [Worked examples](examples/)
 
-41 complete programs with the values `tools/examples.sh` pins on every push. The 14 shortest are shown in full.
+42 complete programs with the values `tools/examples.sh` pins on every push. The 14 shortest are shown in full.
 
 [`examples/`](examples/) — the page · [`examples.md`](examples.md) — the same content as raw Markdown
 

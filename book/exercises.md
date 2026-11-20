@@ -1,11 +1,11 @@
 # R10 · The examples as exercises
 
-41 programs, each with the value it produces and each run on every push. Six are landmarks on a difficulty gradient; the rest are ungraded, and this page says so rather than inventing a grading.
+42 programs, each with the value it produces and each run on every push. Six are landmarks on a difficulty gradient; the rest are ungraded, and this page says so rather than inventing a grading.
 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> channel `%rc` · commit `02c0e74`
+> channel `%rc` · commit `1895354`
 
 ## The gradient
 
@@ -24,7 +24,7 @@ The steps are the outline’s order, which is by what each one introduces — so
 
 ## Everything else, ungraded
 
-35 further programs, by size. Size is a proxy a reader can check; difficulty is a judgement, and nothing in the tree makes it for these, so this page does not either.
+36 further programs, by size. Size is a proxy a reader can check; difficulty is a judgement, and nothing in the tree makes it for these, so this page does not either.
 
 | example | lines | value | imports |
 |---|---:|---|---|
@@ -59,6 +59,7 @@ The steps are the outline’s order, which is by what each one introduces — so
 | `parser-arms` | 100 | `33` | `parser` |
 | `watcher` | 121 | `[2 2 1 1]` | `nockapp` |
 | `string-views` | 126 | `45` | — |
+| `glyphs` | 135 | `13` | — |
 | `time-arms` | 205 | `22` | `time` |
 | `conway` | 237 | `0` | `http` |
 | `minesweeper` | 335 | `0` | `hof`, `http` |

@@ -5,7 +5,7 @@ Every literal form Jock can spell, the aura each carries, and the names the lang
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `02c0e74` (master) · corpus 1189 vectors · 2026-11-20
+> channel `%rc` · commit `1895354` (master) · corpus 1189 vectors · 2026-11-20
 
 ## The literal inventory
 
@@ -16,11 +16,11 @@ Every literal form Jock can spell, the aura each carries, and the names the lang
 | decimal | `@` (number) | `42`, `1_024` — underscore grouping (OPEN-11); `.` is never a digit separator |
 | hexadecimal | Hex | `0x2a` |
 | signed | Int | `+42`, `-42` — ZigZag. Rules [L-6](/spec/language/#l-6) to [L-16](/spec/language/#l-16) below |
-| float | Float64 (`@rd`) | `3.14` — digit-dot-digit, both sides required, ≤ 15 digits; rounding pinned `%n`, no mode surface. Float16/32/128 pending demand |
+| float | Float64 (`@rd`) | `3.14` — digit-dot-digit, both sides required, and ≤ 15 characters in the digit run with underscore grouping COUNTED, so `1_234_567_890.12345` refuses `%lex-real-prec` at only 15 significant digits; rounding pinned `%n`, no mode surface. Float16/32/128 pending demand |
 | boolean | `Bool` (logical) | `true`, `false` — the beta `?` type spelling is retired (OPEN-2) |
 | char/cord | chars | `'a'` |
 | string | String | `"hello"` |
-| term constant | (constant atom) | `%foo` — tag spellings match `[a-z][a-z0-9]*`; `%1` is the numeric constant 1 |
+| term constant | (constant atom) | `%foo` — lower-case, and a hyphen folds between identifier characters exactly as in a name, so `%foo-bar` is ONE tag ([L-59](/spec/language/#l-59), lex.hoon's `+gnam` tail); `%1` is the numeric constant 1 |
 | date / span | Date / Span | NONE — [L-189](/spec/language/#l-189). The types are reachable by cast: `0 as Date` |
 | path | Path | `/a/b/c` — [L-78](/spec/language/#l-78), normative; runtime.md [R-49](/spec/runtime/#r-49) |
 | interpolated string | String | `"x = {x}"`. Rules [L-26](/spec/language/#l-26) to [L-32](/spec/language/#l-32) below |

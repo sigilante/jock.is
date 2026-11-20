@@ -24,5 +24,5 @@ port of the compiler's own lexer
 its keyword and punctuator inventories are pinned to $keyword and
 $jpunc in /sur/jock by tools/hilite.py on every push there.
 
-4ba28ed83caaf10a24bf40c62001ce20e3d632e0affb9e816fa3c4ef3d518b35  jock-highlight.js
+f978a194ce1111e33c16ca267776f2341b54913cdc5c1109d6bf5971ebd14a96  jock-highlight.js
 807d95b2b540b7593c4fab5b440880baee5f7cbc1b62574bed6d6d34c6d7fe85  jock-highlight.css

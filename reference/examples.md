@@ -1,11 +1,11 @@
 # Worked examples
 
-41 complete Jock programs, each with the value it produces. `tools/examples.sh` compiles and runs every one under NockVM on every push, so none of them can silently rot.
+42 complete Jock programs, each with the value it produces. `tools/examples.sh` compiles and runs every one under NockVM on every push, so none of them can silently rot.
 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `02c0e74` (master) · corpus 1189 vectors · 2026-11-20
+> channel `%rc` · commit `1895354` (master) · corpus 1189 vectors · 2026-11-20
 
 The descriptions are the authors’ own header comments, not written here: `examples/README.md` calls each example "executable documentation — the header comments are the prose, and a `// expect: <noun>` trailer pins the program’s value". 8 of them are **kernels**, carrying `// kernel: N` — built, poked N times, then peeked.
 
@@ -13,11 +13,11 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 
 |  | count |
 |---|---:|
-| worked examples | 41 |
-| …with a pinned value | 39 |
+| worked examples | 42 |
+| …with a pinned value | 40 |
 | …that are kernels | 8 |
 | …shown in full on this page | 14 |
-| total lines of Jock | 3313 |
+| total lines of Jock | 3448 |
 
 ## Every example
 
@@ -59,6 +59,7 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 | `parser-arms` | 100 | `33` | parser-arms.jock |
 | `watcher` | 121 | `[2 2 1 1]` | Chain watcher — the TWO-MAP STORE (chain.md §6.1's state shape, unblocked by %mold-gen: class state can hold containers, so load's `old as! Watch` mol |
 | `string-views` | 126 | `45` | string-views.jock |
+| `glyphs` | 135 | `13` | glyphs.jock |
 | `poker` | 167 | `%first` | poker.jock — score and compare two 5-card poker hands. |
 | `time-arms` | 205 | `22` | time-arms.jock |
 | `conway` | 237 | `0` | **kernel (2 pokes).** conway.jock — Life on a bounded 25x25 grid. Ported from nockd's examples/conway. |
@@ -67,7 +68,7 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 
 ## The short ones, in full
 
-Every example of 40 lines or fewer, verbatim. The 27 longer ones are listed in the table on this page with their values; their sources live in `examples/` in the compiler repo.
+Every example of 40 lines or fewer, verbatim. The 28 longer ones are listed in the table on this page with their values; their sources live in `examples/` in the compiler repo.
 
 ### `counter`
 
@@ -564,6 +565,6 @@ value `616` · imports `hof` · run by `tools/examples.sh`
 | `chainrand-arms` | 74 | `chain`, `chainrand` |
 | `txbuild` | 83 | `chain` |
 | `chainkernel` | 127 | `chain`, `nockapp` |
-| `walletkernel` | 740 | `chain`, `chainkey`, `chaintx`, `nockapp`, `wallet` |
+| `walletkernel` | 871 | `chain`, `chainkey`, `chaintx`, `nockapp`, `wallet` |
 
-They are NOT excluded from the lane. `tools/examples.sh` compiles and runs all 48 programs on every push, these included, which is what keeps the chain modules compiling. The boundary here is what the site documents, not what the repo tests.
+They are NOT excluded from the lane. `tools/examples.sh` compiles and runs all 49 programs on every push, these included, which is what keeps the chain modules compiling. The boundary here is what the site documents, not what the repo tests.

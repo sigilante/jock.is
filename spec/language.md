@@ -70,8 +70,12 @@ whitespace as the only adjacency signal.
 ### 2.1 Source, comments, identifiers
 
 **L-52 · Source is UTF-8 with LF-terminated lines.** Tab and CR are
-lexical errors — loud failure, so there is no invisible-whitespace
-ambiguity to debug. ⟨`t-lex-tab-n`⟩
+lexical errors IN TOKEN POSITION — loud failure, so there is no
+invisible-whitespace ambiguity to debug. Inside a string literal
+they are ordinary characters, a tab there giving a cord of length 3
+for `"a\tb"` written with a real tab; the cited vector covers the
+token position, and the string position is unvectored.
+⟨`t-lex-tab-n`⟩
 
 **L-53 · Comments are `//` to end of line and the non-nesting
 `/* … */`**, stripped by the lexer. ⟨`t-lex-comment-p`⟩
@@ -506,11 +510,11 @@ is decided, `docs/ROADMAP.md` holds it. ⟨`t-parse-tilde-glued`⟩
 | decimal | `@` (number) | `42`, `1_024` — underscore grouping (OPEN-11); `.` is never a digit separator |
 | hexadecimal | Hex | `0x2a` |
 | signed | Int | `+42`, `-42` — ZigZag. Rules L-6 to L-16 below |
-| float | Float64 (`@rd`) | `3.14` — digit-dot-digit, both sides required, ≤ 15 digits; rounding pinned `%n`, no mode surface. Float16/32/128 pending demand |
+| float | Float64 (`@rd`) | `3.14` — digit-dot-digit, both sides required, and ≤ 15 characters in the digit run with underscore grouping COUNTED, so `1_234_567_890.12345` refuses `%lex-real-prec` at only 15 significant digits; rounding pinned `%n`, no mode surface. Float16/32/128 pending demand |
 | boolean | `Bool` (logical) | `true`, `false` — the beta `?` type spelling is retired (OPEN-2) |
 | char/cord | chars | `'a'` |
 | string | String | `"hello"` |
-| term constant | (constant atom) | `%foo` — tag spellings match `[a-z][a-z0-9]*`; `%1` is the numeric constant 1 |
+| term constant | (constant atom) | `%foo` — lower-case, and a hyphen folds between identifier characters exactly as in a name, so `%foo-bar` is ONE tag (L-59, lex.hoon's `+gnam` tail); `%1` is the numeric constant 1 |
 | date / span | Date / Span | NONE — L-189. The types are reachable by cast: `0 as Date` |
 | path | Path | `/a/b/c` — L-78, normative; runtime.md R-49 |
 | interpolated string | String | `"x = {x}"`. Rules L-26 to L-32 below |
@@ -809,9 +813,11 @@ two-byte munch, read in different positions.
 **L-91 · `&` is reserved through 1.0, and refuses.** It stays in
 the punctuator inventory, but the lexer refuses every occurrence
 with prose — `%lex-connective`, carrying the `&&`-habit hint — so
-no legal program contains it and a future meaning lands without
-reinterpretation. A glued `||` pair refuses the same way. Bitwise
-work is FFI: `hoon.dis`, `hoon.con`, `hoon.mix`.
+no legal program contains it IN TOKEN POSITION and a future meaning
+lands without reinterpretation. Inside a string literal `&` is an
+ordinary character: `"x & y"` is a five-byte cord. A glued `||`
+pair refuses the same way. Bitwise work is FFI: `hoon.dis`,
+`hoon.con`, `hoon.mix`.
 ⟨`t-hint-amp`, `t-hint-amp-mid`, `t-hint-bar`⟩
 
 ## 3. Types (surface syntax)
@@ -1115,7 +1121,8 @@ pinned kernel arm (`+opar:mint` answers `~`), no ASCII normalization
 at desugar. Each routes straight to the ops registry, so a *library*
 gives it meaning (`trait Seq { then(⊛); }`) or the program refuses
 `%mint-op`. `⊛` (`%uni-ast`, U+229B) was the first;
-`examples/parser.jock` is the worked case.
+`examples/parser.jock` is the worked case, and
+`examples/glyphs.jock` overloads all eleven in one program.
 ⟨`t-des-glyph-ast`, `t-des-glyph-cup`, `t-des-glyph-subset`⟩
 
 **L-117 · Trait-only glyphs take one of three parse stations**, by
@@ -1471,8 +1478,13 @@ this refusal is a case of it.
 
 **L-150 · Exhaustiveness is CHECKED; redundancy only partly**, by a
 cover test over the scrutinee's type (types.md S12.3): a
-non-exhaustive `match` errors with a witness pattern, and an
-unreachable case is an error rather than a warning.
+non-exhaustive `match` errors with a witness pattern. What
+`partly` means is narrow, and narrower than this rule said until
+2026-11-20: a case made unreachable by an EARLIER WILDCARD refuses
+(`t-mint-match-unreach`), while a case made unreachable by an
+earlier copy of ITSELF compiles and the first match wins —
+`match x { .a => 1, .b => 2, .a => 3 }` answers 1 in both
+compilers.
 
 This said "by **usefulness analysis**", and `types.md` S12.3 had
 already corrected itself and said so: `+mcov` is a conservative
@@ -1651,7 +1663,10 @@ writes by hand. ⟨`t-mint-ctor-tag`, `t-mint-ctor-applied`, `t-run-decl-ctor`,
 
 **L-167 · Patterns are QUALIFIED and POSITIONAL.**
 `match s { .point => …, .circle(r) => …, .rect(w, h) => …, }` — write
-`.member` or `Type.member`; a bare name is a binding (L-149).
+`.member`, and ONLY that: the qualified `Type.member` refuses
+`%parse-patt-qualified`, as L-149 records, and this rule offered it
+as an alternative until 2026-11-20. A bare name is a binding
+(L-149).
 `rect(w, h)` folds to the nested cell pattern matching the payload
 tuple. ⟨`t-run-match-sum-c`, `t-run-match-sum-p`, `t-arc-enum`⟩
 
@@ -1821,7 +1836,12 @@ synthesized call, carrying its position, rather than a refusal of its
 own. ⟨`t-op-het`, `t-op-het-nest`⟩
 
 **L-42 · The hook spelling admits exactly the operator
-vocabulary** — `+ - * / %`, `⊛`, and `< > <= >= == !=`. Any other
+vocabulary** — eleven ASCII spellings, `+ - * / %` and
+`< > <= >= == !=`, plus eleven Unicode ones, `± ⊕ ⊗ ⊖ ∘ · ∩ ∪ ⊂ ⊃ ⊛`
+(`parse.hoon`'s `+pd-ophook`). Twenty-two in all: this rule named
+twelve of them until 2026-11-20, so `trait Join { cup(∪); }` and a
+`(Self, Self) -> Bool` hook on `⊂` both compiled while the spec said
+they could not. Any other
 punctuator refuses `%parse-trait-op` at parse, rather than
 registering silently. ⟨`t-trait-op-junk`⟩
 
@@ -1836,7 +1856,11 @@ operator is used rather than where it was declared.
 
 **L-44 · An empty `()` is a nullary signature, not a hook** — which
 the receiver rule then refuses, `%decl-trait-self`, trait dispatch
-being receiver-based. ⟨`t-err-op-impl`, `t-err-op-impl-bool`,
+being receiver-based. The three `t-err-op-impl*` rows cited here
+until 2026-11-20 pin `%mint-op-impl` at a USE site (`'a' + 1`,
+`true + 1`) and so could not fail if this rule were false;
+`t-trait-nullary` is the row that runs the judgment.
+⟨`t-trait-nullary`, `t-err-op-impl`, `t-err-op-impl-bool`,
 `t-err-op-impl-char`⟩
 
 **L-45 · `==` and `!=` stay `%same`.** The prelude claims

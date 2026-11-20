@@ -5,7 +5,7 @@ Jock compiles to Nock. This is the whole of Nock 4K, quoted from `nock.is`, whic
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` emits this page from `vendor/nock-4k.txt`.
 >
-> channel `%rc` · commit `02c0e74`
+> channel `%rc` · commit `1895354`
 
 ## Nock 4K
 

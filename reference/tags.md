@@ -5,7 +5,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `02c0e74` (master) · corpus 1189 vectors · 2026-11-20
+> channel `%rc` · commit `1895354` (master) · corpus 1189 vectors · 2026-11-20
 
 |  | count |  |
 |---|---:|---|
@@ -393,7 +393,7 @@ pinned by `t-lex-strop-n`
 3.12345678901234567
 ```
 
-pinned by `t-lex-real-prec`
+pinned by `t-lex-real-prec` · spec: docs/spec/language.md [L-189](/spec/language/#l-189)
 
 ### `%lex-stray`
 
@@ -901,7 +901,7 @@ pinned by `t-err-op-aura-char`, `t-err-op-aura-real` · spec: docs/spec/language
 struct P { v: @ }; let a = P( v: 1 ); let b = P( v: 2 ); let c = a + b; 0
 ```
 
-pinned by `t-err-op-impl`, `t-err-op-impl-bool`, `t-err-op-impl-char` · spec: docs/spec/runtime.md [R-51](/spec/runtime/#r-51)
+pinned by `t-err-op-impl`, `t-err-op-impl-bool`, `t-err-op-impl-char` · spec: docs/spec/language.md [L-44](/spec/language/#l-44), docs/spec/runtime.md [R-51](/spec/runtime/#r-51)
 
 ### `%mint-patt`
 
@@ -1297,7 +1297,7 @@ pinned by `t-parse-patt-case`
 enum R { ok(@) }; func f(r: R) -> @ { match r { R.ok(v) => v } }; f(R.ok(7))
 ```
 
-pinned by `t-parse-patt-qualified` · spec: docs/spec/language.md [L-149](/spec/language/#l-149)
+pinned by `t-parse-patt-qualified` · spec: docs/spec/language.md [L-149](/spec/language/#l-149), docs/spec/language.md [L-167](/spec/language/#l-167)
 
 ### `%parse-place`
 

@@ -1,9 +1,38 @@
 # The chain library: blocks, transactions, and kernels for nockchain
 
-**Status: NORMATIVE for the Jock-side types and kernels.** The
-*format* authority is nockchain's `tx-engine` at the pinned snapshot
-(§3) — where this document and the snapshot disagree, the snapshot
-wins and this document has a bug.
+**Status: ARCHIVAL for the transaction and wallet line as of
+2026-11-20; NORMATIVE for the rest.** The `tx-driver` module was
+rejected upstream, so the contract phases 2 to 4 serve has no
+counterparty and nobody has committed to maintaining either half of
+it. The site had already stopped publishing the four modules and
+seven examples that reach this line (ROADMAP, 2026-10-29); this is
+the same decision reaching the spec.
+
+Those phases are kept VERBATIM for revisiting, not summarised and
+not deleted, and the lanes that check them still run —
+`examples.sh`, `molds.sh`, `signer.sh`, `wallet.sh` — which is what
+keeps the code compiling and keeps these rules true of it.
+
+So read the rules in two registers:
+
+- **What the code DOES is still normative and still pinned.** The
+  type mapping (§4), the hashing surface (§5), the kernels as
+  written (§6) and the fixture families (§7) are checked on every
+  run, and a rule that stops agreeing with the code is still a bug.
+- **What the line WILL BECOME is archival.** C-16's eventual
+  drop-in claim, phase 4's plan, and §7's coverage gap read as a
+  to-do are history now; nothing is scheduled against them. The
+  open security gaps the 2026-11-20 review left unfixed are
+  recorded with them in the arc, as findings rather than as work.
+
+Phase 1, the read-only watcher (§6.1), does not depend on
+`tx-driver` and is unaffected — as are the chain package (C-11) and
+the `ZMap`/`ZSet` rules (C-77, C-79), which are the language's
+container story rather than the wallet's.
+
+The *format* authority is nockchain's `tx-engine` at the pinned
+snapshot (§3) — where this document and the snapshot disagree, the
+snapshot wins and this document has a bug.
 
 This document carries no chronology. The phase history, the surveys
 it rests on, and the questions that were resolved to produce these
@@ -127,7 +156,7 @@ mnemonic), `import-seed-phrase` (bip39 `to-seed` → SLIP-10
 v0→v1 migration path. ⟨lane `tools/molds.sh`⟩
 
 **C-19 · Phase 4 is SEPARABLE because `%import-keys` takes a raw
-coil**, `[%0|%1 [key cc]]`. A signing key can be injected with no
+coil**, `[%0|%1 [[%prv|%pub p] cc]]`. A signing key can be injected with no
 derivation machinery at all, which is what lets phase 3 reach the
 full signing path without any of phase 4. ⟨lane `tools/signer.sh`⟩
 
@@ -401,6 +430,14 @@ idiom (language.md L-94's `+join` rule seen from a kernel).
 
 ### 6.2 The signer (phase 3)
 
+> **ARCHIVAL (2026-11-20).** This section was written from
+> `KERNEL_SIGNER_SPEC.md` in the `crates/tx-driver` crate (C-17),
+> which was rejected upstream. It still describes the kernel that
+> exists and `tools/signer.sh` still checks it row for row; what it
+> no longer describes is anything anybody is going to ship. Read it
+> as the record of a half-contract, and read `chain-arc.md` for the
+> security gaps left open in it.
+
 **C-49 · `lib/chaintx.jock` carries the witness family** —
 `SchnorrPubkey`, `SchnorrSignature`, `Pkh`, `Tim`, `Hax`,
 `LockPrimitive`, `SpendCondition`, `MerkProof`, `LockMerkleProof`,
@@ -426,13 +463,18 @@ merely verify-testable: the schnorr nonce is
 `hash-varlen(pubkey ‖ m ‖ sk)` — fully deterministic, no randomness.
 ⟨lane `tools/molds.sh`; lane `tools/signer.sh`⟩
 
-**C-53 · The redaction discipline is that every String-producing arm
-takes only types that cannot hold a key** — and it does NOT refuse a
-leaking program. Rewrite a render arm to take the keyring and print
-its secret and it compiles cleanly. What the discipline buys is that
-a leak requires changing a SIGNATURE, a visible and reviewable edit,
-rather than slipping into a body. The enforcement is the lane.
-⟨lane `tools/signer.sh`⟩
+**C-53 · The redaction discipline is that no String-producing arm
+takes a KEY TYPE** — and it does NOT refuse a leaking program. What
+it buys is narrow: a renderer cannot be handed a whole `Keyring` or
+`Coil`, so a leak cannot come from forgetting which field a render
+arm reads. It buys **less than this rule once claimed**. The earlier
+wording said a leak "requires changing a SIGNATURE, a visible and
+reviewable edit, rather than slipping into a body"; that is false,
+because the scalar is an ATOM and an arm taking `@` accepts it with
+no signature change — `renderSend(ok, self.keys.seckey)` is a
+one-token body edit. The enforcement against the atom case is the
+lane and nothing else, so what the lane does not poke is not
+enforced. ⟨lane `tools/signer.sh`⟩
 
 **C-54 · The redaction adversary searches TWICE**: for the key as a
 value, and for its decimal rendering as a substring, each with a
@@ -476,11 +518,16 @@ hash, which would be a well-formed value meaning nothing.
 > `molds.sh` compares to a vendored arm; these two did not, and that
 > is exactly why they passed while wrong.
 
-**C-59 · The kernel serves five causes and four peeks.**
-`examples/walletkernel.jock` serves `%import-keys`, `%fakenet`,
-`%update-balance-grpc`, `%list-notes` and `%create-tx`; peeks
-`%fakenet`, `%state`, `%signing-keys` and `%master-signing-key`; and
-emits `[%file %write path jam]`, `%markdown` and `%exit`.
+**C-59 · The kernel serves TEN causes and SEVEN peeks.**
+`examples/walletkernel.jock` serves `%fakenet`, `%import-keys`,
+`%keygen`, `%import-seed-phrase`, `%derive-child`,
+`%update-balance-grpc`, `%list-notes`, `%send-tx`, `%create-tx-batch`
+and `%create-tx`; peeks `%fakenet`, `%state`, `%master-signing-key`,
+`%signing-keys`, `%active-signers`, `%balance` and
+`%blockchain-constants`; and emits `[%file %write path jam]`,
+`[%nockchain-grpc %send-tx raw]`, `%markdown` and `%exit`. The count
+grew with phase 3 and the key arms; it is stated here so that a cause
+added without a lane row is visible as a disagreement.
 ⟨lane `tools/wallet.sh`; lane `tools/signer.sh`⟩
 
 **C-60 · `create-tx` builds its seeds from the cause's own orders
@@ -666,6 +713,53 @@ node uses `h-map`s for digest keys. If fixture parity ever covers
 node-state nouns, h-maps need their own nominals; until something
 needs them, they have none. ⟨`t-cimp-nest`⟩
 
-**C-80 · `file`'s payload is `(Path, @)`** — the path as our `Path`
-nominal (language.md L-49), the jam as `@`.
-⟨`t-kern-fx`; lane `tools/wallet.sh`⟩
+**C-80 · `file`'s payload is `(@, String, @)`** — the operation tag
+first, then the path, then the jam, because `[%file %write path jam]`
+is what the driver parses. The path is a `String` and deliberately
+NOT our `Path` nominal (language.md L-49): a `Path` is a list of
+Strings and would erase to a cell where the driver reads a cord.
+⟨lane `tools/signer.sh`; lane `tools/wallet.sh`⟩
+
+**C-81 · `%import-keys` ACCEPTS ONLY A `%prv` COIL**, and scans the
+payload for the first one rather than taking its head. A `%pub` coil
+is a watch-only address, so installing its point as the signing
+scalar would make the wallet report a key it does not hold and then
+sign against one nobody holds — and a public coil ahead of a private
+one must not shadow it. A payload of public coils alone leaves the
+wallet keyless, which is what the key peeks then refuse (C-58).
+⟨lane `tools/signer.sh`⟩
+
+**C-82 · THE SUBMIT EFFECT CARRIES THE SAME VERDICT AS THE EXIT
+CODE.** `%send-tx` emits `[%nockchain-grpc %send-tx raw]` only for a
+transaction whose signatures verified; a kernel that exited 1 and
+submitted anyway would tell the driver one thing and the chain
+another. An EMPTY spend map is not a verified transaction either:
+signature verification is a fold, so it answers true vacuously, and
+the spend count is part of the question.
+⟨lane `tools/signer.sh`⟩
+
+**C-83 · "VERIFIED" MEANS EVERY SIGNATURE PRESENT IS GOOD *AND*
+FILED UNDER ITS OWN KEY'S HASH, AND THAT THERE IS ONE.** `signWitness`
+files each pair under `pkhash` of the pubkey that signed, so reading
+it back without re-deriving that hash answers "someone signed this
+digest" instead of "the key this slot names signed it" — and the
+sig-hash covers the seeds and the fee only, so moving a pair to
+another key leaves its signature verifying. Both refusals were once
+absent: a fold over signature entries answers true on an empty map,
+exactly as the spend fold does (C-82), one level down. What is still
+**not** checked is the lock's own spend condition — the m-of-n `Pkh`
+set in `lmp.cond`, which no arm of the kernel reads — so a verified
+transaction may still carry the wrong signers for its lock. That is
+`validate_signed`'s, with the planner (C-60, §7).
+⟨lane `tools/signer.sh`⟩
+
+**C-84 · `/state` ANSWERS A REDACTED COPY**, with zeros where the
+signing scalar and the chaincode sit and every other field as it
+stands. The peek channel is unauthenticated and answers `*`, so it
+was outside every word of the redaction discipline (C-53, stated over
+String-producing arms and emitted effects) while handing the whole
+`Keyring` to anyone who could peek. The copy is layout-preserving, so
+the planner constants stay at AXIS 31 (C-57) and nothing that reads
+this peek for what §6.2 says it carries sees a change. A driver that
+read the key out of `/state` was reading what no rule promised.
+⟨lane `tools/signer.sh`⟩

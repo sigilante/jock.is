@@ -141,7 +141,8 @@ Guarded types reach the checker through a **name** rather than a spelling — wi
 - `sat(%based, v)` iff `v` < the prime; `sat(%byte, v)` iff `v` < 256; `sat(%loob, v)` iff `v` < 2; `sat(%term, v)` iff `((sane %tas) v)`; `sat(~, v)` always.
 - **Checked at construction boundaries only**: compile time for literals (a literal checked against a guarded type must satisfy the guard — ⟨`t-nest-sa-p`, `t-nest-sa-n`⟩); runtime entry via `as!`/`as?` (S8.10). Erased everywhere else.
 - Field arithmetic preserves `Base` via stdlib signatures (`(Base, Base) -> Base`); the checker never re-derives guard facts from operations.
-- Widening (S4) **drops guards**: guards survive only through annotations and signatures, never through inference.
+- Widening (S4) **drops SINGLETONS, not guards**. `widen` (`mint.hoon`) rewrites `%sing` and nothing else, so a guard reached by inference survives a `var` binding: J5 (`check.hoon`, `+jgrd`) synthesizes a guard from two literal branches, and `var b = if c { 0 } else { 1 }; b = b + 1;` therefore refuses `%mill-nest` in both compilers — the broken-counter failure S5.2 and runtime.md R-59a say the design avoids. This bullet claimed the opposite until 2026-11-20 ("guards survive only through annotations and signatures, never through inference"). `let g: Base = b;` typechecks, which is how the inferred guard is visible.
+- A WIDENED `true` is not `Bool`, and the type printer says it is. `var b = true` widens to `%atom %logical ~`, which N5 refuses into `Bool` (`+subg`), so `if b { 1 } else { 2 }` refuses `%mill-nest` and `let c: Bool = b;` refuses — yet `jonk check` prints `Bool`, because `+ttyp` switches on the aura and ignores the guard. Measured 2026-11-20; the renderer is the thing that is wrong, not the judgment.
 
 ## S4. Singletons
 
@@ -157,7 +158,7 @@ widen(τ)          =  τ                 otherwise
 applies at exactly these places:
 
 1. **`var` binding**: the bound type is `widen(⇒-type)` (future edits store other values).
-2. **Every call boundary**: arguments check against parameter types (which widen by being non-singleton); results take the signature's return type as written. Singletons never survive a call.
+2. **Every call boundary**: arguments check against parameter types (which widen by being non-singleton); results take the signature's return type as written. A singleton does not survive a call through a WRITTEN return type — but it does through an INFERRED one, because `+lbat` widens an inferred lambda return shallowly: `let f = lambda (x: Nat) { (3, 4) }; let r = f(1);` leaves `r : (3, 4)`, measured 2026-11-20. This clause read "Singletons never survive a call" until then, which the generic path does honour (`+dwid` at the `%var` bind in `+funi` widens deeply, so `func<T> fst(p:(T,Nat))->T` on `(3,4)` gives `@`).
 3. **Annotations**: an annotated binding has the annotation's type.
 
 `let` preserves singletons. This shallow-propagation rule is the structural defense against Hoon's TMI/cube pain: loop state is `var` (widened) and operators are signature-typed, so the failure mode is unreachable rather than disciplined away.
@@ -422,7 +423,7 @@ Two mutually recursive judgments over kernel forms (`mint` crashes on any sugar-
 
 This is checking-position-only by construction (there is no expected type in ⇒). It covers the `~`-else idiom wherever an expected type exists. No other `%or` gets a coercion: general union acceptance is representation-preserving nest (N9). ⟨`t-text-opt-match`⟩. The negative — the same expression in synthesis position, joining to an error — is unvectored.
 
-`join` runs in exactly one place: synthesis-mode branch forms (S8.7, S8.8).
+`join` runs in synthesis-mode branch forms (S8.7, S8.8) **and in the list-literal element join** (`mint.hoon`, the `%list` case): `[1, 1.5]` refuses `%join-aura` under `%mint-list-join`. This sentence said "exactly one place" until 2026-11-20.
 
 ### S8.2 Literals
 
@@ -1006,7 +1007,7 @@ Case bodies see the bindings; the scrutinee's *type* is refined per-case only th
 | `%sum` (unfolded union) | its tags (finite) |
 | `%or` | its members (each a "constructor" tested by its S6 discriminant) |
 | `%sing` | that value (space of one) |
-| `Bool` (`%atom %logical`) | `{true, false}` — the constructor space is `{0,1}` by Bool's pinned mold (S8.10). * The rule it would rely on does not exist: an FFI return is **not** molded (S11.2), `+mimpg` adopting the arm's pinned return type as the result type and emitting no `+mchk`. So the guarantee here is the curated signature alone, which is an assertion. Bool's failure mode is **not** confined to a crash, and saying so here was too strong. An exhaustive match does crash, and Nock's own conditionals reject anything but 0 and 1 — but `%loob` **refines** `%based` (N5), so Bool widens into `Base`, and `let b: Bool = x; let n: Base = b;` compiles. A foreign arm falsely returning `p` as Bool therefore reaches a `Base` binding, whose guard that value violates, **without ever meeting a Boolean match**. That is derived from the subtyping rules, not from any misbehaviour of the real comparison arms, whose Hoon implementations do produce loobeans. The same trust boundary was violated in practice for `%based` — `chain.fromb58` — which is what requirement G below exists to prevent.* |
+| `Bool` (`%atom %logical`) | `{true, false}` — the constructor space is `{0,1}` by Bool's pinned mold (S8.10). *The fence `+mcov` actually applies is the AURA, not the guard this row rests on: it tests `?=([%atom *] sb)` and `=(%logical aura.sb)` with no guard test at all, so `var b = true; match b { true => 1, false => 2 }` is accepted as exhaustive with no default although that type carries no `%loob` (measured 2026-11-20, both compilers). It is sound today only because nothing else inhabits `%atom %logical ~`, which is a different guarantee from the one named here.* * The rule it would rely on does not exist: an FFI return is **not** molded (S11.2), `+mimpg` adopting the arm's pinned return type as the result type and emitting no `+mchk`. So the guarantee here is the curated signature alone, which is an assertion. Bool's failure mode is **not** confined to a crash, and saying so here was too strong. An exhaustive match does crash, and Nock's own conditionals reject anything but 0 and 1 — but `%loob` **refines** `%based` (N5), so Bool widens into `Base`, and `let b: Bool = x; let n: Base = b;` compiles. A foreign arm falsely returning `p` as Bool therefore reaches a `Base` binding, whose guard that value violates, **without ever meeting a Boolean match**. That is derived from the subtyping rules, not from any misbehaviour of the real comparison arms, whose Hoon implementations do produce loobeans. The same trust boundary was violated in practice for `%based` — `chain.fromb58` — which is what requirement G below exists to prevent.* |
 | `%cell` | the single cell constructor (recurse componentwise) |
 | any other atom, `%noun`, `%ref` (non-union), `%gate`, `%var` | infinite — a wildcard/bind row (or `default`) is required |
 
