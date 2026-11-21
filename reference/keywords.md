@@ -5,7 +5,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `6c95abf` (master) · corpus 1189 vectors · 2026-11-21
+> channel `%rc` · commit `822581f` (master) · corpus 1193 vectors · 2026-11-21
 
 Each keyword below carries its **class** — kernel or sugar, one of the language’s four design principles — and **what it does**, both projected from the keyword inventory at [L-61](/spec/language/#l-61), whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.
 
@@ -202,7 +202,7 @@ pinned by `t-eq-ne` · 40 vectors use this keyword
 enum Rec { leaf, cell(Rec, Rec) }; 0
 ```
 
-pinned by `t-decl-fond-reorder` · 22 vectors use this keyword
+pinned by `t-decl-fond-reorder` · 23 vectors use this keyword
 
 ### `eval`
 
@@ -396,7 +396,7 @@ Also named by [L-20](/spec/language/#l-20), [L-61](/spec/language/#l-61), [L-130
 let x = 1; x;
 ```
 
-pinned by `t-arc-term-semi` · 190 vectors use this keyword
+pinned by `t-arc-term-semi` · 191 vectors use this keyword
 
 ### `loop`
 
@@ -434,7 +434,7 @@ Also named by [L-61](/spec/language/#l-61), [L-101](/spec/language/#l-101), [L-1
 let a: @ = 3; match a { 1 => 0, _ => 84, }
 ```
 
-pinned by `t-arc-arm-comma` · 31 vectors use this keyword
+pinned by `t-arc-arm-comma` · 32 vectors use this keyword
 
 ### `not`
 
@@ -566,7 +566,7 @@ Also named by [L-61](/spec/language/#l-61), [L-130](/spec/language/#l-130), [L-1
 var b = 1; b = 3; b
 ```
 
-pinned by `t-var-widen` · 14 vectors use this keyword
+pinned by `t-var-widen` · 15 vectors use this keyword
 
 ### `xor`
 

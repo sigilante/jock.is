@@ -5,7 +5,7 @@ The 23 refusals that exist to catch a habit from another language, each with the
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `6c95abf` (master) · corpus 1189 vectors · 2026-11-21
+> channel `%rc` · commit `822581f` (master) · corpus 1193 vectors · 2026-11-21
 
 A refusal is counted here when its `~|` clue carries a **prose sentence**. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.
 

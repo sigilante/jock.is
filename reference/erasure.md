@@ -5,7 +5,7 @@ What a Jock program becomes. Types erase totally — there is no runtime type in
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `6c95abf` (master) · corpus 1189 vectors · 2026-11-21
+> channel `%rc` · commit `822581f` (master) · corpus 1193 vectors · 2026-11-21
 
 ## The erasure table
 

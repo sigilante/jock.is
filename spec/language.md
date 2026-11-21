@@ -78,7 +78,10 @@ token position, and the string position is unvectored.
 ⟨`t-lex-tab-n`⟩
 
 **L-53 · Comments are `//` to end of line and the non-nesting
-`/* … */`**, stripped by the lexer. ⟨`t-lex-comment-p`⟩
+`/* … */`**, stripped by the lexer. Non-nesting is pinned by a
+VALUE and not an error: `1 /*/*x*/ + 2` is `1 + 2`, because the
+first `*/` closes and the rest is code, where a nesting lexer would
+run to EOF and refuse. ⟨`t-lex-comment-p`, `t-text-comment-nonest`⟩
 
 **L-54 · A comment separates tokens exactly as whitespace does.** A
 token after a comment is never glued, so a comment can never create
@@ -1267,7 +1270,14 @@ name is an error too.
 **L-131 · A `let` of a literal keeps its singleton (constant) type; a
 `var` widens it to its general aura at binding.** Elaboration follows
 the BINDING CLASS, because future edits will store other values in a
-`var`. ⟨`t-var-widen`⟩
+`var`. The `let` half is observed through an INVARIANT POSITION,
+since a singleton has no spelling to assert against (types.md S4):
+`(x, x)` over a let-bound `x` refuses the assignment `%mill-nest`
+while the same shape over a var-bound one takes it, so flipping the
+keyword flips the outcome and the pair cannot be passing for
+L-132's reason. Note the shape precisely — `let x: @ = 3` does not
+show this, because the annotation widens.
+⟨`t-var-widen`, `t-text-inv-let`, `t-text-inv-var`⟩
 
 **L-132 · `var` widening is SHALLOW.** It widens the binding's own
 type and does not descend into cells, so singletons *inside* a tuple
@@ -1499,7 +1509,7 @@ non-exhaustive `match` errors with a witness pattern. What
 (`t-mint-match-unreach`), while a case made unreachable by an
 earlier copy of ITSELF compiles and the first match wins —
 `match x { .a => 1, .b => 2, .a => 3 }` answers 1 in both
-compilers.
+compilers. ⟨`t-mint-match-unreach`, `t-text-match-dup`⟩
 
 This said "by **usefulness analysis**", and `types.md` S12.3 had
 already corrected itself and said so: `+mcov` is a conservative

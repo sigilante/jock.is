@@ -5,7 +5,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `6c95abf` (master) · corpus 1189 vectors · 2026-11-21
+> channel `%rc` · commit `822581f` (master) · corpus 1193 vectors · 2026-11-21
 
 |  | count |  |
 |---|---:|---|
@@ -469,7 +469,7 @@ pinned by `t-mill-lambda-arity` · spec: docs/spec/language.md [L-141](/spec/lan
 let u: UniChar = 0x1f600 as! UniChar; let b: Byte = u; b
 ```
 
-pinned by `t-arc-unichar-narrow`, `t-err-class-gen-arg`, `t-err-map-annot-real`, `t-err-print-num`, `t-gen-rigid-arg`, `t-gen-rigid-unit`, `t-op-het-nest`, `t-rigid-mcon`, `t-rigid-slit`, `t-roof-named-func`, `t-text-char-no`, `t-var-widen-shallow` · also `t-mint-annot`, `t-mint-cond`, `t-mint-guard`, `t-mint-inc-cell` (AST-level) · spec: docs/spec/language.md [L-195](/spec/language/#l-195), docs/spec/language.md [L-132](/spec/language/#l-132), docs/spec/language.md [L-41](/spec/language/#l-41), docs/spec/runtime.md [R-102](/spec/runtime/#r-102), docs/spec/runtime.md [R-59](/spec/runtime/#r-59)
+pinned by `t-arc-unichar-narrow`, `t-err-class-gen-arg`, `t-err-map-annot-real`, `t-err-print-num`, `t-gen-rigid-arg`, `t-gen-rigid-unit`, `t-op-het-nest`, `t-rigid-mcon`, `t-rigid-slit`, `t-roof-named-func`, `t-text-char-no`, `t-text-inv-let`, `t-var-widen-shallow` · also `t-mint-annot`, `t-mint-cond`, `t-mint-guard`, `t-mint-inc-cell` (AST-level) · spec: docs/spec/language.md [L-195](/spec/language/#l-195), docs/spec/language.md [L-131](/spec/language/#l-131), docs/spec/language.md [L-132](/spec/language/#l-132), docs/spec/language.md [L-41](/spec/language/#l-41), docs/spec/runtime.md [R-102](/spec/runtime/#r-102), docs/spec/runtime.md [R-59](/spec/runtime/#r-59)
 
 ### `%mint-call`
 

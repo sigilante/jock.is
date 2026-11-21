@@ -183,13 +183,11 @@ that is where the resemblance ends:
 
 ⟨`t-gde-fib`⟩ — 8.
 
-**A named `func` is recursive by construction: call it by its name.** This
-paragraph used to say `$(...)` re-enters the enclosing func with edited
-arguments, and showed the fib above spelled with it. It does not work. `$` in
-expression position refuses `%parse-todo %recur-edits` — the edit syntax is
-parsed and reserved, not implemented, so there is no `$(...)` and no
-`recur(x: 1)` either. `recur` re-enters a `loop` as a bare word, and a `loop`
-carries its state in the `var`s the body assigns:
+**A named `func` is recursive by construction: call it by its name.** There
+is no `$(...)` and no `recur(x: 1)`. `$` in expression position refuses
+`%parse-todo %recur-edits`: the edit syntax is parsed and reserved, not
+implemented. `recur` re-enters a `loop` as a bare word, and a `loop` carries
+its state in the `var`s the body assigns:
 
     var a: @ = 3;
     var b: @ = 0;
@@ -250,11 +248,10 @@ String's prelude methods (the `Str` trait): `.len()` (bytes),
 `.cat(t)` (concatenation), `.trip()` (to `List<Byte>`),
 `.starts-with(pre)` (byte-prefix test; the empty prefix is a prefix
 of everything). These are byte-semantics on LSB-first cords, not
-character-aware. This used to add that a cord cannot hold a TRAILING NUL, with
-`"ab\0"` as the illustration; the lexer does not accept that escape at all
-(`%lex-string-escape`), so the sentence described an erasure of a program that
-does not compile. The underlying fact about cords stands and is the lexer's
-reason for refusing.
+character-aware. A cord cannot hold a trailing NUL: a cord is an atom, an
+atom has no leading zeros, and LSB-first puts the last byte highest. The
+lexer refuses the escape that would ask for one before any of that can
+matter — `"ab\0"` is `%lex-string-escape`.
 
 Adjacent declarations register simultaneously (mutual recursion). Behavior
 attaches by trait impls; a union is a nominal head so impls attach to it too.
@@ -274,10 +271,9 @@ implicit composition, no whitespace-blind calls, no `&&`/`||`/`!`, no
 variadic print (`print e;` takes ONE String; render by interpolation), no
 computed axes, no user-visible core algebra.
 
-"No negative literals" was in that list and was wrong — it contradicted the
-`Int` bullet above it in this same file. A sign glued to a decimal **is** a
-literal (`-42`, `+42`, ZigZag-encoded); what does not exist is unary minus as
-an operator, which is a different claim. The generated list is
+A sign glued to a decimal **is** a literal (`-42`, `+42`, ZigZag-encoded);
+what does not exist is unary minus as an OPERATOR, which is a different
+claim. The generated list is
 <https://jock.is/reference/absences/>, which states each absence as the rule
 that refuses it.
 
