@@ -99,7 +99,6 @@
     'lex-quote-newline': 'a string literal may not span a newline',
     'lex-number':       'a number needs a digit, and _ groups only between digits',
     'lex-hex':          '0x needs at least one hex digit',
-    'lex-real-prec':    'a real carries at most 15 digits',
     'lex-string-escape': 'a backslash escape is \\\\ \\n \\t \\" \\\' or two hex digits (\\0a)',
     'lex-interp-open':  'unterminated interpolation fragment',
     'lex-connective':   '&& and || are not Jock; the connectives are words: a and b, a or b, not a',
@@ -240,15 +239,37 @@
           break;
         }
         if (dbad) { emit('error', d - i, { why: 'lex-number' }); continue; }
-        //  a real is digit-dot-digit, both sides required
-        if (src[d] === '.' && isDig(src[d + 1] || '')) {
-          var f = d + 1, fk = 0;
+        //  A REAL is digits plus a fraction, an exponent, or both:
+        //  `3.14`, `1e-15`, `1e+300`, `1.5e-07`.  Mirrors +gexp and
+        //  the real branch in lib/lex.hoon.
+        //
+        //  THERE IS NO LENGTH LIMIT.  This used to carry
+        //  `if (dk + fk > 15) … 'lex-real-prec'`, mirroring a cap the
+        //  compiler no longer has:  the conversion is Hoon's own
+        //  grd:rd now, correctly rounded at any precision, and the
+        //  tag is retired.  Nothing here computes a value --- this
+        //  tokenizes for colour --- so the whole of the change is
+        //  accepting what the compiler accepts.
+        //
+        //  THIS IS THE FOURTH LEXER of this rule, after lib/lex.hoon,
+        //  jock-lex and jock-trivia.  tools/hilite.py is what holds
+        //  them together.
+        var f = d, fk = 0;
+        if (src[f] === '.' && isDig(src[f + 1] || '')) {
+          f = f + 1;
           while (f < n && isDig(src[f])) { fk++; f++; }
-          //  +grel:lex --- (lte (add k.gn k.gf) 15)
-          if (dk + fk > 15) {
-            emit('error', f - i, { why: 'lex-real-prec' }); continue;
+        }
+        var x = f;
+        if (src[x] === 'e') {
+          var y = x + 1;
+          if (src[y] === '-' || src[y] === '+') { y++; }
+          if (isDig(src[y] || '')) {
+            while (y < n && isDig(src[y])) { y++; }
+            x = y;
           }
-          emit('number', f - i, { sub: 'real' });
+        }
+        if (fk > 0 || x > f) {
+          emit('number', x - i, { sub: 'real' });
         } else {
           emit('number', d - i, { sub: 'decimal' });
         }

@@ -978,10 +978,37 @@ boot env; a bare `[%atom %logical ~]` written anywhere in the
 compiler re-opens the hole. ⟨`t-nest-loob-sat-p`,
 `t-nest-loob-sat-n`, `t-nest-guard-loob-n`, `t-as-grd-bool`⟩
 
-**R-66 · A Float64 literal is `@rd`, digit-dot-digit, at most 15
-digits**, constructed as one exact division — `+sun` is exact below
-2^53, so the single `div:rd` rounding gives the correctly-rounded
-result. ⟨`t-text-real`, `t-text-real-typ`, `t-lex-real-prec`⟩
+**R-66 · A Float64 literal is `@rd`, and reads at ANY PRECISION.**
+The surface is digits plus a fraction, an exponent, or both — `3.14`,
+`1e-15`, `1e+300`, `1.5e-07`, `1e10` — and the conversion is Hoon's
+own `grd:rd`, which takes the exact decimal and gives the nearest
+double with rounding pinned `%n`. There is **no digit cap and no
+refusal for length**: a Jock literal and the Hoon literal of the same
+digits are the same noun by construction, both going through that
+arm.
+
+This rule capped the literal at 15 digits until 2026-11-21, and
+`%lex-real-prec` is **retired** with the cap. The cap existed because
+the literal was built here as one division and that is exact only
+when both operands are; `grd:rd` was in the subject throughout. The
+history is in `record/language-arc.md`, and it matters because the
+cap read as a precision *policy* and was a workaround.
+
+**What this closes:** `Show` renders a Float64 in CPython's `repr`
+format (`record/errol.md`), which emits `1e-15` and `1e+300` — no
+fraction, explicit plus — so before the exponent form existed the
+printer could emit text the reader refused. Round-tripping a Float64
+through text now holds, `read(print(d)) == d`, measured over the
+positional and scientific forms both.
+
+**What it does not bound:** cost. A *k*-digit fraction raises five to
+the *k* inside `grd:rd`, so a long literal is real work, uncapped by
+the jock#174 ruling — a cap is a language-visible refusal and wants a
+rule, a vector and both ports, which that issue argues at length.
+⟨`t-text-real`, `t-text-real-typ`, `t-text-real-small`,
+`t-text-real-under`, `t-text-real-long`, `t-text-real-prec25`,
+`t-text-real-exp`, `t-text-real-exp-plus`, `t-text-real-exp-nodot`,
+`t-text-real-exp-frac`⟩
 
 **R-67 · Rounding is pinned `%n`, round-nearest, at EVERY site** —
 wrappers and literal construction alike. Jock exposes no

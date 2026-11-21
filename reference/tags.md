@@ -5,12 +5,12 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `a6bac7a` (master) · corpus 1196 vectors · 2026-11-21
+> channel `%rc` · commit `9dc2132` (master) · corpus 1203 vectors · 2026-11-21
 
 |  | count |  |
 |---|---:|---|
-| tags the compiler can raise | 205 | 200 `~|` heads + 7 `$diag` members |
-| **with a runnable program** | **166** | the vector carries source, and the page shows it |
+| tags the compiler can raise | 204 | 199 `~|` heads + 7 `$diag` members |
+| **with a runnable program** | **165** | the vector carries source, and the page shows it |
 | no input can reach the guard | 36 | registered with the reason, and the registry is checked |
 | …of those, still pinned by a vector | 30 | an AST- or judgment-level row reaches the arm directly |
 | …and pinned by nothing | 6 | nothing to point an input at |
@@ -386,14 +386,6 @@ pinned by `t-lex-quote-newline`
 ```
 
 pinned by `t-lex-strop-n`
-
-### `%lex-real-prec`
-
-```jock
-3.12345678901234567
-```
-
-pinned by `t-lex-real-prec` · spec: docs/spec/language.md [L-189](/spec/language/#l-189)
 
 ### `%lex-stray`
 
@@ -973,7 +965,7 @@ pinned by `t-rch-cover` · also `t-mint-slit-missing` (AST-level)
 struct Q { q: @ }; Q( r: 0 )
 ```
 
-pinned by `t-slit-miss`
+pinned by `t-text-slit-missing`
 
 ### `%mint-slit-sealed`
 
@@ -1553,7 +1545,7 @@ Stronger than a registry entry, and listed apart from it. No input reaches these
 
 ## Tags pinned by nothing
 
-Reachable, and no vector asserts them: 1 of 205. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.
+Reachable, and no vector asserts them: 1 of 204. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.
 
 **`%impl-conflict`** — Two libraries supplying different impl facts for one (trait, head) pair. Not reached from any spelling tried: two modules each declaring their own trait do not collide, because a module’s trait is its own, and the single-module spelling refuses `%mint-impl-coh` first. Probed, not inferred.
 

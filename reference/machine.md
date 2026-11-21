@@ -5,7 +5,7 @@
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `a6bac7a` (master) · corpus 1196 vectors · 2026-11-21
+> channel `%rc` · commit `9dc2132` (master) · corpus 1203 vectors · 2026-11-21
 
 An agent driving the compiler should parse this rather than the human output, which is built for a terminal and whose alignment is meaningful.
 

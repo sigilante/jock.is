@@ -5,7 +5,7 @@ Where Jock deliberately differs from Hoon. The fast path for a reader who alread
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> 4 landmarks · 30 rules that name Hoon · channel `%rc` · commit `a6bac7a`
+> 4 landmarks · 31 rules that name Hoon · channel `%rc` · commit `9dc2132`
 
 ## The four the outline names
 
@@ -37,7 +37,7 @@ Where Jock deliberately differs from Hoon. The fast path for a reader who alread
 
 ## Every rule that reaches for Hoon
 
-A mechanical set, and the page says so because the alternative would be a list somebody chose. "Where Jock differs from Hoon" is classified nowhere in this tree — the 23 did-you-mean corrections name Hoon exactly once, and that once is incidental, pointing at `hoon.dis` as the replacement for `&&`. What does exist is the normative rules, of which 30 say the word out loud across `language.md`, `types.md` and `runtime.md`. A rule that reaches for Hoon to explain itself is a rule about a difference.
+A mechanical set, and the page says so because the alternative would be a list somebody chose. "Where Jock differs from Hoon" is classified nowhere in this tree — the 23 did-you-mean corrections name Hoon exactly once, and that once is incidental, pointing at `hoon.dis` as the replacement for `&&`. What does exist is the normative rules, of which 31 say the word out loud across `language.md`, `types.md` and `runtime.md`. A rule that reaches for Hoon to explain itself is a rule about a difference.
 
 `chain.md` names Hoon more often than any of the three and is not swept: it is about one package’s interop, not about the language.
 
@@ -73,6 +73,7 @@ A mechanical set, and the page says so because the alternative would be a list s
 | `runtime.md` [R-38](/spec/runtime/#r-38) | `String` is a data nominal over the UTF-8 CORD** — the compact form — and `List<Byte>` is the processing form, a Hoon `tape` byte for byte. The Hoon-compatible List erasure makes `trip`'s product a `List<Byte>` value by construction, and `crip`/`trip` convert. ⟨`t-text-bytes`, `t-text-chars-2`⟩ |
 | `runtime.md` [R-43](/spec/runtime/#r-43) | A String has TWO VIEWS and neither is the default.** One cord answers two different questions: |
 | `runtime.md` [R-49](/spec/runtime/#r-49) | `Path` is a data nominal over list-of-`String`, with NO KNOTS.** Segments are Strings; Hoon's `@ta` discipline was aura bookkeeping and the nouns round-trip without it. `/a/b/c` desugars to the `%null`-terminated segment chain, cast. ⟨`t-des-path`, `t-parse-path`, `t-text-path`⟩ |
+| `runtime.md` [R-66](/spec/runtime/#r-66) | A Float64 literal is `@rd`, and reads at ANY PRECISION.** The surface is digits plus a fraction, an exponent, or both — `3.14`, `1e-15`, `1e+300`, `1.5e-07`, `1e10` — and the conversion is Hoon's own `grd:rd`, which takes the exact decimal and gives the nearest double with rounding pinned `%n`. Ther |
 
 ## Where to go next
 

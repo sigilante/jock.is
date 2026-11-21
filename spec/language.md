@@ -523,7 +523,7 @@ is decided, `docs/ROADMAP.md` holds it. ⟨`t-parse-tilde-glued`⟩
 | decimal | `@` (number) | `42`, `1_024` — underscore grouping (OPEN-11); `.` is never a digit separator |
 | hexadecimal | Hex | `0x2a` |
 | signed | Int | `+42`, `-42` — ZigZag. Rules L-6 to L-16 below |
-| float | Float64 (`@rd`) | `3.14` — digit-dot-digit, both sides required, and ≤ 15 characters in the digit run with underscore grouping COUNTED, so `1_234_567_890.12345` refuses `%lex-real-prec` at only 15 significant digits; rounding pinned `%n`, no mode surface. Float16/32/128 pending demand |
+| float | Float64 (`@rd`) | `3.14`, `1e-15`, `1e+300`, `1.5e-07`, `1e10` — digits plus a fraction, an exponent, or both, at ANY precision (runtime.md R-66). The conversion is Hoon's `grd:rd`, so there is no digit cap: `%lex-real-prec` was retired 2026-11-21 along with the character count that made `1_234_567_890.12345` refuse at fifteen significant digits. Lowercase `e`; the exponent sign may be an explicit `+`, since that is what `Show` emits. Rounding pinned `%n`, no mode surface. Float16/32/128 pending demand |
 | boolean | `Bool` (logical) | `true`, `false` — the beta `?` type spelling is retired (OPEN-2) |
 | char/cord | chars | `'a'` |
 | string | String | `"hello"` |
