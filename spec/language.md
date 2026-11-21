@@ -286,7 +286,17 @@ discarded (Nock's own rule), so it has no expected type and is
 synthesized. It is still computed: a dynamic clue is evaluated, so
 one that crashes or diverges takes the program with it. The product
 is the body's, provided the clue terminates without crashing.
-⟨`t-text-hint-type`⟩
+
+This is Nock's line 46 — `*[a 11 [b c] d]` is
+`*[[*[a c] *[a d]] 0 3]`, so the clue is one of the two things
+computed before axis 3 selects the body — and it holds for EVERY
+tag, including the ones a runtime jets. Both shipping runtimes bail
+on a crashing clue, NockVM and Vere alike, measured per tag;
+jonk's interpreter decided per-tag until 2026-11-21 and answered
+the body's product for `%memo` and the five trace tags.
+⟨`t-text-hint-type`, `t-text-hint-clue-crash`,
+`t-text-hint-clue-memo`, `t-text-hint-clue-spot`,
+`t-text-hint-clue-slog`⟩
 
 **L-193 · The compiler refuses three tags, and admits a catalogue.**
 This rule is a *vocabulary*, and it is worth saying plainly what it

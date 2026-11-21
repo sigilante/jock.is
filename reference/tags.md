@@ -5,7 +5,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `822581f` (master) · corpus 1193 vectors · 2026-11-21
+> channel `%rc` · commit `a6bac7a` (master) · corpus 1196 vectors · 2026-11-21
 
 |  | count |  |
 |---|---:|---|
@@ -18,7 +18,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 | **reachable, and pinned by nothing** | **1** | the gap list |
 | AST-level only, with no reason recorded | 0 | the other gap: pinned, but never watched from a program |
 
-A `%neg` vector refuses *without* naming a tag, so it pins that a program is rejected and never in what words. 41 rows are `%neg`; none of them pins a tag here.
+A `%neg` vector refuses *without* naming a tag, so it pins that a program is rejected and never in what words. 44 rows are `%neg`; none of them pins a tag here.
 
 **The two gap rows are the ones to read.** Every other row is a refusal the corpus pins and this page can explain. A count of unpinned tags on its own cannot tell a missing test from a guard the compiler holds against itself, and this page published 82 of them as one list until the difference was worked out tag by tag.
 
