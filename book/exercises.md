@@ -5,7 +5,7 @@
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> channel `%rc` · commit `9dc2132`
+> channel `%rc` · commit `5765df9`
 
 ## The gradient
 
@@ -51,8 +51,8 @@ The steps are the outline’s order, which is by what each one introduces — so
 | `twoc-arms` | 77 | `29` | `twoc` |
 | `units` | 77 | `.~24.0` | — |
 | `hof-arms` | 79 | `18` | `hof` |
-| `interval-arms` | 80 | `23` | `interval`, `rational` |
 | `generic-class` | 84 | `14` | — |
+| `interval-arms` | 84 | `23` | `interval`, `rational` |
 | `rand-arms` | 90 | `11` | `rand` |
 | `await-strand` | 93 | — | — |
 | `await-cards` | 98 | — | `hof` |

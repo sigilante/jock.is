@@ -464,15 +464,28 @@ name never crosses a boundary. This is what lets `lib/rational` and
 `lib/interval` keep their state structs private.
 ⟨`t-jimp-private-class-state`⟩
 
-**L-24 · Privacy is API hygiene, not a security boundary.** An
-erasure cast reads private fields across a module boundary. Note
-the shape precisely, because it is easy to check and conclude the
-opposite: the *direct* `r as (Int, Int)` is **refused**
-`%mint-cast`, because a private state struct does not unfold in
-an importer.
-The leak is the **two-step** `(r as *) as! (Int, Int)`, which reads
-the fields. Making such a nominal non-congruent for `as` is the
-recorded follow-on. ⟨`t-jimp-private-forge`⟩
+**L-24 · Privacy is API hygiene, not a security boundary.** A SOFT
+cast reads private fields across a module boundary. Of the nine
+doors into a private state struct, four read and five refuse. The
+four that read: `r as! (Int, Int)` and `r as? (Int, Int)`, and
+either of them under a prior `r as *`. The five that refuse: the
+hard `r as (Int, Int)` (`%mint-cast`), a field read
+(`%mint-field`), a struct literal naming the type (`%mint-slit`),
+and positional or lark access (`%mint-naxis`, twice). Only `as`
+tests congruence, which is what a private state struct fails in an
+importer; `as!` asserts and `as?` compiles a mold test, and neither
+consults congruence. What the soft doors do NOT skip is the seal:
+all three modes refuse a target that *holds* a sealed class
+(`%mint-cast-sealed`, L-25), and these four leaks reach a plain
+tuple, which is why the seal never fires on them. The erasure
+two-step is therefore one of four leaks rather than the leak, and
+making such a nominal non-congruent for the SOFT casts is the
+recorded follow-on; `as` already refuses.
+⟨`t-jimp-private-cast-n`, `t-jimp-private-read-bang`,
+`t-jimp-private-read-wut`, `t-jimp-private-read-bang-two`,
+`t-jimp-private-read-wut-two`, `t-jimp-private-field-n`,
+`t-jimp-private-axis-n`, `t-jimp-private-lark-n`,
+`t-jimp-private-forge`⟩
 
 **L-25 · What keeps a sealed nominal canonical is its SEAL, not its
 privacy.** A class is constructed only by its declaring module, at

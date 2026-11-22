@@ -5,7 +5,7 @@ exact rational arithmetic over Int.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/rational.jock` and the examples that import it.
 >
-> 9 public declarations — 0 types, 9 arms. 9 pinned by a lane, 0 not. channel `%rc` · commit `9dc2132`
+> 9 public declarations — 0 types, 9 arms. 9 pinned by a lane, 0 not. channel `%rc` · commit `5765df9`
 
 ## Import
 
@@ -23,7 +23,7 @@ A Rat is a pair of signed integers kept in CANONICAL FORM: the denominator is st
 
 THE INVARIANT IS SEALED, because Rat is a CLASS. Construction belongs to this module (imports.md ruling (e)): an importer cannot write `rational.Rat( num: +3, den: +6 )`, and cannot forge one through a cast either — the literal and all three cast doors refuse. So `==` really is exact equality: every Rat in existence came through a constructor here, and every arm here re-normalizes.
 
-The state struct is `private`, so its name does not cross: an importer cannot name the type to ask for one. What keeps a Rat canonical is the SEAL, not the privacy — construction belongs to this module, and no cast acquires the type at any position. Privacy is API hygiene rather than a boundary: a two-step erasure cast still reads the fields, so the seal is the guarantee and privacy is the courtesy. A class may hold private state because construction is sealed and every method speaks `Self` — the state's name never crosses.
+The state struct is `private`, so its name does not cross: an importer cannot name the type to ask for one. What keeps a Rat canonical is the SEAL, not the privacy — construction belongs to this module, and no cast acquires the type at any position. Privacy is API hygiene rather than a boundary: a SOFT cast reads the fields in one step --- `as!` and `as?` both do, and the erasure step changes nothing --- so the seal is the guarantee and privacy is the courtesy. The seal holds even there: a cast whose target HOLDS a sealed class is refused in every mode. A class may hold private state because construction is sealed and every method speaks `Self` — the state's name never crosses.
 
 This is the payoff of classes crossing the import boundary (docs/record/class-crossing.md). Before that a class was unusable by importers, so Rat was a struct and this paragraph read as an apology instead of a guarantee.
 

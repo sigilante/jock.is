@@ -5,7 +5,7 @@ interval arithmetic over exact rationals.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/interval.jock` and the examples that import it.
 >
-> 4 public declarations — 1 type, 3 arms. 3 pinned by a lane, 1 not. channel `%rc` · commit `9dc2132`
+> 4 public declarations — 1 type, 3 arms. 3 pinned by a lane, 1 not. channel `%rc` · commit `5765df9`
 
 ## Import
 
@@ -25,9 +25,9 @@ Enclosure is the whole product, and it is why this sits on `lib/rational` rather
 
 THE INVARIANT IS SEALED. Iv is a CLASS, so construction belongs to this module (imports.md ruling (e)): `interval.Iv( lo: 3, hi: 1 )` does not type-check, and no cast can forge one either. An inverted interval cannot enter the system, which is what makes the enclosure contract a guarantee rather than a hope. `Rat` is sealed the same way, so the endpoints cannot be un-canonical either — the two seals compose.
 
-SHAPE. Everything taking an interval is a METHOD; the three constructors are funcs after the class. That is not a style choice: a class fuses its type declaration and its method bodies, so an arm mentioning Iv can be declared neither before the class (the type is not registered yet) nor after it (the bodies have already minted). The operator impls are the class's own conformances, so each rule is still written exactly once.
+SHAPE. Everything taking an interval is a METHOD; the three constructors are funcs after the class. That is not a style choice: a class fuses its type declaration and its method bodies, so a func mentioning Iv cannot be declared before the class, and a func declared after it cannot be called from a method. No func reachable from a method can name the type. The operator impls are the class's own conformances, so each rule is still written exactly once.
 
-A consequence worth stating: the methods cannot call `iv()`, the checking constructor, because it is declared after them. They construct directly and preserve `lo <= hi` by the arithmetic — sums and differences of ordered endpoints stay ordered, `mul` takes an explicit min and max, `hull` takes a min and a max, and `recip` is reached only through the zero test. `iv()` is where an untrusted pair is checked.
+The methods cannot call `iv()`, the checking constructor, because it is declared after them. They construct directly and preserve `lo <= hi` by the arithmetic — sums and differences of ordered endpoints stay ordered, `mul` takes an explicit min and max, `hull` takes a min and a max, and `recip` refuses a zero-spanning interval itself. `iv()` is where an untrusted pair is checked.
 
 NOT GENERIC, and not by choice. `Iv` over any ordered ring would need a binder bounded by Lt AND Add AND Sub AND Mul AND Div, and `$gbin` carries `bound=(unit cord)` — exactly one bound per binder (`T: Lt + Add` is a parse error; `T: Lt, Add` reads as two binders).
 
@@ -35,7 +35,7 @@ TWO PLACES THE LANGUAGE SHAPES THE DESIGN.
 
 Order is PARTIAL — [1,3] and [2,4] are not ordered — but comparison op-traits answer Bool, so `<` cannot report the third case. It therefore means CERTAINLY less than: every element of the left below every element of the right. The overlapping question is a separately named method, `possibly-lt`. The signature forces the ambiguity into two names rather than hiding it in one.
 
-Division is PARTIAL: a divisor spanning zero has no interval answer, and `/` is (Self, Self) -> Self so it cannot answer `Iv?`. `try-div` is the total form and `/` is its crashing face — literally `try-div(...) ?? crash`, so there is one division rule and one zero test.
+Division is PARTIAL: a divisor spanning zero has no interval answer, and `/` is (Self, Self) -> Self so it cannot answer `Iv?`. `try-div` is the total form and `/` is its crashing face — literally `try-div(...) ?? crash`, so there is one division rule. Both `try-div` and `recip` test for zero, so a division tests twice. The duplicate test is `contains(zero())` — a zero() construction and two Rat comparisons, four Int multiplications — and it buys an invariant that no longer depends on the caller.
 
 EQUALITY needs no impl. `==` is Nock 5 on the erasure, and both seals hold, so two intervals are the same noun exactly when they are the same interval. Structural equality IS the right equality here — inherited, not implemented.
 

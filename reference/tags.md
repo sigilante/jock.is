@@ -5,7 +5,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `9dc2132` (master) · corpus 1203 vectors · 2026-11-21
+> channel `%rc` · commit `5765df9` (master) · corpus 1214 vectors · 2026-11-22
 
 |  | count |  |
 |---|---:|---|
@@ -18,7 +18,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 | **reachable, and pinned by nothing** | **1** | the gap list |
 | AST-level only, with no reason recorded | 0 | the other gap: pinned, but never watched from a program |
 
-A `%neg` vector refuses *without* naming a tag, so it pins that a program is rejected and never in what words. 44 rows are `%neg`; none of them pins a tag here.
+A `%neg` vector refuses *without* naming a tag, so it pins that a program is rejected and never in what words. 45 rows are `%neg`; none of them pins a tag here.
 
 **The two gap rows are the ones to read.** Every other row is a refusal the corpus pins and this page can explain. A count of unpinned tags on its own cannot tell a missing test from a guard the compiler holds against itself, and this page published 82 of them as one list until the difference was worked out tag by tag.
 
@@ -501,7 +501,7 @@ pinned by `t-rch-case`
 let n = 42; let b: Bool = n as Bool; b
 ```
 
-pinned by `t-as-grd-bool`, `t-as-grd-char`, `t-err-chars-cast` · also `t-mint-cast` (AST-level) · spec: docs/spec/language.md [L-24](/spec/language/#l-24), docs/spec/language.md [L-120](/spec/language/#l-120), docs/spec/runtime.md [R-44](/spec/runtime/#r-44)
+pinned by `t-as-grd-bool`, `t-as-grd-char`, `t-err-chars-cast`, `t-jimp-private-cast-n` · also `t-mint-cast` (AST-level) · spec: docs/spec/language.md [L-24](/spec/language/#l-24), docs/spec/language.md [L-120](/spec/language/#l-120), docs/spec/runtime.md [R-44](/spec/runtime/#r-44)
 
 ### `%mint-cast-sealed`
 
@@ -517,7 +517,7 @@ struct CS { n: @ }; class Counter(CS) impl Add { add(self: Self, p: Self) -> Sel
 import m; (5 as m.Counter).n
 ```
 
-pinned by `t-jimp-seal-cast`, `t-jimp-seal-deep-arg`, `t-jimp-seal-deep-cast`, `t-jimp-seal-deep-soft`, `t-jimp-seal-soft`, `t-jimp-seal-test` · spec: docs/imports.md I-5
+pinned by `t-jimp-seal-cast`, `t-jimp-seal-deep-arg`, `t-jimp-seal-deep-cast`, `t-jimp-seal-deep-soft`, `t-jimp-seal-soft`, `t-jimp-seal-test` · spec: docs/imports.md I-5, docs/spec/language.md [L-24](/spec/language/#l-24)
 
 ### `%mint-cast-sint`
 
@@ -605,7 +605,7 @@ pinned by `t-jimp-seal-edit` · spec: docs/imports.md I-5
 struct S { x: @, y: @ }; trait T { dist(self: Self) -> @; } impl T for S { dist(self: Self) -> @ { self.x } } let v = S( x: 4, y: 5 ); let g = v.dist; 0
 ```
 
-pinned by `t-dimb-meth-value`, `t-jimp-arm-value-deep`, `t-rch-field` · spec: docs/spec/language.md [L-171](/spec/language/#l-171)
+pinned by `t-dimb-meth-value`, `t-jimp-arm-value-deep`, `t-jimp-private-field-n`, `t-rch-field` · spec: docs/spec/language.md [L-24](/spec/language/#l-24), docs/spec/language.md [L-171](/spec/language/#l-171)
 
 ### `%mint-func-annot`
 
@@ -861,7 +861,7 @@ pinned by `t-rch-mold` · also `t-mint-asx-gate`, `t-mint-tt-gate` (AST-level) �
 import chain; func f(m: chain.ZMap<@, @>) -> @ { m.< }; 1
 ```
 
-pinned by `t-cimp-seal`, `t-lark-atom-n`, `t-lark-seal-n`, `t-naxis-seal-n`
+pinned by `t-cimp-seal`, `t-jimp-private-axis-n`, `t-jimp-private-lark-n`, `t-lark-atom-n`, `t-lark-seal-n`, `t-naxis-seal-n` · spec: docs/spec/language.md [L-24](/spec/language/#l-24)
 
 ### `%mint-op`
 
@@ -949,7 +949,7 @@ private struct St { v: @ }; class C(St) { get(self: Self) -> @ { self.v } }; fun
 import m; m.St( v: 9 ).v
 ```
 
-pinned by `t-jimp-private-forge`
+pinned by `t-jimp-private-forge` · spec: docs/spec/language.md [L-24](/spec/language/#l-24)
 
 ### `%mint-slit-cover`
 

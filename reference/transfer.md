@@ -5,7 +5,7 @@ The 23 refusals that exist to catch a habit from another language, each with the
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `9dc2132` (master) · corpus 1203 vectors · 2026-11-21
+> channel `%rc` · commit `5765df9` (master) · corpus 1214 vectors · 2026-11-22
 
 A refusal is counted here when its `~|` clue carries a **prose sentence**. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.
 
@@ -122,7 +122,7 @@ import m; (5 as m.Counter).n
 
 > a class is constructed only by the module that declares it; ask it for an arm that validates
 
-pinned by `t-jimp-seal-cast` · spec: docs/imports.md I-5
+pinned by `t-jimp-seal-cast` · spec: docs/imports.md I-5, docs/spec/language.md [L-24](/spec/language/#l-24)
 
 ### `%mint-cast-sint`
 

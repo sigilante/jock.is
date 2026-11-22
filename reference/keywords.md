@@ -5,7 +5,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `9dc2132` (master) · corpus 1203 vectors · 2026-11-21
+> channel `%rc` · commit `5765df9` (master) · corpus 1214 vectors · 2026-11-22
 
 Each keyword below carries its **class** — kernel or sugar, one of the language’s four design principles — and **what it does**, both projected from the keyword inventory at [L-61](/spec/language/#l-61), whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.
 
@@ -82,7 +82,7 @@ pinned by `t-arc-alias-is` · 7 vectors use this keyword
 true and true
 ```
 
-pinned by `t-logic-and-tt` · 8 vectors use this keyword
+pinned by `t-logic-and-tt` · 10 vectors use this keyword
 
 ### `as`
 
@@ -100,7 +100,7 @@ Also named by [L-12](/spec/language/#l-12), [L-24](/spec/language/#l-24), [L-61]
 +42 as @
 ```
 
-pinned by `t-sint-lit` · 55 vectors use this keyword
+pinned by `t-sint-lit` · 59 vectors use this keyword
 
 ### `assert`
 
@@ -160,7 +160,7 @@ Also named by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61]
 struct BS<T> { v: T }; class Box<T>(BS<T>) { get(self: Self) -> T { self.v } }; Box( v: 5 ).get()
 ```
 
-pinned by `t-text-class-gen` · 25 vectors use this keyword
+pinned by `t-text-class-gen` · 31 vectors use this keyword
 
 ### `crash`
 
@@ -174,7 +174,7 @@ pinned by `t-text-class-gen` · 25 vectors use this keyword
 enum Nope {}; func f(x: @) -> Nope { crash }; 1
 ```
 
-pinned by `t-text-never` · 4 vectors use this keyword
+pinned by `t-text-never` · 6 vectors use this keyword
 
 ### `else`
 
@@ -188,7 +188,7 @@ pinned by `t-text-never` · 4 vectors use this keyword
 if 3 != 4 { 7 } else { 9 }
 ```
 
-pinned by `t-eq-ne` · 40 vectors use this keyword
+pinned by `t-eq-ne` · 42 vectors use this keyword
 
 ### `enum`
 
@@ -262,7 +262,7 @@ Also named by [L-61](/spec/language/#l-61), [L-87](/spec/language/#l-87), [L-139
 func<T> id(x: T) -> T { x }; id(42)
 ```
 
-pinned by `t-text-gen` · 88 vectors use this keyword
+pinned by `t-text-gen` · 94 vectors use this keyword
 
 ### `hint`
 
@@ -296,7 +296,7 @@ pinned by `t-text-hint-static` · 6 vectors use this keyword
 if 3 != 4 { 7 } else { 9 }
 ```
 
-pinned by `t-eq-ne` · 41 vectors use this keyword
+pinned by `t-eq-ne` · 43 vectors use this keyword
 
 ### `impl`
 
@@ -324,7 +324,7 @@ pinned by `t-text-interp-user` · 44 vectors use this keyword
 import hoon; 20 + 22
 ```
 
-pinned by `t-text-arith` · 72 vectors use this keyword
+pinned by `t-text-arith` · 78 vectors use this keyword
 
 ### `in`
 
@@ -500,7 +500,7 @@ Also named by [L-25](/spec/language/#l-25), [L-61](/spec/language/#l-61).
 private func dbl(n: @) -> @ { n + n }; dbl(21)
 ```
 
-pinned by `t-text-private-func` · 5 vectors use this keyword
+pinned by `t-text-private-func` · 11 vectors use this keyword
 
 ### `recur`
 
@@ -532,7 +532,7 @@ pinned by `t-text-loop` · 4 vectors use this keyword
 struct Q { w: @ }; Q( w: 9 ).w
 ```
 
-pinned by `t-text-dot-slit` · 73 vectors use this keyword
+pinned by `t-text-dot-slit` · 79 vectors use this keyword
 
 ### `trait`
 
