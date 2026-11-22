@@ -5,12 +5,12 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `5765df9` (master) · corpus 1214 vectors · 2026-11-22
+> channel `%rc` · commit `fdba0d3` (master) · corpus 1218 vectors · 2026-11-22
 
 |  | count |  |
 |---|---:|---|
-| tags the compiler can raise | 204 | 199 `~|` heads + 7 `$diag` members |
-| **with a runnable program** | **165** | the vector carries source, and the page shows it |
+| tags the compiler can raise | 206 | 201 `~|` heads + 7 `$diag` members |
+| **with a runnable program** | **167** | the vector carries source, and the page shows it |
 | no input can reach the guard | 36 | registered with the reason, and the registry is checked |
 | …of those, still pinned by a vector | 30 | an AST- or judgment-level row reaches the arm directly |
 | …and pinned by nothing | 6 | nothing to point an input at |
@@ -566,6 +566,14 @@ enum E { a(@) }; E.b(1)
 ```
 
 pinned by `t-mint-ctor-tag` · spec: docs/spec/language.md [L-166](/spec/language/#l-166)
+
+### `%mint-dup-binder`
+
+```jock
+func<T: Lt, T: Lt> f(x: T) -> T { x }; f(1)
+```
+
+pinned by `t-err-gbin-dup`, `t-err-gbin-dup-group`
 
 ### `%mint-edit`
 
@@ -1147,6 +1155,14 @@ func f () -> @ { 1 }; f()
 
 pinned by `t-parse-func-parens`
 
+### `%parse-gbin-bounds`
+
+```jock
+func<T: Lt + Gt> f(x: T) -> T { x }; f(1)
+```
+
+pinned by `t-err-gbin-bounds`
+
 ### `%parse-hint-tag`
 
 ```jock
@@ -1545,7 +1561,7 @@ Stronger than a registry entry, and listed apart from it. No input reaches these
 
 ## Tags pinned by nothing
 
-Reachable, and no vector asserts them: 1 of 204. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.
+Reachable, and no vector asserts them: 1 of 206. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.
 
 **`%impl-conflict`** — Two libraries supplying different impl facts for one (trait, head) pair. Not reached from any spelling tried: two modules each declaring their own trait do not collide, because a module’s trait is its own, and the single-module spelling refuses `%mint-impl-coh` first. Probed, not inferred.
 
