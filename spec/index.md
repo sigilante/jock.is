@@ -9,11 +9,11 @@ These are the authority. Where a generated page and a spec disagree, the spec is
 
 | spec | rules | lines | raw |
 |---|---:|---:|---|
-| [`language.md`](/spec/language/) | 194 | 2035 | [`language.md`](/spec/language.md) |
+| [`language.md`](/spec/language/) | 195 | 2077 | [`language.md`](/spec/language.md) |
 | [`types.md`](/spec/types/) | 35 | 1179 | [`types.md`](/spec/types.md) |
 | [`runtime.md`](/spec/runtime/) | 102 | 1234 | [`runtime.md`](/spec/runtime.md) |
 | [`nockasm.md`](/spec/nockasm/) | 25 | 248 | [`nockasm.md`](/spec/nockasm.md) |
 | [`nockasm-target.md`](/spec/nockasm-target/) | 22 | 512 | [`nockasm-target.md`](/spec/nockasm-target.md) |
 | [`chain.md`](/spec/chain/) | 84 | 766 | [`chain.md`](/spec/chain.md) |
 
-462 rule ids in all. A citation is linked only if its id is in that set, so a rule that is renumbered away stops being a link rather than becoming one that resolves to the right document and the wrong place.
+463 rule ids in all. A citation is linked only if its id is in that set, so a rule that is renumbered away stops being a link rather than becoming one that resolves to the right document and the wrong place.

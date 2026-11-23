@@ -5,7 +5,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `fdba0d3` (master) · corpus 1218 vectors · 2026-11-22
+> channel `%rc` · commit `a6b1f57` (sigilante/one-bound-diag) · corpus 1224 vectors · 2026-11-23
 
 Each keyword below carries its **class** — kernel or sugar, one of the language’s four design principles — and **what it does**, both projected from the keyword inventory at [L-61](/spec/language/#l-61), whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.
 
@@ -154,7 +154,7 @@ Specified by [L-146](/spec/language/#l-146):
 
 > [L-146](/spec/language/#l-146) · `class` keeps PARENTHESES for its state struct
 
-Also named by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61).
+Also named by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61), [L-200](/spec/language/#l-200).
 
 ```jock
 struct BS<T> { v: T }; class Box<T>(BS<T>) { get(self: Self) -> T { self.v } }; Box( v: 5 ).get()
@@ -196,7 +196,7 @@ pinned by `t-eq-ne` · 42 vectors use this keyword
 
 **Kernel (declaration).** `%decl`: tagged sum. Rules [L-70](/spec/language/#l-70) to [L-73](/spec/language/#l-73) below
 
-**No rule in `language.md` states what `enum` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61), [L-149](/spec/language/#l-149), [L-170](/spec/language/#l-170).
+**No rule in `language.md` states what `enum` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61), [L-149](/spec/language/#l-149), [L-170](/spec/language/#l-170), [L-200](/spec/language/#l-200).
 
 ```jock
 enum Rec { leaf, cell(Rec, Rec) }; 0
@@ -242,7 +242,7 @@ pinned by `t-text-interp-user` · 29 vectors use this keyword
 
 **Kernel.** named (recursive) function: `%func` — kernel by decision (OPEN-10 resolved): one lowering rule owns self-name binding, recursion, and the generics binders
 
-Specified by [L-17](/spec/language/#l-17), [L-20](/spec/language/#l-20), [L-135](/spec/language/#l-135), [L-136](/spec/language/#l-136), [L-137](/spec/language/#l-137), [L-140](/spec/language/#l-140):
+Specified by [L-17](/spec/language/#l-17), [L-20](/spec/language/#l-20), [L-135](/spec/language/#l-135), [L-136](/spec/language/#l-136), [L-137](/spec/language/#l-137), [L-140](/spec/language/#l-140), [L-200](/spec/language/#l-200):
 
 > [L-17](/spec/language/#l-17) · `private` marks the next declaration or `func` unexported.
 
@@ -256,13 +256,15 @@ Specified by [L-17](/spec/language/#l-17), [L-20](/spec/language/#l-20), [L-135]
 
 > [L-140](/spec/language/#l-140) · An unlabeled `recur` re-enters only the innermost enclosing `func` or `loop`
 
+> [L-200](/spec/language/#l-200) · A `func` binder carries ONE bound, and each of the three ways to ask for more is refused by name.
+
 Also named by [L-61](/spec/language/#l-61), [L-87](/spec/language/#l-87), [L-139](/spec/language/#l-139), [L-143](/spec/language/#l-143), [L-185](/spec/language/#l-185).
 
 ```jock
 func<T> id(x: T) -> T { x }; id(42)
 ```
 
-pinned by `t-text-gen` · 95 vectors use this keyword
+pinned by `t-text-gen` · 97 vectors use this keyword
 
 ### `hint`
 
@@ -304,7 +306,7 @@ pinned by `t-eq-ne` · 43 vectors use this keyword
 
 **Kernel (declaration).** `%decl`: registration + method minting; standalone instances are `impl Trait for Type { … };` (types.md [S9.4](/spec/types/#s9.4)/S9.5)
 
-**No rule in `language.md` states what `impl` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-20](/spec/language/#l-20), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61).
+**No rule in `language.md` states what `impl` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-20](/spec/language/#l-20), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61), [L-200](/spec/language/#l-200).
 
 ```jock
 struct P { v: @ }; impl Show for P { show(self: P) -> String { "P!" }; }; let p = P( v: 1 ); "{p}"
@@ -526,7 +528,7 @@ pinned by `t-text-loop` · 4 vectors use this keyword
 
 **Kernel (declaration).** `%decl`: def-registration in `+mint` (types.md [S9.1](/spec/types/#s9.1) — desugar has no environment, so declarations are one kernel form the parser emits directly)
 
-**No rule in `language.md` states what `struct` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61).
+**No rule in `language.md` states what `struct` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61), [L-200](/spec/language/#l-200).
 
 ```jock
 struct Q { w: @ }; Q( w: 9 ).w
@@ -540,7 +542,7 @@ pinned by `t-text-dot-slit` · 79 vectors use this keyword
 
 **Kernel (declaration).** `%decl`. Rules [L-62](/spec/language/#l-62) to [L-66](/spec/language/#l-66) below
 
-**No rule in `language.md` states what `trait` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61).
+**No rule in `language.md` states what `trait` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61), [L-200](/spec/language/#l-200).
 
 ```jock
 trait MyAdd { add(+); }; 42

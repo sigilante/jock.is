@@ -5,12 +5,12 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `fdba0d3` (master) · corpus 1218 vectors · 2026-11-22
+> channel `%rc` · commit `a6b1f57` (sigilante/one-bound-diag) · corpus 1224 vectors · 2026-11-23
 
 |  | count |  |
 |---|---:|---|
-| tags the compiler can raise | 206 | 201 `~|` heads + 7 `$diag` members |
-| **with a runnable program** | **167** | the vector carries source, and the page shows it |
+| tags the compiler can raise | 207 | 202 `~|` heads + 7 `$diag` members |
+| **with a runnable program** | **168** | the vector carries source, and the page shows it |
 | no input can reach the guard | 36 | registered with the reason, and the registry is checked |
 | …of those, still pinned by a vector | 30 | an AST- or judgment-level row reaches the arm directly |
 | …and pinned by nothing | 6 | nothing to point an input at |
@@ -573,7 +573,7 @@ pinned by `t-mint-ctor-tag` · spec: docs/spec/language.md [L-166](/spec/languag
 func<T: Lt, T: Lt> f(x: T) -> T { x }; f(1)
 ```
 
-pinned by `t-err-gbin-dup`, `t-err-gbin-dup-group`
+pinned by `t-err-gbin-dup`, `t-err-gbin-dup-group` · spec: docs/spec/language.md [L-200](/spec/language/#l-200)
 
 ### `%mint-edit`
 
@@ -639,13 +639,21 @@ func f(a: @) { a }; 1
 
 pinned by `t-rch-fn-ret` · also `t-mint-func-ret` (AST-level)
 
+### `%mint-gen-one-bound`
+
+```jock
+func<T: Lt, Gt> f(x: T) -> T { x }; f(1)
+```
+
+pinned by `t-chkj-one-bound`, `t-err-gbin-comma`, `t-err-gbin-comma-group` · spec: docs/spec/language.md [L-200](/spec/language/#l-200)
+
 ### `%mint-gen-unused`
 
 ```jock
-func<T> bad(x: @) -> @ { x }; func<U> ok(x: U) -> U { x }; 0
+func<Lt> f(x: @) -> @ { x }; f(1)
 ```
 
-pinned by `t-err-ggroup-unused` · also `t-mint-gen-unsolved` (AST-level)
+pinned by `t-err-gbin-lone`, `t-err-gbin-spare`, `t-err-ggroup-unused` · also `t-mint-gen-unsolved` (AST-level) · spec: docs/spec/language.md [L-200](/spec/language/#l-200)
 
 ### `%mint-hint-reserved`
 
@@ -997,7 +1005,7 @@ pinned by `t-jimp-class-gen-seal`, `t-jimp-seal-lit` · spec: docs/imports.md I-
 trait G<A> { g(self: Self) -> A; }; func<T: G> f(x: T) -> @ { 1 }; f(2)
 ```
 
-pinned by `t-err-bound-ptrait`, `t-err-class-gen-bound`, `t-jdag-arm-generic-n`, `t-jimp-arm-gen`, `t-jimp-bound-qual-ptrait`, `t-mint-gimpl-bound` · spec: docs/spec/language.md [L-171](/spec/language/#l-171)
+pinned by `t-err-bound-ptrait`, `t-err-class-gen-bound`, `t-jdag-arm-generic-n`, `t-jimp-arm-gen`, `t-jimp-bound-qual-ptrait`, `t-mint-gimpl-bound` · spec: docs/spec/language.md [L-200](/spec/language/#l-200), docs/spec/language.md [L-171](/spec/language/#l-171)
 
 ### `%mint-unblessed`
 
@@ -1161,7 +1169,7 @@ pinned by `t-parse-func-parens`
 func<T: Lt + Gt> f(x: T) -> T { x }; f(1)
 ```
 
-pinned by `t-err-gbin-bounds`
+pinned by `t-err-gbin-bounds` · spec: docs/spec/language.md [L-200](/spec/language/#l-200)
 
 ### `%parse-hint-tag`
 
@@ -1561,7 +1569,7 @@ Stronger than a registry entry, and listed apart from it. No input reaches these
 
 ## Tags pinned by nothing
 
-Reachable, and no vector asserts them: 1 of 206. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.
+Reachable, and no vector asserts them: 1 of 207. Simultaneously a documentation gap — there is no verified explanation to emit — and a test gap. Listed rather than dropped, so the gap is visible.
 
 **`%impl-conflict`** — Two libraries supplying different impl facts for one (trait, head) pair. Not reached from any spelling tried: two modules each declaring their own trait do not collide, because a module’s trait is its own, and the single-module spelling refuses `%mint-impl-coh` first. Probed, not inferred.
 

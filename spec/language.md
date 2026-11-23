@@ -1438,6 +1438,48 @@ call-site instantiation syntax. `func` and class suites may be
 generic (`class Box<T>(BS<T>)`); lambdas may not.
 ⟨`t-as-cong-struct`, `t-text-class-gen-arg`, `t-mint-fond-inst`⟩
 
+**L-200 · A `func` binder carries ONE bound, and each of the three
+ways to ask for more is refused by name.** `$gbin` is `[name
+bound=(unit cord)]`, and `func` is the only form that passes
+dictionaries: the ABI appends one `$bnd-<T>` parameter per bounded
+binder, keyed on the binder's name, so a second bound has no
+parameter to arrive in. `T: Lt + Gt` refuses `%parse-gbin-bounds` at
+the `+`; `T: Lt, Gt` parses as two binders and refuses
+`%mint-gen-one-bound`, because an unused binder named for a declared
+trait **beside a binder that carries one** is a bound in the wrong
+place rather than a spare type variable; and a repeated name,
+`T: Lt, T: Gt`, refuses `%mint-dup-binder` — which until 2026-11-22
+compiled, resolving last-wins, so the binder got only the second
+bound's methods. Several DISTINCT binders are ordinary and
+unaffected; `lib/hof` is built on them. An unused binder whose name is
+not a trait still refuses `%mint-gen-unused`, and so does one with no
+bound anywhere in the list (`t-err-gbin-lone`).
+
+> **The other declaration forms do not reach this rule**, and they do
+> not agree with each other. `$gbin` is shared by six forms, but only
+> `func` supports a bound at all (L-142): `trait`, `class` and `impl`
+> refuse a bound outright with `%mint-todo` (clues `%trait-bound`,
+> `%class-bound`, `%impl-bound`), while **`struct` and `enum` accept
+> `T: Lt, Gt` and compile, silently ignoring the bound** — measured,
+> and the least satisfying corner of the area.
+
+> The comma test is a **heuristic on the binder's name**, so a reader
+> who wrote a bound and also a spare variable shadowing a declared
+> trait is told they misplaced the bound. Only the wording is at
+> stake: such a binder must be unused to reach the test, and an
+> unused binder was already refused, so no program's acceptance
+> turns on it. Shadowing a trait name is otherwise legal
+> (`t-text-gbin-shadow`), and the rendered message is pinned by
+> `t-chkj-one-bound`.
+
+The restriction is the dictionary ABI's; the `+` spelling is caught
+earlier, by the parser. jock#100 carries the census that declined to
+lift it.
+⟨`t-err-gbin-bounds`, `t-err-gbin-comma`, `t-err-gbin-comma-group`,
+`t-err-gbin-dup`, `t-err-gbin-dup-group`, `t-err-gbin-lone`,
+`t-err-gbin-spare`, `t-text-gbin-shadow`, `t-text-gbin-two`,
+`t-chkj-one-bound`⟩
+
 **L-144 · The type bracket is ANGLE, and it does not fight the
 comparison.** Type arguments and binders are written `<…>` —
 `List<@>`, `func<T>`, `struct Pair<T>`, `trait Idx<I, A>` — while `<`
