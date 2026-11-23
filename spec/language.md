@@ -88,10 +88,26 @@ token after a comment is never glued, so a comment can never create
 or destroy a postfix binding (L-1). ⟨`t-lex-comment-p`⟩
 
 **L-55 · Token positions are 1-based line and column**, columns
-counting tape characters — bytes, for ASCII. Every lexer vector
-asserts the positions, so the whole `vex-lex` file pins this; the
-three named here are representative.
-⟨`t-lex-num-p`, `t-lex-type-p`, `t-lex-uni-p`⟩
+counting **characters** — one per Unicode scalar, so one per byte for
+ASCII and one for a two-, three- or four-byte character. Source is
+UTF-8 by L-52, so this is well defined. Every lexer vector asserts
+the positions, so the whole `vex-lex` file pins this; the three named
+here are representative.
+
+> **This rule read "tape characters — bytes, for ASCII" until
+> 2026-11-23, and that was not clear enough.** A Hoon `tape` is a
+> list of bytes, so "tape characters" reads as *bytes*, and
+> `docs/native-compiler-plan.md` cited this very section for "source
+> columns count bytes, not codepoints … the repository has already
+> ruled". All three lexers did count bytes, so a multi-byte string,
+> block comment, punctuator glyph or interpolation hole shifted every
+> column after it on that line. The implementations agreed, so no
+> differential saw it, and no vector reached the case —
+> `t-lex-uni-p` ends **on** its glyph. The rule now says characters
+> outright; `t-lex-uni-after` asserts the column after a glyph and
+> `t-chkj-hole-col` the column after an interpolation hole.
+⟨`t-lex-num-p`, `t-lex-type-p`, `t-lex-uni-p`, `t-lex-uni-after`,
+`t-chkj-glyph-col`, `t-chkj-utf8-col`, `t-chkj-hole-col`⟩
 
 **L-56 · There are two identifier classes, distinguished
 lexically.** A **name** has a lower-case initial (`foo`, `myCount`)

@@ -5,7 +5,7 @@ Generated from the compiler and its corpus. Every table is projected from a norm
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes these pages.
 >
-> channel `%rc` · commit `7655707` (sigilante/utf8-columns) · corpus 1233 vectors · 2026-11-23
+> channel `%rc` · commit `1ea8455` (sigilante/glyph-columns) · corpus 1236 vectors · 2026-11-24
 
 ## Writing Jock
 

@@ -5,7 +5,7 @@ Where Jock deliberately differs from Hoon. The fast path for a reader who alread
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> 4 landmarks · 31 rules that name Hoon · channel `%rc` · commit `7655707`
+> 4 landmarks · 32 rules that name Hoon · channel `%rc` · commit `1ea8455`
 
 ## The four the outline names
 
@@ -37,12 +37,13 @@ Where Jock deliberately differs from Hoon. The fast path for a reader who alread
 
 ## Every rule that reaches for Hoon
 
-A mechanical set, and the page says so because the alternative would be a list somebody chose. "Where Jock differs from Hoon" is classified nowhere in this tree — the 23 did-you-mean corrections name Hoon exactly once, and that once is incidental, pointing at `hoon.dis` as the replacement for `&&`. What does exist is the normative rules, of which 31 say the word out loud across `language.md`, `types.md` and `runtime.md`. A rule that reaches for Hoon to explain itself is a rule about a difference.
+A mechanical set, and the page says so because the alternative would be a list somebody chose. "Where Jock differs from Hoon" is classified nowhere in this tree — the 23 did-you-mean corrections name Hoon exactly once, and that once is incidental, pointing at `hoon.dis` as the replacement for `&&`. What does exist is the normative rules, of which 32 say the word out loud across `language.md`, `types.md` and `runtime.md`. A rule that reaches for Hoon to explain itself is a rule about a difference.
 
 `chain.md` names Hoon more often than any of the three and is not swept: it is about one package’s interop, not about the language.
 
 | rule | states |
 |---|---|
+| `language.md` [L-55](/spec/language/#l-55) | Token positions are 1-based line and column**, columns counting **characters** — one per Unicode scalar, so one per byte for ASCII and one for a two-, three- or four-byte character. Source is UTF-8 by [L-52](/spec/language/#l-52), so this is well defined. Every lexer vector asserts the positions, so the whole `vex-lex` fil |
 | `language.md` [L-59](/spec/language/#l-59) | Identifiers admit glued hyphens, Hoon-Term-style.** `a-1` and `foo-bar` are each ONE token, never a subtraction. A hyphen joins only *between* identifier characters, so a trailing or doubled hyphen (`a-`, `a--b`) ends the identifier and refuses. The readings cannot collide because binary `-` is spac |
 | `language.md` [L-71](/spec/language/#l-71) | An enum's bunt is the FIRST case's bunt**, by declaration order. This deliberately breaks Hoon's last-case `$%` convention, so a reader coming from Hoon should not assume that convention. Well-foundedness is checked at registration (types.md [S10.3](/spec/types/#s10.3)). ⟨`t-arc-enum`⟩ |
 | `language.md` [L-195](/spec/language/#l-195) | `await` is monadic bind, and it is sugar.** `await a = e; k` rewrites to `e.bind(lambda (a) { k })` and `await e; k` to the same with a binder nothing can reference. This is Hoon's `;<`, which is what all of `strandio` is written in: the tail becomes a gate and the monad's own arm receives it. The r |

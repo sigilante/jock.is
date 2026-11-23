@@ -5,7 +5,7 @@
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> channel `%rc` · commit `7655707`
+> channel `%rc` · commit `1ea8455`
 
 ## The gradient
 
@@ -58,7 +58,7 @@ The steps are the outline’s order, which is by what each one introduces — so
 | `await-cards` | 98 | — | `hof` |
 | `parser-arms` | 100 | `33` | `parser` |
 | `watcher` | 121 | `[2 2 1 1]` | `nockapp` |
-| `string-views` | 126 | `45` | — |
+| `string-views` | 136 | `45` | — |
 | `glyphs` | 142 | `13` | — |
 | `time-arms` | 205 | `22` | `time` |
 | `conway` | 237 | `0` | `http` |
