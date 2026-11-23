@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>a6b1f57</code> (sigilante/one-bound-diag) · corpus 1224 vectors · 2026-11-23</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>8d79808</code> (sigilante/bound-and-render) · corpus 1232 vectors · 2026-11-23</aside>
 <p>Each keyword below carries its <strong>class</strong> — kernel or sugar, one of the language’s four design principles — and <strong>what it does</strong>, both projected from the keyword inventory at <a href="/spec/language/#l-61">L-61</a>, whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.</p>
 <p>The keyword set is read from the <code>$keyword</code> mold in <code>sur/jock.hoon</code> — the lexer’s own authority, which <code>tools/hilite.py</code> holds the web highlighter to. A keyword cannot appear here without being in the language, or be in the language without appearing here.</p>
 <table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>keywords in the mold</td><td>31</td></tr><tr><td>usable, with a demonstrating program</td><td>31</td></tr><tr><td>usable, demonstrated by nothing</td><td>0</td></tr><tr><td>deliberately not usable</td><td>0</td></tr><tr><td>with a rule that states what it does</td><td>15</td></tr><tr><td>specified only by their inventory row</td><td>16</td></tr></tbody></table>
@@ -71,7 +71,7 @@
 <h3 id="alias"><code>alias</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <p><strong>Kernel (declaration).</strong> <code>alias New is Old</code>. Rules <a href="/spec/language/#l-67">L-67</a> to <a href="/spec/language/#l-69">L-69</a> below</p>
-<p><strong>No rule in <code>language.md</code> states what <code>alias</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-22">L-22</a>, <a href="/spec/language/#l-45">L-45</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-81">L-81</a>.</p>
+<p><strong>No rule in <code>language.md</code> states what <code>alias</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-22">L-22</a>, <a href="/spec/language/#l-45">L-45</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-81">L-81</a>, <a href="/spec/language/#l-200">L-200</a>.</p>
 <pre class="code jock">alias Foo is @; let x: Foo = 1; x</pre>
 <p>pinned by <code>t-arc-alias-is</code> · 7 vectors use this keyword</p>
 <h3 id="and"><code>and</code></h3>
@@ -111,7 +111,7 @@
 <p><strong>Kernel (declaration).</strong> <code>%decl</code>: registration + method minting; standalone instances are <code>impl Trait for Type { … };</code> (types.md <a href="/spec/types/#s9.4">S9.4</a>/S9.5)</p>
 <p>Specified by <a href="/spec/language/#l-146">L-146</a>:</p>
 <blockquote><a href="/spec/language/#l-146">L-146</a> · <code>class</code> keeps PARENTHESES for its state struct</blockquote>
-<p>Also named by <a href="/spec/language/#l-22">L-22</a>, <a href="/spec/language/#l-45">L-45</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-200">L-200</a>.</p>
+<p>Also named by <a href="/spec/language/#l-22">L-22</a>, <a href="/spec/language/#l-45">L-45</a>, <a href="/spec/language/#l-61">L-61</a>.</p>
 <pre class="code jock">struct BS&lt;T&gt; { v: T }; class Box&lt;T&gt;(BS&lt;T&gt;) { get(self: Self) -&gt; T { self.v } }; Box( v: 5 ).get()</pre>
 <p>pinned by <code>t-text-class-gen</code> · 31 vectors use this keyword</p>
 <h3 id="crash"><code>crash</code></h3>
@@ -131,7 +131,7 @@
 <p><strong>Kernel (declaration).</strong> <code>%decl</code>: tagged sum. Rules <a href="/spec/language/#l-70">L-70</a> to <a href="/spec/language/#l-73">L-73</a> below</p>
 <p><strong>No rule in <code>language.md</code> states what <code>enum</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-22">L-22</a>, <a href="/spec/language/#l-45">L-45</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-149">L-149</a>, <a href="/spec/language/#l-170">L-170</a>, <a href="/spec/language/#l-200">L-200</a>.</p>
 <pre class="code jock">enum Rec { leaf, cell(Rec, Rec) }; 0</pre>
-<p>pinned by <code>t-decl-fond-reorder</code> · 23 vectors use this keyword</p>
+<p>pinned by <code>t-decl-fond-reorder</code> · 24 vectors use this keyword</p>
 <h3 id="eval"><code>eval</code></h3>
 <p><strong>control keyword.</strong></p>
 <p><strong>Kernel.</strong> Nock evaluation: <code>%eval</code> (Nock 2)</p>
@@ -145,7 +145,7 @@
 <p><strong>Kernel (declaration).</strong> separates trait from target in <code>impl Area for Shape</code>; with a parameterized trait the arguments ride on the trait name, <code>impl&lt;T&gt; Idx&lt;@, T&gt; for List&lt;T&gt;</code></p>
 <p><strong>No rule in <code>language.md</code> states what <code>for</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-61">L-61</a>.</p>
 <pre class="code jock">struct P { v: @ }; impl Show for P { show(self: P) -&gt; String { "P!" }; }; let p = P( v: 1 ); "{p}"</pre>
-<p>pinned by <code>t-text-interp-user</code> · 29 vectors use this keyword</p>
+<p>pinned by <code>t-text-interp-user</code> · 31 vectors use this keyword</p>
 <h3 id="func"><code>func</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <p><strong>Kernel.</strong> named (recursive) function: <code>%func</code> — kernel by decision (OPEN-10 resolved): one lowering rule owns self-name binding, recursion, and the generics binders</p>
@@ -178,9 +178,9 @@
 <h3 id="impl"><code>impl</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <p><strong>Kernel (declaration).</strong> <code>%decl</code>: registration + method minting; standalone instances are <code>impl Trait for Type { … };</code> (types.md <a href="/spec/types/#s9.4">S9.4</a>/S9.5)</p>
-<p><strong>No rule in <code>language.md</code> states what <code>impl</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-20">L-20</a>, <a href="/spec/language/#l-45">L-45</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-200">L-200</a>.</p>
+<p><strong>No rule in <code>language.md</code> states what <code>impl</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-20">L-20</a>, <a href="/spec/language/#l-45">L-45</a>, <a href="/spec/language/#l-61">L-61</a>.</p>
 <pre class="code jock">struct P { v: @ }; impl Show for P { show(self: P) -&gt; String { "P!" }; }; let p = P( v: 1 ); "{p}"</pre>
-<p>pinned by <code>t-text-interp-user</code> · 44 vectors use this keyword</p>
+<p>pinned by <code>t-text-interp-user</code> · 46 vectors use this keyword</p>
 <h3 id="import"><code>import</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <p><strong>Kernel.</strong> <code>%import</code>; resolution happens at environment construction, not parse</p>
@@ -218,7 +218,7 @@
 <blockquote><a href="/spec/language/#l-134">L-134</a> · Destructuring <code>let</code> is admitted</blockquote>
 <p>Also named by <a href="/spec/language/#l-20">L-20</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-130">L-130</a>, <a href="/spec/language/#l-171">L-171</a>, <a href="/spec/language/#l-185">L-185</a>, <a href="/spec/language/#l-199">L-199</a>.</p>
 <pre class="code jock">let x = 1; x;</pre>
-<p>pinned by <code>t-arc-term-semi</code> · 199 vectors use this keyword</p>
+<p>pinned by <code>t-arc-term-semi</code> · 201 vectors use this keyword</p>
 <h3 id="loop"><code>loop</code></h3>
 <p><strong>control keyword.</strong></p>
 <p><strong>Kernel.</strong> recursion point / re-entry: <code>%loop</code> / <code>%recur</code>, both optionally labeled (<code>loop outer { … recur outer }</code>) — note no <code>;</code> before the closing brace; a trailing separator there refuses <code>%parse-expected %'}'</code></p>
@@ -278,13 +278,13 @@
 <p><strong>Kernel (declaration).</strong> <code>%decl</code>: def-registration in <code>+mint</code> (types.md <a href="/spec/types/#s9.1">S9.1</a> — desugar has no environment, so declarations are one kernel form the parser emits directly)</p>
 <p><strong>No rule in <code>language.md</code> states what <code>struct</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-45">L-45</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-200">L-200</a>.</p>
 <pre class="code jock">struct Q { w: @ }; Q( w: 9 ).w</pre>
-<p>pinned by <code>t-text-dot-slit</code> · 79 vectors use this keyword</p>
+<p>pinned by <code>t-text-dot-slit</code> · 82 vectors use this keyword</p>
 <h3 id="trait"><code>trait</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <p><strong>Kernel (declaration).</strong> <code>%decl</code>. Rules <a href="/spec/language/#l-62">L-62</a> to <a href="/spec/language/#l-66">L-66</a> below</p>
-<p><strong>No rule in <code>language.md</code> states what <code>trait</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-22">L-22</a>, <a href="/spec/language/#l-45">L-45</a>, <a href="/spec/language/#l-61">L-61</a>, <a href="/spec/language/#l-200">L-200</a>.</p>
+<p><strong>No rule in <code>language.md</code> states what <code>trait</code> does.</strong> The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by <a href="/spec/language/#l-22">L-22</a>, <a href="/spec/language/#l-45">L-45</a>, <a href="/spec/language/#l-61">L-61</a>.</p>
 <pre class="code jock">trait MyAdd { add(+); }; 42</pre>
-<p>pinned by <code>t-op-rebind</code> · 25 vectors use this keyword</p>
+<p>pinned by <code>t-op-rebind</code> · 27 vectors use this keyword</p>
 <h3 id="var"><code>var</code></h3>
 <p><strong>declaration keyword.</strong></p>
 <p><strong>Kernel.</strong> mutable binding: <code>%let</code> with <code>mut=%.y</code>; <code>%edit</code> targets only <code>var</code> bindings (OPEN-14)</p>

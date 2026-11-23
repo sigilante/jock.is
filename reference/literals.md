@@ -5,7 +5,7 @@ Every literal form Jock can spell, the aura each carries, and the names the lang
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `a6b1f57` (sigilante/one-bound-diag) · corpus 1224 vectors · 2026-11-23
+> channel `%rc` · commit `8d79808` (sigilante/bound-and-render) · corpus 1232 vectors · 2026-11-23
 
 ## The literal inventory
 

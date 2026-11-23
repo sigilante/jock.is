@@ -5,7 +5,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `a6b1f57` (sigilante/one-bound-diag) · corpus 1224 vectors · 2026-11-23
+> channel `%rc` · commit `8d79808` (sigilante/bound-and-render) · corpus 1232 vectors · 2026-11-23
 
 |  | count |  |
 |---|---:|---|
@@ -393,7 +393,7 @@ pinned by `t-lex-strop-n`
 `
 ```
 
-pinned by `t-lex-stray-n` · also `t-lex-uni-n` (AST-level)
+pinned by `t-chkj-lex-stray`, `t-lex-stray-n` · also `t-lex-uni-n` (AST-level)
 
 ### `%lex-string-escape`
 
@@ -541,7 +541,7 @@ pinned by `t-mint-ctor`
 enum E { a(@) }; let f = E.a; 1
 ```
 
-pinned by `t-text-ctor-applied` · also `t-mint-ctor-applied` (AST-level) · spec: docs/spec/language.md [L-166](/spec/language/#l-166)
+pinned by `t-chkj-mint-ctor-applied`, `t-text-ctor-applied` · also `t-mint-ctor-applied` (AST-level) · spec: docs/spec/language.md [L-166](/spec/language/#l-166)
 
 ### `%mint-ctor-arity`
 
@@ -613,7 +613,7 @@ pinned by `t-jimp-seal-edit` · spec: docs/imports.md I-5
 struct S { x: @, y: @ }; trait T { dist(self: Self) -> @; } impl T for S { dist(self: Self) -> @ { self.x } } let v = S( x: 4, y: 5 ); let g = v.dist; 0
 ```
 
-pinned by `t-dimb-meth-value`, `t-jimp-arm-value-deep`, `t-jimp-private-field-n`, `t-rch-field` · spec: docs/spec/language.md [L-24](/spec/language/#l-24), docs/spec/language.md [L-171](/spec/language/#l-171)
+pinned by `t-chkj-mint-field`, `t-dimb-meth-value`, `t-jimp-arm-value-deep`, `t-jimp-private-field-n`, `t-rch-field` · spec: docs/spec/language.md [L-24](/spec/language/#l-24), docs/spec/language.md [L-171](/spec/language/#l-171)
 
 ### `%mint-func-annot`
 
@@ -893,7 +893,7 @@ pinned by `t-err-op-rmod` · spec: docs/spec/language.md [L-116](/spec/language/
 struct S { v: @ } trait A1 { a1(+); } trait A2 { a2(+); } impl A1 for S { a1(self: S, p: S) -> S { self }; }; impl A2 for S { a2(self: S, p: S) -> S { p }; }; (S(v: 1) + S(v: 2)).v
 ```
 
-pinned by `t-op-amb` · spec: docs/spec/language.md [L-43](/spec/language/#l-43), docs/spec/runtime.md [R-62](/spec/runtime/#r-62)
+pinned by `t-chkj-mint-op-amb`, `t-op-amb` · spec: docs/spec/language.md [L-43](/spec/language/#l-43), docs/spec/runtime.md [R-62](/spec/runtime/#r-62)
 
 ### `%mint-op-aura`
 
@@ -1002,10 +1002,10 @@ pinned by `t-jimp-class-gen-seal`, `t-jimp-seal-lit` · spec: docs/imports.md I-
 ### `%mint-todo`
 
 ```jock
-trait G<A> { g(self: Self) -> A; }; func<T: G> f(x: T) -> @ { 1 }; f(2)
+struct BS<T: Lt> { v: T }; 0
 ```
 
-pinned by `t-err-bound-ptrait`, `t-err-class-gen-bound`, `t-jdag-arm-generic-n`, `t-jimp-arm-gen`, `t-jimp-bound-qual-ptrait`, `t-mint-gimpl-bound` · spec: docs/spec/language.md [L-200](/spec/language/#l-200), docs/spec/language.md [L-171](/spec/language/#l-171)
+pinned by `t-chkj-struct-bound`, `t-err-alias-bound`, `t-err-bound-ptrait`, `t-err-class-gen-bound`, `t-err-struct-bound`, `t-err-union-bound`, `t-jdag-arm-generic-n`, `t-jimp-arm-gen`, `t-jimp-bound-qual-ptrait`, `t-mint-gimpl-bound` · spec: docs/spec/language.md [L-200](/spec/language/#l-200), docs/spec/language.md [L-171](/spec/language/#l-171)
 
 ### `%mint-unblessed`
 
@@ -1579,7 +1579,7 @@ Reachable, and no vector asserts them: 1 of 207. Simultaneously a documentation 
 
 - `%mint-hint-reserved` · `%dont` `%fast` `%sham`
 - `%mint-mold` · `%deep` `%gate` `%var` `%void` — plus 4 computed leaf site(s), not enumerable from source
-- `%mint-todo` · `%bound-ptrait` `%class-bound` `%export-class-ptrait` `%func-gen` `%impl-bound` `%impl-head` `%import-arm-gen` `%list-annot` `%trait-bound` — plus 1 computed leaf site(s), not enumerable from source
+- `%mint-todo` · `%alias-bound` `%bound-ptrait` `%class-bound` `%export-class-ptrait` `%func-gen` `%impl-bound` `%impl-head` `%import-arm-gen` `%list-annot` `%struct-bound` `%trait-bound` `%union-bound` — plus 1 computed leaf site(s), not enumerable from source
 - `%module-form` · `%if` `%private` — plus 10 computed leaf site(s), not enumerable from source
 - `%parse-todo` · `%recur-edits`
 - `%sugar-todo` · `%list-annot` `%map-annot`

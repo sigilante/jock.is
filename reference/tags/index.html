@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>a6b1f57</code> (sigilante/one-bound-diag) · corpus 1224 vectors · 2026-11-23</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>8d79808</code> (sigilante/bound-and-render) · corpus 1232 vectors · 2026-11-23</aside>
 <table><thead><tr><th></th><th>count</th><th></th></tr></thead><tbody><tr><td>tags the compiler can raise</td><td>207</td><td>202 <code>~|</code> heads + 7 <code>$diag</code> members</td></tr><tr><td><strong>with a runnable program</strong></td><td><strong>168</strong></td><td>the vector carries source, and the page shows it</td></tr><tr><td>no input can reach the guard</td><td>36</td><td>registered with the reason, and the registry is checked</td></tr><tr><td>…of those, still pinned by a vector</td><td>30</td><td>an AST- or judgment-level row reaches the arm directly</td></tr><tr><td>…and pinned by nothing</td><td>6</td><td>nothing to point an input at</td></tr><tr><td>compiler invariant with a tripwire</td><td>2</td><td>a vector green only while the invariant holds</td></tr><tr><td><strong>reachable, and pinned by nothing</strong></td><td><strong>1</strong></td><td>the gap list</td></tr><tr><td>AST-level only, with no reason recorded</td><td>0</td><td>the other gap: pinned, but never watched from a program</td></tr></tbody></table>
 <p>A <code>%neg</code> vector refuses <em>without</em> naming a tag, so it pins that a program is rejected and never in what words. 45 rows are <code>%neg</code>; none of them pins a tag here.</p>
 <p><strong>The two gap rows are the ones to read.</strong> Every other row is a refusal the corpus pins and this page can explain. A count of unpinned tags on its own cannot tell a missing test from a guard the compiler holds against itself, and this page published 82 of them as one list until the difference was worked out tag by tag.</p>
@@ -200,7 +200,7 @@ cd"; s</pre>
 <p>pinned by <code>t-lex-strop-n</code></p>
 <h3 id="lex-stray"><code>%lex-stray</code></h3>
 <pre class="code jock" data-refuses="lex-stray">`</pre>
-<p>pinned by <code>t-lex-stray-n</code> · also <code>t-lex-uni-n</code> (AST-level)</p>
+<p>pinned by <code>t-chkj-lex-stray</code>, <code>t-lex-stray-n</code> · also <code>t-lex-uni-n</code> (AST-level)</p>
 <h3 id="lex-string-escape"><code>%lex-string-escape</code></h3>
 <pre class="code jock" data-refuses="lex-string-escape">"a\zzb"</pre>
 <p>pinned by <code>t-str-esc-bad</code>, <code>t-str-esc-short</code> · spec: docs/spec/language.md <a href="/spec/language/#l-29">L-29</a></p>
@@ -256,7 +256,7 @@ cd"; s</pre>
 <p>pinned by <code>t-mint-ctor</code></p>
 <h3 id="mint-ctor-applied"><code>%mint-ctor-applied</code></h3>
 <pre class="code jock" data-refuses="mint-ctor-applied">enum E { a(@) }; let f = E.a; 1</pre>
-<p>pinned by <code>t-text-ctor-applied</code> · also <code>t-mint-ctor-applied</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-166">L-166</a></p>
+<p>pinned by <code>t-chkj-mint-ctor-applied</code>, <code>t-text-ctor-applied</code> · also <code>t-mint-ctor-applied</code> (AST-level) · spec: docs/spec/language.md <a href="/spec/language/#l-166">L-166</a></p>
 <h3 id="mint-ctor-arity"><code>%mint-ctor-arity</code></h3>
 <pre class="code jock" data-refuses="mint-ctor-arity">enum E { a(@) }; E.a()</pre>
 <p>pinned by <code>t-mint-ctor-arity</code> · spec: docs/spec/language.md <a href="/spec/language/#l-165">L-165</a></p>
@@ -283,7 +283,7 @@ cd"; s</pre>
 <p>pinned by <code>t-jimp-seal-edit</code> · spec: docs/imports.md I-5</p>
 <h3 id="mint-field"><code>%mint-field</code></h3>
 <pre class="code jock" data-refuses="mint-field">struct S { x: @, y: @ }; trait T { dist(self: Self) -&gt; @; } impl T for S { dist(self: Self) -&gt; @ { self.x } } let v = S( x: 4, y: 5 ); let g = v.dist; 0</pre>
-<p>pinned by <code>t-dimb-meth-value</code>, <code>t-jimp-arm-value-deep</code>, <code>t-jimp-private-field-n</code>, <code>t-rch-field</code> · spec: docs/spec/language.md <a href="/spec/language/#l-24">L-24</a>, docs/spec/language.md <a href="/spec/language/#l-171">L-171</a></p>
+<p>pinned by <code>t-chkj-mint-field</code>, <code>t-dimb-meth-value</code>, <code>t-jimp-arm-value-deep</code>, <code>t-jimp-private-field-n</code>, <code>t-rch-field</code> · spec: docs/spec/language.md <a href="/spec/language/#l-24">L-24</a>, docs/spec/language.md <a href="/spec/language/#l-171">L-171</a></p>
 <h3 id="mint-func-annot"><code>%mint-func-annot</code></h3>
 <pre class="code jock" data-refuses="mint-func-annot">func f(a) -&gt; @ { 1 }; f(1)</pre>
 <p>pinned by <code>t-mint-func-annot</code> · spec: docs/spec/language.md <a href="/spec/language/#l-136">L-136</a></p>
@@ -388,7 +388,7 @@ cd"; s</pre>
 <p>pinned by <code>t-err-op-rmod</code> · spec: docs/spec/language.md <a href="/spec/language/#l-116">L-116</a></p>
 <h3 id="mint-op-amb"><code>%mint-op-amb</code></h3>
 <pre class="code jock" data-refuses="mint-op-amb">struct S { v: @ } trait A1 { a1(+); } trait A2 { a2(+); } impl A1 for S { a1(self: S, p: S) -&gt; S { self }; }; impl A2 for S { a2(self: S, p: S) -&gt; S { p }; }; (S(v: 1) + S(v: 2)).v</pre>
-<p>pinned by <code>t-op-amb</code> · spec: docs/spec/language.md <a href="/spec/language/#l-43">L-43</a>, docs/spec/runtime.md <a href="/spec/runtime/#r-62">R-62</a></p>
+<p>pinned by <code>t-chkj-mint-op-amb</code>, <code>t-op-amb</code> · spec: docs/spec/language.md <a href="/spec/language/#l-43">L-43</a>, docs/spec/runtime.md <a href="/spec/runtime/#r-62">R-62</a></p>
 <h3 id="mint-op-aura"><code>%mint-op-aura</code></h3>
 <pre class="code jock" data-refuses="mint-op-aura">1 + 'a'</pre>
 <p>pinned by <code>t-err-op-aura-char</code>, <code>t-err-op-aura-real</code> · spec: docs/spec/language.md <a href="/spec/language/#l-39">L-39</a>, docs/spec/runtime.md <a href="/spec/runtime/#r-51">R-51</a></p>
@@ -429,8 +429,8 @@ cd"; s</pre>
 <pre class="code jock" data-refuses="mint-slit-sealed">import m; m.Box( v: 6 ).get()</pre>
 <p>pinned by <code>t-jimp-class-gen-seal</code>, <code>t-jimp-seal-lit</code> · spec: docs/imports.md I-5</p>
 <h3 id="mint-todo"><code>%mint-todo</code></h3>
-<pre class="code jock" data-refuses="mint-todo">trait G&lt;A&gt; { g(self: Self) -&gt; A; }; func&lt;T: G&gt; f(x: T) -&gt; @ { 1 }; f(2)</pre>
-<p>pinned by <code>t-err-bound-ptrait</code>, <code>t-err-class-gen-bound</code>, <code>t-jdag-arm-generic-n</code>, <code>t-jimp-arm-gen</code>, <code>t-jimp-bound-qual-ptrait</code>, <code>t-mint-gimpl-bound</code> · spec: docs/spec/language.md <a href="/spec/language/#l-200">L-200</a>, docs/spec/language.md <a href="/spec/language/#l-171">L-171</a></p>
+<pre class="code jock" data-refuses="mint-todo">struct BS&lt;T: Lt&gt; { v: T }; 0</pre>
+<p>pinned by <code>t-chkj-struct-bound</code>, <code>t-err-alias-bound</code>, <code>t-err-bound-ptrait</code>, <code>t-err-class-gen-bound</code>, <code>t-err-struct-bound</code>, <code>t-err-union-bound</code>, <code>t-jdag-arm-generic-n</code>, <code>t-jimp-arm-gen</code>, <code>t-jimp-bound-qual-ptrait</code>, <code>t-mint-gimpl-bound</code> · spec: docs/spec/language.md <a href="/spec/language/#l-200">L-200</a>, docs/spec/language.md <a href="/spec/language/#l-171">L-171</a></p>
 <h3 id="mint-unblessed"><code>%mint-unblessed</code></h3>
 <p class="label">module</p>
 <pre class="code jock" data-refuses="mint-unblessed">func g() -&gt; @ { 2 };</pre>
@@ -637,7 +637,7 @@ cd"; s</pre>
 <p><strong><code>%impl-conflict</code></strong> — Two libraries supplying different impl facts for one (trait, head) pair. Not reached from any spelling tried: two modules each declaring their own trait do not collide, because a module’s trait is its own, and the single-module spelling refuses <code>%mint-impl-coh</code> first. Probed, not inferred.</p>
 <h2 id="families">Families</h2>
 <p>6 tags discriminate on a <em>second</em> element, so the thing to search for is the pair. Most are "unsupported thing" families, which is exactly where the compiler must say which; <code>%mint-hint-reserved</code> is the exception, naming the tag a program may not claim.</p>
-<ul><li><code>%mint-hint-reserved</code> · <code>%dont</code> <code>%fast</code> <code>%sham</code></li><li><code>%mint-mold</code> · <code>%deep</code> <code>%gate</code> <code>%var</code> <code>%void</code> — plus 4 computed leaf site(s), not enumerable from source</li><li><code>%mint-todo</code> · <code>%bound-ptrait</code> <code>%class-bound</code> <code>%export-class-ptrait</code> <code>%func-gen</code> <code>%impl-bound</code> <code>%impl-head</code> <code>%import-arm-gen</code> <code>%list-annot</code> <code>%trait-bound</code> — plus 1 computed leaf site(s), not enumerable from source</li><li><code>%module-form</code> · <code>%if</code> <code>%private</code> — plus 10 computed leaf site(s), not enumerable from source</li><li><code>%parse-todo</code> · <code>%recur-edits</code></li><li><code>%sugar-todo</code> · <code>%list-annot</code> <code>%map-annot</code></li></ul>
+<ul><li><code>%mint-hint-reserved</code> · <code>%dont</code> <code>%fast</code> <code>%sham</code></li><li><code>%mint-mold</code> · <code>%deep</code> <code>%gate</code> <code>%var</code> <code>%void</code> — plus 4 computed leaf site(s), not enumerable from source</li><li><code>%mint-todo</code> · <code>%alias-bound</code> <code>%bound-ptrait</code> <code>%class-bound</code> <code>%export-class-ptrait</code> <code>%func-gen</code> <code>%impl-bound</code> <code>%impl-head</code> <code>%import-arm-gen</code> <code>%list-annot</code> <code>%struct-bound</code> <code>%trait-bound</code> <code>%union-bound</code> — plus 1 computed leaf site(s), not enumerable from source</li><li><code>%module-form</code> · <code>%if</code> <code>%private</code> — plus 10 computed leaf site(s), not enumerable from source</li><li><code>%parse-todo</code> · <code>%recur-edits</code></li><li><code>%sugar-todo</code> · <code>%list-annot</code> <code>%map-annot</code></li></ul>
 </main>
 </div>
 </body>

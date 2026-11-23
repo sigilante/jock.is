@@ -5,7 +5,7 @@ Every keyword by the slot it occupies, and for the sugar forms, what each one re
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> 31 keywords · channel `%rc` · commit `a6b1f57`
+> 31 keywords · channel `%rc` · commit `8d79808`
 
 ## No railroad diagrams, and that is a ruling
 
@@ -21,19 +21,19 @@ That ruling binds this page. It also says what would lift it — a formal gramma
 
 | keyword | stated at |
 |---|---|
-| `alias` | `L-61`, `L-22`, `L-81`, `L-45` |
-| `class` | `L-61`, `L-22`, `L-200`, `L-146`, `L-45` |
+| `alias` | `L-61`, `L-22`, `L-81`, `L-200`, `L-45` |
+| `class` | `L-61`, `L-22`, `L-146`, `L-45` |
 | `enum` | `L-61`, `L-22`, `L-200`, `L-149`, `L-170`, `L-45` |
 | `for` | `L-61` |
 | `func` | `L-185`, `L-61`, `L-17`, `L-20`, `L-87`, `L-135`, `L-136`, `L-137`, `L-139`, `L-140`, `L-143`, `L-200` |
-| `impl` | `L-61`, `L-20`, `L-200`, `L-45` |
+| `impl` | `L-61`, `L-20`, `L-45` |
 | `import` | `L-185`, `L-61` |
 | `is` | `L-61`, `L-69` |
 | `lambda` | `L-61` |
 | `let` | `L-185`, `L-61`, `L-20`, `L-130`, `L-131`, `L-134`, `L-199`, `L-171` |
 | `private` | `L-61`, `L-17`, `L-18`, `L-25` |
 | `struct` | `L-61`, `L-200`, `L-45` |
-| `trait` | `L-61`, `L-22`, `L-200`, `L-45` |
+| `trait` | `L-61`, `L-22`, `L-45` |
 | `var` | `L-61`, `L-195`, `L-130`, `L-131`, `L-132`, `L-134` |
 
 ### Control (11)

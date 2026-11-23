@@ -5,7 +5,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `a6b1f57` (sigilante/one-bound-diag) · corpus 1224 vectors · 2026-11-23
+> channel `%rc` · commit `8d79808` (sigilante/bound-and-render) · corpus 1232 vectors · 2026-11-23
 
 Each keyword below carries its **class** — kernel or sugar, one of the language’s four design principles — and **what it does**, both projected from the keyword inventory at [L-61](/spec/language/#l-61), whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.
 
@@ -62,7 +62,7 @@ Every level of this table is drawn as a railroad diagram on [the surface grammar
 
 **Kernel (declaration).** `alias New is Old`. Rules [L-67](/spec/language/#l-67) to [L-69](/spec/language/#l-69) below
 
-**No rule in `language.md` states what `alias` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61), [L-81](/spec/language/#l-81).
+**No rule in `language.md` states what `alias` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61), [L-81](/spec/language/#l-81), [L-200](/spec/language/#l-200).
 
 ```jock
 alias Foo is @; let x: Foo = 1; x
@@ -154,7 +154,7 @@ Specified by [L-146](/spec/language/#l-146):
 
 > [L-146](/spec/language/#l-146) · `class` keeps PARENTHESES for its state struct
 
-Also named by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61), [L-200](/spec/language/#l-200).
+Also named by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61).
 
 ```jock
 struct BS<T> { v: T }; class Box<T>(BS<T>) { get(self: Self) -> T { self.v } }; Box( v: 5 ).get()
@@ -202,7 +202,7 @@ pinned by `t-eq-ne` · 42 vectors use this keyword
 enum Rec { leaf, cell(Rec, Rec) }; 0
 ```
 
-pinned by `t-decl-fond-reorder` · 23 vectors use this keyword
+pinned by `t-decl-fond-reorder` · 24 vectors use this keyword
 
 ### `eval`
 
@@ -234,7 +234,7 @@ pinned by `t-text-qq` · 3 vectors use this keyword
 struct P { v: @ }; impl Show for P { show(self: P) -> String { "P!" }; }; let p = P( v: 1 ); "{p}"
 ```
 
-pinned by `t-text-interp-user` · 29 vectors use this keyword
+pinned by `t-text-interp-user` · 31 vectors use this keyword
 
 ### `func`
 
@@ -306,13 +306,13 @@ pinned by `t-eq-ne` · 43 vectors use this keyword
 
 **Kernel (declaration).** `%decl`: registration + method minting; standalone instances are `impl Trait for Type { … };` (types.md [S9.4](/spec/types/#s9.4)/S9.5)
 
-**No rule in `language.md` states what `impl` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-20](/spec/language/#l-20), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61), [L-200](/spec/language/#l-200).
+**No rule in `language.md` states what `impl` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-20](/spec/language/#l-20), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61).
 
 ```jock
 struct P { v: @ }; impl Show for P { show(self: P) -> String { "P!" }; }; let p = P( v: 1 ); "{p}"
 ```
 
-pinned by `t-text-interp-user` · 44 vectors use this keyword
+pinned by `t-text-interp-user` · 46 vectors use this keyword
 
 ### `import`
 
@@ -398,7 +398,7 @@ Also named by [L-20](/spec/language/#l-20), [L-61](/spec/language/#l-61), [L-130
 let x = 1; x;
 ```
 
-pinned by `t-arc-term-semi` · 199 vectors use this keyword
+pinned by `t-arc-term-semi` · 201 vectors use this keyword
 
 ### `loop`
 
@@ -534,7 +534,7 @@ pinned by `t-text-loop` · 4 vectors use this keyword
 struct Q { w: @ }; Q( w: 9 ).w
 ```
 
-pinned by `t-text-dot-slit` · 79 vectors use this keyword
+pinned by `t-text-dot-slit` · 82 vectors use this keyword
 
 ### `trait`
 
@@ -542,13 +542,13 @@ pinned by `t-text-dot-slit` · 79 vectors use this keyword
 
 **Kernel (declaration).** `%decl`. Rules [L-62](/spec/language/#l-62) to [L-66](/spec/language/#l-66) below
 
-**No rule in `language.md` states what `trait` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61), [L-200](/spec/language/#l-200).
+**No rule in `language.md` states what `trait` does.** The line above is its row in the keyword inventory, and that row is the whole of its specification. It is named in passing by [L-22](/spec/language/#l-22), [L-45](/spec/language/#l-45), [L-61](/spec/language/#l-61).
 
 ```jock
 trait MyAdd { add(+); }; 42
 ```
 
-pinned by `t-op-rebind` · 25 vectors use this keyword
+pinned by `t-op-rebind` · 27 vectors use this keyword
 
 ### `var`
 
