@@ -5,7 +5,7 @@ Every keyword by the slot it occupies, and for the sugar forms, what each one re
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> 31 keywords · channel `%rc` · commit `8d79808`
+> 31 keywords · channel `%rc` · commit `7655707`
 
 ## No railroad diagrams, and that is a ruling
 
