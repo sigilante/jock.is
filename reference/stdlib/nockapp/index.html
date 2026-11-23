@@ -54,7 +54,7 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/nockapp.jock</code> and the examples that import it. 1 public declaration — 1 type, 0 arms. 1 pinned by a lane, 0 not. channel <code>%rc</code> · commit <code>1ea8455</code></aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/nockapp.jock</code> and the examples that import it. 1 public declaration — 1 type, 0 arms. 1 pinned by a lane, 0 not. channel <code>%rc</code> · commit <code>d0c1760</code></aside>
 <h2 id="import">Import</h2>
 <p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>nockapp.&lt;name&gt;</code>.</p>
 <pre class="code jock">import nockapp;</pre>
@@ -62,7 +62,7 @@
 <h2 id="about">About</h2>
 <p>These two cases are the drivers every NockApp has:  <code>exit</code> terminates the process with a code (drivers/exit.rs, matching <code>eq_bytes(b"exit")</code>) and <code>markdown</code> renders a cord (drivers/markdown.rs) --- the "print" of the nockapp world.</p>
 <p>THE CASE NAMES ARE WIRE FORMAT.  A Jock union erases to [tag payload], and that noun IS what the pinned drivers scan, so renaming a case is a protocol change rather than a refactor. String's erasure is its cord, so <code>Effect.markdown("bye")</code> is [%markdown 'bye'] verbatim.</p>
-<p>This lived in the prelude until 2026-10-24.  It left under the rule in docs/spec/runtime.md §8:  the prelude carries only what is true in every world Jock targets, and a driver's vocabulary is not that.  A kernel now names what it answers with.</p>
+<p>This is not in the prelude, under the rule in docs/spec/runtime.md §8:  the prelude carries only what is true in every world Jock targets, and a driver's vocabulary is not that. A kernel names what it answers with.</p>
 <h2 id="types">Types</h2>
 <p>1 type. A type’s members ARE its interface, so each is shown whole rather than by name.</p>
 <h3 id="effect"><code>Effect</code></h3>

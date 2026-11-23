@@ -5,7 +5,7 @@ the NockApp http driver, from the Jock side.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/http.jock` and the examples that import it.
 >
-> 22 public declarations — 3 types, 19 arms. 13 pinned by a lane, 9 not. channel `%rc` · commit `1ea8455`
+> 22 public declarations — 3 types, 19 arms. 13 pinned by a lane, 9 not. channel `%rc` · commit `d0c1760`
 
 ## Import
 
@@ -21,7 +21,7 @@ The name is the file name minus `.jock`: `http` is `crates/jockc/hoon/lib/http.j
 
 The runtime owns the driver.  What a kernel owes it is a shape: requests arrive as [%req id uri method headers body] causes inside an ovum, and the kernel answers with Effect.res --- [%res id status headers body], the driver's own parse verbatim.  This module is that shape, once, so an app is routing and state rather than marshalling.
 
-Ported from the Hoon side's lib/http.hoon, which every nockd example shares for exactly this reason. the driver's response effect, [%res id status headers body] --- its own parse verbatim (tuple payloads right-nest;  T? erasure is the unit;  Octs is hoon's).  Declared HERE because this is the module that owns the http driver's side of the wire;  it lived in the prelude until 2026-10-24 (runtime.md §8).
+Ported from the Hoon side's lib/http.hoon, which every nockd example shares for exactly this reason. the driver's response effect, [%res id status headers body] --- its own parse verbatim (tuple payloads right-nest;  T? erasure is the unit;  Octs is hoon's).  Declared HERE because this is the module that owns the http driver's side of the wire;  it is not in the prelude (runtime.md §8).
 
 ## Types
 

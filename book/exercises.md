@@ -5,7 +5,7 @@
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> channel `%rc` · commit `1ea8455`
+> channel `%rc` · commit `d0c1760`
 
 ## The gradient
 
@@ -40,18 +40,18 @@ The steps are the outline’s order, which is by what each one introduces — so
 | `twoc` | 31 | `16.235.262` | `twoc` |
 | `tap` | 33 | `616` | `hof` |
 | `sort-imported` | 41 | `'1/3|1/2|2/3|3/4|'` | `rational` |
-| `roof` | 44 | `[1 1 1 1]` | — |
+| `roof` | 46 | `[1 1 1 1]` | — |
 | `molds` | 50 | `'atom 42, byte A, rejected x, cmd op 3, kind 2'` | — |
 | `parser` | 53 | `'1234|abc|x|2'` | `parser` |
-| `interval` | 60 | `'[5/2, 4]|[1, 3]|[1/2, 3]|1/2|yes|[0, 1]'` | `interval`, `rational` |
+| `interval` | 59 | `'[5/2, 4]|[1, 3]|[1/2, 3]|1/2|yes|[0, 1]'` | `interval`, `rational` |
+| `parser-combinators` | 62 | `'aaa|ab|<x>|x|123|Q7 |zz|ok|9|2|a b|~'` | `parser` |
 | `rational-arms` | 64 | `19` | `rational` |
 | `http-counter` | 68 | `0` | `http` |
-| `parser-combinators` | 70 | `'aaa|ab|<x>|x|123|Q7 |zz|ok|9|2|a b|~'` | `parser` |
 | `matmul` | 74 | `[[58 64 0] [139 154 0] 0]` | — |
 | `twoc-arms` | 77 | `29` | `twoc` |
 | `units` | 77 | `.~24.0` | — |
 | `hof-arms` | 79 | `18` | `hof` |
-| `generic-class` | 84 | `14` | — |
+| `generic-class` | 83 | `14` | — |
 | `interval-arms` | 84 | `23` | `interval`, `rational` |
 | `rand-arms` | 90 | `11` | `rand` |
 | `await-strand` | 93 | — | — |
@@ -60,7 +60,7 @@ The steps are the outline’s order, which is by what each one introduces — so
 | `watcher` | 121 | `[2 2 1 1]` | `nockapp` |
 | `string-views` | 136 | `45` | — |
 | `glyphs` | 142 | `13` | — |
-| `time-arms` | 205 | `22` | `time` |
+| `time-arms` | 206 | `22` | `time` |
 | `conway` | 237 | `0` | `http` |
 | `minesweeper` | 335 | `0` | `hof`, `http` |
 | `wordle` | 364 | `0` | `http` |

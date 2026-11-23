@@ -5,7 +5,7 @@ the NockApp host's own effect vocabulary.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/nockapp.jock` and the examples that import it.
 >
-> 1 public declaration — 1 type, 0 arms. 1 pinned by a lane, 0 not. channel `%rc` · commit `1ea8455`
+> 1 public declaration — 1 type, 0 arms. 1 pinned by a lane, 0 not. channel `%rc` · commit `d0c1760`
 
 ## Import
 
@@ -23,7 +23,7 @@ These two cases are the drivers every NockApp has:  `exit` terminates the proces
 
 THE CASE NAMES ARE WIRE FORMAT.  A Jock union erases to [tag payload], and that noun IS what the pinned drivers scan, so renaming a case is a protocol change rather than a refactor. String's erasure is its cord, so `Effect.markdown("bye")` is [%markdown 'bye'] verbatim.
 
-This lived in the prelude until 2026-10-24.  It left under the rule in docs/spec/runtime.md §8:  the prelude carries only what is true in every world Jock targets, and a driver's vocabulary is not that.  A kernel now names what it answers with.
+This is not in the prelude, under the rule in docs/spec/runtime.md §8:  the prelude carries only what is true in every world Jock targets, and a driver's vocabulary is not that. A kernel names what it answers with.
 
 ## Types
 

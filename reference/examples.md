@@ -5,7 +5,7 @@
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `1ea8455` (sigilante/glyph-columns) · corpus 1236 vectors · 2026-11-24
+> channel `%rc` · commit `d0c1760` (sigilante/strip-dated-narration) · corpus 1236 vectors · 2026-11-24
 
 The descriptions are the authors’ own header comments, not written here: `examples/README.md` calls each example "executable documentation — the header comments are the prose, and a `// expect: <noun>` trailer pins the program’s value". 8 of them are **kernels**, carrying `// kernel: N` — built, poked N times, then peeked.
 
@@ -17,7 +17,7 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 | …with a pinned value | 40 |
 | …that are kernels | 8 |
 | …shown in full on this page | 14 |
-| total lines of Jock | 3469 |
+| total lines of Jock | 3462 |
 
 ## Every example
 
@@ -38,20 +38,20 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 | `twoc` | 31 | `16.235.262` | twoc.jock — two's-complement arithmetic at a chosen bit width. |
 | `tap` | 33 | `616` | tap.jock |
 | `sort-imported` | 41 | `'1/3|1/2|2/3|3/4|'` | sort-imported.jock --- the sort of sort.jock, over a type this program did not declare. |
-| `roof` | 44 | `[1 1 1 1]` | Roof — the namespace-answering protocol, the read-only analogue of Kernel.  A class `impl Roof` carries served state plus an `answer` arm;  peekUnder( |
 | `stoplight` | 45 | `%green` | **kernel (4 pokes).** stoplight.jock — a state-machine kernel. |
+| `roof` | 46 | `[1 1 1 1]` | Roof — the namespace-answering protocol, the read-only analogue of Kernel.  A class `impl Roof` carries served state plus an `answer` arm;  peekUnder( |
 | `molds` | 50 | `'atom 42, byte A, rejected x, cmd op 3, kind 2'` | molds.jock — checking foreign nouns: as?, as!, and guards. |
 | `parser` | 53 | `'1234|abc|x|2'` | parser.jock---using the parser combinator library. |
 | `webserver` | 54 | `0` | **kernel (2 pokes).** webserver.jock — a NockApp that serves HTTP, on lib/http. |
-| `interval` | 60 | `'[5/2, 4]|[1, 3]|[1/2, 3]|1/2|yes|[0, 1]'` | interval.jock — modules that STACK. |
+| `interval` | 59 | `'[5/2, 4]|[1, 3]|[1/2, 3]|1/2|yes|[0, 1]'` | interval.jock — modules that STACK. |
+| `parser-combinators` | 62 | `'aaa|ab|<x>|x|123|Q7 |zz|ok|9|2|a b|~'` | parser-combinators.jock --- coverage for lib/parser.jock. |
 | `rational-arms` | 64 | `19` | rational-arms.jock |
 | `http-counter` | 68 | `0` | **kernel (2 pokes).** http-counter.jock — a NockApp whose counter PERSISTS across restarts, ported from nockd's examples/http-counter. |
-| `parser-combinators` | 70 | `'aaa|ab|<x>|x|123|Q7 |zz|ok|9|2|a b|~'` | parser-combinators.jock --- coverage for lib/parser.jock. |
 | `matmul` | 74 | `[[58 64 0] [139 154 0] 0]` | matmul.jock — matrix multiplication over unsigned integers. |
 | `twoc-arms` | 77 | `29` | twoc-arms.jock |
 | `units` | 77 | `.~24.0` | units.jock — dimensioned quantities: magnitude and dimension. |
 | `hof-arms` | 79 | `18` | hof-arms.jock |
-| `generic-class` | 84 | `14` | generic-class.jock |
+| `generic-class` | 83 | `14` | generic-class.jock |
 | `interval-arms` | 84 | `23` | interval-arms.jock |
 | `rand-arms` | 90 | `11` | rand-arms.jock |
 | `await-strand` | 93 | — | await over a FREE monad: a computation that SUSPENDS, hands a request to whoever is driving it, and resumes with the answer. |
@@ -61,7 +61,7 @@ Ordering is by **size**, shortest first. That is a proxy a reader can check, not
 | `string-views` | 136 | `45` | string-views.jock |
 | `glyphs` | 142 | `13` | glyphs.jock |
 | `poker` | 167 | `%first` | poker.jock — score and compare two 5-card poker hands. |
-| `time-arms` | 205 | `22` | time-arms.jock |
+| `time-arms` | 206 | `22` | time-arms.jock |
 | `conway` | 237 | `0` | **kernel (2 pokes).** conway.jock — Life on a bounded 25x25 grid. Ported from nockd's examples/conway. |
 | `minesweeper` | 335 | `0` | **kernel (2 pokes).** minesweeper.jock — 9x9, 10 mines, all game logic in the kernel. Ported from nockd's examples/minesweeper. |
 | `wordle` | 364 | `0` | **kernel (2 pokes).** wordle.jock — six guesses at a five-letter word. Ported from nockd's examples/wordle. |
@@ -375,9 +375,9 @@ peekUnder(roof, path): read a path under an in-code roof --- the mink-based name
 //
 // A bare `lambda (r, p) -> * { v }` is ALSO accepted, and answers
 // v: its body is checked against the contract and optional
-// injection lifts it twice.  Convenient, and the reason absence was
-// unsayable until 2026-10-29 --- a lifted body can only ever
-// answer.  Prefer the explicit shape;  the lifted one is shown in
+// injection lifts it twice.  Convenient, and the reason the lifted
+// shape cannot say absence --- a lifted body can only ever answer.
+// Prefer the explicit shape;  the lifted one is shown in
 // the second row below so both are exercised.
 //
 // Three roofs prove the roof is consulted and that both spellings
@@ -563,8 +563,8 @@ value `616` · imports `hof` · run by `tools/examples.sh`
 | `chainwatcher` | 59 | `chain`, `nockapp` |
 | `chaintx-arms` | 68 | `chain`, `chaintx` |
 | `chainrand-arms` | 74 | `chain`, `chainrand` |
-| `txbuild` | 83 | `chain` |
+| `txbuild` | 82 | `chain` |
 | `chainkernel` | 127 | `chain`, `nockapp` |
-| `walletkernel` | 871 | `chain`, `chainkey`, `chaintx`, `nockapp`, `wallet` |
+| `walletkernel` | 870 | `chain`, `chainkey`, `chaintx`, `nockapp`, `wallet` |
 
 They are NOT excluded from the lane. `tools/examples.sh` compiles and runs all 49 programs on every push, these included, which is what keeps the chain modules compiling. The boundary here is what the site documents, not what the repo tests.

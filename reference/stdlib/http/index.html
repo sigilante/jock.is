@@ -54,14 +54,14 @@
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/http.jock</code> and the examples that import it. 22 public declarations — 3 types, 19 arms. 13 pinned by a lane, 9 not. channel <code>%rc</code> · commit <code>1ea8455</code></aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> writes this from <code>crates/jockc/hoon/lib/http.jock</code> and the examples that import it. 22 public declarations — 3 types, 19 arms. 13 pinned by a lane, 9 not. channel <code>%rc</code> · commit <code>d0c1760</code></aside>
 <h2 id="import">Import</h2>
 <p>A module arrives by name and nothing in it is ambient. Every arm below is reached as <code>http.&lt;name&gt;</code>.</p>
 <pre class="code jock">import http;</pre>
 <p>The name is the file name minus <code>.jock</code>: <code>http</code> is <code>crates/jockc/hoon/lib/http.jock</code>, and it is found because the directory holding it was passed as a <code>--data-dir</code>. There is no search path and no implicit import; <code>tools/libs.py</code> holds the whole discovery rule, and the compiler itself is a pure function of source and libraries.</p>
 <h2 id="about">About</h2>
 <p>The runtime owns the driver.  What a kernel owes it is a shape: requests arrive as [%req id uri method headers body] causes inside an ovum, and the kernel answers with Effect.res --- [%res id status headers body], the driver's own parse verbatim.  This module is that shape, once, so an app is routing and state rather than marshalling.</p>
-<p>Ported from the Hoon side's lib/http.hoon, which every nockd example shares for exactly this reason. the driver's response effect, [%res id status headers body] --- its own parse verbatim (tuple payloads right-nest;  T? erasure is the unit;  Octs is hoon's).  Declared HERE because this is the module that owns the http driver's side of the wire;  it lived in the prelude until 2026-10-24 (runtime.md §8).</p>
+<p>Ported from the Hoon side's lib/http.hoon, which every nockd example shares for exactly this reason. the driver's response effect, [%res id status headers body] --- its own parse verbatim (tuple payloads right-nest;  T? erasure is the unit;  Octs is hoon's).  Declared HERE because this is the module that owns the http driver's side of the wire;  it is not in the prelude (runtime.md §8).</p>
 <h2 id="types">Types</h2>
 <p>3 types. A type’s members ARE its interface, so each is shown whole rather than by name.</p>
 <h3 id="effect"><code>Effect</code></h3>

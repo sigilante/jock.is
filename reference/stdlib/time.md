@@ -5,7 +5,7 @@ civil dates, ISO 8601, and the Urbit `@da`.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/time.jock` and the examples that import it.
 >
-> 32 public declarations — 10 types, 22 arms. 23 pinned by a lane, 9 not. channel `%rc` · commit `1ea8455`
+> 32 public declarations — 10 types, 22 arms. 23 pinned by a lane, 9 not. channel `%rc` · commit `d0c1760`
 
 ## Import
 
@@ -57,9 +57,9 @@ trait Shift { plus(self: Self, p: Span) -> Self (+); minus(self: Self, p: Span) 
 
 AND AS OPERATORS. `t + anHour` is a Stamp and `b - a` is a Span, which is what anyone reaching for a time library wants to write.
 
-This needed a language change, landed 2026-10-30. An operator hook used to be spelled `name(op);` and ONLY that, with the parser synthesizing `(self: Self, p: Self) -> Self` for it --- so an operator could never take a right operand of another type, and `Stamp + Span` was unspellable by any route, including the type tricks that look like they should work: one type variable cannot be Stamp, Span and Stamp at once. The hook may now carry a WRITTEN signature, `name(args) -> ret (op);`, which is the form below.
+A time library needs the WRITTEN signature form of an operator hook, `name(args) -> ret (op);`, which is what appears below. The bare `name(op);` spelling has its signature synthesized as `(self: Self, p: Self) -> Self`, so the right operand is forced to Self and `Stamp + Span` is unspellable by it --- and by the type tricks that look like they should work, since one type variable cannot be Stamp, Span and Stamp at once.
 
-Binding `+` here costs no one anything, which was the second half of the same change. The operator registry used to hold one trait per operator for the whole program, so a library claiming a glyph took it from every other library (%op-conflict, and %decl-op-rebind on the declaration). It now holds a LIST and resolves by the left operand's head, so `Add` keeps `+` for every numeric head and `Shift` has it for `Stamp` alone. Two traits reaching ONE head is the real conflict and refuses %mint-op-amb at the use site.
+Binding `+` here costs no one anything. The operator registry holds a LIST per operator and resolves by the left operand's head, so `Add` keeps `+` for every numeric head and `Shift` has it for `Stamp` alone. Two traits reaching ONE head is the real conflict and refuses %mint-op-amb at the use site.
 
 The free functions above remain: an operator is unsearchable, and `time.plus` is what a reader greps for.
 
@@ -81,7 +81,7 @@ trait Duration { secs(self: Self) -> @; plus(self: Self, p: Self) -> Self; minus
 
 A `Span` is the language's own `%span` aura, so the prelude's traits cannot be given to it from here --- `impl Add for Span` refuses `%mint-impl-orphan 'Add' '@span'`. A trait declared HERE is a different matter: the orphan rule is satisfied by owning EITHER side, so this one may be implemented for a prelude type.
 
-AND IT COULD HAVE BEEN AN OPERATOR. `⊕` and `⊛` are free --- runtime.md [R-53](/spec/runtime/#r-53) calls `⊛` trait-only and gives `trait Seq { then(⊛); }` as the shape --- and a local trait may bind one: `trait Plus { plus(⊕); }` compiles, and `a ⊕ b` works across an import. It is deliberately not done, but NOT for the reason this comment used to give: it said an operator binding is global and first-come, so two modules that each bind `⊕` cannot be imported by one program, refusing `%op-conflict`. That refusal is retired (+ouni concatenates distinct registrations and leaves coherence to the use site), and several traits may bind one operator so long as no two reach one head (language.md [L-43](/spec/language/#l-43)). The real reason is namespace courtesy. A stdlib module taking a glyph as generic as `⊕` --- union, direct sum, xor --- would spend everyone's namespace on durations, which rarely add. Methods cost a dot and take nothing from anyone.
+AND IT COULD HAVE BEEN AN OPERATOR. `⊕` and `⊛` are free --- runtime.md [R-53](/spec/runtime/#r-53) calls `⊛` trait-only and gives `trait Seq { then(⊛); }` as the shape --- and a local trait may bind one: `trait Plus { plus(⊕); }` compiles, and `a ⊕ b` works across an import. Several traits may bind one operator so long as no two reach one head (language.md [L-43](/spec/language/#l-43)): +ouni concatenates distinct registrations and leaves coherence to the use site. So nothing stops it, and it is deliberately not done out of namespace courtesy. A stdlib module taking a glyph as generic as `⊕` --- union, direct sum, xor --- would spend everyone's namespace on durations, which rarely add. Methods cost a dot and take nothing from anyone.
 
 The signature a slot demands comes from the operator's STATION, not from the trait: an additive or multiplicative one is `(Self, Self) -> Self` and a comparison is `(Self, Self) -> Bool`, both enforced as `%mint-impl-sig`. That is why `Stamp + Span` is not spellable by any route, operator or glyph.
 
@@ -454,7 +454,7 @@ assert time.show(time.fromDate(d)) === "2026-10-30T12:34:56Z";
 func plus(t: Stamp, s: Span) -> Stamp { ... }
 ```
 
-NOT operators, and not for want of trying. An arithmetic op-trait is `(Self, Self) -> Self`: `Stamp + Span` fails because the right operand is not `Self`, and `Stamp - Stamp -> Span` fails because the result is not. Both refuse `%mint-impl-sig`. So the two genuinely useful arithmetic operations on instants are named functions, and `between` above is the subtraction.
+AS NAMED FUNCTIONS FIRST, and as operators below.  An op-trait whose hook is the bare `name(op);` is `(Self, Self) -> Self`, which neither of these fits:  `Stamp + Span` has a right operand that is not Self, and `Stamp - Stamp -> Span` has a result that is not. Both refuse `%mint-impl-sig`.  `between` above is the subtraction.
 
 *asserted by examples/time-arms.jock*
 
