@@ -5,7 +5,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `d0c1760` (sigilante/strip-dated-narration) · corpus 1236 vectors · 2026-11-24
+> channel `%rc` · commit `ec9893d` (sigilante/fmt-token-check) · corpus 1236 vectors · 2026-11-24
 
 Each keyword below carries its **class** — kernel or sugar, one of the language’s four design principles — and **what it does**, both projected from the keyword inventory at [L-61](/spec/language/#l-61), whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.
 
@@ -430,7 +430,7 @@ Specified by [L-84](/spec/language/#l-84), [L-148](/spec/language/#l-148):
 
 > [L-148](/spec/language/#l-148) · `match` is the eliminator, and `$patt` is closed
 
-Also named by [L-61](/spec/language/#l-61), [L-101](/spec/language/#l-101), [L-126](/spec/language/#l-126), [L-150](/spec/language/#l-150), [L-151](/spec/language/#l-151), [L-173](/spec/language/#l-173), [L-185](/spec/language/#l-185).
+Also named by [L-61](/spec/language/#l-61), [L-101](/spec/language/#l-101), [L-126](/spec/language/#l-126), [L-150](/spec/language/#l-150), [L-151](/spec/language/#l-151), [L-173](/spec/language/#l-173), [L-185](/spec/language/#l-185), [L-201](/spec/language/#l-201).
 
 ```jock
 let a: @ = 3; match a { 1 => 0, _ => 84, }

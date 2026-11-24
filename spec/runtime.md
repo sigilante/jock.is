@@ -1187,8 +1187,8 @@ not driver vocabulary — and it is one of the curated structs
 `+mtypes` grafts so a module can name it in a type *declaration*,
 which `lib/http` needs for its response body. `Roof` is the other
 borderline case and goes the other way: it is the namespace
-protocol, which `--nockchain` denies outright, so it is dead weight
-in that flavor. ⟨`t-halo-blessed`, `t-jimp-mimp`⟩
+protocol, and `--nockchain` refuses all four peek verbs, so it is
+dead weight in that flavor. ⟨`t-halo-blessed`, `t-jimp-mimp`⟩
 
 **R-85 · THE CASE NAMES ARE WIRE FORMAT.** A Jock union erases to
 `[tag payload]` and that noun IS what the pinned `crates/nockapp`

@@ -1616,6 +1616,33 @@ principle rather than for its history — L-149 applies it to case
 patterns, and both parsers' comments name it at the site where a
 synonym would otherwise have been accepted.
 
+**L-201 · A construct the grammar accepts must be REPRESENTABLE in
+the AST, or it must be refused.** The surface and the tree are not
+allowed to disagree about what exists. A parser that reads a form and
+discards it produces a program the compiler cannot say anything about
+and the formatter cannot print back, so the loss surfaces somewhere
+far from the grammar that caused it.
+
+> This is stated because it was learned the hard way. `Shape.circle(r)`
+> parsed for months with nowhere to put the qualifier — `$patt`'s case
+> is `[%tag tag pat]` and `Patt::Tag` has no type field — so both
+> compilers read it and threw it away (L-149). Two consequences
+> followed, neither near the grammar: `R.ok(v)` **formatted to
+> `.ok(v)`**, silently rewriting a file whenever it held no comment,
+> and a parser comment claimed `+mint` checked the qualifier against
+> the scrutinee, a check that could not exist because there was
+> nothing to check against. A spelling the spec had advertised for
+> months turned out to have no users at all. Under this rule it would
+> have been a design error when it was written, rather than a
+> formatter bug found later.
+
+The formatter is where a violation shows, so that is where it is
+caught: `jock-fmt`'s corpus laws require that printing re-parses, that
+it is idempotent, and that the output carries the **same token
+multiset** as the input modulo parenthesisation — the last of which a
+discarded token breaks even in a file with no comments to misplace.
+⟨`t-parse-patt-qualified`, `t-arc-patt-bare`⟩
+
 The rule's original subject, and the reversal that followed, are
 retired. The rule was written when one word was collapsed into
 `match`, and amended when the reservation on that word was withdrawn.
