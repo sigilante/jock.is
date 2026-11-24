@@ -5,7 +5,7 @@ Generated from the compiler and its corpus. Every table is projected from a norm
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes these pages.
 >
-> channel `%rc` · commit `544d126` (sigilante/mimb-split) · corpus 1236 vectors · 2026-11-25
+> channel `%rc` · commit `a37d306` (sigilante/blessed-bytes) · corpus 1239 vectors · 2026-11-25
 
 ## Writing Jock
 
@@ -47,13 +47,13 @@ The compiler talking back, and what it means.
 
 ### [Negative transfer](transfer/)
 
-23 refusals that exist to catch a habit from another language, each quoting the compiler’s own correction. Start here if Jock rejected something that would be correct Rust, Swift or Hoon.
+24 refusals that exist to catch a habit from another language, each quoting the compiler’s own correction. Start here if Jock rejected something that would be correct Rust, Swift or Hoon.
 
 [`transfer/`](transfer/) — the page · [`transfer.md`](transfer.md) — the same content as raw Markdown
 
 ### [Refusal tags](tags/)
 
-All 207 refusals the compiler can raise: 168 with the minimal program that triggers one, 30 pinned only by an AST-level vector, 9 pinned by nothing at all.
+All 208 refusals the compiler can raise: 169 with the minimal program that triggers one, 30 pinned only by an AST-level vector, 9 pinned by nothing at all.
 
 [`tags/`](tags/) — the page · [`tags.md`](tags.md) — the same content as raw Markdown
 

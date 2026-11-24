@@ -1,11 +1,11 @@
 # Negative transfer
 
-The 23 refusals that exist to catch a habit from another language, each with the compiler’s own correction. A model writing Jock does not usually fail from ignorance; it fails by writing confident Rust, Swift or Hoon. These are the places the compiler says so.
+The 24 refusals that exist to catch a habit from another language, each with the compiler’s own correction. A model writing Jock does not usually fail from ignorance; it fails by writing confident Rust, Swift or Hoon. These are the places the compiler says so.
 
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `544d126` (sigilante/mimb-split) · corpus 1236 vectors · 2026-11-25
+> channel `%rc` · commit `a37d306` (sigilante/blessed-bytes) · corpus 1239 vectors · 2026-11-25
 
 A refusal is counted here when its `~|` clue carries a **prose sentence**. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.
 
@@ -13,8 +13,8 @@ Every message under **The corrections** is quoted from the compiler, not written
 
 |  | count |
 |---|---:|
-| refusals that correct you | 23 |
-| …shown with the program that triggers one | 23 |
+| refusals that correct you | 24 |
+| …shown with the program that triggers one | 24 |
 | …pinned only by an AST-level vector | 0 |
 | …pinned by no vector at all | 0 |
 
@@ -201,6 +201,28 @@ import evil; evil.g()
 > module is not on the blessed list; see vendor/BLESSED.txt
 
 pinned by `t-halo-unblessed`
+
+### `%mint-unblessed-pin`
+
+*module*
+
+```jock
+func f() -> @ { 7 };
+```
+
+*program*
+
+```jock
+import good; good.f()
+```
+
+> a %nock package cannot carry a %sha pin; its bytes are a build artifact
+
+> a .jock module must carry a %sha pin, not %extern
+
+> module bytes do not match the pin in vendor/BLESSED.txt
+
+pinned by `t-halo-pin-extern-jock`
 
 ### `%mint-unblessed-scry`
 

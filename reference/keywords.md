@@ -5,7 +5,7 @@ All 31 keywords Jock reserves, what each one does, and a working program that us
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `544d126` (sigilante/mimb-split) · corpus 1236 vectors · 2026-11-25
+> channel `%rc` · commit `a37d306` (sigilante/blessed-bytes) · corpus 1239 vectors · 2026-11-25
 
 Each keyword below carries its **class** — kernel or sugar, one of the language’s four design principles — and **what it does**, both projected from the keyword inventory at [L-61](/spec/language/#l-61), whose table is normative. Where a rule states the keyword’s behaviour, that rule is quoted; where none does, the section says so rather than citing a rule that merely mentions it.
 
@@ -264,7 +264,7 @@ Also named by [L-61](/spec/language/#l-61), [L-87](/spec/language/#l-87), [L-139
 func<T> id(x: T) -> T { x }; id(42)
 ```
 
-pinned by `t-text-gen` · 97 vectors use this keyword
+pinned by `t-text-gen` · 98 vectors use this keyword
 
 ### `hint`
 
@@ -326,7 +326,7 @@ pinned by `t-text-interp-user` · 46 vectors use this keyword
 import hoon; 20 + 22
 ```
 
-pinned by `t-text-arith` · 78 vectors use this keyword
+pinned by `t-text-arith` · 79 vectors use this keyword
 
 ### `in`
 

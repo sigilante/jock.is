@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Negative transfer — Jock reference</title>
-<meta name="description" content="The 23 refusals that exist to catch a habit from another language, each with the compiler’s own correction. A model writing Jock does not usually fail from ignorance; it fails by writing confident Rust, Swift or Hoon. These are the places the compiler says so.">
+<meta name="description" content="The 24 refusals that exist to catch a habit from another language, each with the compiler’s own correction. A model writing Jock does not usually fail from ignorance; it fails by writing confident Rust, Swift or Hoon. These are the places the compiler says so.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f2ecdd'/%3E%3Cg fill='none' stroke='%231a1714' stroke-width='2.6'%3E%3Ccircle cx='32' cy='32' r='22'/%3E%3Ccircle cx='32' cy='32' r='11'/%3E%3C/g%3E%3Cg stroke='%23b32a1c' stroke-width='1.6'%3E%3Cpath d='M32 5v54M5 32h54'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,19 +45,19 @@
 <div class="page">
 <header class="bar">
   <nav><a href="/">jock</a> <span>reference</span></nav>
-  <span>23 corrections</span>
+  <span>24 corrections</span>
 </header>
 <main class="prose">
 <h1 class="ruled">Negative transfer</h1>
-<p class="sub">The 23 refusals that exist to catch a habit from another language, each with the compiler’s own correction. A model writing Jock does not usually fail from ignorance; it fails by writing confident Rust, Swift or Hoon. These are the places the compiler says so.</p>
+<p class="sub">The 24 refusals that exist to catch a habit from another language, each with the compiler’s own correction. A model writing Jock does not usually fail from ignorance; it fails by writing confident Rust, Swift or Hoon. These are the places the compiler says so.</p>
 <!--  §3:  text column beside the 186px margin rail.  A marginal
       floats into the rail where it was written, so it sits beside
       its referent;  the rail is empty wherever nothing was said,
       which §7 calls correct.  -->
-<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>544d126</code> (sigilante/mimb-split) · corpus 1236 vectors · 2026-11-25</aside>
+<aside class="marginal"><span class="n">1.</span> <strong>GENERATED — do not edit.</strong> <code>tools/refgen.py</code> in the compiler repo writes this page. channel <code>%rc</code> · commit <code>a37d306</code> (sigilante/blessed-bytes) · corpus 1239 vectors · 2026-11-25</aside>
 <p>A refusal is counted here when its <code>~|</code> clue carries a <strong>prose sentence</strong>. An ordinary refusal ships a tag and a position; only one that means to teach you something ships words. That is a mechanical test, so this set grows with the compiler rather than with anyone remembering to add a row.</p>
 <p>Every message under <strong>The corrections</strong> is quoted from the compiler, not written here, so the words a reader sees are the words the terminal will use. The one section that is authored says so in its own heading, and even there the program and the value come from a vector.</p>
-<table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>refusals that correct you</td><td>23</td></tr><tr><td>…shown with the program that triggers one</td><td>23</td></tr><tr><td>…pinned only by an AST-level vector</td><td>0</td></tr><tr><td>…pinned by no vector at all</td><td>0</td></tr></tbody></table>
+<table><thead><tr><th></th><th>count</th></tr></thead><tbody><tr><td>refusals that correct you</td><td>24</td></tr><tr><td>…shown with the program that triggers one</td><td>24</td></tr><tr><td>…pinned only by an AST-level vector</td><td>0</td></tr><tr><td>…pinned by no vector at all</td><td>0</td></tr></tbody></table>
 <h2 id="the-corrections">The corrections</h2>
 <h3 id="decl-fond"><code>%decl-fond</code></h3>
 <pre class="code jock" data-refuses="decl-fond">enum Rec { mk(Rec) }; 0</pre>
@@ -132,6 +132,15 @@
 <pre class="code jock" data-refuses="mint-unblessed">import evil; evil.g()</pre>
 <blockquote>module is not on the blessed list; see vendor/BLESSED.txt</blockquote>
 <p>pinned by <code>t-halo-unblessed</code></p>
+<h3 id="mint-unblessed-pin"><code>%mint-unblessed-pin</code></h3>
+<p class="label">module</p>
+<pre class="code jock" data-refuses="mint-unblessed-pin">func f() -&gt; @ { 7 };</pre>
+<p class="label">program</p>
+<pre class="code jock" data-refuses="mint-unblessed-pin">import good; good.f()</pre>
+<blockquote>a %nock package cannot carry a %sha pin; its bytes are a build artifact</blockquote>
+<blockquote>a .jock module must carry a %sha pin, not %extern</blockquote>
+<blockquote>module bytes do not match the pin in vendor/BLESSED.txt</blockquote>
+<p>pinned by <code>t-halo-pin-extern-jock</code></p>
 <h3 id="mint-unblessed-scry"><code>%mint-unblessed-scry</code></h3>
 <p class="label">program</p>
 <pre class="code jock" data-refuses="mint-unblessed-scry">peekContext(42)</pre>
