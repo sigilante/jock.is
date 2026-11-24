@@ -5,7 +5,7 @@
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` reads the module sources and the examples that import them.
 >
-> 119 of 146 declarations pinned by a lane · channel `%rc` · commit `ec9893d` (sigilante/fmt-token-check) · 2026-11-24
+> 119 of 146 declarations pinned by a lane · channel `%rc` · commit `544d126` (sigilante/mimb-split) · 2026-11-25
 
 ## What counts as the standard library
 

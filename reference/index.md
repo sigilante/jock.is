@@ -5,7 +5,7 @@ Generated from the compiler and its corpus. Every table is projected from a norm
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes these pages.
 >
-> channel `%rc` · commit `ec9893d` (sigilante/fmt-token-check) · corpus 1236 vectors · 2026-11-24
+> channel `%rc` · commit `544d126` (sigilante/mimb-split) · corpus 1236 vectors · 2026-11-25
 
 ## Writing Jock
 

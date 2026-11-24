@@ -10,7 +10,7 @@ These are the authority. Where a generated page and a spec disagree, the spec is
 | spec | rules | lines | raw |
 |---|---:|---:|---|
 | [`language.md`](/spec/language/) | 196 | 2126 | [`language.md`](/spec/language.md) |
-| [`types.md`](/spec/types/) | 35 | 1179 | [`types.md`](/spec/types.md) |
+| [`types.md`](/spec/types/) | 35 | 1180 | [`types.md`](/spec/types.md) |
 | [`runtime.md`](/spec/runtime/) | 102 | 1234 | [`runtime.md`](/spec/runtime.md) |
 | [`nockasm.md`](/spec/nockasm/) | 25 | 248 | [`nockasm.md`](/spec/nockasm.md) |
 | [`nockasm-target.md`](/spec/nockasm-target/) | 22 | 512 | [`nockasm-target.md`](/spec/nockasm-target.md) |

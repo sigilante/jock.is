@@ -1,6 +1,6 @@
 # The Jock Type System — Specification
 
-**Status: NORMATIVE.** This document is the normative statement of Jock's static semantics: the judgments implemented by `crates/jockc/hoon/lib/check.hoon` (`elab`, `nest`, `join`, `dish`, `bunt`, `erase`, `embed`; `seek` is `+mimb:mint` — S7) and `lib/mint.hoon` (`mint` ⇒, `mill` ⇐), over the molds in `crates/jockc/hoon/sur/typ.hoon`. Surface syntax is owned by [`language.md`](language.md); this document owns meaning. It carries no chronology: the decision ledger this spec grew from, and the corrections it made to itself, are [`docs/record/types-arc.md`](../record/types-arc.md), with a forwarding index in the Appendix. Where prose here and a ledger entry disagree, this spec governs.
+**Status: NORMATIVE.** This document is the normative statement of Jock's static semantics: the judgments implemented by `crates/jockc/hoon/lib/check.hoon` (`elab`, `nest`, `join`, `dish`, `bunt`, `erase`, `embed`; `seek` is `+mseek:mint`/`+mlode:mint` behind `+mimb:mint` — S7) and `lib/mint.hoon` (`mint` ⇒, `mill` ⇐), over the molds in `crates/jockc/hoon/sur/typ.hoon`. Surface syntax is owned by [`language.md`](language.md); this document owns meaning. It carries no chronology: the decision ledger this spec grew from, and the corrections it made to itself, are [`docs/record/types-arc.md`](../record/types-arc.md), with a forwarding index in the Appendix. Where prose here and a ledger entry disagree, this spec governs.
 
 Section numbers (S1–S14) are stable: the sur/lib files cross-reference them by number.
 
@@ -34,7 +34,7 @@ The judgments, with signatures frozen in the named files:
 | `nest` | `env × typ × typ → ?` | check | `have` usable where `want` demanded. The env is **not** optional: N13 unfolds data nominals through it (S5.1) |
 | `join` | `env × typ × typ → typ` (partial) | check | *an* upper bound, synthesis only — **not** a least one, and not commutative (S5.2) |
 | `dish` | `env × (list typ) → ?` | check | pairwise discriminability of union members |
-| `seek` | `env × hair × (list jlimb) → (unit [code=nasm typ ax=@ mut=? arm=?])` | **mint** (`+mimb`) | limb path to **emitted code**, type, axis, mutability and armness. The `code` field is what "resolution and emission are fused" means (S7); a product of `[typ @]` would be the two-stage resolver S8.3 records as never built |
+| `seek` | `env × (list jlimb) → (unit [resl typ ax=@ mut=? rel=@])`, then `resl × @ → nasm` | **mint** (`+mseek`, `+mlode`; `+mimb` composes them) | limb path to a **location** and a type, then that location to code. THE TWO-STAGE RESOLVER IS NOW BUILT (jock#55): `+mseek` resolves and emits nothing — it does not even take a `hair`, since a position is needed only to emit — and `+mlode` turns a `$resl` into `nasm`. `+mimb` remains as the fused product its ten call sites expect |
 | `bunt` | `env × typ → nasm` (partial) | check | the default value, as code |
 | `erase` | `typ → lay` (total) | check | the subject-layout skeleton |
 | `embed` | `typ → type` (partial) | check | the `+ut` oracle boundary, CI-only |
@@ -315,12 +315,13 @@ Vectors: ⟨`t-dish-ac-p`, `t-dish-aa-n`⟩ (atom|cell ok; `@ | %foo` refused �
 `(unit [code=nasm t=typ ax=@ mut=? arm=?])` — the **emitted code** for
 the access, its type, the axis it lives at, whether the binding is
 editable, and whether it resolved to an arm. The `code` field is item 3
-below in the product rather than in prose: resolution and emission are
-one pass, so there is no intermediate location to hand on.
+below in the product rather than in prose. Resolution and emission
+were one pass with no intermediate location to hand on; since jock#55
+they are `+mseek` and `+mlode`, and `$resl` is that location.
 
 1. **Head resolution.** A `%name` head searches `nam` scopes innermost-first; the first hit wins (shadowing). `import` binds the library name in `nam` like any binding, so qualified access (`hoon.add`) is ordinary head-then-tail resolution; an unqualified name that would be ambiguous between an import's exports and a local binding does not exist — imports put only the *library name* in scope (qualified access is the only access; the "ambiguous name, qualify it" diagnostic belongs to the import section of language.md). A `%type` head (`Option.some`, `Point.new`) resolves in `def.types`: union case constructors, class static/inherent methods. `%axis` is a raw axis (compiler-internal).
 2. **Tail resolution.** Each subsequent `%name` limb resolves against the type at hand, in this order: `%face` match → struct/class field (unfolding the seal of a `%ref` for **fields of its own declaration only** — field access does not unseal foreign nominals) → inherent method (class suite) → trait method (via `def.impls`; ambiguity between two traits both providing the name is an error: qualify). Field axes follow the declaration-order right-nested tuple layout (S10.1).
-3. The result axis is a leg (Nock 0). *(It was once typed `$jwing`, "a bare axis or `[arm core]`, an arm at a core (Nock 9)" — the shape a **two-stage** resolver would produce, handing a location to a separate emitter. That resolver was never built: `+mimb` fuses resolution with emission, so an ABI arm — dictionary, import, group member — becomes a fired arm or a built closure at the point of resolution, and the cell case was constructed by nothing anywhere. `$jwing` is removed rather than collapsed to a bare `@` and kept for its name: a mold with no consumer is the same debt as an arm with no caller.)*
+3. The result axis is a leg (Nock 0). *(It was once typed `$jwing`, "a bare axis or `[arm core]`, an arm at a core (Nock 9)" — the shape a **two-stage** resolver would produce, handing a location to a separate emitter. That resolver was not built for eight months, and `$jwing` was removed rather than collapsed to a bare `@` and kept for its name, on the rule that a mold with no consumer is the same debt as an arm with no caller. It is built now, as `$resl` — `+mseek` resolves to a location and `+mlode` emits from one (jock#55) — and `$resl`'s `[%arm core at]` is the cell case `$jwing` had and nothing constructed. The difference is the one the removal turned on: `$resl` arrives with a producer and a consumer in the same change. The result axis is still a leg for every case but `%arm`, where no leg exists.)*
 
 `%edit` legality reads the `mut` flag on the resolved `nam` entry (S8.4).
 

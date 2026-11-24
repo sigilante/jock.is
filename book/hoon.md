@@ -5,7 +5,7 @@ Where Jock deliberately differs from Hoon. The fast path for a reader who alread
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this page.
 >
-> 4 landmarks · 32 rules that name Hoon · channel `%rc` · commit `ec9893d`
+> 4 landmarks · 32 rules that name Hoon · channel `%rc` · commit `544d126`
 
 ## The four the outline names
 
