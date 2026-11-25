@@ -5,7 +5,7 @@ Urbit-native conversions, in Jock.
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` writes this from `crates/jockc/hoon/lib/urbit.jock` and the examples that import it.
 >
-> 2 public declarations — 0 types, 2 arms. 2 pinned by a lane, 0 not. channel `%rc` · commit `a37d306`
+> 2 public declarations — 0 types, 2 arms. 2 pinned by a lane, 0 not. channel `%rc` · commit `c03820f`
 
 ## Import
 

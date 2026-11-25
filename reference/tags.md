@@ -5,7 +5,7 @@ Every refusal the Jock compiler can raise, the minimal program that raises it, a
 > [!NOTE]
 > **GENERATED — do not edit.** `tools/refgen.py` in the compiler repo writes this page.
 >
-> channel `%rc` · commit `a37d306` (sigilante/blessed-bytes) · corpus 1239 vectors · 2026-11-25
+> channel `%rc` · commit `c03820f` (master) · corpus 1240 vectors · 2026-11-25
 
 |  | count |  |
 |---|---:|---|
@@ -1057,7 +1057,7 @@ pinned by `t-halo-pin-extern-jock`, `t-halo-pin-moved`
 peekContext(42)
 ```
 
-pinned by `t-halo-scry-peek`, `t-halo-scry-try`, `t-halo-scry-under`
+pinned by `t-halo-scry-peek`, `t-halo-scry-tone`, `t-halo-scry-try`, `t-halo-scry-under`
 
 ### `%mint-unimported`
 
